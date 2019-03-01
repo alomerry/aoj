@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../assets/bootstrap.min.css"/>
+    <title>表格用例</title>
+    <style>
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <ul class="nav nav-pills nav-justified" role="tablist">
+        <li role="presentation" class="active"><a href="">A</a></li>
+        <li role="presentation"><a href="">A</a></li>
+        <li role="presentation"><a href="">A</a></li>
+        <li role="presentation"><a href="">A</a></li>
+        <li role="presentation"><a href="">A</a></li>
+    </ul>
+</div>
+<script type="application/javascript" src="../assets/jquery.min.js"></script>
+<script type="application/javascript" src="../assets/bootstrap.min.js"></script>
+<script>
+    $("ul a").click(function (e) {
+        e.preventDefault();
+        $(this).tab("show");
+    })
+</script>
+</body>
+</html>

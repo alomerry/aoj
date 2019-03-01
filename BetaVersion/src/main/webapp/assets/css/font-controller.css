@@ -1,0 +1,29 @@
+/*@font-face {*/
+/*font-family: 'HYZhengYuan'; !*字体名称*!*/
+/*src: url('../fonts/HYZhengYuan-45W.ttf');*/
+/*}*/
+
+/*@font-face {*/
+/*font-family: 'RobotoCondensed'; !*字体名称*!*/
+/*src: url('../fonts/RobotoCondensed-Regular.ttf');*/
+/*}*/
+
+* {
+    /*font-family: 'HYZhengYuan', 'RobotoCondensed', serif;*/
+    font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\8F6F\96C5\9ED1,Arial,sans-serif;
+    font-size: 19px;
+    font-weight: normal;
+}
+
+/*表格字体*/
+div.scroll-item th {
+    font-size: 23px;
+}
+
+div.scroll-item td {
+    font-size: 23px;
+}
+
+div.scroll-item > table > thead > tr > th {
+    font-size: 17px;
+}

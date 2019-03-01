@@ -1,0 +1,182 @@
+.demo {
+    /* background-color: #54a0ff;  */
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+nav.navbar.bootsnav {
+    background: none;
+    font-family: microsoft yahei, Arial, sans-serif;
+    /*margin-bottom: 150px;*/
+    /*border: none;*/
+}
+
+nav.navbar.bootsnav ul.nav > li {
+    margin-right: 20px;
+}
+
+nav.navbar.bootsnav ul.nav > li > a {
+    background-color: transparent;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: 0;
+    overflow: hidden;
+    position: relative;
+    transition: all 1s ease .1s;
+    z-index: 1;
+    color: rgb(255, 243, 248);
+}
+
+nav.navbar.bootsnav ul.nav > li.dropdown > a {
+    padding: 10px 30px 10px 15px;
+}
+
+nav.navbar.bootsnav ul.nav > li.active > a,
+nav.navbar.bootsnav ul.nav > li.active > a:hover,
+nav.navbar.bootsnav ul.nav > li > a:hover,
+nav.navbar.bootsnav ul.nav > li.on > a {
+    /*一级元素获得焦点颜色*/
+    color: #95ccd0;
+    background: transparent !important;
+    border-color: transparent;
+}
+
+nav.navbar.bootsnav ul.nav > li > a > span:before,
+nav.navbar.bootsnav ul.nav > li > a > span:after {
+    content: "";
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    left: -100%;
+    top: 0;
+    transition: all 1s ease 0s;
+}
+
+nav.navbar.bootsnav ul.nav > li > a > span:after {
+    width: 100%;
+    height: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 100%;
+    transition: all 1s ease 0.1s;
+}
+
+nav.navbar.bootsnav ul.nav > li:hover > a > span:before,
+nav.navbar.bootsnav ul.nav > li.active > a > span:before {
+    left: 100%;
+}
+
+nav.navbar.bootsnav ul.nav > li:hover > a > span:after,
+nav.navbar.bootsnav ul.nav > li.active > a > span:after {
+    left: 0;
+}
+
+nav.navbar.bootsnav li.dropdown ul.dropdown-menu li a {
+    color: #000000 !important;
+}
+
+nav.navbar.bootsnav li.dropdown ul.dropdown-menu.megamenu-content li a:hover,
+nav.navbar.bootsnav li.dropdown ul.dropdown-menu li a:hover,
+nav.navbar.bootsnav li.dropdown ul.dropdown-menu li a.dropdown-toggle:active,
+nav.navbar ul.nav li.dropdown.on ul.dropdown-menu li.dropdown.on > a {
+    background: #fff !important;
+    color: #19e8dc !important;
+    box-shadow: 0 0 8px #fff inset;
+}
+
+nav.navbar.bootsnav ul.nav > li.dropdown > a.dropdown-toggle:after {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    margin: 0 0 0 7px;
+}
+
+/*二级导航消失时间*/
+nav.navbar.bootsnav ul.nav > li.dropdown > ul {
+    top: 100%;
+    transition: all 0.2s ease 0s;
+}
+
+nav.navbar.bootsnav ul.nav > li.dropdown.on > ul {
+    top: 120%;
+}
+
+.dropdown-menu.multi-dropdown {
+    position: absolute;
+    left: -100% !important;
+}
+
+nav.navbar.bootsnav li.dropdown ul.dropdown-menu {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    /* background-color: #1775e8; */
+    background-color: blanchedalmond;
+    border: none;
+}
+
+nav.navbar.bootsnav li.dropdown ul.dropdown-menu.megamenu-content li {
+    font-size: 14px;
+}
+
+nav.navbar.bootsnav li.dropdown ul.dropdown-menu.megamenu-content .menu-col li a {
+    padding-left: 10px;
+}
+
+nav.navbar.bootsnav li.dropdown ul.dropdown-menu.megamenu-content .title {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 990px) {
+    .dropdown-menu.multi-dropdown {
+        left: 0 !important;
+    }
+
+    nav.navbar.bootsnav .navbar-toggle {
+        color: #fff;
+        background: transparent !important;
+    }
+
+    nav.navbar.bootsnav.navbar-mobile .navbar-collapse {
+        background-color: #1775e8;
+    }
+
+    nav.navbar.bootsnav ul.nav > li {
+        margin: 5px auto 15px;
+    }
+
+    nav.navbar.bootsnav.navbar-mobile ul.nav > li > a {
+        color: #fff;
+        text-align: center;
+        padding: 10px 15px;
+        border: none;
+    }
+
+    nav.navbar.bootsnav ul.nav > li.dropdown > a {
+        padding: 10px 10px 10px 17px;
+    }
+
+    nav.navbar.bootsnav ul.nav > li.active > a,
+    nav.navbar.bootsnav ul.nav > li > a:hover,
+    nav.navbar.bootsnav ul.nav > li.on > a {
+        color: #fff;
+    }
+
+    nav.navbar.bootsnav ul.nav li.dropdown ul.dropdown-menu > li > a {
+        padding-left: 10px;
+        border-bottom-color: none;
+    }
+
+    nav.navbar.bootsnav ul.nav > li.dropdown > ul {
+        top: 100%;
+    }
+
+    nav.navbar.bootsnav li.dropdown ul.dropdown-menu.megamenu-content .title {
+        color: #fff;
+        font-size: 14px;
+        font-weight: normal;
+        padding-left: 10px;
+    }
+}

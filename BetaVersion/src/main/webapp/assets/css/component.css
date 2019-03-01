@@ -1,0 +1,119 @@
+.component {
+    line-height: 1.5em;
+    margin: 0 auto;
+    padding: 2em 0 3em;
+    width: 90%;
+    max-width: 1000px;
+    overflow: hidden
+}
+
+.component .filler {
+    font-family: blokk, Arial, sans-serif;
+    color: #d3d3d3
+}
+
+table {
+    border-collapse: unset;
+    /*表格单元格间隔*/
+    border-spacing: 5px;
+    margin-bottom: 3em;
+    width: 100%;
+    /*background: #fff*/
+}
+
+td,
+th {
+    /*padding: .75em 1.5em;*/
+    padding: 15px;
+    text-align: left
+}
+
+td.err {
+    background-color: #e992b9;
+    color: #fff;
+    font-size: .75em;
+    text-align: center;
+    line-height: 1
+}
+
+/* 表头颜色 */
+th {
+    background-color: #31bc86;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap
+}
+
+tbody th {
+    background-color: #2ea879
+}
+
+/* 奇数行颜色 */
+tbody tr:nth-child(2n-1) {
+    background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+    /* background-color: #f5f5f5; */
+    transition: all .125s ease-in-out
+}
+
+/* 偶数行颜色 */
+tbody tr:nth-child(2n) {
+    background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+    transition: all .125s ease-in-out
+}
+
+/* hover时的颜色 */
+tbody tr:hover {
+    /* background-color: rgba(129, 208, 177, .3) */
+    /* background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); */
+    background-image: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);
+}
+
+.sticky-wrap {
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+    margin: 3em 0;
+    width: 100%
+}
+
+.sticky-wrap .sticky-thead,
+.sticky-wrap .sticky-col,
+.sticky-wrap .sticky-intersect {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all .125s ease-in-out;
+    z-index: -3;
+    width: auto
+}
+
+.sticky-wrap .sticky-thead {
+    box-shadow: 0 .25em .1em -.1em rgba(0, 0, 0, .125);
+    z-index: -2;
+    width: 100%
+}
+
+.sticky-wrap .sticky-intersect {
+    opacity: 1;
+    z-index: -1
+}
+
+.sticky-wrap .sticky-intersect th {
+    background-color: #666;
+    color: #eee
+}
+
+.sticky-wrap td,
+.sticky-wrap th {
+    box-sizing: border-box
+}
+
+td.user-name {
+    text-transform: capitalize
+}
+
+.sticky-wrap.overflow-y {
+    overflow-y: auto;
+    max-height: 50vh
+}

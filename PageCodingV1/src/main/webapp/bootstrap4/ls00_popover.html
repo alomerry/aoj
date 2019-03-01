@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../assets/bootstrap-4.2.1.min.css"/>
+    <title>modal用例</title>
+    <style>
+    </style>
+</head>
+<body>
+<div id="imgs" style="display: none">
+    <img src="favicon.ico" alt=""/>
+</div>
+<div class="container">
+    <div class="col-md-4 col-md-offset-4">
+        <label>hello</label>
+        <input type="text" class="form-control" data-toggle="popover" data-trigger="focus" title="name" data-content="" placeholder="hello" data-placement="right">
+    </div>
+</div>
+<script src="../assets/jquery.min.js"></script>
+<script src="../assets/popper.min.js"></script>
+<script src=" ../assets/bootstrap-4.2.1.min.js"></script>
+<script>
+    $(function () {
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            content: function () {
+                return $('#imgs').html();
+            }
+        });
+// $('[data-toggle="popover"]').popover();
+    })
+</script>
+<script>
+</script>
+</body>
+</html>

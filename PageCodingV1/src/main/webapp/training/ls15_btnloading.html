@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../assets/bootstrap.min.css"/>
+    <title>modal用例</title>
+</head>
+<body>
+<div>
+    <button type="button" class="btn btn-warning" data-loading-text="waitting">点我</button>
+</div>
+<script src="../assets/jquery.min.js"></script>
+<script src="../assets/bootstrap.min.js"></script>
+<script>
+    $('button').on('click', function (e) {
+        var btn = $(this).button('loading');
+
+        setTimeout(function (e) {
+            btn.button('reset');
+        }, 3000);
+    })
+</script>
+<script>
+</script>
+</body>
+</html>

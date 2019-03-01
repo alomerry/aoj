@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <!--<property name="LOG_HOME" value="/var/log" />-->
+
+    <!--myibatis log configure-->
+    <!--<logger name="com.apache.ibatis" level="TRACE"/>-->
+    <!--<logger name="java.sql.Connection" level="DEBUG"/>-->
+    <logger name="java.sql.Statement" level="DEBUG"/>
+    <!--<logger name="java.sql.PreparedStatement" level="DEBUG"/>-->
+    <logger name="mo.controller" level="DEBUG"/>
+    <logger name="mo.dao" level="DEBUG"/>
+    <logger name="mo.service" level="DEBUG"/>
+    <logger name="mo.interceptor" level="DEBUG"/>
+    <logger name="mo.listener" level="DEBUG"/>
+    <!-- magenta:洋红 -->
+    <!-- boldMagenta:粗红-->
+    <!-- cyan:青色 -->
+    <!-- white:白色 -->
+    <property name="CONSOLE_LOG_PATTERN_1"
+              value="%highlight(%-5level) | %boldGreen(%thread) | %magenta(%logger) | %black(%msg%n)"/>
+
+    <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+    <property name="CONSOLE_LOG_PATTERN_2" value="%yellow[%thread] %-5level %logger{35} - %msg %n"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN_1}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <!--<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>/var/logback.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+        </encoder>
+    </appender>-->
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+    </root>
+    <!--<root level="WARNING">
+    <appender-ref ref="FILE"/>
+    </root>-->
+</configuration>

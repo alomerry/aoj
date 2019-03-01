@@ -1,0 +1,31 @@
+.dropdown:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown > .dropdown-toggle:active {
+    /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}
+
+.navbar-brand, .nav-item {
+    border-bottom: 2px solid rgba(255, 255, 255, 0);
+}
+
+.nav-item:hover {
+    transition: 1000ms;
+    border-bottom: 2px solid #1b6d85;
+}
+
+#user-selector-list {
+    font-size: 1.25rem;
+    margin-right: 12px;
+}
+
+#oj-selector-list > li {
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+li.nav-item > a > i.fa {
+    margin: 5px;
+}

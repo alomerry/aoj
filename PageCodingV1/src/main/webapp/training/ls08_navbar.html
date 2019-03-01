@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../assets/bootstrap.min.css"/>
+    <title>表格用例</title>
+    <style>
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand">Online Judge</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a>A</a></li>
+                <li>
+                    <a href="" class="dropdown dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">B
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a>M</a></li>
+                        <li><a>N</a></li>
+                        <li><a>Q</a></li>
+                    </ul>
+                </li>
+                <li><a>C</a></li>
+                <li><a>D</a></li>
+            </ul>
+            <div class="navbar-collapse collapse navbar-right">
+                <ul class="nav navbar-nav">
+                    <li><a>登录</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<script type="application/javascript" src="../assets/jquery.min.js"></script>
+<script type="application/javascript" src="../assets/bootstrap.min.js"></script>
+<script type="application/javascript" src="../assets/bootstrap-hover-dropdown.js"></script>
+<script>
+    $("ul a").click(function (e) {
+        e.preventDefault();
+        $(this).tab("show");
+    })
+</script>
+</body>
+</html>

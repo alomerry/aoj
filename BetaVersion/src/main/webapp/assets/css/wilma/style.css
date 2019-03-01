@@ -1,0 +1,14 @@
+.button-small {
+    padding: 0.5em 1em;
+    border: 0;
+    color: #fff;
+    background: #c94e50
+}
+.button-middle {
+    padding: 1em 2em;
+    border: 0;
+    color: #fff;
+    background: linear-gradient(-20deg, #d558c8 0%, #24d292 100%);
+    /* background: #c94e50; */
+    margin:15px;
+}
