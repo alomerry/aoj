@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/VuePageV1/VuePageV1.iml" filepath="$PROJECT_DIR$/VuePageV1/VuePageV1.iml" />
       <module fileurl="file://$PROJECT_DIR$/VuePageV3/VuePageV3.iml" filepath="$PROJECT_DIR$/VuePageV3/VuePageV3.iml" />
-      <module fileurl="file://$PROJECT_DIR$/VuePageV4/VuePageV4.iml" filepath="$PROJECT_DIR$/VuePageV4/VuePageV4.iml" />
     </modules>
   </component>
 </project>
