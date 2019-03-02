@@ -12,9 +12,9 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import redis.clients.jedis.JedisPoolConfig;
 
-@Configuration
+//@Configuration
 @PropertySource(value = {"classpath:jdbc.properties"}, ignoreResourceNotFound = false, encoding = "UTF-8")
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600)
+//@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600)
 public class RedisSessionConfiger {
 
     @Value("${redis.host}")
@@ -24,7 +24,7 @@ public class RedisSessionConfiger {
     @Value("${redis.passwd}")
     private String passwd;
 
-    @Bean
+//    @Bean
     public RedisConnectionFactory getRedisConnectionFactory(JedisPoolConfig jedisPoolConfig) {
         //单机版jedis
         RedisStandaloneConfiguration redisStandaloneConfiguration =
@@ -48,7 +48,7 @@ public class RedisSessionConfiger {
         return new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfiguration);
     }
 
-    @Bean
+//    @Bean
     public JedisPoolConfig getJedisPoolConfig() {
         JedisPoolConfig config = new JedisPoolConfig();
         //最大连接数
