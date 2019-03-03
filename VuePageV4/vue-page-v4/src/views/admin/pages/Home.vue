@@ -6,7 +6,7 @@
                     <div slot="title">
                         <Row>
                             <Col span="10"><img src="../../../../public/logo.png"
-                                                style="display: inline-block;height: auto;max-width: 100%;"/>
+                                                style="display: inline-block;height: auto;max-width: 100%;" alt=""/>
                             </Col>
                             <Col span="10" style="margin-left: 20px">
                                 <p></p>
@@ -19,7 +19,7 @@
                     <h3 style="margin: 10px 0 10px 0">
                         Last Login
                     </h3>
-
+                    
                     <Row>
                         <div v-for="(item,key) in lastLoginInfo" style="margin: 5px 0 5px 0">
                             <Col span="5" style="text-align: right"><span v-text="item.title"></span></Col>
@@ -53,7 +53,7 @@
                                             <p class="number" style="color: rgba(101,101,101,0.65);">15</p>
                                             <p class="word">Total Users</p>
                                         </span>
-
+                        
                         </Card>
                     </Col>
                     <Col span="8" class="three_card">
@@ -83,8 +83,9 @@
                 </Row>
                 <Card>
                     <div slot="title">
-                        <p style="font-weight: 300;font-size: 25px;height: 25px">Release Notes ds&nbsp;<Icon type="md-help-circle" /></p>
-
+                        <p style="font-weight: 300;font-size: 25px;height: 25px">Release Notes ds&nbsp;<Icon type="md-help-circle"/>
+                        </p>
+                    
                     </div>
                     <Collapse simple>
                         <Panel name="1">
@@ -147,7 +148,7 @@
         margin: 15px 0 0 15px;
         padding: 0;
     }
-
+    
     div.total-div-bg {
         border-radius: 5px;
         display: inline-block;
@@ -156,31 +157,31 @@
         margin: 0;
         padding: 0 0 0 0;
     }
-
+    
     .three_card {
         margin-right: 15px;
         margin-bottom: 15px;
     }
-
+    
     span.total-span-show {
         display: inline-block;
         text-align: center;
         margin: auto;
     }
-
+    
     span.total-span-show.span-left {
         width: 240px;
     }
-
+    
     span.total-span-show.span-right {
         width: 200px;
     }
-
+    
     span.total-span-show > p.number {
         font-size: 25px;
         font-weight: 900;
     }
-
+    
     span.total-span-show > p.word {
         font-weight: 300;
     }
