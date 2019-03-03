@@ -2,7 +2,7 @@ import io.jsonwebtoken.*;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
 import org.junit.Test;
-import redis.clients.jedis.Jedis;
+//import redis.clients.jedis.Jedis;
 
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
@@ -21,9 +21,9 @@ public class TestMain {
 
     @Test
     public void test02() {
-        Jedis jedis = new Jedis("192.168.211.128", 6379);
-        jedis.auth("120211");
-        System.out.println(jedis.ping());
+//        Jedis jedis = new Jedis("192.168.211.128", 6379);
+//        jedis.auth("120211");
+//        System.out.println(jedis.ping());
     }
 
     @Test
