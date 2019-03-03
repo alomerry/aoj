@@ -1,5 +1,5 @@
 {
-  "name": "vue-page-v1",
+  /*"name": "vue-page-v1",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "mo.hyit",
@@ -63,5 +63,5 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ]*/
 }
