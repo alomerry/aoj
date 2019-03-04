@@ -13,7 +13,7 @@
                 </Button>
                 <br><br>
             </div>
-            <Table border ref="selection" :columns="columns" :data="selectData"
+            <Table border ref="selection" :columns="columns" :data="selectData" :loading="tableLoadingFlag"
                    @on-selection-change="selectionChange"></Table>
             <br>
             <Page :current="page" :page-size="per_page" size="small" style="float: right"/>
@@ -29,12 +29,16 @@
 
 <script>
 
+    import debounce from "lodash/debounce"
+    import Api from "../../components/api"
+
     export default {
         name: "ProblemList",
         data() {
             return {
                 searchKeyWord: "",//搜索框的内容
                 deleteShowFlag: false,
+                tableLoadingFlag: false,
                 columns: [
                     {
                         type: 'selection',
@@ -42,26 +46,33 @@
                         align: 'center',
                     },
                     {
-                        title: 'UserName',
-                        key: 'user.username',
+                        title: 'Problem_id',
+                        key: 'problem.problem_id',
                         render: (h, params) => {
-                            return h('span', {}, params.row.user.username)
+                            return h('span', {}, params.row.problem.problem_id)
                         },
                     },
                     {
-                        title: 'NickName',
-                        key: 'user.nickname',
+                        title: 'Title',
+                        key: 'problem.title',
                         render: (h, params) => {
-                            return h('span', {}, params.row.user.nickname)
+                            return h('span', {}, params.row.problem.title)
+                        },
+                    },
+                    {
+                        title: 'Author',
+                        key: 'created_by.username',
+                        render: (h, params) => {
+                            return h('span', {}, params.row.created_by.rightstr)
                         },
                     },
                     {
                         title: 'Create Time',
-                        key: 'user.access_time',
+                        key: 'problem.created_at',
                         render: (h, params) => {
                             return h('Time', {
                                 props: {
-                                    time: params.row.user.access_time,
+                                    time: params.row.problem.created_at,
                                     type: 'datetime'
                                 },
                             })
@@ -86,7 +97,7 @@
                         ],
                         filterMultiple: false,
                         filterMethod(value, row) {
-                            let v = row.user.access_time;
+                            let v = row.problem.created_at;
                             if (value === 1) {
                                 return v > _this.nowTime - 365 * 24 * 3600000;
                             } else if (value === 2) {
@@ -99,79 +110,16 @@
                         }
                     },
                     {
-                        title: 'Last Login',
-                        key: 'user.last_login',
+                        title: 'Level',
+                        key: 'problem.defunct',
                         render: (h, params) => {
-                            return h('Time', {
+                            return h('Badge', {
                                 props: {
-                                    time: params.row.user.last_login,
-                                    type: 'datetime'
-                                },
-                            })
+                                    status: problem.defunct < 1 ? "default" : problem.defunct < 2 ? "success" : "error",
+                                    text: problem.defunct < 1 ? "disable" : problem.defunct < 2 ? "public" : "private",
+                                }
+                            }, params.row.user.email)
                         },
-                        filters: [
-                            {
-                                label: 'Last year',
-                                value: 1
-                            },
-                            {
-                                label: 'Last quarter',
-                                value: 2
-                            },
-                            {
-                                label: 'Last mouth',
-                                value: 3
-                            },
-                            {
-                                label: 'Last week',
-                                value: 4
-                            }
-                        ],
-                        filterMultiple: false,
-                        filterMethod(value, row) {
-                            let v = _this.stringFormatToDate(row.user.last_login).getTime();
-                            if (value === 1) {
-                                return v > _this.nowTime - 365 * 24 * 3600000;
-                            } else if (value === 2) {
-                                return v > _this.nowTime - 90 * 24 * 3600000;
-                            } else if (value === 3) {
-                                return v > _this.nowTime - 30 * 24 * 3600000;
-                            } else if (value === 4) {
-                                return v > _this.nowTime - 7 * 24 * 3600000;
-                            }
-                        }
-                    },
-                    {
-                        title: 'Email',
-                        key: 'user.email',
-                        render: (h, params) => {
-                            return h('span', {}, params.row.user.email)
-                        },
-                    },
-                    {
-                        title: 'Admin Level',
-                        key: 'privilege.rightstr',
-                        render: (h, params) => {
-                            return h('span', {}, params.row.privilege.rightstr)
-                        },
-                        filters: [
-                            {
-                                label: 'Super Admin',
-                                value: "Super Admin"
-                            },
-                            {
-                                label: 'Admin',
-                                value: "Admin"
-                            },
-                            {
-                                label: 'User',
-                                value: "User"
-                            },
-                        ],
-                        filterMultiple: true,
-                        filterMethod(value, row) {
-                            return row.privilege.rightstr.indexOf(value) > -1;
-                        }
                     },
                     {
                         title: 'Option',
@@ -234,18 +182,20 @@
                 datas: [],
                 selectData: [
                     {
-                        user: {
-                            username: 'John Brown',
-                            nickname: '就当一次路过',
-                            access_time: '2018-12-03 07:08:16',
-                            last_login: '2016-10-03 07:08:16',
-                            email: 'WuJinCheng',
+                        created_by: {
+                            "email": "morizunzhu@163.com",
+                            "nickname": "就当一次路过丶",
+                            "school": "hyit",
+                            "user_id": 10,
+                            "username": "morizunzhu"
                         },
-                        privilege: {
-                            defunct: "A",
-                            rightstr: "admin_ce",
-                            user_id: 10.
-                        },
+                        problem: {
+                            "create_by": 10,
+                            "created_at": 1517101561000,
+                            "problem_id": 2,
+                            "title": "A+B",
+                            "defunct": "1"
+                        }
                     },
                 ],
                 nowTime: "2016-10-03 07:08:16",
@@ -255,8 +205,8 @@
         },
         created: function () {
             _this = this;
-            // this.selectData = this.datas;//表格数据
-            this.getUsers();
+            this.getProblems();
+            this.selectData = this.datas;//表格数据
             this.debouncedsearchData = debounce(this.searchData, 500, null);//延时加载
         },
         mounted() {
@@ -294,8 +244,17 @@
                 return time;
             },
 
-            getUsers: function () {
-                Api.findUsersByPagePer_Page(this.page, this.per_page, this);
+            getProblems: function () {
+                this.tableLoadingFlag = true;
+                Api.getProblemsByPagePer_Page(this.page, this.per_page, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    if (result.code === 200) {
+                        this.datas = result.data.problems;
+                    }
+                }).catch(res => {
+
+                });
+                this.tableLoadingFlag = false;
             }
         },
         watch: {

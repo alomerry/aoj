@@ -12,8 +12,8 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.List;
 
-import static mo.permission.PermissionManage.Match_organizer;
-import static mo.permission.PermissionManage.isLegalAdmin;
+import static mo.permission.PermissionManager.Match_organizer;
+import static mo.permission.PermissionManager.isLegalAdmin;
 
 @Service
 public class ContestServiceImpl implements ContestService {

@@ -86,7 +86,7 @@
                 </Button>
                 <br><br>
             </div>
-            <Table border ref="selection" :columns="columns" :data="selectData"
+            <Table border ref="selection" :columns="columns" :data="selectData" :loading="loading"
                    @on-selection-change="selectionChange"></Table>
             <br>
             <Page :current="page" :page-size="per_page" size="small" style="float: right"/>
@@ -311,20 +311,21 @@
                         }
                     }
                 ],
+                loading: false,//表格加载状态
                 datas: [],
                 selectData: [
                     {
                         user: {
-                            username: 'John Brown',
-                            nickname: '就当一次路过',
+                            username: '',
+                            nickname: '',
                             access_time: '2018-12-03 07:08:16',
                             last_login: '2016-10-03 07:08:16',
-                            email: 'WuJinCheng',
+                            email: '',
                         },
                         privilege: {
                             defunct: "A",
-                            rightstr: "admin_ce",
-                            user_id: 10.
+                            rightstr: "admin",
+                            user_id: 10
                         },
                     },
                 ],
@@ -334,8 +335,8 @@
             }
         },
         created: function () {
-            _this = this;
-            // this.selectData = this.datas;//表格数据
+            this.selectData = this.datas;//表格数据
+            this.loading = true;
             this.getUsers();
             this.debouncedsearchData = debounce(this.searchData, 500, null);//延时加载
         },
@@ -379,6 +380,7 @@
                     let result = res.data;
                     console.log(result);
                     if (result.code === 200) {
+                        this.datas = result.data.users;
                         this.selectData = result.data.users;
                     } else {
                         console.log('Failed! ' + result.message);
@@ -387,8 +389,10 @@
                             window.location.href = "/admin/login";
                         }
                     }
+                    this.loading = false;
                 }).catch(err => {
                     console.log('An error has occurred! ' + err);
+                    this.loading = false;
                 });
             }
         },

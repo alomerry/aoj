@@ -1,8 +1,4 @@
 import axios from 'axios'//使用ajax
-import Vue from 'vue/dist/vue.js'
-import iView from 'iview';
-
-Vue.use(iView);
 
 
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';

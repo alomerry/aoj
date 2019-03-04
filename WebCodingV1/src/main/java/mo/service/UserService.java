@@ -41,9 +41,18 @@ public interface UserService {
 
     /**
      * 查询用户
-     * @param page 页码
+     *
+     * @param page     页码
      * @param per_page 每页数量
      * @return 用户集
      */
     List<UserLink> findUsersByPageAndPerPage(Integer page, Integer per_page);
+
+    /**
+     * 根据用户Id查找用户权限实体
+     *
+     * @param user_id 用户Id
+     * @return 用户权限实体
+     */
+    UserLink findUserLinkByUserId(Integer user_id);
 }

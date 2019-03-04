@@ -1,6 +1,10 @@
 import io.jsonwebtoken.*;
+import mo.entity.po.Privilege;
+import mo.entity.po.User;
+import mo.entity.vo.UserLink;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
+import mo.utils.JWTUtils;
 import org.junit.Test;
 //import redis.clients.jedis.Jedis;
 
@@ -57,10 +61,18 @@ public class TestMain {
     }
 
     public static void main(String[] a) throws NoSuchMethodException {
-        Class<?> clasz = new TestMain().getClass();
+        /*Class<?> clasz = new TestMain().getClass();
         Method method = clasz.getMethod("test05", null);
 
-        System.out.println(method.getAnnotation(AuthCheck.class));
+        System.out.println(method.getAnnotation(AuthCheck.class));*/
+        User user = new User();
+        user.setNickname("mo");
+        Privilege privilege = new Privilege();
+        privilege.setRightstr("admin");
+        UserLink userLink = new UserLink(user, privilege);
+        String old = JWTUtils.makeToken(userLink);
+        Jws<Claims> jwt = JWTUtils.parser(old);
+        System.out.println(jwt.getBody().get("level"));
     }
 
     private String getJWS() {

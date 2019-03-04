@@ -48,15 +48,15 @@ public final class StringValue {
     public static final String res_key = "msg";
 
     //管理员权限判断
-//    public static final String Authority_manager = "Authority_manager";//权限管理者 b
-//    public static final String Topic_adder = "Topic_adder";//题目添加者 c
-//    public static final String Match_organizer = "Match_organizer";//比赛组织者 e
-//    public static final String Match_participant = "Match_participant";//比赛参加者 f
-//    public static final String Code_viewer = "Code_viewer";//代码查看者 g
-//    public static final String Manual_judger = "Manual_judger";//远程判题者 j
-//    public static final String Remote_judger = "Remote_judger";//公告管理者 k
-//    public static final String Announcement_manager = "Announcement_manager";//权限管理者 b
-//    public static final String User_manager = "User_manager";//用户管理者 l
+    /*public static final String Authority_manager = "Authority_manager";//权限管理者 b
+    public static final String Topic_adder = "Topic_adder";//题目添加者 c
+    public static final String Match_organizer = "Match_organizer";//比赛组织者 f
+    public static final String Match_participant = "Match_participant";//比赛参加者 g
+    public static final String Code_viewer = "Code_viewer";//代码查看者 h
+    public static final String Manual_judger = "Manual_judger";//远程判题者 j
+    public static final String Remote_judger = "Remote_judger";//公告管理者 k
+    public static final String Announcement_manager = "Announcement_manager";//权限管理者 l
+    public static final String User_manager = "User_manager";//用户管理者 o*/
 
 
 }

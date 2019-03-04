@@ -45,16 +45,6 @@ public interface UserMapper {
 
 
     /**
-     * 查找指定页数的用户
-     *
-     * @param start 起始数
-     * @param end   结束数
-     * @return 返回用户集
-     */
-    @Select("select * from users limit #{start},#{end}")
-    List<User> listUsersByPage(@Param("start") int start, @Param("end") int end);
-
-    /**
      * 按指定序列查询指定页数用户
      *
      * @param start   起始数
@@ -64,7 +54,7 @@ public interface UserMapper {
      * @return 返回用户集
      */
     @Select("select * from users order by ${orderBy} ${type} limit #{start},#{end}")
-    List<User> listUsersByPageAndOrderBy(@Param("start") int start, @Param("end") int end, @Param("orderBy") String orderBy, @Param("type") String type);
+    List<User> findUsersByPageAndOrderBy(@Param("start") int start, @Param("end") int end, @Param("orderBy") String orderBy, @Param("type") String type);
 
     /**
      * 根据用户Id查找用户
@@ -73,7 +63,7 @@ public interface UserMapper {
      * @return 返回用户实体
      */
     @Select("select * from users where user_id = #{user_id}")
-    User selectUserByUserId(@Param("user_id") Integer user_id);
+    User findUserByUserId(@Param("user_id") Integer user_id);
 
     /**
      * 根据用户名相似度查找用户

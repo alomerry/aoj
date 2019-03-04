@@ -18,8 +18,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import static mo.permission.PermissionManage.Match_organizer;
-import static mo.permission.PermissionManage.isLegalAdmin;
+import static mo.permission.PermissionManager.Match_organizer;
+import static mo.permission.PermissionManager.isLegalAdmin;
 import static org.springframework.transaction.annotation.Isolation.READ_COMMITTED;
 
 @Service

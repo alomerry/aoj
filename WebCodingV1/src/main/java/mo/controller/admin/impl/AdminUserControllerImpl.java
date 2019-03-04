@@ -26,7 +26,7 @@ public class AdminUserControllerImpl implements AdminUserController {
 
     @Override
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/users", method = RequestMethod.GET)
     public Result users(@RequestParam(value = "page", defaultValue = "1") String page,
                         @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
         JSONObject users = new JSONObject();

@@ -1,7 +1,7 @@
 package mo.permission;
 
 
-public final class PermissionManage {
+public final class PermissionManager {
 
     public static final int Authority_manager = 0;//权限管理者 b
     public static final int Topic_adder = 1;//题目添加者 c

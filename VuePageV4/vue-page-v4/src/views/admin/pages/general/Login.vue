@@ -47,7 +47,6 @@
         name: 'Login',
         data() {
             return {
-                loading: false,
                 formData: {
                     username: "",
                     pwd: "",
@@ -107,11 +106,6 @@
         },
         components: {},
         created() {
-            let that = this;
-            /*加载动画*/
-            /*setTimeout(function () {
-              that.loading = false;
-            }, 1000);*/
         }
     }
 </script>

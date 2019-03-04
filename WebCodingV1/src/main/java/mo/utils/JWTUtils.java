@@ -45,6 +45,7 @@ public final class JWTUtils {
         long now = System.currentTimeMillis();
         Map<String, Object> claims = new HashMap<>();//创建payload的私有声明（根据特定的业务需要添加，如果要拿这个做验证，一般是需要和jwt的接收方提前沟通好验证方式的）
         claims.put("level", user.getPrivilege().getRightstr());
+        //TODO Redis中添加密钥用于撤消已颁发的token
         return Jwts.builder().setClaims(claims).setIssuer(ISSUER)
                 .setId(String.valueOf(user.getUser().getUser_id()))
                 .setIssuedAt(new Date(now))
@@ -79,6 +80,16 @@ public final class JWTUtils {
         String JWS = Jwts.builder().setHeader((Map<String, Object>) jwt.getHeader()).setClaims(jwt.getBody()).signWith(SignatureAlgorithm.forName(alg), secretKey).compact();
         logger.info("\nold:[{}]\nnew:[{}]", jws, JWS);
         return JWS.equals(jws);
+    }
 
+    /**
+     * 获取jwt中的body数据
+     *
+     * @param jws 加密串
+     * @param key 数据key
+     * @return 数据value
+     */
+    public static Object getBodyValue(String jws, Object key) {
+        return parser(jws).getBody().get(key);
     }
 }

@@ -1,7 +1,4 @@
 import axios from "axios/index";
-import Vue from 'vue/dist/vue.js'
-import Router from 'vue-router'//使用 路由
-import router from '../router/router'//使用 路由
 
 
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -21,7 +18,7 @@ export default {
         params.append("page", page);
         params.append("per_page", per_page);
         return axios({
-            url: "/api/api-oj/users",
+            url: "/api/api-oj/admin/users",
             method: 'get',
             data: params,
             headers: {
@@ -41,7 +38,7 @@ export default {
         params.append("page", page);
         params.append("per_page", per_page);
         return axios({
-            url: "/api/api-oj/problems",
+            url: "/api/api-oj/admin/problems",
             method: 'get',
             data: params,
             headers: {

@@ -77,16 +77,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUserId(Integer userId) {
-        return userMapper.selectUserByUserId(userId);
+        return userMapper.findUserByUserId(userId);
     }
 
     @Override
     public List<UserLink> findUsersByPageAndPerPage(Integer page, Integer per_page) {
         List<UserLink> userLinks = new ArrayList<>();
-        for (User user : userMapper.findUsersByPage((page - 1) * per_page, per_page)) {
+        for (User user : userMapper.findUsersByPage(page - 1, per_page)) {
             userLinks.add(new UserLink(user, privilegeMapper.findPrivilegeByUserId(user.getUser_id())));
         }
         return userLinks;
+    }
+
+    @Override
+    public UserLink findUserLinkByUserId(Integer user_id) {
+        return new UserLink(userMapper.findUserByUserId(user_id),privilegeMapper.findPrivilegeByUserId(user_id));
     }
 
 }
