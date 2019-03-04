@@ -260,7 +260,13 @@
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [
-                                h('Button', {
+                                h("Tooltip", {
+                                    props: {
+                                        placement: "top",
+                                        theme:"light",
+                                        content: "修改"
+                                    }
+                                }, [h('Button', {
                                     props: {
                                         type: 'default',
                                         size: 'large',
@@ -281,8 +287,14 @@
                                             // color: "#e1a331"
                                         }
                                     }),
-                                ]),
-                                h('Button', {
+                                ])]),
+                                h("Tooltip", {
+                                    props: {
+                                        placement: "top",
+                                        theme:"light",
+                                        content: "删除"
+                                    }
+                                }, [h('Button', {
                                     props: {
                                         type: 'default',
                                         size: 'large',
@@ -293,12 +305,6 @@
                                         }
                                     }
                                 }, [
-                                    h('Poptip', {
-                                        props: {
-                                            trigger: "hover",
-                                            title: "Delete",
-                                        }
-                                    }),
                                     h('Icon', {
                                         props: {
                                             type: "md-trash",
@@ -306,7 +312,7 @@
                                             color: "#e1a331"
                                         }
                                     }),
-                                ])
+                                ])]),
                             ]);
                         }
                     }

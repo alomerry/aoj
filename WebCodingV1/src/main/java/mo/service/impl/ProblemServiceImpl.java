@@ -28,32 +28,36 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public List<Problem> findSimpleProblemsByDefunct(String defunct, Integer page, Integer per_page) {
-        return problemMapper.findSimpleProblemsByDefunctAndPage(defunct, page - 1, per_page);
+        return problemMapper.findSimpleProblemsByDefunctAndPage(defunct, (page - 1) * per_page, per_page);
     }
 
     @Override
     public List<Problem> findSimpleProblemsByDefunct(String defunct, Integer user_id, Integer page, Integer per_page) {
-        return problemMapper.findSimpleProblemsWithOwnByDefunctAndPage(defunct, user_id, page - 1, per_page);
+        return problemMapper.findSimpleProblemsWithOwnByDefunctAndPage(defunct, user_id, (page - 1) * per_page, per_page);
     }
 
     @Override
     public List<ProblemLink> findSimpleProblemLinksByDefunct(String defunct, Integer user_id, Integer page, Integer per_page) {
         User user = userMapper.findUserByUserId(user_id);
-        List<Problem> problems = problemMapper.findSimpleProblemsWithOwnByDefunctAndPage(defunct, user_id, page, per_page);
+        List<Problem> problems = problemMapper.findSimpleProblemsWithOwnByDefunctAndPage(defunct, user_id, (page - 1) * per_page, per_page);
         List<ProblemLink> problemLinks = new ArrayList<>(problems.size() + 3);
         for (Problem p : problems) {
-            problemLinks.add(new ProblemLink(p, user));
+            if (user.getUser_id().equals(p.getCreate_by())) {
+                problemLinks.add(new ProblemLink(p, user));
+            } else {
+                problemLinks.add(new ProblemLink(p, userMapper.findUserByUserId(p.getCreate_by())));
+            }
         }
         return problemLinks;
     }
 
     @Override
     public List<Problem> findProblemsByPageAndPerPage(String defunct, Integer page, Integer per_page) {
-        return problemMapper.findProblemsByDefunctAndPage(defunct, page - 1, per_page);
+        return problemMapper.findProblemsByDefunctAndPage(defunct, (page - 1) * per_page, per_page);
     }
 
     @Override
     public List<Problem> findProblemsByPageAndPerPage(String defunct, Integer user_id, Integer page, Integer per_page) {
-        return problemMapper.findProblemsWithOwnByDefunctAndPage(defunct, user_id, page - 1, per_page);
+        return problemMapper.findProblemsWithOwnByDefunctAndPage(defunct, user_id, (page - 1) * per_page, per_page);
     }
 }

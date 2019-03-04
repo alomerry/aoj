@@ -47,14 +47,14 @@ public interface UserMapper {
     /**
      * 按指定序列查询指定页数用户
      *
-     * @param start   起始数
-     * @param end     结束数
-     * @param orderBy 排序列
-     * @param type    升降序
+     * @param start    起始数
+     * @param per_page 每页数量
+     * @param orderBy  排序列
+     * @param type     升降序
      * @return 返回用户集
      */
-    @Select("select * from users order by ${orderBy} ${type} limit #{start},#{end}")
-    List<User> findUsersByPageAndOrderBy(@Param("start") int start, @Param("end") int end, @Param("orderBy") String orderBy, @Param("type") String type);
+    @Select("select * from users order by ${orderBy} ${type} limit #{start},#{per_page}")
+    List<User> findUsersByPageAndOrderBy(@Param("start") int start, @Param("per_page") int per_page, @Param("orderBy") String orderBy, @Param("type") String type);
 
     /**
      * 根据用户Id查找用户
@@ -96,12 +96,12 @@ public interface UserMapper {
     /**
      * 查询指定页数用户
      *
-     * @param page     起始
-     * @param per_page 结束
+     * @param start    起始
+     * @param per_page 每页数量
      * @return 用户集
      */
-    @Select("select * from users limit #{page},#{per_page}")
-    List<User> findUsersByPage(@Param("page") int page, @Param("per_page") int per_page);
+    @Select("select * from users limit #{start},#{per_page}")
+    List<User> findUsersByPage(@Param("start") int start, @Param("per_page") int per_page);
 
 }
 

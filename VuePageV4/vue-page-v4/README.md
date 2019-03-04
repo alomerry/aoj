@@ -33,6 +33,7 @@ iview
 echarts
 codemirror
 axios
+simditor
 ```
 
 #####by morizunzhu

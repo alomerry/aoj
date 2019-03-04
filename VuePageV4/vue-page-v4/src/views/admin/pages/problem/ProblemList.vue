@@ -8,6 +8,8 @@
                          clearable>
                     <Icon type="ios-search" slot="prefix"/>
                 </i-input>
+                <Button icon="md-refresh" style="float: right;margin-right: 20px"
+                        @click.native="getProblems"></Button>
                 <Button icon="ios-trash" type="warning" style="width: auto;float: right;margin-right: 15px" @click=""
                         v-show="deleteShowFlag">Delete
                 </Button>
@@ -32,6 +34,7 @@
     import debounce from "lodash/debounce"
     import Api from "../../components/api"
 
+    let _this;
     export default {
         name: "ProblemList",
         data() {
@@ -63,7 +66,7 @@
                         title: 'Author',
                         key: 'created_by.username',
                         render: (h, params) => {
-                            return h('span', {}, params.row.created_by.rightstr)
+                            return h('span', {}, params.row.created_by.username)
                         },
                     },
                     {
@@ -115,10 +118,10 @@
                         render: (h, params) => {
                             return h('Badge', {
                                 props: {
-                                    status: problem.defunct < 1 ? "default" : problem.defunct < 2 ? "success" : "error",
-                                    text: problem.defunct < 1 ? "disable" : problem.defunct < 2 ? "public" : "private",
+                                    status: params.row.problem.defunct < 1 ? "default" : params.row.problem.defunct < 2 ? "success" : "error",
+                                    text: params.row.problem.defunct < 1 ? "disable" : params.row.problem.defunct < 2 ? "public" : "private",
                                 }
-                            }, params.row.user.email)
+                            }, params.row.problem.defunct)
                         },
                     },
                     {
@@ -128,7 +131,13 @@
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [
-                                h('Button', {
+                                h("Tooltip", {
+                                    props: {
+                                        placement: "top",
+                                        theme: "light",
+                                        content: "修改"
+                                    }
+                                }, [h('Button', {
                                     props: {
                                         type: 'default',
                                         size: 'large',
@@ -138,9 +147,9 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.changeUserModalShowFlag = true;
+                                            this.$router.push({path: `/admin/problem/edit/${params.row.problem.problem_id}`});
                                         }
-                                    }
+                                    },
                                 }, [
                                     h('Icon', {
                                         props: {
@@ -149,8 +158,38 @@
                                             // color: "#e1a331"
                                         }
                                     }),
-                                ]),
-                                h('Button', {
+                                ])]),
+                                h("Tooltip", {
+                                    props: {
+                                        placement: "top",
+                                        theme: "light",
+                                        content: "下载"
+                                    }
+                                }, [h('Button', {
+                                    props: {
+                                        type: 'default',
+                                        size: 'large',
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {}
+                                }, [
+                                    h('Icon', {
+                                        props: {
+                                            type: "ios-download",
+                                            size: 17,
+                                            color: "#29d87c"
+                                        }
+                                    }),
+                                ])]),
+                                h("Tooltip", {
+                                    props: {
+                                        placement: "top",
+                                        theme: "light",
+                                        content: "删除"
+                                    }
+                                }, [h('Button', {
                                     props: {
                                         type: 'default',
                                         size: 'large',
@@ -161,12 +200,6 @@
                                         }
                                     }
                                 }, [
-                                    h('Poptip', {
-                                        props: {
-                                            trigger: "hover",
-                                            title: "Delete",
-                                        }
-                                    }),
                                     h('Icon', {
                                         props: {
                                             type: "md-trash",
@@ -174,7 +207,7 @@
                                             color: "#e1a331"
                                         }
                                     }),
-                                ])
+                                ])]),
                             ]);
                         }
                     }
@@ -183,7 +216,6 @@
                 selectData: [
                     {
                         created_by: {
-                            "email": "morizunzhu@163.com",
                             "nickname": "就当一次路过丶",
                             "school": "hyit",
                             "user_id": 10,
@@ -246,15 +278,21 @@
 
             getProblems: function () {
                 this.tableLoadingFlag = true;
+                console.log("刷新");
                 Api.getProblemsByPagePer_Page(this.page, this.per_page, this.$store.state.token).then(res => {
                     let result = res.data;
+                    console.log(res.data);
                     if (result.code === 200) {
                         this.datas = result.data.problems;
+                        this.selectData = this.datas;
+                    } else if (result.code === 401) {
+                        this.$Message.error("签名过期,请重新登录!");
                     }
+                    this.tableLoadingFlag = false;
                 }).catch(res => {
 
+                    this.tableLoadingFlag = false;
                 });
-                this.tableLoadingFlag = false;
             }
         },
         watch: {

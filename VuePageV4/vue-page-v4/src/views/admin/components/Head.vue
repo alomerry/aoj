@@ -5,7 +5,7 @@
                 <template slot="title" class="title">
                     <span v-text="user.username"></span>
                 </template>
-                <MenuItem name="3-1">登出</MenuItem>
+                <MenuItem name="3-1" @click.native="logout">登出</MenuItem>
             </Submenu>
         </Menu>
     </div>
@@ -18,6 +18,24 @@
             return {
                 user: this.$store.state.user == null ? {username: 'login'} : this.$store.state.user,
             }
+        },
+        methods: {
+            logout() {
+                //TODO 请求注销
+                this.$axios({
+                    url: '/api/api-oj/logout',
+                    method: 'post',
+                    data: 'user_id = ' + this.user.user_id,
+                }).then(res => {
+                    console.info('后台返回的数据', res.data);
+                    if (res.data.code === 200) {
+                        window.location.replace("/admin/login")
+                    } else {
+                    }
+                });
+                this.$store.dispatch('logout');
+                this.user = null;
+            },
         },
         created() {
         }
