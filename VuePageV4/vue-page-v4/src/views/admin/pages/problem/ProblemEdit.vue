@@ -1,16 +1,16 @@
 <template>
-    <div class="index">
-        simditor编辑器
-        <br>
-        <simditor
-                :options="options"
-                @change="change">
-        </simditor>
-    </div>
+    <Card>
+        <div class="index">
+            simditor编辑器
+            <br>
+            <!--<simditor :options="options" @change="change">
+            </simditor>-->
+        </div>
+    </Card>
 </template>
 
 <script>
-    import Simditor from '../../components/Simditor'
+    import Simditor from '../../components/simditor'
 
     export default {
         name: "ProblemEdit",
