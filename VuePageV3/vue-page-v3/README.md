@@ -27,11 +27,3 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
-
-### Depend on
-```
-iview
-echarts
-codemirror
-axios
-```

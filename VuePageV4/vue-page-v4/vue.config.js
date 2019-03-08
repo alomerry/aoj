@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 module.exports = {
     pages: {
         // 当使用只有入口的字符串格式时，
@@ -44,5 +45,13 @@ module.exports = {
             }
         },
     },
-
+    configureWebpack: {
+        plugins: [
+            new webpack.ProvidePlugin({
+                $:"jquery",
+                jQuery:"jquery",
+                "windows.jQuery":"jquery",
+            })
+        ]
+    },
 };

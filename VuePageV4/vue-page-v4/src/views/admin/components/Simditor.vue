@@ -4,7 +4,8 @@
 
 <script>
     export default {
-        name: "status"
+        name: "Simditor",
+
     }
 </script>
 
