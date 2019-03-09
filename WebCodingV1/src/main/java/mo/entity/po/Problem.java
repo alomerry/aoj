@@ -47,5 +47,7 @@ public class Problem {
     private Timestamp created_at;
     //创建者
     private Integer create_by;
+    //显示Id
+    private Integer display_id;
 
 }
