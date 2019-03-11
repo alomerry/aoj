@@ -1,6 +1,6 @@
 <template>
     <div id="app"><!--style="background-color: #edecec;height:900px;[htmlHeight,bgColor]"-->
-        <div v-if="!loginFlag" :style="htmlHeight">
+        <div v-if="!loginFlag" class="admin-container" :style="htmlHeight"><!-- :style="htmlHeight" -->
             <div style="height:100%;width: 240px;position: fixed!important;">
                 <MenuBar></MenuBar>
             </div>
@@ -26,7 +26,7 @@
         name: 'App',
         data() {
             return {
-                htmlHeight: "height:" + window.innerHeight + "px;background-color: #edecec;",
+                htmlHeight: "height:" + window.innerHeight + "px;",
                 loading: false,
                 loginFlag: window.location.href.indexOf("admin/login") !== -1,
             }
@@ -55,5 +55,9 @@
 
     ul {
         height: 100%;
+    }
+
+    .admin-container {
+        background-color: #edecec;
     }
 </style>
