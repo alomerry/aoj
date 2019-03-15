@@ -44,6 +44,29 @@ export default {
             headers: {
                 "jwt": jwt,
             }
-        })
+        });
+    },
+    /**
+     * 查询制定Id题目
+     * @param problem_id
+     * @returns {AxiosPromise}
+     */
+    findProblemByProblemId(problem_id) {
+        return axios({
+            url: '/api/api-oj/problem/' + problem_id,
+            method: 'get',
+        });
+    },
+
+    /**
+     * 根据题目Id查询标签集合
+     * @param problem_id
+     * @returns {AxiosPromise}
+     */
+    findTagsByProblemId(problem_id) {
+        return axios({
+            url: "/api/api-oj/tags/problem/" + problem_id,
+            method: "get",
+        });
     }
 }

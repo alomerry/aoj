@@ -162,6 +162,7 @@
 
     import 'codemirror/theme/darcula.css'
     import 'codemirror/theme/idea.css'
+    import API from "../../components/api"
 
     export default {
         name: "Problem",
@@ -233,14 +234,10 @@
         },
         methods: {
             loadingProblemDetail() {
-                var problem_id = this.$route.params.problem_id;
-                this.$axios({
-                    url: '/api/api-oj/problem/' + problem_id,
-                    method: 'get',
-                }).then(res => {
+                API.findProblemByProblemId(this.$route.params.problem_id).then(res => {
                     this.problem = res.data.data.result.problem;
                     this.author = res.data.data.result.created_by;
-                    var that = this;
+                    let that = this;
                     setTimeout(function () {
                         that.draw();
                     }, 1000);
@@ -253,7 +250,7 @@
             },
             draw() {
                 let ac = this.problem.accepted, wa = this.problem.submit - this.problem.accepted;
-                var myChart = echarts.init(document.getElementById('main'), 'macarons');// 绘制图表
+                let myChart = echarts.init(document.getElementById('main'), 'macarons');// 绘制图表
                 myChart.setOption({
                     title: {},
                     legend: {

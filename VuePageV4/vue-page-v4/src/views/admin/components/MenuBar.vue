@@ -22,7 +22,7 @@
                     Problems
                 </template>
                 <MenuItem name="3-1" to="/admin/problems">Problem List</MenuItem>
-                <MenuItem name="3-2">Create Problem</MenuItem>
+                <MenuItem name="3-2" to="/admin/problem/create">Create Problem</MenuItem>
                 <MenuItem name="3-3">Export Or Import</MenuItem>
             </Submenu>
             <Submenu name="4">

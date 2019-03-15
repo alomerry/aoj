@@ -58,4 +58,16 @@ export default {
         return problems;
     },
 
+    /**
+     * 查询制定Id题目
+     * @param problem_id
+     * @returns {AxiosPromise}
+     */
+    findProblemByProblemId(problem_id) {
+        return axios({
+            url: '/api/api-oj/problem/' + problem_id,
+            method: 'get',
+        });
+    }
+
 }

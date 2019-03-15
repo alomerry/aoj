@@ -1,12 +1,14 @@
 <template>
     <div class="bg">
         <Card style="margin: 15px">
+            <div slot="title" style="height: 40px;padding-top: 10px">
+                <span style="font-size: 19px;font-weight: 400;" v-text="method"></span>
+                <br><br>
+            </div>
             <Form :model="formProblem">
-                <div slot="title" style="height: 40px;padding-top: 10px">
-                    <span style="font-size: 25px;font-weight: 400;">Edit Problem</span>
-                    <br><br>
-                </div>
+
                 <div class="index">
+                    <!-- Title -->
                     <div class="problem-eidt problem-eidt-titles">
                         <div class="problem-info-item">
                             <Row>
@@ -33,6 +35,7 @@
                             </Row>
                         </div>
                     </div>
+                    <!-- Description -->
                     <div class="problem-eidt problem-eidt-discribe">
                         <div class="problem-info-item">
                             Description
@@ -44,7 +47,7 @@
                             </FormItem>
                         </div>
                     </div>
-
+                    <!-- Input Description -->
                     <div class="problem-eidt problem-eidt-discribe">
                         <div class="problem-info-item">
                             Input Description
@@ -68,36 +71,47 @@
                             </FormItem>
                         </div>
                     </div>
-                    <!-- Tag -->
-                    <div class="problem-eidt problem-eidt-info">
+                    <!-- Limits -->
+                    <div class="problem-eidt problem-eidt-discribe">
                         <div class="problem-info-item">
                             <Row>
-                                <Col span="10">
-                                    Tag
-                                </Col>
-                                <Col span="2" offset="1">
-                                    Visible
-                                </Col>
+                                <Col span="7">Time Limit (ms)</Col>
+                                <Col span="7" offset="1">Memory limit (MB)</Col>
                             </Row>
                         </div>
                         <div class="problem-info-item">
                             <Row>
                                 <FormItem>
-                                    <Col span="10">
-                                        <Tag type="dot" closable color="green">标签一</Tag>
-                                        <Tag type="dot" closable color="primary">标签二</Tag>
-                                        <Tag type="dot" closable color="green">标签三</Tag>
-                                        <Button icon="ios-add" type="dashed" size="small" @click="handleAdd">添加标签
-                                        </Button>
-                                        <!--<Input size="large" placeholder="large size"/>-->
+                                    <Col span="7">
+                                        <Input size="large" placeholder="large size" v-model="formProblem.time_limit"/>
+                                    </Col>
+                                    <Col span="7" offset="1">
+                                        <Input size="large" placeholder="large size" v-model="formProblem.memory_limit"/>
                                     </Col>
                                 </FormItem>
+                            </Row>
+                        </div>
+                    </div>
+                    <!-- Tag -->
+                    <div class="problem-eidt problem-eidt-info">
+                        <div class="problem-info-item">
+                            <Row>
                                 <FormItem>
-                                    <Col span="2" offset="1" style="margin-bottom: 15px;">
+                                    <Col style="margin-bottom: 15px;" span="3">
+                                        <span class="problem-info-item" style="margin-right: 10px">Visible</span>
                                         <i-switch size="default" v-model="formProblem.visible">
                                             <span slot="open">️</span>
                                             <span slot="close"></span>
                                         </i-switch>
+                                    </Col>
+                                    <Col span="10">
+                                        <span class="problem-info-item" style="margin-right: 10px">Tag</span>
+                                        <Tag type="dot" closable color="green" :key="item.tag_id"
+                                             v-for="item in formProblem.tags">
+                                            {{item.tagname}}
+                                        </Tag>
+                                        <Button icon="ios-add" type="dashed" size="small" @click="handleAdd">添加标签
+                                        </Button>
                                     </Col>
                                 </FormItem>
                             </Row>
@@ -149,23 +163,59 @@
 
 <script>
     import Simditor from '../../components/Simditor'
+    import Api from "../../components/api"
 
     export default {
         name: "ProblemEdit",
         data() {
             return {
+                method: null,//Edit模式/New模式
                 file_testCase: null,
                 loadingStatus: false,//上传状态
                 content: '',
                 formProblem: {
-                    display_id: 6,
-                    title: '小红洗苹果',
+                    display_id: "",
+                    title: '',
+                    description: "",
+                    input: "",
+                    output: "",
                     visible: false,
+                    hint: "",
+                    source: "",
+                    memory_limit:64,
+                    time_limit:1000,
+                    //tag info
+                    tags: null,
                 }
             }
         },
         components: {
             Simditor,
+        },
+        mounted() {
+            console.log("this.$route.params:" + this.$route.params.method);
+            switch (this.$route.params.method) {
+                case "edit": {
+                    //search,init formProblem's problem and tag
+                    this.method = "Edit Problem";
+                    Api.findProblemByProblemId(this.$route.params.problem_id).then(res => {
+                        let tags = [];
+                        Api.findTagsByProblemId(this.$route.params.problem_id).then(result => {
+                            tags = result.data.data.tags;
+                            this.initFormDataWithProblemAndTag(res.data.data.result.problem, tags);
+                        }).catch(error => {
+                            console.log(error);
+                        });
+                    }).catch(error => {
+                        console.log(error);
+                    });
+                    break;
+                }
+                case "create": {
+                    this.method = "Add Problem";
+                    break;
+                }
+            }
         },
         methods: {
             handleUpload(file) {
@@ -179,6 +229,24 @@
                     this.loadingStatus = false;
                     this.$Message.success('Success')
                 }, 1000);
+            },
+            initFormDataWithProblemAndTag(problem, tag) {
+                this.formProblem = {
+                    display_id: problem.display_id,
+                    title: problem.title,
+                    description: problem.description,
+                    input: problem.input,
+                    output: problem.output,
+                    visible: problem.defunct === "1",
+                    hint: problem.hint,
+                    source: problem.source,
+                    memory_limit:problem.memory_limit,
+                    time_limit:problem.time_limit,
+                    tags: tag,
+                }
+            },
+            handleAdd() {
+
             }
         }
     }

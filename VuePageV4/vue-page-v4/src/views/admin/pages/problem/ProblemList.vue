@@ -287,6 +287,7 @@
                         this.selectData = this.datas;
                     } else if (result.code === 401) {
                         this.$Message.error("签名过期,请重新登录!");
+                        window.location.replace("/admin/login");
                     }
                     this.tableLoadingFlag = false;
                 }).catch(res => {
