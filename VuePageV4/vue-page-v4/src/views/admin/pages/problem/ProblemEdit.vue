@@ -6,7 +6,7 @@
                 <br><br>
             </div>
             <Form :model="formProblem">
-
+                
                 <div class="index">
                     <!-- Title -->
                     <div class="problem-eidt problem-eidt-titles">
@@ -151,7 +151,9 @@
                             Source
                         </div>
                         <FormItem>
-                            <Input type="text" title=""/>
+                            <label>
+                                <Input type="text" title=""/>
+                            </label>
                         </FormItem>
                         <Button type="primary">Save</Button>
                     </div>
@@ -182,8 +184,8 @@
                     visible: false,
                     hint: "",
                     source: "",
-                    memory_limit:64,
-                    time_limit:1000,
+                    memory_limit: 64,
+                    time_limit: 1000,
                     //tag info
                     tags: null,
                 }
@@ -193,7 +195,7 @@
             Simditor,
         },
         mounted() {
-            console.log("this.$route.params:" + this.$route.params.method);
+            console.log("mounted:$route.params:" + this.$route.params.method);
             switch (this.$route.params.method) {
                 case "edit": {
                     //search,init formProblem's problem and tag
@@ -231,25 +233,55 @@
                 }, 1000);
             },
             initFormDataWithProblemAndTag(problem, tag) {
-                this.formProblem = {
-                    display_id: problem.display_id,
-                    title: problem.title,
-                    description: problem.description,
-                    input: problem.input,
-                    output: problem.output,
-                    visible: problem.defunct === "1",
-                    hint: problem.hint,
-                    source: problem.source,
-                    memory_limit:problem.memory_limit,
-                    time_limit:problem.time_limit,
-                    tags: tag,
+                if (problem == null) {
+                    this.formProblem = {
+                        display_id: "",
+                        title: '',
+                        description: "",
+                        input: "",
+                        output: "",
+                        visible: false,
+                        hint: "",
+                        source: "",
+                        memory_limit: 64,
+                        time_limit: 1000,
+                        tags: null,
+                    }
+                } else {
+                    this.formProblem = {
+                        display_id: problem.display_id,
+                        title: problem.title,
+                        description: problem.description,
+                        input: problem.input,
+                        output: problem.output,
+                        visible: problem.defunct === "1",
+                        hint: problem.hint,
+                        source: problem.source,
+                        memory_limit: problem.memory_limit,
+                        time_limit: problem.time_limit,
+                        tags: tag,
+                    }
                 }
             },
             handleAdd() {
 
             }
-        }
+        },
+        created() {
+        },
+        beforeRouteEnter(to, from, next) {
+            if (to.path === "/admin/problem/create") {
+                console.log("reload");
+                next(vm => {
+                    vm.method = "Add Problem";
+                    vm.initFormDataWithProblemAndTag(null, null);
+                });
+            } else {
+                next();
+            }
+        },
     }
+
 </script>
 
 <style scoped>
@@ -258,26 +290,26 @@
         margin-bottom: 5px;
         font-size: 17px;
     }
-
+    
     .problem-eidt {
         margin-bottom: 15px;
     }
-
+    
     .ivu-form-item {
         /*margin: 24px;*/
         padding: 6px 0 6px 0;
     }
-
+    
     .ivu-switch-checked {
         border-color: #19be6b;
         background-color: #19be6b;
     }
-
+    
     .ivu-switch {
         /*border: 1px solid rgb(255, 73, 73);
         background-color: rgb(255, 73, 73);*/
     }
-
+    
     .bg {
         background-color: #edecec;
     }

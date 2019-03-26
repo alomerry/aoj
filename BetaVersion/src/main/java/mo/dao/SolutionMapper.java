@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface SolutionMapper {
 
-    //TODO 插入结果表：添加到指定竞赛
+    //TOD 插入结果表：添加到指定竞赛
 
     /**
      * 插入结果表

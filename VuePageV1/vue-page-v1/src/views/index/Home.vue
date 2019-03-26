@@ -138,7 +138,6 @@
       }
     },
     created() {
-      //TODO
       this.refresh();
     }
   }

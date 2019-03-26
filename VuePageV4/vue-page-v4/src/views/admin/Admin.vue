@@ -7,7 +7,7 @@
             <Head></Head>
             <div style="margin-left: 240px">
                 <transition name="traAni"
-                            enter-active-class="animated fadeIn" appear>
+                            enter-active-class="animated fadeInUp" appear>
                     <router-view></router-view>
                 </transition>
             </div>

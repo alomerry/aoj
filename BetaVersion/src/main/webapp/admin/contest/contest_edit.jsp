@@ -65,7 +65,6 @@
     <div id="output">
         <div class="containerT">
             <jsp:include page="../../ico.jsp" flush="true"/>
-            <%--TODO 竞赛问题编辑--%>
             <div class="container">
                 <div class="widget-content nopadding">
                     <c:if test="${!empty msg}">

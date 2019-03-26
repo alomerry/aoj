@@ -72,7 +72,7 @@ public class AdminUserControllerImpl implements AdminUserController {
     @ResponseBody
     @RequestMapping(value = "/admin_user_doDel", method = RequestMethod.POST, headers = "Accept=application/json")
     public String userDoDel(@RequestBody Map<String, Object> data) {
-        //TODO 检查是否是管理员，如果是，提示需要先降级 测试
+        //TOD 检查是否是管理员，如果是，提示需要先降级 测试
         DIYMessage message = userService.delUser(Integer.valueOf((String) data.get("user_id")));
         return new JSONObject().put(res_type_key, message.getMessageType()).put(res_key, message.getObject()).toString();
     }

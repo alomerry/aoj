@@ -35,7 +35,7 @@ public class ContestProblemServiceImpl implements ContestProblemService {
         return problems;
     }
 
-    //TODO 禁止添加绝对私有的问题
+    //TOD 禁止添加绝对私有的问题
     @Override
     public DIYMessage addProblemToContestByContestIdAndProblemId(Integer contest_id, Integer problem_id) {
         logger.info("contestId[{}],problemId[{}]", contest_id, problem_id);

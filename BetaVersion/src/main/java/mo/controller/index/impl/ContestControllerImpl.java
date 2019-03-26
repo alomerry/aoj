@@ -74,7 +74,7 @@ public class ContestControllerImpl implements ContestController {
     }
 
 
-    //TODO 测试
+    //TOD 测试
     @Override
     @RequestMapping(value = "/own_competition_list")
     public String competitionList(@ModelAttribute(ONLINEJUDGE_SESSION_UER) User user, Integer contest_id, ModelMap map) {
@@ -87,7 +87,7 @@ public class ContestControllerImpl implements ContestController {
         }
     }
 
-    //TODO 测试
+    //TOD 测试
     @Override
     @RequestMapping(value = "/own_competition_check", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
@@ -100,7 +100,7 @@ public class ContestControllerImpl implements ContestController {
         }
     }
 
-    //TODO 手机测试修改时间测试安全性
+    //TOD 手机测试修改时间测试安全性
 
     /**
      * 检查比赛信息正确性
@@ -114,7 +114,7 @@ public class ContestControllerImpl implements ContestController {
      * 2:未加入比赛
      * 3:请联系管理员确认
      */
-    //TODO 检查时间 检查权限(已加入比赛) 检查登录
+    //TOD 检查时间 检查权限(已加入比赛) 检查登录
     private Object checkCompetitionAccess(User user, Integer contest_id) {
         //检查比赛有效性
         ContestApplyLink contestApplyLink = contestApplyService.findContestApplyLink(contest_id, user.getUser_id());

@@ -84,7 +84,7 @@ function selectAll(obj) {
     }
 }
 
-//TODO 判断多选
+// 判断多选
 /**
  * 单选
  * @param obj

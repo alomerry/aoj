@@ -56,6 +56,14 @@ const routes = [
         component: resolve => require(['../pages/problem/ProblemEdit'], resolve),
     },
     {
+        path: "/admin/contest/:method",
+        name: 'ContestEdit',
+        meta: {
+            title: 'Online Judge'
+        },
+        component: resolve => require(['../pages/contest/ContestEdit'], resolve),
+    },
+    {
         path: "/admin/",
         redirect: '/admin/home'
     },
@@ -78,6 +86,7 @@ router.beforeEach((to, from, next) => {
     if (to.meta.title) {
         document.title = to.meta.title;
     }
+    // console.log("访问路径" + to.path);
     next();
 });
 router.afterEach(route => {

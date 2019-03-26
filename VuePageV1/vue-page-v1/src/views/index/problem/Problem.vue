@@ -195,7 +195,6 @@
     },
     computed: {
       loginStatus() {
-        //TODO 服务器token验证 有效、时效
         return this.$store.state.user == null;
       }
     },

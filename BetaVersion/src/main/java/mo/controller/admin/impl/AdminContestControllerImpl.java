@@ -113,7 +113,7 @@ public class AdminContestControllerImpl implements AdminContestController {
     @ResponseBody
     @RequestMapping(value = "/admin_problem_addToContest", method = RequestMethod.POST, headers = "Accept=application/json")
     public String addProblemsToContest(@RequestBody Map<String, Object> data) {
-        //TODO 检测该问题是不是已经在比赛中
+        //TOD检测该问题是不是已经在比赛中
         DIYMessage message = contestProblemService.addProblemToContestByContestIdAndProblemId(Integer.valueOf(data.get("contest_id").toString()), Integer.valueOf(data.get("problem_id").toString()));
         return new JSONObject().put(res_type_key, message.getMessageType()).put(res_key, (String) message.getObject()).toString();
     }

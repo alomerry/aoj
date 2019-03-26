@@ -70,7 +70,7 @@ public class AdminProblemControllerImpl implements AdminProblemController {
     @ResponseBody
     @RequestMapping(value = "/admin_problem_dodel", method = RequestMethod.POST, headers = "Accept=application/json")
     public String problemDoDelete(@RequestBody Map<String, Object> data) {
-        //TODO 删除权限检查 测试权限不够 删除失败
+        //TOD 删除权限检查 测试权限不够 删除失败
         DIYMessage res = problemService.delProblemByProblemId(Integer.valueOf((String) data.get("problem_id")));
         return new JSONObject().put(res_type_key, res.getMessageType()).put(res_key, "" + res.getObject()).toString();
     }

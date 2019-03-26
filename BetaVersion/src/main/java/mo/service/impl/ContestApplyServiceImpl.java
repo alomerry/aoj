@@ -104,7 +104,7 @@ public class ContestApplyServiceImpl implements ContestApplyService {
             return findApplicationFromContest(user_id, page, pageNum, type, sort, flag);
         }
     }
-    //TODO 重载，添加或删除"多"个人的申请信息
+    //TOD 重载，添加或删除"多"个人的申请信息
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -126,7 +126,7 @@ public class ContestApplyServiceImpl implements ContestApplyService {
             logger.info("确认用户Id[{}]申请加入比赛Id[{}]失败！", user_id, contest_id);
             return new DIYMessage(applyFailed, "操作失败！请勿重复确认申请");
         } else if (contestApplyMapper.updateContestApplyByUserIdAndContestId(user_id, contest_id) > 0) {//确认申请成功，修改参赛人数
-            //TODO 人数加一
+            //TOD 人数加一
             contestMapper.updateContestNowIncreaseFromContestByContestId(contest_id, 1);
             logger.info("确认用户Id[{}]申请加入比赛Id[{}]成功！", user_id, contest_id);
             return new DIYMessage(applySuccess, "操作成功！");

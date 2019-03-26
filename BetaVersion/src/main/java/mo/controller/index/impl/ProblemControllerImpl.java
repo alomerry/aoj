@@ -38,7 +38,7 @@ public class ProblemControllerImpl implements ProblemController {
     @Override
     @RequestMapping("/problem_detail")
     public String problemDetail(Integer problem_id, ModelMap modelMap, @ModelAttribute(ONLINEJUDGE_SESSION_UER) User user) {
-        // TODO 检查问题是否公开  测试
+        // TOD 检查问题是否公开  测试
         if (!problemService.checkProblemIsPublic(problem_id, user.getUser_id())) {
             return "404";
         }
@@ -50,7 +50,7 @@ public class ProblemControllerImpl implements ProblemController {
     @Override
     @RequestMapping("/problem_submit")
     public String problemSubmit(Integer problem_id, ModelMap modelMap) {
-        //TODO 比赛截止的题目只能阅读无法提交
+        //TOD 比赛截止的题目只能阅读无法提交
         logger.info("problem_submit: problem_id =[{}] ", problem_id);
         modelMap.addAttribute("problem", problemService.findProblemByProblemId(problem_id));
         return "index/problems/problem_submit";

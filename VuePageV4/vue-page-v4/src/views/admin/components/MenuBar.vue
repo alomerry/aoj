@@ -31,7 +31,7 @@
                     Contest
                 </template>
                 <MenuItem name="4-1">Contest List</MenuItem>
-                <MenuItem name="4-2">Create Contest</MenuItem>
+                <MenuItem name="4-2" to="/admin/contest/create">Create Contest</MenuItem>
             </Submenu>
         </Menu>
 

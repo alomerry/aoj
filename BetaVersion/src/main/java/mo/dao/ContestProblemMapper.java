@@ -36,7 +36,7 @@ public interface ContestProblemMapper {
     @Insert("insert into contest_problem (contest_id,problem_id,num,title) values(#{contest_id},#{problem_id},#{num},#{title})")
     int insertContestProblemByContestIdAndProblemId(@Param("contest_id") Integer contest_id, @Param("problem_id") Integer problem_id, @Param("num") int num, @Param("title") String title);
 
-    //TODO 删除时修改最大序列
+    //TOD 删除时修改最大序列
 
     /**
      * 查询指定比赛当前最大的比赛序列

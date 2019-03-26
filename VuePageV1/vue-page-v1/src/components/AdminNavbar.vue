@@ -172,7 +172,6 @@
        * 注销请求
        */
       logout() {
-        //TODO 请求注销
         this.$axios({
           url: '/api/api-oj/logout',
           method: 'post',
