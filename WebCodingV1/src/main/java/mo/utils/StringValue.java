@@ -50,8 +50,8 @@ public final class StringValue {
     //管理员权限判断
     /*public static final String Authority_manager = "Authority_manager";//权限管理者 b
     public static final String Topic_adder = "Topic_adder";//题目添加者 c
-    public static final String Match_organizer = "Match_organizer";//比赛组织者 f
-    public static final String Match_participant = "Match_participant";//比赛参加者 g
+    public static final String Contest_organizer = "Contest_organizer";//比赛组织者 f
+    public static final String Contest_participant = "Contest_participant";//比赛参加者 g
     public static final String Code_viewer = "Code_viewer";//代码查看者 h
     public static final String Manual_judger = "Manual_judger";//远程判题者 j
     public static final String Remote_judger = "Remote_judger";//公告管理者 k

@@ -1,8 +1,13 @@
 package mo.service.impl;
 
+import mo.core.Permission;
+import mo.core.PermissionManager;
 import mo.dao.ContestMapper;
 import mo.entity.po.Contest;
+import mo.exception.ServiceException;
 import mo.service.ContestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -10,6 +15,8 @@ import java.util.List;
 
 @Service
 public class ContestServiceImpl implements ContestService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ContestServiceImpl.class);
 
     @Resource
     private ContestMapper contestMapper;
@@ -26,7 +33,17 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public List<Contest> findContestsByPageFromAdminPrivilege(Integer page, Integer per_page, String rightstr, Integer userId) {
-        return null;
+        if (PermissionManager.isAdmin(rightstr)) {
+            logger.info("用户权限不足，查询失败");
+            throw new ServiceException();
+        }
+
+        Permission[] contestLevel = {Permission.Contest_organizer};
+        if (PermissionManager.isOneLegalAdmin(contestLevel, rightstr)) {
+            return contestMapper.findContestByPageAndPerPage((page - 1) * per_page, per_page);
+        } else {
+            return contestMapper.findContestByPageAndDefunctWithOwnContest((page - 1) * per_page, per_page, "(0)", userId);
+        }
     }
 
     /**

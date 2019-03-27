@@ -31,7 +31,7 @@ public interface ContestMapper {
     List<Contest> findContestsByPageAndDefunct(@Param("start") Integer start, @Param("per_page") Integer per_page, @Param("privates") String privates);
 
     /**
-     * 根据公开级别比赛集
+     * 根据公开级别查询比赛集（包含创建比赛者）
      *
      * @param start    起始
      * @param per_page 每页数量
