@@ -28,6 +28,25 @@ export default {
     },
 
     /**
+     * 根据页码查询竞赛集
+     * @param page
+     * @param per_page
+     * @param jwt
+     */
+    getContestsByPagePer_PageAndCreator(page, per_page, jwt) {
+        let params = new URLSearchParams();
+        params.append("page", page);
+        params.append("per_page", per_page);
+        return axios({
+            url: "/api/api-oj/admin/contests",
+            method: 'get',
+            data: params,
+            headers: {
+                "jwt": jwt,
+            }
+        });
+    },
+    /**
      * 查询题目
      * @param page 页码
      * @param per_page 每页数量

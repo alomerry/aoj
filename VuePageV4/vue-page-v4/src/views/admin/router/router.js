@@ -64,6 +64,14 @@ const routes = [
         component: resolve => require(['../pages/contest/ContestEdit'], resolve),
     },
     {
+        path: "/admin/contests",
+        name: 'ContestList',
+        meta: {
+            title: 'Online Judge'
+        },
+        component: resolve => require(['../pages/contest/ContestList'], resolve),
+    },
+    {
         path: "/admin/",
         redirect: '/admin/home'
     },

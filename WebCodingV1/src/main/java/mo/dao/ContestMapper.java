@@ -5,7 +5,43 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
+
 @Mapper
 public interface ContestMapper {
 
+    /**
+     * 根据页码查询比赛集
+     *
+     * @param start    起始
+     * @param per_page 每页数量
+     * @return 比赛集
+     */
+    @Select("select * from contest limit #{start},#{per_page}")
+    List<Contest> findContestByPageAndPerPage(@Param("start") Integer start, @Param("per_page") Integer per_page);
+
+    /**
+     * 根据公开级别查询比赛集
+     *
+     * @param start    起始页
+     * @param per_page 每页数量
+     * @param privates 公开级别
+     * @return 比赛集
+     */
+    @Select("select * from contest where privates in #{privates}")
+    List<Contest> findContestsByPageAndDefunct(@Param("start") Integer start, @Param("per_page") Integer per_page, @Param("privates") String privates);
+
+    /**
+     * 根据公开级别比赛集
+     *
+     * @param start    起始
+     * @param per_page 每页数量
+     * @param privates 公开级别
+     * @param userId   创建者Id
+     * @return 比赛集
+     */
+    @Select("select * from contest where user_id = #{user_id} and privates in #{privates} limit #{start},#{per_page}")
+    List<Contest> findContestByPageAndDefunctWithOwnContest(@Param("start") Integer start,
+                                                            @Param("per_page") Integer per_page,
+                                                            @Param("privates") String privates,
+                                                            @Param("user_id") Integer userId);
 }
