@@ -1,3 +1,4 @@
+import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.*;
 import mo.entity.po.Privilege;
 import mo.entity.po.User;
@@ -95,5 +96,13 @@ public class TestMain {
 
     private static Jws<Claims> parser(String jws, int i) throws ExpiredJwtException {
         return Jwts.parser().setSigningKey("morizunzhu").parseClaimsJws(jws);
+    }
+
+    @Test
+    public void test06() {
+        String test = "666";
+        JSONObject json = new JSONObject();
+        json.put("name", test);
+        System.out.println(json);
     }
 }

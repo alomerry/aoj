@@ -103,5 +103,13 @@ public interface UserMapper {
     @Select("select * from users limit #{start},#{per_page}")
     List<User> findUsersByPage(@Param("start") int start, @Param("per_page") int per_page);
 
+    /**
+     * 根据用户Id查询用户的用户名昵称
+     *
+     * @param user_id 用户Id
+     * @return 用户实体
+     */
+    @Select("select user_id,username,nickname from users where user_id = #{user_id}")
+    User findUserIdUserNameUserNickNameByUserId(@Param("user_id") Integer user_id);
 }
 

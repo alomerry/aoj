@@ -68,4 +68,21 @@ public interface ProblemService {
      * @return 题目集
      */
     List<Problem> findProblemsByPageAndPerPage(String defunct, Integer user_id, Integer page, Integer per_page);
+
+    /**
+     * 查询指定比赛的题目集
+     *
+     * @param page       页码
+     * @param per_page   每页数量
+     * @param contest_id 竞赛Id
+     * @return 题目集
+     */
+    List<ProblemLink> findSimpleProblemsByPageAndContestId(Integer page, Integer per_page, Integer contest_id);
+
+    /**
+     * 判断指定题目的公开级别
+     * @param problemId 题目Id
+     * @return
+     */
+    boolean isAbsolutePrivateProblem(Integer problemId);
 }

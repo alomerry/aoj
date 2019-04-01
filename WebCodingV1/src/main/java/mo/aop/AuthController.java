@@ -47,7 +47,8 @@ public class AuthController {
         if (method.isAnnotationPresent(AuthCheck.class)) {
             acer = method.getAnnotation(AuthCheck.class);
             Result res = checkAuth(acer);
-            logger.info("result[{}]", res);
+
+            logger.info("result[{}]", res == null ? "验证成功" : "验证失败");
 
             if (res != null) {
                 return res;
@@ -126,6 +127,11 @@ public class AuthController {
                     } catch (UnsupportedJwtException | MalformedJwtException | SignatureException e) {
                         //签名算法不支持//失去载体//jwt签名不匹配
                         logger.warn("签名认证失败,错误原因可能为:签名算法不支持,失去载体,签名不匹配");
+                        e.printStackTrace();
+                        result = new Result();
+                        result.setCode(ResultCode.FORBIDDEN).setMessage("签名认证失败,签名不匹配");
+                        return result;
+                    }catch (IllegalArgumentException e){
                         e.printStackTrace();
                         result = new Result();
                         result.setCode(ResultCode.FORBIDDEN).setMessage("签名认证失败,签名不匹配");

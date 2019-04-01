@@ -7,7 +7,9 @@ import mo.core.PermissionManager;
 import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.Privilege;
+import mo.entity.po.Problem;
 import mo.entity.po.User;
+import mo.entity.vo.ProblemLink;
 import mo.entity.vo.UserLink;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
@@ -21,6 +23,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 import static mo.utils.StringValue.ONLINEJUDGE_SESSION_GROUP;
@@ -57,6 +60,29 @@ public class AdminProblemControllerImpl implements AdminProblemController {
             }
             case "detail": {
                 problems.put("problems", problemService.findProblemsByPageAndPerPage(defunct, userLink.getUser().getUser_id(), Integer.valueOf(page), Integer.valueOf(per_page)));
+                break;
+            }
+        }
+        return new Result().setCode(ResultCode.OK).setData(problems);
+    }
+
+    @Override
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/contest/{contest_id}/problems", method = RequestMethod.GET)
+    public Result problems(@RequestParam(value = "resType", defaultValue = "simple") String resType,
+                           @RequestParam(value = "page", defaultValue = "1") String page,
+                           @RequestParam(value = "per_page", defaultValue = "10") String per_page,
+                           @PathVariable Integer contest_id) {
+        JSONObject problems = new JSONObject();
+        List<ProblemLink> list;
+        switch (resType) {
+            case "simple": {
+                list = problemService.findSimpleProblemsByPageAndContestId(Integer.valueOf(page), Integer.valueOf(per_page), contest_id);
+                problems.put("problems", list);
+                break;
+            }
+            case "detail": {
                 break;
             }
         }

@@ -64,7 +64,7 @@ public final class JWTUtils {
      * @throws MalformedJwtException 失去载体
      * @throws SignatureException    签名不一致
      */
-    public static Jws<Claims> parser(String jws) throws ExpiredJwtException, MalformedJwtException, SignatureException {
+    public static Jws<Claims> parser(String jws) throws ExpiredJwtException, MalformedJwtException, SignatureException, IllegalArgumentException {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jws);
     }
 
@@ -74,8 +74,14 @@ public final class JWTUtils {
      * @param jws 签名
      * @return 返回签发是否合法
      */
-    public static boolean checkLegal(String jws) throws ExpiredJwtException, MalformedJwtException, SignatureException {
-        Jws<Claims> jwt = parser(jws);
+    public static boolean checkLegal(String jws) throws ExpiredJwtException, MalformedJwtException, SignatureException, IllegalArgumentException {
+        Jws<Claims> jwt = null;
+        try {
+            jwt = parser(jws);
+        } catch (IllegalArgumentException exception) {
+            exception.printStackTrace();
+            throw new IllegalArgumentException();
+        }
         String alg = jwt.getHeader().getAlgorithm();
         String JWS = Jwts.builder().setHeader((Map<String, Object>) jwt.getHeader()).setClaims(jwt.getBody()).signWith(SignatureAlgorithm.forName(alg), secretKey).compact();
         logger.info("\nold:[{}]\nnew:[{}]", jws, JWS);

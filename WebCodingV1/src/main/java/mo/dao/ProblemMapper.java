@@ -19,7 +19,7 @@ public interface ProblemMapper {
      * @param per_page 每页数量
      * @return 题目集
      */
-    @Select("select problem_id,submit,defunct,accepted,title from problems where defunct in ${defunct} limit #{start},#{per_page}")
+    @Select("select problem_id,submit,defunct,accepted,created_at,create_by,title,display_id from problems where defunct in ${defunct} limit #{start},#{per_page}")
     List<Problem> findSimpleProblemsByDefunctAndPage(@Param("defunct") String defunct, @Param("start") int start, @Param("per_page") int per_page);
 
     /**
@@ -30,7 +30,7 @@ public interface ProblemMapper {
      * @param per_page 每页数量
      * @return 题目集
      */
-    @Select("select problem_id,defunct,created_at,create_by,title from problems where defunct in ${defunct} or create_by = #{create_by} limit #{start},#{per_page}")
+    @Select("select problem_id,submit,defunct,accepted,created_at,create_by,title,display_id from problems where defunct in ${defunct} or create_by = #{create_by} limit #{start},#{per_page}")
     List<Problem> findSimpleProblemsWithOwnByDefunctAndPage(@Param("defunct") String defunct, @Param("create_by") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
 
     /**
@@ -64,5 +64,13 @@ public interface ProblemMapper {
      */
     @Select("select * from problems where defunct in ${defunct} or create_by = #{create_by} limit #{start},#{per_page}")
     List<Problem> findProblemsWithOwnByDefunctAndPage(@Param("defunct") String defunct, @Param("create_by") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
+
+    /**
+     * 查询指定题目的公开级别
+     * @param problem_id 题目Id
+     * @return 公开级别
+     */
+    @Select("select defunct from problems where problem_id = #{problem_id}")
+    Character findProblemPublicLevelByProblemId(@Param("problem_id") Integer problem_id);
 
 }

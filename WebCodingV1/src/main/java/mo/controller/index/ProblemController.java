@@ -27,7 +27,9 @@ public interface ProblemController {
     /**
      * 查询题目
      *
+     * @param page     当前页码
+     * @param per_page 每页数量
      * @return 第一页题目
      */
-    Result problems();
+    Result problems(String page, String per_page);
 }

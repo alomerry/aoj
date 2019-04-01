@@ -9,15 +9,13 @@
                     <Icon type="ios-search" slot="prefix"/>
                 </i-input>
                 <Button icon="md-refresh" style="float: right;margin-right: 20px"
-                        @click.native="getProblems"></Button>
-                <Button icon="ios-trash" type="warning" style="width: auto;float: right;margin-right: 15px"
-                        @click=""
-                        v-show="deleteShowFlag">Delete
-                </Button>
+                        @click.native="getContests"></Button>
                 <br><br>
             </div>
-            <Table border ref="selection" :columns="columns" :data="selectData" :loading="tableLoadingFlag"
-                   @on-selection-change="selectionChange"></Table>
+            <Table ref="selection"
+                   :columns="columns"
+                   :data="selectData"
+                   :loading="tableLoadingFlag"></Table>
             <br>
             <Page :current="page" :page-size="per_page" size="small" style="float: right"/>
             <br>
@@ -33,7 +31,9 @@
 <script>
     import debounce from "lodash/debounce"
     import Api from "../../components/api"
-    
+
+    let _this;
+
     export default {
         name: "ContestList",
         data() {
@@ -46,124 +46,222 @@
                         type: 'expand',
                         width: 60,
                         align: 'center',
+                        render: (h, params) => {
+                            return h("div", {}, [
+                                h("p", {}, "已参赛：" + params.row.contest.now + "人"),
+                                h("p", {}, "可参赛：" + (params.row.contest.max - params.row.contest.now) + "人"),
+                                h("p", {}, "组织者：" + params.row.contest.organizer),
+                                h("p", {}, "开始时间：" + _this.LongFormatToDateString(params.row.contest.start_at)),
+                                h("p", {}, "结束时间：" + _this.LongFormatToDateString(params.row.contest.end_at)),
+                            ])
+                        }
                     },
                     {
                         title: 'ContestId',
-                        key: 'problem.problem_id',
+                        key: 'contest.contest_id',
                         render: (h, params) => {
-                            return h('span', {}, params.row.problem.problem_id)
+                            return h('span', {}, params.row.contest.contest_id)
                         },
+                    },
+                    {
+                        title: 'Author',
+                        key: 'created_by.username',
+                        render: (h, params) => {
+                            return h('span', {}, params.row.created_by.username);
+                        }
                     },
                     {
                         title: 'Title',
-                        key: 'problem.title',
+                        key: 'contest.title',
                         render: (h, params) => {
-                            return h('span', {}, params.row.problem.title)
+                            return h('span', {}, params.row.contest.title)
                         },
                     },
                     {
+                        //状态：可报名(access=1),待开始(access=0),
+                        //     进行中(access=0,startTime<=nowTime<=endTime)
+                        //     已结束(access=0,nowTime>endTime)
                         title: 'Status',
-                        key: 'created_by.username',
+                        key: 'contest.access',
+                        width: 200,
                         render: (h, params) => {
-                            return h('span', {}, params.row.created_by.username)
+                            return h('Badge', {
+                                props: {
+                                    type: params.row.contest.access === 1 ? "primary" :
+                                        (params.row.contest.start_at <= this.nowTime) && (this.nowTime <= params.row.contest.end_at) ? "success" :
+                                            (this.nowTime > params.row.contest.end_at) ? "error" : "warning",
+                                    text: params.row.contest.access === 1 ? "可报名" :
+                                        (params.row.contest.start_at <= this.nowTime) && (this.nowTime <= params.row.contest.end_at) ? "进行中" :
+                                            (this.nowTime > params.row.contest.end_at) ? "已结束" : "待开始",
+                                    offset: [10, -15]
+                                }
+                            }, null)
                         },
                     },
                     {
                         title: 'Defunct',
-                        key: 'problem.defunct',
+                        width: 200,
+                        key: 'contest.privates',//0=隐私，1=公开
                         render: (h, params) => {
                             return h('Badge', {
+                                style: {
+                                    fontSize: '24px',
+                                },
                                 props: {
-                                    status: params.row.problem.defunct < 1 ? "default" : params.row.problem.defunct < 2 ? "success" : "error",
-                                    text: params.row.problem.defunct < 1 ? "disable" : params.row.problem.defunct < 2 ? "public" : "private",
+                                    type: params.row.contest.privates > 0 ? "success" : "warning",
+                                    text: params.row.contest.privates > 0 ? "public" : "private",
+                                    offset: [10, -15]
                                 }
-                            }, params.row.problem.defunct)
+                            }, null)
                         },
                     },
                     {
                         title: 'Option',
                         key: 'option',
-                        width: 250,
+                        // width: 250,
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [
+                                h("Tooltip",
+                                    {
+                                        props: {
+                                            placement: "top",
+                                            theme: "light",
+                                            content: "修改"
+                                        }
+                                    },
+                                    [
+                                        h('Button',
+                                            {
+                                                props: {
+                                                    type: 'default',
+                                                    size: 'large',
+                                                },
+                                                style: {
+                                                    marginRight: '5px'
+                                                },
+                                                on: {
+                                                    click: () => {
+                                                        // this.$router.push({path: `/admin/problem/edit/${params.row.problem.problem_id}`});
+                                                    }
+                                                },
+                                            },
+                                            [
+                                                h('Icon',
+                                                    {
+                                                        props: {
+                                                            type: "ios-create",
+                                                            size: 17,
+                                                            // color: "#e1a331"
+                                                        }
+                                                    }
+                                                )
+                                            ]
+                                        )
+                                    ]
+                                ),
+                                h("Tooltip",
+                                    {
+                                        props: {
+                                            placement: "top",
+                                            theme: "light",
+                                            content: "题目"
+                                        }
+                                    },
+                                    [
+                                        h('Button',
+                                            {
+                                                props: {
+                                                    type: 'default',
+                                                    size: 'large',
+                                                    to: '/admin/contest/' + params.row.contest.contest_id + '/problems',
+                                                },
+                                                style: {
+                                                    marginRight: '5px'
+                                                },
+                                                on: {
+                                                    click: () => {
+                                                        // this.remove(params.index)
+                                                    }
+                                                }
+                                            },
+                                            [
+                                                h('Icon',
+                                                    {
+                                                        props: {
+                                                            type: "ios-grid",
+                                                            size: 17,
+                                                            color: "#00e1d4"
+                                                        }
+                                                    }
+                                                ),
+                                            ]
+                                        )
+                                    ]
+                                ),
+                                h("Tooltip",
+                                    {
+                                        props: {
+                                            placement: "top",
+                                            theme: "light",
+                                            content: "公告"
+                                        }
+                                    },
+                                    [
+                                        h('Button',
+                                            {
+                                                props: {
+                                                    type: 'default',
+                                                    size: 'large',
+                                                },
+                                                style: {
+                                                    marginRight: '5px'
+                                                },
+                                                on: {
+                                                    click: () => {
+                                                        // this.remove(params.index)
+                                                    }
+                                                }
+                                            },
+                                            [
+                                                h('Icon',
+                                                    {
+                                                        props: {
+                                                            type: "md-information-circle",
+                                                            size: 17,
+                                                            color: "#e1a331"
+                                                        }
+                                                    }
+                                                ),
+                                            ]
+                                        )
+                                    ]),
                                 h("Tooltip", {
                                     props: {
                                         placement: "top",
                                         theme: "light",
-                                        content: "修改"
-                                    }
-                                }, [h('Button', {
-                                    props: {
-                                        type: 'default',
-                                        size: 'large',
-                                    },
-                                    style: {
-                                        marginRight: '5px'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.$router.push({path: `/admin/problem/edit/${params.row.problem.problem_id}`});
-                                        }
-                                    },
-                                }, [
-                                    h('Icon', {
-                                        props: {
-                                            type: "ios-create",
-                                            size: 17,
-                                            // color: "#e1a331"
-                                        }
-                                    }),
-                                ])]),
-                                h("Tooltip", {
-                                    props: {
-                                        placement: "top",
-                                        theme: "light",
-                                        content: "下载"
-                                    }
-                                }, [h('Button', {
-                                    props: {
-                                        type: 'default',
-                                        size: 'large',
-                                    },
-                                    style: {
-                                        marginRight: '5px'
-                                    },
-                                    on: {}
-                                }, [
-                                    h('Icon', {
-                                        props: {
-                                            type: "ios-download",
-                                            size: 17,
-                                            color: "#29d87c"
-                                        }
-                                    }),
-                                ])]),
-                                h("Tooltip", {
-                                    props: {
-                                        placement: "top",
-                                        theme: "light",
-                                        content: "删除"
-                                    }
-                                }, [h('Button', {
-                                    props: {
-                                        type: 'default',
-                                        size: 'large',
-                                    },
-                                    on: {
-                                        click: () => {
-                                            // this.remove(params.index)
-                                        }
+                                        content: "下载提交"
                                     }
                                 }, [
-                                    h('Icon', {
+                                    h('Button', {
                                         props: {
-                                            type: "md-trash",
-                                            size: 17,
-                                            color: "#e1a331"
-                                        }
-                                    }),
-                                ])]),
+                                            type: 'default',
+                                            size: 'large',
+                                        },
+                                        style: {
+                                            marginRight: '5px'
+                                        },
+                                        on: {}
+                                    }, [
+                                        h('Icon', {
+                                            props: {
+                                                type: "ios-download",
+                                                size: 17,
+                                                color: "#29d87c"
+                                            }
+                                        }),
+                                    ])
+                                ]),
                             ]);
                         }
                     }
@@ -171,40 +269,49 @@
                 datas: [],
                 selectData: [
                     {
-                        created_by: {
-                            "nickname": "就当一次路过丶",
-                            "school": "hyit",
-                            "user_id": 10,
-                            "username": "morizunzhu"
+                        "contest": {
+                            "access": false,
+                            "contest_id": 1,
+                            "describes": "Codeforces是一家为计算机编程爱好者提供在线评测系统的俄罗斯网站。该网站由萨拉托夫国立大学的\r\n一个团体创立并负责运营。参赛范围：各大学本科生",
+                            "end_at": 1569918812000,
+                            "max": 40,
+                            "now": 2,
+                            "organizer": "Codeforces",
+                            "privates": 1,
+                            "start_at": 1548428366000,
+                            "title": "Codeforces Round #534 (Div. 1)",
+                            "user_id": 12
                         },
-                        problem: {
-                            "create_by": 10,
-                            "created_at": 1517101561000,
-                            "problem_id": 2,
-                            "title": "A+B",
-                            "defunct": "1"
-                        }
+                        "created_by": {
+                            "nickname": "admin",
+                            "user_id": 12,
+                            "username": "admin"
+                        },
                     },
                 ],
                 nowTime: "2016-10-03 07:08:16",
+                timer: null,
                 page: 1,
                 per_page: 10,
             }
         },
         created: function () {
             _this = this;
-            this.getProblems();
+            this.getContests();
             this.selectData = this.datas;//表格数据
             this.debouncedsearchData = debounce(this.searchData, 500, null);//延时加载
         },
         mounted() {
-            this.nowTime = (new Date()).getTime();//当前时间
+            this.timer = setInterval(() => {
+                _this.nowTime = (new Date()).getTime(); // 修改数据date当前时间
+            }, 1000);
+        },
+        beforeDestroy() {
+            if (this.timer) {
+                clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+            }
         },
         methods: {
-            //显示删除按钮
-            selectionChange(selection) {
-                this.deleteShowFlag = selection.length > 0;
-            },
             //搜索查询表格
             searchData: function () {
                 console.log("开始查询:" + this.searchKeyWord);
@@ -227,19 +334,41 @@
                 //2018-08-08 09:09:09
                 let y = str.substring(0, 4), m = str.substring(5, 7), d = str.substring(8, 10);
                 let h = str.substring(11, 13), m_ = str.substring(14, 16), s = str.substring(17, 19);
+                console.log(y + "-" + m + "-" + d + " " + h + ":" + m_ + ":" + s);
                 time.setFullYear(y, m, d);
                 time.setHours(h, m_, s, 0);
                 return time;
             },
-
+            //字符串转date转string
+            LongFormatToDateString: function (long) {
+                let date = new Date(long);
+                let month = (date.getMonth() + 1);
+                let day = date.getDate();
+                let hour = date.getHours();
+                let min = date.getMinutes();
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                if (day < 10) {
+                    day = "0" + day;
+                }
+                if (hour < 10) {
+                    hour = "0" + hour;
+                }
+                if (min < 10) {
+                    min = "0" + min;
+                }
+                return date.getFullYear() + "-" + month + "-" + day + " " + hour + ":" + min;
+            },
+            //查询比赛集
             getContests: function () {
                 this.tableLoadingFlag = true;
                 console.log("刷新");
                 Api.getContestsByPagePer_PageAndCreator(this.page, this.per_page, this.$store.state.token).then(res => {
                     let result = res.data;
-                    console.log(res.data);
+                    console.log(result);
                     if (result.code === 200) {
-                        this.datas = result.data.problems;
+                        this.datas = result.data.contests;
                         this.selectData = this.datas;
                     } else if (result.code === 401) {
                         this.$Message.error("签名过期,请重新登录!");
@@ -247,7 +376,6 @@
                     }
                     this.tableLoadingFlag = false;
                 }).catch(res => {
-
                     this.tableLoadingFlag = false;
                 });
             }
@@ -261,5 +389,4 @@
 </script>
 
 <style scoped>
-
 </style>

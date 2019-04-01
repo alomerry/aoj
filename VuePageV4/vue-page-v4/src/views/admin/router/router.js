@@ -31,6 +31,7 @@ const routes = [
         },
         component: resolve => require(['../pages/general/Login'], resolve),
     },
+
     {
         path: "/admin/problems",
         name: 'ProblemList',
@@ -55,6 +56,7 @@ const routes = [
         },
         component: resolve => require(['../pages/problem/ProblemEdit'], resolve),
     },
+
     {
         path: "/admin/contest/:method",
         name: 'ContestEdit',
@@ -71,6 +73,15 @@ const routes = [
         },
         component: resolve => require(['../pages/contest/ContestList'], resolve),
     },
+    {
+        path: "/admin/contest/:contest_id/problems",
+        name: 'Contest-Problems',
+        meta: {
+            title: 'Contest Problems',
+        },
+        component: resolve => require(['../pages/problem/ProblemList'], resolve),
+    },
+
     {
         path: "/admin/",
         redirect: '/admin/home'

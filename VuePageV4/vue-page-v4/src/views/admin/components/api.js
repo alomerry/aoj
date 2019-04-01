@@ -66,6 +66,26 @@ export default {
         });
     },
     /**
+     * 根据竞赛Id查询题目集
+     * @param page 页码
+     * @param per_page 每页数量
+     * @param contest_id 竞赛Id
+     * @param jwt token
+     */
+    getContestProblemsByPageAndContestId(page, per_page, contest_id, jwt) {
+        let params = new URLSearchParams();
+        params.append("page", page);
+        params.append("per_page", per_page);
+        return axios({
+            url: "/api/api-oj/admin/contest/" + contest_id + "/problems",
+            method: "get",
+            data: params,
+            headers: {
+                "jwt": jwt,
+            }
+        });
+    },
+    /**
      * 查询制定Id题目
      * @param problem_id
      * @returns {AxiosPromise}
@@ -76,7 +96,19 @@ export default {
             method: 'get',
         });
     },
-
+    /**
+     * 查询公开题目集
+     */
+    findPublicProblemsByPage(page, per_page) {
+        let params = new URLSearchParams();
+        params.append("page", page);
+        params.append("per_page", per_page);
+        return axios({
+            url: "/api/api-oj/problems/defunct/1",
+            method: "get",
+            data: params,
+        })
+    },
     /**
      * 根据题目Id查询标签集合
      * @param problem_id
@@ -86,6 +118,39 @@ export default {
         return axios({
             url: "/api/api-oj/tags/problem/" + problem_id,
             method: "get",
+        });
+    },
+    /**
+     * 将指定Id的题目添加至指定Id的竞赛
+     * @param contest_id 比赛Id
+     * @param problem_id 题目Id
+     * @param jwt token
+     * @constructor
+     */
+    addPublicProblemToContest(contest_id, problem_id, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/contest/" + contest_id + "/problem/" + problem_id,
+            method: "post",
+            headers: {
+                "jwt": jwt,
+            }
+        });
+    },
+
+    /**
+     * 将指定题目从指定比赛中删除
+     * @param contest_id 竞赛Id
+     * @param problem_id 题目Id
+     * @param jwt 令牌
+     * @constructor
+     */
+    deleteProblemFromContest(contest_id, problem_id, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/contest/" + contest_id + "/problem/" + problem_id,
+            method: "delete",
+            headers: {
+                "jwt": jwt,
+            }
         });
     }
 }

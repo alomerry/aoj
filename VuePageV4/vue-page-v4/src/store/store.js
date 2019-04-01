@@ -30,7 +30,6 @@ export default new Vuex.Store({
     token: defaultToken,
     user: defaultUser,
     admin: defaultAdmin,
-
     menu_active_name: 'home',
   },
   mutations,

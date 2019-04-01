@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
                 tmp_user.setSession_id("");
                 res.put("user", tmp_user);
                 res.put("admin", privilege.getRightstr().startsWith("admin"));
-                res.put("jwt", JWTUtils.makeToken(new UserLink(tmp_user, privilege), 20));
+                res.put("jwt", JWTUtils.makeToken(new UserLink(tmp_user, privilege), 300));
                 return new Result().setCode(ResultCode.OK).setData(res).setMessage("登录成功!");
             }
         }

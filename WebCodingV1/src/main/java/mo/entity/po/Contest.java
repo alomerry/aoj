@@ -37,7 +37,7 @@ public class Contest {
 
     @Override
     public String toString() {
-        return "Contest{" +
+        return "contest{" +
                 "contest_id=" + contest_id +
                 ", title='" + title + '\'' +
                 ", privates=" + privates +

@@ -27,9 +27,11 @@ public class ProblemControllerImpl implements ProblemController {
     private UserService userService;
 
 
+    //Don't use
     @Override
     @RequestMapping(value = "/problems")
-    public Result problems() {
+    public Result problems(@RequestParam(value = "page", defaultValue = "1") String page,
+                           @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
         List<Problem> problems = problemService.findSimpleProblemsByDefunct("(1)", 1, 10);
         JSONObject res = new JSONObject();
         res.put("total", problems.size());
@@ -47,7 +49,7 @@ public class ProblemControllerImpl implements ProblemController {
         List<Problem> problems = null;
         switch (resType) {
             case "simple": {
-                problems = problemService.findSimpleProblemsByDefunct("("+defunct+")", Integer.parseInt(page), Integer.parseInt(per_page));
+                problems = problemService.findSimpleProblemsByDefunct("(" + defunct + ")", Integer.parseInt(page), Integer.parseInt(per_page));
                 break;
             }
             case "much": {
