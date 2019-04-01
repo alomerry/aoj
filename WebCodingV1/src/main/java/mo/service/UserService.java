@@ -55,4 +55,12 @@ public interface UserService {
      * @return 用户权限实体
      */
     UserLink findUserLinkByUserId(Integer user_id);
+
+    /**
+     * 删除指定用户
+     *
+     * @param user_id 用户Id
+     * @return 操作结果
+     */
+    Integer deleteUserByUserId(Integer user_id);
 }

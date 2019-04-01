@@ -94,4 +94,9 @@ public class UserServiceImpl implements UserService {
         return new UserLink(userMapper.findUserByUserId(user_id), privilegeMapper.findPrivilegeByUserId(user_id));
     }
 
+    @Override
+    public Integer deleteUserByUserId(Integer user_id) {
+        return userMapper.deleteUserByUserId(user_id);
+    }
+
 }

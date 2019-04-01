@@ -152,5 +152,20 @@ export default {
                 "jwt": jwt,
             }
         });
+    },
+
+    /**
+     * 删除指定用户
+     * @param user_id 用户Id
+     * @param jwt 令牌
+     */
+    deleteUserByUserId(user_id, jwt) {
+        return axios({
+            url: '/api/api-oj/admin/user/' + user_id,
+            method: "delete",
+            headers: {
+                "jwt": jwt,
+            }
+        });
     }
 }

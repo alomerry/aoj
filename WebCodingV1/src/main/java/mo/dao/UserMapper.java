@@ -85,15 +85,6 @@ public interface UserMapper {
     int updateSessionIdByUserId(@Param("user_id") Integer user_id, @Param("session_id") String session_id);
 
     /**
-     * 根据用户Id删除用户
-     *
-     * @param user_id 用户Id
-     * @return 影响行数
-     */
-    @Delete("delete from users where user_id = #{user_id}")
-    int delUserByUserId(@Param("user_id") Integer user_id);
-
-    /**
      * 查询指定页数用户
      *
      * @param start    起始
@@ -111,5 +102,14 @@ public interface UserMapper {
      */
     @Select("select user_id,username,nickname from users where user_id = #{user_id}")
     User findUserIdUserNameUserNickNameByUserId(@Param("user_id") Integer user_id);
+
+    /**
+     * 根据用户Id删除用户
+     *
+     * @param user_id 用户Id
+     * @return 影响行数
+     */
+    @Delete("delete from users where user_id = #{user_id}")
+    Integer deleteUserByUserId(@Param("user_id") Integer user_id);
 }
 

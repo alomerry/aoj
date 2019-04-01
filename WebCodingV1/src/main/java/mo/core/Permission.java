@@ -1,6 +1,6 @@
 package mo.core;
 
-public enum Permission {
+public enum Permission {//user admin [a]bc[d][e]fgh[i]jkl[m][n]opq[r][s]t[u]vwxyz
     Authority_manager(0),//权限管理者 b
     Topic_adder(1),//题目添加者 c
     Contest_organizer(2),//比赛组织者 f

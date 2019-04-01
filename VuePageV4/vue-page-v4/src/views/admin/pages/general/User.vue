@@ -18,7 +18,7 @@
                                            placeholder="Enter something..."></Input>
                                 </FormItem>
                                 <FormItem label="User Type">
-                                    <Select size="large" v-model="formItem.level" title="">
+                                    <Select size="large" v-model="formItem.level" title="" multiple>
                                         <Option value="beijing">New York</Option>
                                         <Option value="shanghai">London</Option>
                                         <Option value="shenzhen">Sydney</Option>
@@ -59,7 +59,7 @@
                             <Col span="7">
                                 <FormItem label="Is Disabled">
                                     <i-switch v-model="formItem.disabled" size="default" @on-change="">
-                                        <span slot="open">️</span>
+                                        <span slot="open"></span>
                                         <span slot="close"></span>
                                     </i-switch>
                                 </FormItem>
@@ -81,6 +81,11 @@
                          clearable>
                     <Icon type="ios-search" slot="prefix"/>
                 </i-input>
+                <!--<Button icon="ios-trash" type="warning" style="width: auto;float: right;margin-right: 15px" @click=""
+                        v-show="deleteShowFlag">Delete
+                </Button>-->
+                <Button icon="md-refresh" style="float: right;margin-right: 20px"
+                        @click.native="getUsers"></Button>
                 <Button icon="ios-trash" type="warning" style="width: auto;float: right;margin-right: 15px" @click=""
                         v-show="deleteShowFlag">Delete
                 </Button>
@@ -92,11 +97,24 @@
             <Page :current="page" :page-size="per_page" size="small" style="float: right"/>
             <br>
         </Card>
-
+        
         <Card style="margin: 15px">
             <div slot="title" style="height: 40px">
             </div>
         </Card>
+        <Modal v-model="deleteUserModal.ModalFlag">
+            <span slot="header" style="color:#f60;font-size: 21px;">
+                <Icon type="ios-information-circle" size="30"></Icon>
+                <span>&nbsp;Delete Confirmation</span>
+            </span>
+            <div style="font-size: 17px">
+                <p>Sure to delete this user?</p>
+                <p>This action cannot be undone!</p>
+            </div>
+            <div slot="footer">
+                <Button type="error" size="large" :loading="deleteUserModal.ButtonLoadingFlag" @click="deleteUser">Delete</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -104,22 +122,39 @@
     import debounce from "lodash/debounce"
     import Api from "../../components/api"
 
-    let _this = {};
+    let _this = null;
 
     export default {
         name: "User",
         data() {
             return {
-                formItem: {},
+                formItem: {
+                    disabled: false,
+                    name: '',
+                    level: [],
+                },
                 deleteShowFlag: false,
                 searchKeyWord: "",//搜索框的内容
                 changeUserModalShowFlag: false,//修改用户信息模态框
                 updateUserInfoLoadingFlag: false,//模态框确定按钮loading标记
+                deleteUserModal: {
+                    ButtonLoadingFlag: false,//删除用户的模态框确认删除的加载标记
+                    ModalFlag: false,//删除用户的模态框显示标记
+                    user_id: null,
+                },
                 columns: [
                     {
                         type: 'selection',
                         width: 60,
                         align: 'center',
+                    },
+                    {
+                        title: 'UserId',
+                        width: 120,
+                        key: 'user.user_id',
+                        render: (h, params) => {
+                            return h('span', {}, params.row.user.user_id)
+                        },
                     },
                     {
                         title: 'UserName',
@@ -209,7 +244,8 @@
                         ],
                         filterMultiple: false,
                         filterMethod(value, row) {
-                            let v = _this.stringFormatToDate(row.user.last_login).getTime();
+                            let v = row.user.last_login;
+                            //let v = _this.stringFormatToDate(row.user.last_login).getTime();
                             if (value === 1) {
                                 return v > _this.nowTime - 365 * 24 * 3600000;
                             } else if (value === 2) {
@@ -232,38 +268,81 @@
                         title: 'Admin Level',
                         key: 'privilege.rightstr',
                         render: (h, params) => {
-                            return h('span', {}, params.row.privilege.rightstr)
+                            let levels = this.adminLevelRender(params.row.privilege != null ? params.row.privilege.rightstr : "user");
+                            let res = [];
+                            levels.forEach(function (item) {
+                                res.push(h('Tag', {}, item));
+                            });
+                            return [
+                                res,
+                            ];
                         },
-                        filters: [
+                        filters: [//[a]bc[d][e]fgh[i]jkl[m][n]opq[r][s]t[u]vwxyz
                             {
-                                label: 'Super Admin',
-                                value: "Super Admin"
+                                label: 'Announcement_manager',//公告管理者 l
+                                value: "l"
+                            },
+                            {
+                                label: 'User_manager',//用户管理者 o
+                                value: "o"
+                            },
+                            {
+                                label: 'Manual_judger',//手动判题者 j
+                                value: "j"
+                            },
+                            {
+                                label: 'Remote_judger',//远程判题者 k
+                                value: "k"
+                            },
+                            {
+                                label: 'Contest_participant',//比赛参加者 g
+                                value: "g"
+                            },
+                            {
+                                label: 'Code_viewer',//代码查看者 h
+                                value: "h"
+                            },
+                            {
+                                label: 'Contest_organizer',//比赛组织者 f
+                                value: "f"
+                            },
+                            {
+                                label: 'Topic_adder',//题目添加者 c
+                                value: "c"
+                            },
+                            {
+                                label: 'Authority_manager',//权限管理者 b
+                                value: "b"
                             },
                             {
                                 label: 'Admin',
-                                value: "Admin"
+                                value: "admin"
                             },
                             {
                                 label: 'User',
-                                value: "User"
+                                value: "user"
                             },
                         ],
                         filterMultiple: true,
                         filterMethod(value, row) {
-                            return row.privilege.rightstr.indexOf(value) > -1;
+                            if (row.privilege == null) {
+                                return "user".indexOf(value) > -1;
+                            } else {
+                                return row.privilege.rightstr.indexOf(value) > -1;
+                            }
                         }
                     },
                     {
                         title: 'Option',
                         key: 'option',
-                        width: 250,
+                        width: 150,
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [
                                 h("Tooltip", {
                                     props: {
                                         placement: "top",
-                                        theme:"light",
+                                        theme: "light",
                                         content: "修改"
                                     }
                                 }, [h('Button', {
@@ -291,7 +370,7 @@
                                 h("Tooltip", {
                                     props: {
                                         placement: "top",
-                                        theme:"light",
+                                        theme: "light",
                                         content: "删除"
                                     }
                                 }, [h('Button', {
@@ -301,7 +380,8 @@
                                     },
                                     on: {
                                         click: () => {
-                                            // this.remove(params.index)
+                                            this.deleteUserModal.user_id = params.row.user.user_id;
+                                            this.deleteUserModal.ModalFlag = true;
                                         }
                                     }
                                 }, [
@@ -321,18 +401,25 @@
                 datas: [],
                 selectData: [
                     {
-                        user: {
-                            username: '',
-                            nickname: '',
-                            access_time: '2018-12-03 07:08:16',
-                            last_login: '2016-10-03 07:08:16',
-                            email: '',
-                        },
                         privilege: {
-                            defunct: "A",
-                            rightstr: "admin",
-                            user_id: 10
+                            "defunct": "A",
+                            "rightstr": "admin",
+                            "user_id": 10
                         },
+                        user: {
+                            "access_time": 1547637507000,
+                            "email": "morizunzhu@163.com",
+                            "last_login": 1550710906000,
+                            "nickname": "就当一次路过丶",
+                            "passwd": "5cba13819e624f8dc0a991a7691f3f82",
+                            "remark": null,
+                            "school": "hyit",
+                            "session_id": "D4FAD0CEE3C3C10E166A3B0B2EC69C23",
+                            "solved": 0,
+                            "submit": 0,
+                            "user_id": 10,
+                            "username": "morizunzhu"
+                        }
                     },
                 ],
                 nowTime: "2016-10-03 07:08:16",
@@ -341,8 +428,8 @@
             }
         },
         created: function () {
+            _this = this;
             this.selectData = this.datas;//表格数据
-            this.loading = true;
             this.getUsers();
             this.debouncedsearchData = debounce(this.searchData, 500, null);//延时加载
         },
@@ -350,6 +437,44 @@
             this.nowTime = (new Date()).getTime();//当前时间
         },
         methods: {
+            //生成权限render
+            adminLevelRender(level) {//<Tag>标签一</Tag>
+                let levels = [];
+                if (level.indexOf("user") > -1) {
+                    levels.push("user");
+                }
+                if (level.indexOf("admin") > -1) {
+                    levels.push("admin");
+                }
+                if (level.indexOf("b") > -1) {//权限管理者 b
+                    levels.push("Authority_manager");
+                }
+                if (level.indexOf("c") > -1) {//题目添加者 c
+                    levels.push("Topic_adder");
+                }
+                if (level.indexOf("f") > -1) {//比赛组织者 f
+                    levels.push("Contest_organizer");
+                }
+                if (level.indexOf("g") > -1) {//比赛参加者 g
+                    levels.push("Contest participant");
+                }
+                if (level.indexOf("h") > -1) {//代码查看者 h
+                    levels.push("Code viewer");
+                }
+                if (level.indexOf("j") > -1) {//手动判题者 j
+                    levels.push("Manual_judger");
+                }
+                if (level.indexOf("k") > -1) {//远程判题者 k
+                    levels.push("Remote_judger");
+                }
+                if (level.indexOf("l") > -1) {//公告管理者 l
+                    levels.push("Announcement_manager");
+                }
+                if (level.indexOf("o") > -1) {//用户管理者 o
+                    levels.push("User manager");
+                }
+                return levels;
+            },
             //显示删除按钮
             selectionChange(selection) {
                 this.deleteShowFlag = selection.length > 0;
@@ -380,11 +505,12 @@
                 time.setHours(h, m_, s, 0);
                 return time;
             },
-
+            //向后台查询数据
             getUsers: function () {
+                this.loading = true;
                 Api.getUsersByPagePer_Page(this.page, this.per_page, this.$store.state.token).then(res => {
                     let result = res.data;
-                    console.log(result);
+                    // console.log(result);
                     if (result.code === 200) {
                         this.datas = result.data.users;
                         this.selectData = result.data.users;
@@ -400,6 +526,39 @@
                     console.log('An error has occurred! ' + err);
                     this.loading = false;
                 });
+            },
+            //update user list
+            updateDatas(user_id, user) {
+                if (user != null) {
+                    console.log("添加成功");
+                    this.datas.splice(0, 1, user);
+                } else {
+                    let unUpdatedItemIndex = this.datas.findIndex(function (currentItem) {
+                        return currentItem.user.user_id === user_id;
+                    });
+                    console.log("更新序号：" + unUpdatedItemIndex);
+                    this.datas.splice(unUpdatedItemIndex, 1);
+                }
+                this.selectData = this.datas;
+            },
+            //
+            deleteUser() {
+                this.deleteUserModal.ButtonLoadingFlag = true;
+                Api.deleteUserByUserId(this.deleteUserModal.user_id, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    if (result.code === 200) {
+                        this.$Message.success("删除成功!");
+                        this.updateDatas(this.deleteUserModal.user_id, null);
+                    } else {
+                        console.log("错误代码:" + result.code);
+                        this.$Message.error(result.message);
+                    }
+                    this.deleteUserModal.ButtonLoadingFlag = false;
+                }).catch(res => {
+                    console.log(res);
+                    this.deleteUserModal.ButtonLoadingFlag = false;
+                });
+                this.deleteUserModal.ModalFlag = false;
             }
         },
         watch: {
@@ -414,33 +573,33 @@
     table {
         font-size: 25px;
     }
-
+    
     td {
         font-size: 25px;
     }
-
+    
     form > label {
         text-align: center;
     }
-
+    
     .form-content {
         margin: 15px 0 15px 0;
     }
-
+    
     .ivu-form .ivu-form-item-label {
         font-size: 15px;
     }
-
+    
     .ivu-form-item {
         /*margin: 24px;*/
         padding: 6px 0 6px 0;
     }
-
+    
     .ivu-switch-checked {
         border-color: #19be6b;
         background-color: #19be6b;
     }
-
+    
     .ivu-switch {
         /*border: 1px solid rgb(255, 73, 73);
         background-color: rgb(255, 73, 73);*/
