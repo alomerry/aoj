@@ -111,5 +111,8 @@ public interface UserMapper {
      */
     @Delete("delete from users where user_id = #{user_id}")
     Integer deleteUserByUserId(@Param("user_id") Integer user_id);
+
+    @Update("update users set disabled = #{disabled} where user_id = #{user_id}")
+    Integer updateUserDisabled(@Param("user_id") Integer user_id, @Param("disabled") Integer disableState);
 }
 

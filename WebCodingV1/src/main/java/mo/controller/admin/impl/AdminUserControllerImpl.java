@@ -66,4 +66,17 @@ public class AdminUserControllerImpl extends AbstractAdminController implements 
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足！");
         }
     }
+
+    @Override
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    public Result disableUser(@PathVariable String user_id,
+                              @PathVariable Integer state) {
+        //判断是否是 管理员
+        Integer operatorId = getJWTUserId();
+        Privilege privilege = privilegeService.findPrivilegeByUserId(operatorId);
+        if (privilege != null && PermissionManager.isAdmin(privilege.getRightstr())) {
+
+        }
+        return null;
+    }
 }

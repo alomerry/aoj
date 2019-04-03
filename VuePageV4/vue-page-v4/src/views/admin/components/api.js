@@ -167,5 +167,9 @@ export default {
                 "jwt": jwt,
             }
         });
+    },
+
+    updateUserByUserId(user, jwt) {
+
     }
 }

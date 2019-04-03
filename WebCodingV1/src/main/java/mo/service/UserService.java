@@ -63,4 +63,12 @@ public interface UserService {
      * @return 操作结果
      */
     Integer deleteUserByUserId(Integer user_id);
+
+    /**
+     *
+     * @param user_id
+     * @param state
+     * @return
+     */
+    Integer disableUser(Integer user_id,Integer state);
 }

@@ -19,4 +19,13 @@ public interface AdminUserController {
      * @return 结果
      */
     Result deleteUser(String user_id);
+
+    /**
+     * 禁用用户
+     *
+     * @param user_id 用户Id
+     * @param state   true 正常 false 禁用
+     * @return 结果
+     */
+    Result disableUser(String user_id, Integer state);
 }

@@ -99,4 +99,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.deleteUserByUserId(user_id);
     }
 
+    @Override
+    public Integer disableUser(Integer user_id, Integer state) {
+        return userMapper.updateUserDisabled(user_id, state);
+    }
+
 }

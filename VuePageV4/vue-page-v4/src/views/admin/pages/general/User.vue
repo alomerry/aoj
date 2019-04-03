@@ -18,11 +18,8 @@
                                            placeholder="Enter something..."></Input>
                                 </FormItem>
                                 <FormItem label="User Type">
-                                    <Select size="large" v-model="formItem.level" title="" multiple>
-                                        <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                                        <Option value="beijing">New York</Option>
-                                        <Option value="shanghai">London</Option>
-                                        <Option value="shenzhen">Sydney</Option>
+                                    <Select size="large" v-model="formItem.level" title="" multiple @on-change="levelOptionChanged">
+                                        <Option v-for="item in levelOption" :value="item.name" :key="item.id" :disabled="item.disabled">{{ item.name }}</Option>
                                     </Select>
                                 </FormItem>
                             </Col>
@@ -59,7 +56,7 @@
                             </Col>
                             <Col span="7">
                                 <FormItem label="Is Disabled">
-                                    <i-switch v-model="formItem.disabled" size="default" @on-change="">
+                                    <i-switch v-model="formItem.disabled" size="default" @on-change="disableUser" :loading="formItem.disableUserSwitchLoadingFlag">
                                         <span slot="open"></span>
                                         <span slot="close"></span>
                                     </i-switch>
@@ -70,7 +67,7 @@
                 </div>
                 <div slot="footer">
                     <Button type="info" ghost size="large" @click="changeUserModalShowFlag=false">关闭</Button>
-                    <Button type="info" size="large" :loading="updateUserInfoLoadingFlag">确定</Button>
+                    <Button type="info" size="large" :loading="updateUserInfoLoadingFlag" @click="">确定</Button>
                 </div>
             </Modal>
         </div>
@@ -129,13 +126,65 @@
         name: "User",
         data() {
             return {
-                levelOption:[],
+                levelOption: [
+                    {
+                        id: 0,
+                        name: "user",
+                        disabled: false,
+                    },
+                    {
+                        id: 1,
+                        name: "admin",
+                        disabled: false,
+                    },
+                    {
+                        id: 2,
+                        name: "Authority Manager",
+                        disabled: false,
+                    },
+                    {
+                        id: 3,
+                        name: "Topic Adder",
+                        disabled: false,
+                    },
+                    {
+                        id: 4,
+                        name: "Contest Participant",
+                        disabled: false,
+                    },
+                    {
+                        id: 5,
+                        name: "Code Viewer",
+                        disabled: false,
+                    },
+                    {
+                        id: 6,
+                        name: "Manual Judger",
+                        disabled: false,
+                    },
+                    {
+                        id: 7,
+                        name: "Remote Judger",
+                        disabled: false,
+                    },
+                    {
+                        id: 8,
+                        name: "Announcement Manager",
+                        disabled: false,
+                    },
+                    {
+                        id: 9,
+                        name: "User manager",
+                        disabled: false,
+                    },
+                ],
                 formItem: {
                     disabled: false,
                     name: '',
                     level: [],
                     api: '',
                     switch: '',
+                    disableUserSwitchLoadingFlag: false,
                     passwd: '',
                     email: '',
                 },
@@ -466,8 +515,34 @@
             this.nowTime = (new Date()).getTime();//当前时间
         },
         methods: {
-            //生成权限render
-            adminLevelArray(level) {//<Tag>标签一</Tag>user admin
+            //update user
+            updateUser() {
+
+            },
+            //switch is-disabled user
+            disableUser(val) {
+                this.formItem.disabled = val;
+            },
+            //modal-select 选中的Option变化
+            levelOptionChanged(val) {
+                if (val.length === 0) {
+                    this.levelOption.forEach(function (currentValue, index) {
+                        currentValue.disabled = false;
+                    });
+                    return;
+                } else if (val.includes('user')) {
+                    this.levelOption.forEach(function (currentValue, index) {
+                        if (currentValue.id != 0) {
+                            currentValue.disabled = true;
+                        }
+                    });
+                } else {//if (val.length > 0)
+                    this.levelOption[0].disabled = true;
+                }
+
+            },
+            //生成权限arr
+            adminLevelArray(level) {//<Tag>标签一</Tag>user,admin,Authority Manager,Topic Adder,Contest Participant,Code Viewer,Manual Judger,Remote Judger,Announcement Manager,User manager
                 let levels = [];
                 if (level.indexOf("user") > -1) {
                     levels.push("user");
@@ -593,7 +668,7 @@
         watch: {
             searchKeyWord: function (newVal, oldVal) {
                 this.debouncedsearchData();
-            }
+            },
         }
     }
 </script>
