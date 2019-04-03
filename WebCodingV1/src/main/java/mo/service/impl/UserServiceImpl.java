@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static mo.utils.StringValue.ONLINEJUDGE_SESSION_GROUP;
 import static mo.utils.StringValue.ONLINEJUDGE_SESSION_UER;
@@ -102,6 +103,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer disableUser(Integer user_id, Integer state) {
         return userMapper.updateUserDisabled(user_id, state);
+    }
+
+    @Override
+    public Integer updateUser(Map<String, String> user, UserLink oldUser) {
+        /*
+         * 1.nickname
+         * 2.level
+         * 3.passwd
+         * 4.email
+         * 5.disabled
+         * */
+        String level = user.get("level") == "" ? "user" : user.get("level");
+        if (oldUser.getPrivilege() == null) {
+            logger.info("修改权限级别[{}],方式[插入]", (privilegeMapper.insertPrivilege(new Privilege(oldUser.getUser().getUser_id(), level)) > 0 ? "成功" : "失败"));
+        } else {
+            oldUser.getPrivilege().setRightstr(level);
+            logger.info("修改权限级别[{}],方式[修改]", privilegeMapper.updateRightStr(oldUser.getPrivilege()) > 0 ? "成功" : "失败");
+        }
+        oldUser.getUser().setNickname(user.get("nickname") == null ? oldUser.getUser().getNickname() : user.get("nickname"));
+        oldUser.getUser().setPasswd(user.get("passwd") == null ? oldUser.getUser().getPasswd() : DigestUtils.md5DigestAsHex((user.get("passwd") + SALT).getBytes()));
+        oldUser.getUser().setEmail(user.get("email") == null ? oldUser.getUser().getEmail() : user.get("email"));
+        oldUser.getUser().setDisabled(user.get("disabled") == null ? oldUser.getUser().isDisabled() : Boolean.valueOf(user.get("disabled")));
+        logger.info("修改用户信息[{}]", (userMapper.updateUserNickNameEmailPasswdDisAbled(oldUser.getUser())) > 0 ? "成功" : "失败");
+        return 1;
     }
 
 }

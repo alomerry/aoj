@@ -22,7 +22,7 @@ public interface UserMapper {
      * @return 返回该用户名数量
      */
     @Select(value = "select count(*) from users where username = #{username}")
-    Integer GetNumByUserName(@Param("username") String username);
+    int GetNumByUserName(@Param("username") String username);
 
     /**
      * 根据用户名和密码查询用户
@@ -110,9 +110,25 @@ public interface UserMapper {
      * @return 影响行数
      */
     @Delete("delete from users where user_id = #{user_id}")
-    Integer deleteUserByUserId(@Param("user_id") Integer user_id);
+    int deleteUserByUserId(@Param("user_id") Integer user_id);
 
+    /**
+     * 禁用用户
+     *
+     * @param user_id      用户Id
+     * @param disableState 状态
+     * @return影响行数
+     */
     @Update("update users set disabled = #{disabled} where user_id = #{user_id}")
-    Integer updateUserDisabled(@Param("user_id") Integer user_id, @Param("disabled") Integer disableState);
+    int updateUserDisabled(@Param("user_id") Integer user_id, @Param("disabled") Integer disableState);
+
+    /**
+     * 修改用户信息
+     *
+     * @param user 用户实体
+     * @return 影响行数
+     */
+    @Update("update users set nickname = #{user.nickname},email = #{user.email},passwd=#{user.passwd},disabled=#{user.disabled}")
+    int updateUserNickNameEmailPasswdDisAbled(@Param("user") User user);
 }
 

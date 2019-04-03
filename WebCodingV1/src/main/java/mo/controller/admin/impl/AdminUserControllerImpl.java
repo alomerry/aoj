@@ -89,11 +89,12 @@ public class AdminUserControllerImpl extends AbstractAdminController implements 
     public Result updateUser(@RequestBody Map<String, String> user) {
         logger.info("修改用户[{}]", user);
         /*
-        * 1.nickname
-        * 2.level
-        * 3.passwd
-        * 4.email
-        * */
+         * 1.nickname
+         * 2.level
+         * 3.passwd
+         * 4.email
+         * 5.disabled
+         * */
         Integer operatorId = getJWTUserId();
         Privilege privilege = privilegeService.findPrivilegeByUserId(operatorId);
         if (privilege == null || !PermissionManager.isAdmin(privilege.getRightstr())) {
@@ -109,10 +110,11 @@ public class AdminUserControllerImpl extends AbstractAdminController implements 
             if (userLink == null) {
                 //信息错误，用户不存在
             } else {
-                if (PermissionManager.isAllLegalAdmins(PermissionManager.changedLevel(userLink.getPrivilege().getRightstr(), level), privilege.getRightstr())) {
+                if (PermissionManager.isAllLegalAdmins(PermissionManager.changedLevel(userLink.getPrivilege() == null ? "" : userLink.getPrivilege().getRightstr(), level), privilege.getRightstr())) {
                     //可以修改
-                    userLink.getPrivilege().setRightstr(level);
-
+                    if (userService.updateUser(user, userLink) > 0) {
+                        //修改成功
+                    }
                 } else {
                     //权限不足
                 }

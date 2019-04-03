@@ -6,6 +6,7 @@ import mo.entity.vo.UserLink;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -65,10 +66,20 @@ public interface UserService {
     Integer deleteUserByUserId(Integer user_id);
 
     /**
+     * 禁用用户
      *
      * @param user_id
      * @param state
+     * @return 操作结果
+     */
+    Integer disableUser(Integer user_id, Integer state);
+
+    /**
+     * 修改用户
+     *
+     * @param user    用户
+     * @param oldUser 旧用户信息
      * @return
      */
-    Integer disableUser(Integer user_id,Integer state);
+    Integer updateUser(Map<String, String> user, UserLink oldUser);
 }

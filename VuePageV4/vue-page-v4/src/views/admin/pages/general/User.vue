@@ -562,7 +562,6 @@
             },
             //make level_arr to level_string
             formatLevelToString(arr) {
-
                 if (arr == null || arr.indexOf("user") > -1) {
                     return "";
                 } else {
