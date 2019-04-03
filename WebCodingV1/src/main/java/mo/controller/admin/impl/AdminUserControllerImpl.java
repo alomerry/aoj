@@ -87,6 +87,7 @@ public class AdminUserControllerImpl extends AbstractAdminController implements 
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
     @RequestMapping(value = "/admin/user", method = RequestMethod.PUT, consumes = "application/json")
     public Result updateUser(@RequestBody Map<String, String> user) {
+        //TODO 是否可以修改自己的权限
         logger.info("修改用户[{}]", user);
         /*
          * 1.nickname
@@ -109,7 +110,7 @@ public class AdminUserControllerImpl extends AbstractAdminController implements 
         } else if (level != null) {
             userLink = userService.findUserLinkByUserId(Integer.valueOf(user.get("user_id")));
             logger.info("即将修改权限为[{}]", level);
-            if (userLink.getPrivilege() == null) {
+            if (userLink == null) {
                 logger.info("信息错误，用户不存在");
                 return new Result().setMessage("参数错误！不存在该用户").setCode(ResultCode.BAD_REQUEST);
             } else {

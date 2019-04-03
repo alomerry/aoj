@@ -93,9 +93,9 @@ public final class PermissionManager {
         StringBuilder builder = new StringBuilder();
         if (isAdmin(min)) {//管理员-管理员+
             String maxItem = max.substring(max.indexOf("admin") + 5);
-            for (char min_i : (min.substring(min.indexOf("admin") + 5)).toCharArray()) {
-                if (!maxItem.contains("" + min_i) && min_i != '_') {
-                    builder.append("" + min_i);
+            for (char max_i : (maxItem).toCharArray()) {
+                if (!min.contains("" + max_i) && max_i != '_') {
+                    builder.append("" + max_i);
                 }
             }
         } else {//用户-用户+

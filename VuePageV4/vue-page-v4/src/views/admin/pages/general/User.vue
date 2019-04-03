@@ -208,7 +208,7 @@
                 },
                 ruleForm: {
                     nickname: [
-                        {type: 'string', min: 3, message: 'Name no less than 3 words', trigger: 'blur'},
+                        {type: 'string', min: 2, message: 'Name no less than 3 words', trigger: 'blur'},
                         {type: 'string', max: 10, message: 'Name no less than 10 words', trigger: 'blur'},
                     ],
                     email: [
@@ -709,7 +709,7 @@
                     let that = this;
                     this.datas.forEach(function (is, i) {
                         let item = that.datas[i];
-                        if (item.username.indexOf(that.searchKeyWord) !== -1 || item.nickname.indexOf(that.searchKeyWord) !== -1) {
+                        if (item.user.username.indexOf(that.searchKeyWord) !== -1 || item.user.nickname.indexOf(that.searchKeyWord) !== -1) {
                             that.selectData.push(item);
                         }
                     });
