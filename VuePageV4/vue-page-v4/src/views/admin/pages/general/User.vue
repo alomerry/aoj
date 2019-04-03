@@ -9,22 +9,22 @@
                     <Form ref="form" :model="formItem" :rules="ruleForm" :label-width="120">
                         <Row>
                             <Col span="10">
-                                <FormItem label="NickName" required prop="vnickname">
-                                    <Input size="large" v-model="formItem.name"
+                                <FormItem label="NickName" required prop="nickname">
+                                    <Input size="large" v-model="formItem.nickname"
                                            placeholder="Enter something..."></Input>
                                 </FormItem>
-                                <FormItem label="Email" required prop="vemail">
+                                <FormItem label="Email" required prop="email">
                                     <Input size="large" v-model="formItem.email"
                                            placeholder="Enter something..."></Input>
                                 </FormItem>
                                 <FormItem label="User Type">
                                     <Select size="large" v-model="formItem.level" title="" multiple @on-change="levelOptionChanged">
-                                        <Option v-for="item in levelOption" :value="item.name" :key="item.id" :disabled="item.disabled">{{ item.name }}</Option>
+                                        <Option v-for="item in levelOption" :value="item.value" :key="item.id" :disabled="item.disabled">{{ item.name }}</Option>
                                     </Select>
                                 </FormItem>
                             </Col>
                             <Col span="11" offset="2">
-                                <FormItem label="New Password" style="text-align: center" prop="vpasswd">
+                                <FormItem label="New Password" style="text-align: center" prop="passwd">
                                     <Input size="large" v-model="formItem.passwd"
                                            placeholder="Enter something..."></Input>
                                 </FormItem>
@@ -67,7 +67,7 @@
                 </div>
                 <div slot="footer">
                     <Button type="info" ghost size="large" @click="changeUserModalShowFlag=false">关闭</Button>
-                    <Button type="info" size="large" :loading="updateUserInfoLoadingFlag" @click="">确定</Button>
+                    <Button type="info" size="large" :loading="updateUserInfoLoadingFlag" @click="updateUser">确定</Button>
                 </div>
             </Modal>
         </div>
@@ -119,6 +119,7 @@
 <script>
     import debounce from "lodash/debounce"
     import Api from "../../components/api"
+    import {hex_md5} from '../../../../assets/md5.js'
 
     let _this = null;
 
@@ -130,75 +131,90 @@
                     {
                         id: 0,
                         name: "user",
+                        value: "user",
                         disabled: false,
                     },
                     {
                         id: 1,
                         name: "admin",
+                        value: "admin",
                         disabled: false,
                     },
                     {
                         id: 2,
+                        value: "b",
                         name: "Authority Manager",
                         disabled: false,
                     },
                     {
                         id: 3,
+                        value: "c",
                         name: "Topic Adder",
                         disabled: false,
                     },
                     {
                         id: 4,
+                        value: "g",
                         name: "Contest Participant",
                         disabled: false,
                     },
                     {
                         id: 5,
+                        value: "h",
                         name: "Code Viewer",
                         disabled: false,
                     },
                     {
                         id: 6,
                         name: "Manual Judger",
+                        value: "j",
                         disabled: false,
                     },
                     {
                         id: 7,
                         name: "Remote Judger",
+                        value: "k",
                         disabled: false,
                     },
                     {
                         id: 8,
                         name: "Announcement Manager",
+                        value: "l",
                         disabled: false,
                     },
                     {
                         id: 9,
                         name: "User manager",
+                        value: "o",
+                        disabled: false,
+                    },
+                    {
+                        id: 10,
+                        name: "Contest Organizer",
+                        value: "f",
                         disabled: false,
                     },
                 ],
                 formItem: {
                     disabled: false,
-                    name: '',
+                    nickname: '',
                     level: [],
                     api: '',
                     switch: '',
                     disableUserSwitchLoadingFlag: false,
                     passwd: '',
                     email: '',
+                    user_id: '',
                 },
                 ruleForm: {
-                    vnickname: [
-                        {required: true, message: 'The name cannot be empty', trigger: 'blur'}
+                    nickname: [
+                        {required: true, message: 'The name cannot be empty', trigger: 'blur'},
+                        {type: 'string', min: 3, message: 'Name no less than 3 words', trigger: 'blur'},
+                        {type: 'string', max: 10, message: 'Name no less than 10 words', trigger: 'blur'},
                     ],
-                    vemail: [
+                    email: [
                         {required: true, message: 'Mailbox cannot be empty', trigger: 'blur'},
                         {type: 'email', message: 'Incorrect email format', trigger: 'blur'}
-                    ],
-                    vpasswd: [
-                        {required: true, message: 'Password cannot be empty', trigger: 'blur'},
-                        {type: 'string', min: 6, message: 'Password no less than 6 words', trigger: 'blur'},
                     ],
                 },
                 deleteShowFlag: false,
@@ -339,7 +355,7 @@
                             let levels = this.adminLevelArray(params.row.privilege != null ? params.row.privilege.rightstr : "user");
                             let res = [];
                             levels.forEach(function (item) {
-                                res.push(h('Tag', {}, item));
+                                res.push(h('Tag', {}, item.name));
                             });
                             return [
                                 res,
@@ -423,14 +439,16 @@
                                     },
                                     on: {
                                         click: () => {
+                                            this.updateUserInfoLoadingFlag = false;
                                             this.changeUserModalShowFlag = true;
                                             this.formItem = {
                                                 disabled: params.row.user.disabled,
-                                                name: params.row.user.nickname,
-                                                level: this.adminLevelArray(params.row.privilege == null ? "user" : params.row.privilege.rightstr),
+                                                nickname: params.row.user.nickname,
+                                                level: this.adminLevelSimpleyArray(params.row.privilege == null ? "user" : params.row.privilege.rightstr),
                                                 api: '',
                                                 switch: '',
                                                 passwd: '',
+                                                user_id: params.row.user.user_id,
                                                 email: params.row.user.email,
                                             }
                                         }
@@ -517,7 +535,45 @@
         methods: {
             //update user
             updateUser() {
+                this.$refs['form'].validate(valid => {
+                    if (valid) {
+                        this.updateUserInfoLoadingFlag = true;
+                        let user = {
+                            user_id: "" + this.formItem.user_id,
+                            disabled: this.formItem.disabled ? "1" : "0",
+                            nickname: this.formItem.name,
+                            level: this.formatLevelToString(this.formItem.level),
+                            passwd: this.formItem.passwd != "" ? hex_md5(encodeURIComponent(this.formItem.passwd + 'onlinejudge')) : "",
+                            email: this.formItem.email,
+                        }
+                        Api.updateUser(user, this.$store.state.token).then(res => {
+                            this.updateUserInfoLoadingFlag = false;
+                        }).catch(res => {
+                            console.log(res.message);
+                            this.$Message.error("内部错误！修改失败！")
+                            this.updateUserInfoLoadingFlag = false;
+                        });
 
+                    } else {
+                        console.log("非法输入");
+                        this.$Message.error('Input Error! Please Check!');
+                    }
+                });
+            },
+            //make level_arr to level_string
+            formatLevelToString(arr) {
+
+                if (arr == null || arr.indexOf("user") > -1) {
+                    return "";
+                } else {
+                    let result = "admin_";
+                    arr.forEach(function (currentValue) {
+                        if (currentValue != "admin") {
+                            result += currentValue;
+                        }
+                    });
+                    return result;
+                }
             },
             //switch is-disabled user
             disableUser(val) {
@@ -545,39 +601,87 @@
             adminLevelArray(level) {//<Tag>标签一</Tag>user,admin,Authority Manager,Topic Adder,Contest Participant,Code Viewer,Manual Judger,Remote Judger,Announcement Manager,User manager
                 let levels = [];
                 if (level.indexOf("user") > -1) {
-                    levels.push("user");
+                    levels.push({
+                        name: "user",
+                        value: "user"
+                    });
                 }
                 if (level.indexOf("admin") > -1) {
-                    levels.push("admin");
+                    levels.push({
+                        name: "admin",
+                        value: "admin"
+                    });
                 }
                 if (level.indexOf("b") > -1) {//权限管理者 b
-                    levels.push("Authority Manager");
+                    levels.push({
+                        name: "Authority Manager",
+                        value: "b"
+                    });
                 }
                 if (level.indexOf("c") > -1) {//题目添加者 c
-                    levels.push("Topic Adder");
+                    levels.push({
+                        name: "Topic Adder",
+                        value: "c"
+                    });
                 }
                 if (level.indexOf("f") > -1) {//比赛组织者 f
-                    levels.push("Contest Organizer");
+                    levels.push({
+                        name: "Contest Organizer",
+                        value: "f"
+                    });
                 }
                 if (level.indexOf("g") > -1) {//比赛参加者 g
-                    levels.push("Contest Participant");
+                    levels.push({
+                        name: "Contest Participant",
+                        value: "g"
+                    });
                 }
                 if (level.indexOf("h") > -1) {//代码查看者 h
-                    levels.push("Code Viewer");
+                    levels.push({
+                        name: "Code Viewer",
+                        value: "h"
+                    });
                 }
                 if (level.indexOf("j") > -1) {//手动判题者 j
-                    levels.push("Manual Judger");
+                    levels.push({
+                        name: "Manual Judger",
+                        value: "j"
+                    });
                 }
                 if (level.indexOf("k") > -1) {//远程判题者 k
-                    levels.push("Remote Judger");
+                    levels.push({
+                        name: "Remote Judger",
+                        value: "k"
+                    });
                 }
                 if (level.indexOf("l") > -1) {//公告管理者 l
-                    levels.push("Announcement Manager");
+                    levels.push({
+                        name: "Announcement Manager",
+                        value: "l"
+                    });
                 }
                 if (level.indexOf("o") > -1) {//用户管理者 o
-                    levels.push("User manager");
+                    levels.push({
+                        name: "User manager",
+                        value: "o"
+                    });
                 }
                 return levels;
+            },
+            //生成权限arr  eg admin_ol => admin o l
+            adminLevelSimpleyArray(level) {//<Tag>标签一</Tag>user,admin,Authority Manager,Topic Adder,Contest Participant,Code Viewer,Manual Judger,Remote Judger,Announcement Manager,User manager
+                let levels = [];
+                if (level.indexOf("user") > -1) {
+                    levels.push("user");
+                    return levels;
+                } else {
+                    if (level.indexOf("_") > -1) {//多权限
+                        level = level.slice(level.indexOf("_") + 1);
+                        return levels.concat(level.split(""));
+                    } else {
+                        return levels;
+                    }
+                }
             },
             //显示删除按钮
             selectionChange(selection) {
@@ -653,6 +757,8 @@
                     if (result.code === 200) {
                         this.$Message.success("删除成功!");
                         this.updateDatas(this.deleteUserModal.user_id, null);
+                    } else if (result.code === 401) {
+                        window.location.replace("/admin/login");
                     } else {
                         console.log("错误代码:" + result.code);
                         this.$Message.error(result.message);
@@ -700,8 +806,8 @@
     }
     
     .ivu-switch-checked {
-        border-color: #19be6b;
-        background-color: #19be6b;
+        border-color: #ff3000;
+        background-color: #ff3000;
     }
     
     .ivu-switch {

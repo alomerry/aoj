@@ -81,9 +81,12 @@ const routes = [
         },
         component: resolve => require(['../pages/problem/ProblemList'], resolve),
     },
-
     {
         path: "/admin/",
+        redirect: '/admin/home'
+    },
+    {
+        path: "/admin.html",
         redirect: '/admin/home'
     },
 

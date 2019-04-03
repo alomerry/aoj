@@ -169,7 +169,21 @@ export default {
         });
     },
 
-    updateUserByUserId(user, jwt) {
-
+    /**
+     * 更新用户信息
+     * @param user json格式的用户
+     * @param jwt 令牌
+     */
+    updateUser(user, jwt) {
+        let params = new URLSearchParams();
+        return axios({
+            url: '/api/api-oj/admin/user',
+            data: JSON.stringify(user),
+            method: "put",
+            headers: {
+                "jwt": jwt,
+                "Content-Type": "application/json"
+            }
+        })
     }
 }

@@ -2,6 +2,8 @@ package mo.controller.admin;
 
 import mo.core.Result;
 
+import java.util.Map;
+
 public interface AdminUserController {
     /**
      * 查找用户
@@ -28,4 +30,12 @@ public interface AdminUserController {
      * @return 结果
      */
     Result disableUser(String user_id, Integer state);
+
+    /**
+     * 修改用户
+     *
+     * @param user json格式用户
+     * @return 结果
+     */
+    Result updateUser(Map<String, String> user);
 }
