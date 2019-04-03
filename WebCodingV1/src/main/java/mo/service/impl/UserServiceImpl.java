@@ -114,16 +114,16 @@ public class UserServiceImpl implements UserService {
          * 4.email
          * 5.disabled
          * */
-        String level = user.get("level") == "" ? "user" : user.get("level");
+        String level = "".equals(user.get("level")) ? "user" : user.get("level");
         if (oldUser.getPrivilege() == null) {
             logger.info("修改权限级别[{}],方式[插入]", (privilegeMapper.insertPrivilege(new Privilege(oldUser.getUser().getUser_id(), level)) > 0 ? "成功" : "失败"));
         } else {
             oldUser.getPrivilege().setRightstr(level);
             logger.info("修改权限级别[{}],方式[修改]", privilegeMapper.updateRightStr(oldUser.getPrivilege()) > 0 ? "成功" : "失败");
         }
-        oldUser.getUser().setNickname(user.get("nickname") == null ? oldUser.getUser().getNickname() : user.get("nickname"));
-        oldUser.getUser().setPasswd(user.get("passwd") == null ? oldUser.getUser().getPasswd() : DigestUtils.md5DigestAsHex((user.get("passwd") + SALT).getBytes()));
-        oldUser.getUser().setEmail(user.get("email") == null ? oldUser.getUser().getEmail() : user.get("email"));
+        oldUser.getUser().setNickname("".equals(user.get("nickname")) ? oldUser.getUser().getNickname() : user.get("nickname"));
+        oldUser.getUser().setPasswd("".equals(user.get("passwd")) ? oldUser.getUser().getPasswd() : DigestUtils.md5DigestAsHex((user.get("passwd") + SALT).getBytes()));
+        oldUser.getUser().setEmail("".equals(user.get("email"))? oldUser.getUser().getEmail() : user.get("email"));
         oldUser.getUser().setDisabled(user.get("disabled") == null ? oldUser.getUser().isDisabled() : Boolean.valueOf(user.get("disabled")));
         logger.info("修改用户信息[{}]", (userMapper.updateUserNickNameEmailPasswdDisAbled(oldUser.getUser())) > 0 ? "成功" : "失败");
         return 1;

@@ -98,28 +98,37 @@ public class AdminUserControllerImpl extends AbstractAdminController implements 
         Integer operatorId = getJWTUserId();
         Privilege privilege = privilegeService.findPrivilegeByUserId(operatorId);
         if (privilege == null || !PermissionManager.isAdmin(privilege.getRightstr())) {
-            //非管理员
+            logger.info("非管理员，无操作权限");
+            return new Result().setMessage("非管理员，无操作权限").setCode(ResultCode.FORBIDDEN);
         }
-
         UserLink userLink = null;
         String level = user.get("level");
         if (user.get("user_id") == null) {
-            //参数错误
+            logger.info("参数错误");
+            return new Result().setMessage("参数错误！").setCode(ResultCode.BAD_REQUEST);
         } else if (level != null) {
             userLink = userService.findUserLinkByUserId(Integer.valueOf(user.get("user_id")));
-            if (userLink == null) {
-                //信息错误，用户不存在
+            logger.info("即将修改权限为[{}]", level);
+            if (userLink.getPrivilege() == null) {
+                logger.info("信息错误，用户不存在");
+                return new Result().setMessage("参数错误！不存在该用户").setCode(ResultCode.BAD_REQUEST);
             } else {
                 if (PermissionManager.isAllLegalAdmins(PermissionManager.changedLevel(userLink.getPrivilege() == null ? "" : userLink.getPrivilege().getRightstr(), level), privilege.getRightstr())) {
                     //可以修改
                     if (userService.updateUser(user, userLink) > 0) {
-                        //修改成功
+                        logger.info("修改成功");
+                        return new Result().setCode(ResultCode.OK);
+                    } else {
+                        logger.info("修改失败");
+                        return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("内部错误！");
                     }
                 } else {
-                    //权限不足
+                    logger.info("权限不足");
+                    return new Result().setMessage("权限不足，操作失败!").setCode(ResultCode.FORBIDDEN);
                 }
             }
+        } else {
+            return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("内部错误！");
         }
-        return null;
     }
 }

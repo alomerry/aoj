@@ -128,7 +128,7 @@ public interface UserMapper {
      * @param user 用户实体
      * @return 影响行数
      */
-    @Update("update users set nickname = #{user.nickname},email = #{user.email},passwd=#{user.passwd},disabled=#{user.disabled}")
+    @Update("update users set nickname = #{user.nickname},email = #{user.email},passwd=#{user.passwd},disabled=#{user.disabled} where user_id =#{user.user_id}")
     int updateUserNickNameEmailPasswdDisAbled(@Param("user") User user);
 }
 

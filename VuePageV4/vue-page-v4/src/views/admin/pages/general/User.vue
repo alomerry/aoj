@@ -208,12 +208,10 @@
                 },
                 ruleForm: {
                     nickname: [
-                        {required: true, message: 'The name cannot be empty', trigger: 'blur'},
                         {type: 'string', min: 3, message: 'Name no less than 3 words', trigger: 'blur'},
                         {type: 'string', max: 10, message: 'Name no less than 10 words', trigger: 'blur'},
                     ],
                     email: [
-                        {required: true, message: 'Mailbox cannot be empty', trigger: 'blur'},
                         {type: 'email', message: 'Incorrect email format', trigger: 'blur'}
                     ],
                 },
@@ -352,7 +350,7 @@
                         title: 'Admin Level',
                         key: 'privilege.rightstr',
                         render: (h, params) => {
-                            let levels = this.adminLevelArray(params.row.privilege != null ? params.row.privilege.rightstr : "user");
+                            let levels = this.adminLevelArray(params.row.privilege == null ? "user" : params.row.privilege.rightstr == "" ? "user" : params.row.privilege.rightstr);
                             let res = [];
                             levels.forEach(function (item) {
                                 res.push(h('Tag', {}, item.name));
@@ -444,7 +442,7 @@
                                             this.formItem = {
                                                 disabled: params.row.user.disabled,
                                                 nickname: params.row.user.nickname,
-                                                level: this.adminLevelSimpleyArray(params.row.privilege == null ? "user" : params.row.privilege.rightstr),
+                                                level: this.adminLevelSimpleyArray(params.row.privilege == null ? "user" : params.row.privilege.rightstr == "" ? "user" : params.row.privilege.rightstr),
                                                 api: '',
                                                 switch: '',
                                                 passwd: '',
@@ -540,13 +538,25 @@
                         this.updateUserInfoLoadingFlag = true;
                         let user = {
                             user_id: "" + this.formItem.user_id,
-                            disabled: this.formItem.disabled ? "1" : "0",
-                            nickname: this.formItem.name,
+                            disabled: this.formItem.disabled ? "true" : "false",
+                            nickname: this.formItem.nickname,
                             level: this.formatLevelToString(this.formItem.level),
                             passwd: this.formItem.passwd != "" ? hex_md5(encodeURIComponent(this.formItem.passwd + 'onlinejudge')) : "",
                             email: this.formItem.email,
                         }
                         Api.updateUser(user, this.$store.state.token).then(res => {
+                            let result = res.data;
+                            if (result.code === 200) {
+                                this.$Message.success("修改成功!");
+                                this.changeUserModalShowFlag = false;
+                                this.updateUserInfoLoadingFlag = false;
+                                this.getUsers();
+                            } else if (result.code === 401) {
+                                window.location.replace("/admin/login");
+                            } else {
+                                console.log(result.code);
+                                this.$Message.error(result.message);
+                            }
                             this.updateUserInfoLoadingFlag = false;
                         }).catch(res => {
                             console.log(res.message);
@@ -562,16 +572,17 @@
             },
             //make level_arr to level_string
             formatLevelToString(arr) {
-                if (arr == null || arr.indexOf("user") > -1) {
+                if (arr == null || arr.length == 0 || arr.indexOf("user") > -1) {
+                    console.log("low user");
                     return "";
                 } else {
-                    let result = "admin_";
+                    let result = "";
                     arr.forEach(function (currentValue) {
                         if (currentValue != "admin") {
                             result += currentValue;
                         }
                     });
-                    return result;
+                    return result === "" ? "admin" : "admin_" + result;
                 }
             },
             //switch is-disabled user
@@ -676,8 +687,10 @@
                 } else {
                     if (level.indexOf("_") > -1) {//多权限
                         level = level.slice(level.indexOf("_") + 1);
+                        levels.push("admin");
                         return levels.concat(level.split(""));
                     } else {
+                        levels.push("admin");
                         return levels;
                     }
                 }

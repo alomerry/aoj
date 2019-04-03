@@ -43,6 +43,9 @@ public final class PermissionManager {
      * @return 是否满足
      */
     public static boolean isAllLegalAdmins(Permission[] admin_types, String rightstr) {
+        if (admin_types == null) {
+            return true;
+        }
         for (Permission type : admin_types) {
             if (!isLegalAdmin(type, rightstr)) {
                 return false;
@@ -89,15 +92,15 @@ public final class PermissionManager {
         String max = oldLevel.length() >= newLevel.length() ? oldLevel : newLevel;
         StringBuilder builder = new StringBuilder();
         if (isAdmin(min)) {//管理员-管理员+
-            String maxItem = max.substring(max.indexOf("admin") + 1);
-            for (char min_i : (min.substring(min.indexOf("admin") + 1)).toCharArray()) {
+            String maxItem = max.substring(max.indexOf("admin") + 5);
+            for (char min_i : (min.substring(min.indexOf("admin") + 5)).toCharArray()) {
                 if (!maxItem.contains("" + min_i) && min_i != '_') {
                     builder.append("" + min_i);
                 }
             }
         } else {//用户-用户+
             if (isAdmin(max)) {//用户-管理员
-                max = max.substring(max.indexOf("admin") + 1);
+                max = max.substring(max.indexOf("admin") + 5);
                 for (char item : max.toCharArray()) {
                     if (item != '_') {
                         builder.append("" + item);
