@@ -6,19 +6,20 @@
                     <p>Customize width</p>
                 </div>
                 <div class="form-content">
-                    <Form :ref="formItem" :model="formItem" :label-width="120">
+                    <Form ref="form" :model="formItem" :rules="ruleForm" :label-width="120">
                         <Row>
                             <Col span="10">
-                                <FormItem label="UserName" required prop="validateName">
+                                <FormItem label="NickName" required prop="vnickname">
                                     <Input size="large" v-model="formItem.name"
                                            placeholder="Enter something..."></Input>
                                 </FormItem>
-                                <FormItem label="Email" required prop="validateEmail">
+                                <FormItem label="Email" required prop="vemail">
                                     <Input size="large" v-model="formItem.email"
                                            placeholder="Enter something..."></Input>
                                 </FormItem>
                                 <FormItem label="User Type">
                                     <Select size="large" v-model="formItem.level" title="" multiple>
+                                        <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                                         <Option value="beijing">New York</Option>
                                         <Option value="shanghai">London</Option>
                                         <Option value="shenzhen">Sydney</Option>
@@ -26,7 +27,7 @@
                                 </FormItem>
                             </Col>
                             <Col span="11" offset="2">
-                                <FormItem label="New Password" style="text-align: center">
+                                <FormItem label="New Password" style="text-align: center" prop="vpasswd">
                                     <Input size="large" v-model="formItem.passwd"
                                            placeholder="Enter something..."></Input>
                                 </FormItem>
@@ -128,10 +129,28 @@
         name: "User",
         data() {
             return {
+                levelOption:[],
                 formItem: {
                     disabled: false,
                     name: '',
                     level: [],
+                    api: '',
+                    switch: '',
+                    passwd: '',
+                    email: '',
+                },
+                ruleForm: {
+                    vnickname: [
+                        {required: true, message: 'The name cannot be empty', trigger: 'blur'}
+                    ],
+                    vemail: [
+                        {required: true, message: 'Mailbox cannot be empty', trigger: 'blur'},
+                        {type: 'email', message: 'Incorrect email format', trigger: 'blur'}
+                    ],
+                    vpasswd: [
+                        {required: true, message: 'Password cannot be empty', trigger: 'blur'},
+                        {type: 'string', min: 6, message: 'Password no less than 6 words', trigger: 'blur'},
+                    ],
                 },
                 deleteShowFlag: false,
                 searchKeyWord: "",//搜索框的内容
@@ -268,7 +287,7 @@
                         title: 'Admin Level',
                         key: 'privilege.rightstr',
                         render: (h, params) => {
-                            let levels = this.adminLevelRender(params.row.privilege != null ? params.row.privilege.rightstr : "user");
+                            let levels = this.adminLevelArray(params.row.privilege != null ? params.row.privilege.rightstr : "user");
                             let res = [];
                             levels.forEach(function (item) {
                                 res.push(h('Tag', {}, item));
@@ -356,6 +375,15 @@
                                     on: {
                                         click: () => {
                                             this.changeUserModalShowFlag = true;
+                                            this.formItem = {
+                                                disabled: params.row.user.disabled,
+                                                name: params.row.user.nickname,
+                                                level: this.adminLevelArray(params.row.privilege == null ? "user" : params.row.privilege.rightstr),
+                                                api: '',
+                                                switch: '',
+                                                passwd: '',
+                                                email: params.row.user.email,
+                                            }
                                         }
                                     }
                                 }, [
@@ -408,9 +436,9 @@
                         },
                         user: {
                             "access_time": 1547637507000,
-                            "email": "morizunzhu@163.com",
+                            email: "morizunzhu@163.com",
                             "last_login": 1550710906000,
-                            "nickname": "就当一次路过丶",
+                            nickname: "就当一次路过丶",
                             "passwd": "5cba13819e624f8dc0a991a7691f3f82",
                             "remark": null,
                             "school": "hyit",
@@ -418,7 +446,8 @@
                             "solved": 0,
                             "submit": 0,
                             "user_id": 10,
-                            "username": "morizunzhu"
+                            username: "morizunzhu",
+                            disabled: false,
                         }
                     },
                 ],
@@ -438,7 +467,7 @@
         },
         methods: {
             //生成权限render
-            adminLevelRender(level) {//<Tag>标签一</Tag>
+            adminLevelArray(level) {//<Tag>标签一</Tag>user admin
                 let levels = [];
                 if (level.indexOf("user") > -1) {
                     levels.push("user");
@@ -447,28 +476,28 @@
                     levels.push("admin");
                 }
                 if (level.indexOf("b") > -1) {//权限管理者 b
-                    levels.push("Authority_manager");
+                    levels.push("Authority Manager");
                 }
                 if (level.indexOf("c") > -1) {//题目添加者 c
-                    levels.push("Topic_adder");
+                    levels.push("Topic Adder");
                 }
                 if (level.indexOf("f") > -1) {//比赛组织者 f
-                    levels.push("Contest_organizer");
+                    levels.push("Contest Organizer");
                 }
                 if (level.indexOf("g") > -1) {//比赛参加者 g
-                    levels.push("Contest participant");
+                    levels.push("Contest Participant");
                 }
                 if (level.indexOf("h") > -1) {//代码查看者 h
-                    levels.push("Code viewer");
+                    levels.push("Code Viewer");
                 }
                 if (level.indexOf("j") > -1) {//手动判题者 j
-                    levels.push("Manual_judger");
+                    levels.push("Manual Judger");
                 }
                 if (level.indexOf("k") > -1) {//远程判题者 k
-                    levels.push("Remote_judger");
+                    levels.push("Remote Judger");
                 }
                 if (level.indexOf("l") > -1) {//公告管理者 l
-                    levels.push("Announcement_manager");
+                    levels.push("Announcement Manager");
                 }
                 if (level.indexOf("o") > -1) {//用户管理者 o
                     levels.push("User manager");

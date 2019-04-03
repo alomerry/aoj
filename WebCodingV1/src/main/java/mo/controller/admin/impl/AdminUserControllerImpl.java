@@ -66,5 +66,4 @@ public class AdminUserControllerImpl extends AbstractAdminController implements 
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足！");
         }
     }
-
 }

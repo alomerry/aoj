@@ -270,22 +270,22 @@
                 selectData: [
                     {
                         "contest": {
-                            "access": false,
-                            "contest_id": 1,
-                            "describes": "Codeforces是一家为计算机编程爱好者提供在线评测系统的俄罗斯网站。该网站由萨拉托夫国立大学的\r\n一个团体创立并负责运营。参赛范围：各大学本科生",
-                            "end_at": 1569918812000,
-                            "max": 40,
-                            "now": 2,
-                            "organizer": "Codeforces",
-                            "privates": 1,
-                            "start_at": 1548428366000,
-                            "title": "Codeforces Round #534 (Div. 1)",
-                            "user_id": 12
+                            access: false,
+                            contest_id: 1,
+                            describes: "Codeforces是一家为计算机编程爱好者提供在线评测系统的俄罗斯网站。该网站由萨拉托夫国立大学的\r\n一个团体创立并负责运营。参赛范围：各大学本科生",
+                            end_at: 1569918812000,
+                            max: 40,
+                            now: 2,
+                            organizer: "Codeforces",
+                            privates: 1,
+                            start_at: 1548428366000,
+                            title: "Codeforces Round #534 (Div. 1)",
+                            user_id: 12
                         },
                         "created_by": {
-                            "nickname": "admin",
-                            "user_id": 12,
-                            "username": "admin"
+                            nickname: "admin",
+                            user_id: 12,
+                            username: "admin"
                         },
                     },
                 ],
@@ -308,7 +308,7 @@
         },
         beforeDestroy() {
             if (this.timer) {
-                clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+                clearInterval(this.timer);// 在Vue实例销毁前，清除我们的定时器
             }
         },
         methods: {
