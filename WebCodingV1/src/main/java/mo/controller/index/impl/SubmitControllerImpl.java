@@ -74,7 +74,7 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
         solution.setCode_lenght((Integer) submit.get("code_lenght"));
 //        solution.setContest_id();
         solution.setCreate_at(new Timestamp(System.currentTimeMillis()));
-        solution.setLanguage((Integer) submit.get("language"));
+        solution.setLanguage(Integer.valueOf((String) submit.get("language")));
         solution.setProblem_id((Integer) submit.get("problem_id"));
         solution.setUser_id(getJWTUserId());
         solution.setResult(0);

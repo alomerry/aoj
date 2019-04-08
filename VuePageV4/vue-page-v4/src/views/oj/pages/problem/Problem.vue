@@ -307,9 +307,9 @@
                     //问题id
                     problem_id: this.problem.problem_id,
                     //语言
-                    language: '',
+                    language: this.select_language,
                     code: code,
-                    code_lenght: code.length(),
+                    code_lenght: code.length,
                 };
                 API.insertNewSolution(submit, this.$store.state.token).then(res => {
                     let result = res.data;
