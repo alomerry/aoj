@@ -16,11 +16,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.Map;
 
+@RestController
 public class SubmitControllerImpl extends AbstractController implements SubmitController {
     private static final Logger logger = LoggerFactory.getLogger(SubmitControllerImpl.class);
 
@@ -32,7 +34,7 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
 
     @Override
     @AuthCheck({RequiredType.JWT})
-    @RequestMapping(value = "/admin/submit", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/submit", method = RequestMethod.POST, consumes = "application/json")
     public Result insertSubmit(@RequestBody Map<String, Object> submit) {
         Solution solution = initBySubmit(submit);
         SourceCode sourceCode;

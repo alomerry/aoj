@@ -310,7 +310,12 @@
                     language: '',
                     code: code,
                     code_lenght: code.length(),
-                }
+                };
+                API.insertNewSolution(submit, this.$store.state.token).then(res => {
+
+                }).catch(res => {
+
+                });
             }
         }
     }
