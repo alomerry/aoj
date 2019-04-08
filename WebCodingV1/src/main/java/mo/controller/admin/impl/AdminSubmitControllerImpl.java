@@ -50,8 +50,7 @@ public class AdminSubmitControllerImpl extends AbstractAdminController implement
         if (problemService.isDisabledProblem(solution.getProblem_id())) {
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage("题目被屏蔽，无法判题");
         } else {
-            Long solutionId = solutionService.insertIntoNewSolution(solution);
-            sourceCode = new SourceCode(solutionId.intValue(), (String) submit.get("code"));
+            solutionService.insertIntoNewSolution(solution, new SourceCode((String) submit.get("code")));
         }
         return null;
     }

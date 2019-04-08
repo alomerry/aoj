@@ -42,8 +42,8 @@ public interface SolutionMapper {
      * @param source      源代码
      * @return 影响行数
      */
-//    @Insert("insert into source_code (solution_id,source) values (#{solution_id},#{source})")
-//    int insertCodeIntoSource(@Param("solution_id") long solution_id, @Param("source") String source);
+    @Insert("insert into source_code (solution_id,source) values (#{solution_id},#{source})")
+    int insertCodeIntoSource(@Param("solution_id") long solution_id, @Param("source") String source);
 
     /**
      * 按判题时间降序获取结果集
