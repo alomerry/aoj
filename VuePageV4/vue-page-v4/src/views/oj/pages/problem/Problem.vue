@@ -306,8 +306,6 @@
                 let submit = {
                     //问题id
                     problem_id: this.problem.problem_id,
-                    //结果(4:AC 0:待评测)
-                    result: 0,
                     //语言
                     language: '',
                     code: code,

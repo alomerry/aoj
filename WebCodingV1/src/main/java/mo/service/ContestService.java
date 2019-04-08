@@ -75,4 +75,13 @@ public interface ContestService {
      * @return 结果-1=题目不存在 0=删除失败 1=删除成功
      */
     Integer deleteProblemFromContest(Integer problemId, Integer contestId);
+
+    /**
+     * 查询指定题目是否在指定竞赛中
+     *
+     * @param contestId 竞赛Id
+     * @param problemId 题目Id
+     * @return
+     */
+    boolean isProblemInContest(Integer contestId, Integer problemId);
 }

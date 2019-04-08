@@ -25,8 +25,8 @@ public final class StringValue {
     };
 
     //OJ状态
-    public static final int OJ_WT0 = 0;//Waiting:排队中
-    public static final int OJ_WT1 = 1;//Waiting
+    public static final int OJ_WT0 = 0;//Waiting:等待判题
+    public static final int OJ_WT1 = 1;//Waiting:排队中
     public static final int OJ_CI = 2;//compiling
     public static final int OJ_RI = 3;//Running
     public static final int OJ_AC = 4;//Accept:答案正确，请再接再厉。

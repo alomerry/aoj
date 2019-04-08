@@ -18,30 +18,22 @@ public interface SolutionMapper {
      *
      * @param problem_id  问题Id
      * @param user_id     用户Id
-     * @param time        用时（ms）
-     * @param memory      所用空间
-     * @param in_date     加入时间
-     * @param result      结果（4：AC）
+     * @param result      结果（4:AC 0:WA）
      * @param language    语言
      * @param ip          用户ip
-     * @param valid       是否有效
+     * @param create_at   创建时间
      * @param code_lenght 代码长度
-     * @param judgetime   判题时间
      * @return
      */
-    @Insert("insert into solution (problem_id,user_id,time,memory,create_at,result,language,ip,valid,code_lenght,judgetime) " +
-            "values (#{problem_id},#{user_id},#{time},#{memory},#{create_at},#{result},#{language},#{ip}, #{valid},#{code_lenght},#{judgetime})")
+    @Insert("insert into solution (problem_id,user_id,create_at,result,language,ip,code_lenght) " +
+            "values (#{problem_id},#{user_id},#{create_at},#{result},#{language},#{ip},#{code_lenght})")
     int insertOneItemIntoSolution(@Param("problem_id") Integer problem_id,
                                   @Param("user_id") Integer user_id,
-                                  @Param("time") Integer time,
-                                  @Param("memory") Integer memory,
-                                  @Param("create_at") String in_date,
+                                  @Param("create_at") String create_at,
                                   @Param("result") Integer result,
                                   @Param("language") Integer language,
                                   @Param("ip") String ip,
-                                  @Param("valid") String valid,
-                                  @Param("code_lenght") Integer code_lenght,
-                                  @Param("judgetime") String judgetime);
+                                  @Param("code_lenght") Integer code_lenght);
 
     /**
      * 插入源代码表
@@ -50,8 +42,8 @@ public interface SolutionMapper {
      * @param source      源代码
      * @return 影响行数
      */
-    @Insert("insert into source_code (solution_id,source) values (#{solution_id},#{source})")
-    int insertCodeIntoSource(@Param("solution_id") long solution_id, @Param("source") String source);
+//    @Insert("insert into source_code (solution_id,source) values (#{solution_id},#{source})")
+//    int insertCodeIntoSource(@Param("solution_id") long solution_id, @Param("source") String source);
 
     /**
      * 按判题时间降序获取结果集
@@ -59,8 +51,8 @@ public interface SolutionMapper {
      * @param user_id 用户Id
      * @return 结果集
      */
-    @Select("select * from solution where user_id = #{user_id} order by judgetime desc")
-    List<Solution> findSolutionByUserIdOrderByJudgeTimeDesc(@Param("user_id") Integer user_id);
+//    @Select("select * from solution where user_id = #{user_id} order by judgetime desc")
+//    List<Solution> findSolutionByUserIdOrderByJudgeTimeDesc(@Param("user_id") Integer user_id);
 
     /**
      * 按判题时间升序获取结果集
@@ -68,8 +60,8 @@ public interface SolutionMapper {
      * @param user_id 用户Id
      * @return 结果集
      */
-    @Select("select * from solution where user_id = #{user_id} order by judgetime asc")
-    List<Solution> findSolutionByUserIdOrderByJudgeTimeAsc(@Param("user_id") Integer user_id);
+//    @Select("select * from solution where user_id = #{user_id} order by judgetime asc")
+//    List<Solution> findSolutionByUserIdOrderByJudgeTimeAsc(@Param("user_id") Integer user_id);
 
     /**
      * 按页码以判题时间降序获取结果集
@@ -79,8 +71,8 @@ public interface SolutionMapper {
      * @param end     结束
      * @return 结果集
      */
-    @Select("select * from solution where user_id = #{user_id} order by judgetime desc limit #{start},#{end}")
-    List<Solution> findSolutionByUserIdOrderByJudgeTimeDescByPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("end") int end);
+//    @Select("select * from solution where user_id = #{user_id} order by judgetime desc limit #{start},#{end}")
+//    List<Solution> findSolutionByUserIdOrderByJudgeTimeDescByPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("end") int end);
 
     /**
      * 按页码以判题时间升序获取结果集
@@ -90,8 +82,8 @@ public interface SolutionMapper {
      * @param end     结束
      * @return 结果集
      */
-    @Select("select * from solution where user_id = #{user_id} order by judgetime asc limit #{start},#{end}")
-    List<Solution> findSolutionByUserIdOrderByJudgeTimeAscByPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("end") int end);
+//    @Select("select * from solution where user_id = #{user_id} order by judgetime asc limit #{start},#{end}")
+//    List<Solution> findSolutionByUserIdOrderByJudgeTimeAscByPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("end") int end);
 
     /**
      * 查询上次插入的主键

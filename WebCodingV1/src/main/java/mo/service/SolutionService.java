@@ -8,7 +8,7 @@ public interface SolutionService {
      * 插入新Solution
      *
      * @param solution 解题实体
-     * @return 插入结果
+     * @return solutionId
      */
-    Integer insertIntoNewSolution(Solution solution);
+    Long insertIntoNewSolution(Solution solution);
 }
