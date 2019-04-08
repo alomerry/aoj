@@ -80,9 +80,28 @@ public interface ProblemService {
     List<ProblemLink> findSimpleProblemsByPageAndContestId(Integer page, Integer per_page, Integer contest_id);
 
     /**
-     * 判断指定题目的公开级别
+     * 判断指定题目的公开级别是否为隐私(即无法被非创建者修改)
+     *
      * @param problemId 题目Id
-     * @return
+     * @return 是否为隐私
      */
     boolean isAbsolutePrivateProblem(Integer problemId);
+
+    /**
+     * 判断指定题目的公开级别是否为禁用
+     *
+     * @param problemId 题目Id
+     * @return 是否为禁用
+     */
+    boolean isDisabledProblem(Integer problemId);
+
+    /**
+     * 判断指定用户是否是指定题目的创建者
+     *
+     * @param problemId 题目Id
+     * @param userId    用户Id
+     * @return 是创建者/非创建者
+     */
+    boolean isProblemCreator(Integer problemId, Integer userId);
+
 }

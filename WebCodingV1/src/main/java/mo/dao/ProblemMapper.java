@@ -67,10 +67,20 @@ public interface ProblemMapper {
 
     /**
      * 查询指定题目的公开级别
+     *
      * @param problem_id 题目Id
      * @return 公开级别
      */
     @Select("select defunct from problems where problem_id = #{problem_id}")
     Character findProblemPublicLevelByProblemId(@Param("problem_id") Integer problem_id);
+
+    /**
+     * 根据题目Id查找创建者Id
+     *
+     * @param problem_id 题目Id
+     * @return 创建者Id
+     */
+    @Select("select create_by from problems where problem_id = #{problem_id}")
+    Integer findCreatorIdByProblemId(@Param("problem_id") Integer problem_id);
 
 }

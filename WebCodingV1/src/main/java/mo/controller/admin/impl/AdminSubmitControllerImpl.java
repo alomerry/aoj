@@ -6,6 +6,7 @@ import mo.core.Result;
 import mo.entity.po.Solution;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
+import mo.service.ProblemService;
 import mo.utils.InetAddressUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.Map;
 
@@ -21,6 +23,8 @@ public class AdminSubmitControllerImpl extends AbstractAdminController implement
 
     private static final Logger logger = LoggerFactory.getLogger(AdminSubmitControllerImpl.class);
 
+    @Resource
+    private ProblemService problemService;
 
     @Override
     @AuthCheck({RequiredType.JWT})
@@ -35,6 +39,9 @@ public class AdminSubmitControllerImpl extends AbstractAdminController implement
          *   2.1不在竞赛中
          *   2.2在竞赛中
          * */
+        if (problemService.isAbsolutePrivateProblem(solution.getProblem_id())) {
+
+        }
         return null;
     }
 

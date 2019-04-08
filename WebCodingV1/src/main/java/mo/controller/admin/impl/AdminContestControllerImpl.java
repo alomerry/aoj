@@ -75,17 +75,18 @@ public class AdminContestControllerImpl extends AbstractAdminController implemen
     @RequestMapping(value = "/admin/contest/{contest_id}/problem/{problem_id}", method = RequestMethod.POST)
     public Result addProblem(@PathVariable String problem_id,
                              @PathVariable String contest_id) {
-        Integer user_id = getJWTUserId();
-
+        Integer user_id = getJWTUserId(), problemId = Integer.valueOf(problem_id);
         //判断user是否有权限编辑contest_id;
-        //判断题目是否为绝对隐私
-        if (problemService.isAbsolutePrivateProblem(Integer.valueOf(problem_id))) {
-            return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("该题目无法访问或被屏蔽");
+        if (problemService.isDisabledProblem(problemId)) {//判断题目是否被屏蔽
+            return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("该题目被屏蔽");
+        } else if (problemService.isAbsolutePrivateProblem(problemId)
+                && problemService.isProblemCreator(problemId, user_id)) {//判断该题目是否为绝对隐私(并且非创建者编辑)
+            return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("该题目无法访问");
         }
         if (!contestService.hasAccess(user_id, Integer.valueOf(contest_id))) {
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage("无操作权限");
         }
-        if (contestService.addProblemToContest(Integer.valueOf(problem_id), Integer.valueOf(contest_id)) > 0) {
+        if (contestService.addProblemToContest(problemId, Integer.valueOf(contest_id)) > 0) {
             return new Result().setCode(ResultCode.OK);
         } else {
             return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("添加题目失败,可能原因：1.题目已存在；2.内部错误");//0/-1

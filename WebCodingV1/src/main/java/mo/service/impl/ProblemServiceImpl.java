@@ -87,23 +87,36 @@ public class ProblemServiceImpl implements ProblemService {
     public boolean isAbsolutePrivateProblem(Integer problemId) {
         char level = problemMapper.findProblemPublicLevelByProblemId(problemId);
         logger.info("判断题目[{}]的公开级别:[{}]", problemId, level);
-        switch (level) {
-            //屏蔽-公开-部分公开-绝对私有0/1/2/3
-            case 0: {
+        return switchProblemLevel(new int[]{3}, level);
+    }
+
+    @Override
+    public boolean isDisabledProblem(Integer problemId) {
+        char level = problemMapper.findProblemPublicLevelByProblemId(problemId);
+        logger.info("判断题目[{}]的公开级别:[{}]", problemId, level);
+        return switchProblemLevel(new int[]{0}, level);
+    }
+
+    @Override
+    public boolean isProblemCreator(Integer problemId, Integer userId) {
+        return userId.equals(problemMapper.findCreatorIdByProblemId(problemId));
+    }
+
+    /**
+     * 查询题目公开级别是否满足asklLevel级别
+     *
+     * @param askLevels 是否是此权限
+     * @param level     实际公开级别
+     * @return 是否满足
+     */
+    private boolean switchProblemLevel(int[] askLevels, int level) {
+        //屏蔽-公开-部分公开-绝对私有0/1/2/3
+        for (int i = 0; i < askLevels.length; i++) {
+            if (level == askLevels[i]) {
                 return true;
-            }
-            case 1: {
-                return false;
-            }
-            case 2: {
-                return false;
-            }
-            case 3: {
-                return true;
-            }
-            default: {
-                return false;
             }
         }
+        return false;
     }
+
 }
