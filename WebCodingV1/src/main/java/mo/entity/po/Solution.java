@@ -22,7 +22,7 @@ public class Solution {
     private Integer time;
     //所用空间
     private Integer memory;
-    //结果（4：AC）
+    //结果(4:AC 0:待评测)
     private Integer result;
     //所属于竞赛组
     private Integer contest_id;

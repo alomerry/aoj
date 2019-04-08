@@ -68,6 +68,12 @@ export default {
             url: '/api/api-oj/problem/' + problem_id,
             method: 'get',
         });
+    },
+
+    insertNewSolution(problem_id,jwt){
+        return axios({
+
+        })
     }
 
 }

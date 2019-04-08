@@ -81,7 +81,7 @@
                     <Row>
                         <div>
                             <Button ghost type="primary" size="large" style="float: right;margin-right: 50px"
-                                    @click.native="submitCode" :disabled="loginStatus">
+                                    @click.native="submitCode" :disabled="loginStatus" :loading="submitLoadingFlag">
                                 <Icon type="md-create"/>
                                 Submit
                             </Button>
@@ -137,7 +137,7 @@
                 </Card>
             </Col>
         </Row>
-
+    
     </div>
 </template>
 
@@ -201,6 +201,7 @@
                 ],
                 select_theme: 'idea',
                 select_language: 'cpp',
+                submitLoadingFlag: false,
                 // editor: '',
                 author: '',
                 problem: {
@@ -300,7 +301,9 @@
                 this.reset_modal = false;
             },
             submitCode() {
-                editor_i.getValue();
+                this.submitLoadingFlag = true;
+                let code = editor_i.getValue();
+                console.log(code);
             }
         }
     }
@@ -310,24 +313,24 @@
     .card-content {
         margin: 20px 0 0 50px;
     }
-
+    
     p.card-title {
         text-align: left;
         font-size: 30px;
         margin: 0 0 25px 20px;
         height: 35px;
     }
-
+    
     .problem-detail label {
         color: #00b9ff;
         font-size: 23px;
         margin-left: 15px;
     }
-
+    
     .problem-detail {
         text-align: left;
     }
-
+    
     .problem-detail > div > p {
         margin-left: 30px;
         font-size: 16px;
@@ -335,7 +338,7 @@
         margin-bottom: 20px;
         /*width: 800px;*/
     }
-
+    
     /*.problem-detail>div>label{
       margin-top: 20px;
     }*/
@@ -343,15 +346,15 @@
         margin-left: 30px;
         background-color: #d6d4df;
     }
-
+    
     .problem-info > span.title {
         float: left;
     }
-
+    
     .problem-info > span.content {
         float: right;
     }
-
+    
     .ivu-divider-horizontal {
         margin: 0 0 10px 0;
     }
