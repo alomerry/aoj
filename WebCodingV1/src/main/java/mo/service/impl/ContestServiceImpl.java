@@ -107,6 +107,11 @@ public class ContestServiceImpl implements ContestService {
         }
     }
 
+    @Override
+    public boolean isProblemInContest(Integer contestId, Integer problemId) {
+        return contestMapper.findProblemFromContestByProblemIdAndContestId(contestId, problemId) > 0;
+    }
+
     /**
      * 将指定公开级别的竞赛集属性整合成string
      *

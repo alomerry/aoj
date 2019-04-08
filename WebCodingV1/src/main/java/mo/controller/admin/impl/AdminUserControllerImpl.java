@@ -1,31 +1,27 @@
 package mo.controller.admin.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import mo.controller.admin.AbstractAdminController;
+import mo.controller.AbstractController;
 import mo.controller.admin.AdminUserController;
 import mo.core.Permission;
 import mo.core.PermissionManager;
 import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.Privilege;
-import mo.entity.po.User;
 import mo.entity.vo.UserLink;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
 import mo.service.PrivilegeService;
 import mo.service.UserService;
-import mo.utils.JWTUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import java.util.Map;
 
 @RestController
-public class AdminUserControllerImpl extends AbstractAdminController implements AdminUserController {
+public class AdminUserControllerImpl extends AbstractController implements AdminUserController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminUserControllerImpl.class);
 

@@ -1,11 +1,10 @@
-package mo.controller.admin;
+package mo.controller.index;
 
 import mo.core.Result;
 
 import java.util.Map;
 
-public interface AdminSubmitController {
-
+public interface SubmitController {
     /**
      * 提交代码
      *

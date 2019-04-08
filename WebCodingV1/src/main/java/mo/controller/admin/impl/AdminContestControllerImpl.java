@@ -1,7 +1,7 @@
 package mo.controller.admin.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import mo.controller.admin.AbstractAdminController;
+import mo.controller.AbstractController;
 import mo.controller.admin.AdminContestController;
 import mo.core.Result;
 import mo.core.ResultCode;
@@ -27,7 +27,7 @@ import static mo.utils.StringValue.ONLINEJUDGE_SESSION_GROUP;
 import static mo.utils.StringValue.ONLINEJUDGE_SESSION_UER;
 
 @RestController
-public class AdminContestControllerImpl extends AbstractAdminController implements AdminContestController {
+public class AdminContestControllerImpl extends AbstractController implements AdminContestController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminContestControllerImpl.class);
 

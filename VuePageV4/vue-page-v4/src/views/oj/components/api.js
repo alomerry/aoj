@@ -72,7 +72,7 @@ export default {
 
     insertNewSolution(submit, jwt) {
         return axios({
-            url: '',
+            url: '/api/api-oj/',
             data: JSON.stringify(submit),
             method: 'post',
             headers: {

@@ -1,4 +1,4 @@
-package mo.controller.admin;
+package mo.controller;
 
 import mo.utils.JWTUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -6,7 +6,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class AbstractAdminController {
+public class AbstractController {
     /**
      * 获取jwt中的jti(user_id)
      *

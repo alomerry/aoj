@@ -54,4 +54,14 @@ public interface ContestMapper {
     @Select("select user_id from contest where contest_id = #{contest_id}")
     Integer findCreatorByContestId(@Param("contest_id") Integer contest_id);
 
+    /**
+     * 查找竞赛中是否包含指定题目
+     *
+     * @param contest_id 竞赛Id
+     * @param problem_id 题目Id
+     * @return 是否包含
+     */
+    @Select("select contest_id from contest where contest_id = #{contest_id} and problem_id =#{problem_id}")
+    Integer findProblemFromContestByProblemIdAndContestId(@Param("contest_id") Integer contest_id, @Param("problem_id") Integer problem_id);
+
 }

@@ -1,7 +1,7 @@
-package mo.controller.admin.impl;
+package mo.controller.index.impl;
 
-import mo.controller.admin.AbstractAdminController;
-import mo.controller.admin.AdminSubmitController;
+import mo.controller.AbstractController;
+import mo.controller.index.SubmitController;
 import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.Solution;
@@ -16,16 +16,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.Map;
 
-@RestController
-public class AdminSubmitControllerImpl extends AbstractAdminController implements AdminSubmitController {
-
-    private static final Logger logger = LoggerFactory.getLogger(AdminSubmitControllerImpl.class);
+public class SubmitControllerImpl extends AbstractController implements SubmitController {
+    private static final Logger logger = LoggerFactory.getLogger(SubmitControllerImpl.class);
 
     @Resource
     private ProblemService problemService;
