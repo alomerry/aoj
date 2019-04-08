@@ -311,15 +311,32 @@
                     code: code,
                     code_lenght: code.length,
                 };
-                API.insertNewSolution(submit, this.$store.state.token).then(res => {
+                this.$router.push({name: 'status'});
+                /*API.insertNewSolution(submit, this.$store.state.token).then(res => {
                     let result = res.data;
                     console.log(result);
+                    if (result.code == 200) {
+                        this.$router.push({name: 'status'});
+                    } else if (result.code == 401) {
+                        this.$axios({
+                            url: '/api/api-oj/logout',
+                            method: 'post',
+                            data: 'user_id = ' + this.user.user_id,
+                        }).then(res => {
+                            console.info('后台返回的数据', res.data);
+                            if (res.data.code === 200) {
+                            } else {
+                            }
+                        });
+                        this.$store.dispatch('logout');
+                        this.$Message.error("身份失效，请重新登录！");
+                    }
                     this.submitLoadingFlag = false;
                 }).catch(res => {
                     this.submitLoadingFlag = false;
                     console.log(res);
                     this.$Message.error(res.message);
-                });
+                });*/
             }
         }
     }
