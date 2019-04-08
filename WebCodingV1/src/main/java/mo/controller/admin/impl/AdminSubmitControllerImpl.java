@@ -26,7 +26,15 @@ public class AdminSubmitControllerImpl extends AbstractAdminController implement
     @AuthCheck({RequiredType.JWT})
     @RequestMapping(value = "/admin/submit", consumes = "application/json")
     public Result insertSubmit(@RequestBody Map<String, Object> submit) {
-
+        Solution solution = initBySubmit(submit);
+        /*
+         * 1.判断题目是否被禁用
+         *   1.1禁用(错误！无法判题)
+         *   1.2未禁用
+         * 2.题目是否在竞赛中
+         *   2.1不在竞赛中
+         *   2.2在竞赛中
+         * */
         return null;
     }
 
