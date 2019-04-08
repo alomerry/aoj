@@ -70,9 +70,15 @@ export default {
         });
     },
 
-    insertNewSolution(problem_id,jwt){
+    insertNewSolution(submit, jwt) {
         return axios({
-
+            url: '',
+            data: JSON.stringify(submit),
+            method: 'post',
+            headers: {
+                "jwt": jwt,
+                "Content-Type": "application/json"
+            }
         })
     }
 

@@ -36,7 +36,7 @@ public class Solution {
     private Integer code_lenght;
     private String ip;
     //加入时间
-    private Timestamp in_date;
+    private Timestamp create_at;
     //判题时间
     private Timestamp judgetime;
 

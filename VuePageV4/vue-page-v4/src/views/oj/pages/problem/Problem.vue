@@ -183,24 +183,24 @@
                 ],
                 languageList: [
                     {
-                        value: 'java',
+                        value: '0',
                         label: 'Java'
                     },
                     {
-                        value: 'c',
+                        value: '1',
                         label: 'C'
                     },
                     {
-                        value: 'cpp',
+                        value: '2',
                         label: 'C++'
                     },
                     {
-                        value: 'python',
+                        value: '3',
                         label: 'Python'
                     },
                 ],
                 select_theme: 'idea',
-                select_language: 'cpp',
+                select_language: '2',
                 submitLoadingFlag: false,
                 // editor: '',
                 author: '',
@@ -303,7 +303,16 @@
             submitCode() {
                 this.submitLoadingFlag = true;
                 let code = editor_i.getValue();
-                console.log(code);
+                let submit = {
+                    //问题id
+                    problem_id: this.problem.problem_id,
+                    //结果(4:AC 0:待评测)
+                    result: 0,
+                    //语言
+                    language: '',
+                    code: code,
+                    code_lenght: code.length(),
+                }
             }
         }
     }

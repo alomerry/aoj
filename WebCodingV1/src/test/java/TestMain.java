@@ -10,6 +10,7 @@ import org.junit.Test;
 //import redis.clients.jedis.Jedis;
 
 import java.lang.reflect.Method;
+import java.net.InetAddress;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -104,5 +105,11 @@ public class TestMain {
         JSONObject json = new JSONObject();
         json.put("name", test);
         System.out.println(json);
+    }
+
+    @Test
+    public void test07() {
+        InetAddress address = InetAddress.getLoopbackAddress();
+        System.out.println(address.getHostAddress());
     }
 }

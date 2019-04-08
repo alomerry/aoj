@@ -29,13 +29,13 @@ public interface SolutionMapper {
      * @param judgetime   判题时间
      * @return
      */
-    @Insert("insert into solution (problem_id,user_id,time,memory,in_date,result,language,ip,valid,code_lenght,judgetime) " +
-            "values (#{problem_id},#{user_id},#{time},#{memory},#{in_date},#{result},#{language},#{ip}, #{valid},#{code_lenght},#{judgetime})")
+    @Insert("insert into solution (problem_id,user_id,time,memory,create_at,result,language,ip,valid,code_lenght,judgetime) " +
+            "values (#{problem_id},#{user_id},#{time},#{memory},#{create_at},#{result},#{language},#{ip}, #{valid},#{code_lenght},#{judgetime})")
     int insertOneItemIntoSolution(@Param("problem_id") Integer problem_id,
                                   @Param("user_id") Integer user_id,
                                   @Param("time") Integer time,
                                   @Param("memory") Integer memory,
-                                  @Param("in_date") String in_date,
+                                  @Param("create_at") String in_date,
                                   @Param("result") Integer result,
                                   @Param("language") Integer language,
                                   @Param("ip") String ip,
