@@ -6,6 +6,7 @@ import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.Solution;
 import mo.entity.po.SourceCode;
+import mo.exception.ServiceException;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
 import mo.service.ProblemService;
@@ -49,7 +50,14 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
         if (problemService.isDisabledProblem(solution.getProblem_id())) {
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage("题目被屏蔽，无法判题");
         } else {
-            solutionService.insertIntoNewSolution(solution, new SourceCode((String) submit.get("code")));
+            try {
+                if (solutionService.insertIntoNewSolution(solution, new SourceCode((String) submit.get("code")))) {
+                    return new Result().setCode(ResultCode.OK);
+                }
+            } catch (ServiceException e) {
+                e.printStackTrace();
+                return new Result().setCode(ResultCode.FORBIDDEN).setMessage(e.getMessage());
+            }
         }
         return null;
     }

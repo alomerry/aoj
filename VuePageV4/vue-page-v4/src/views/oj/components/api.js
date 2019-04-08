@@ -25,7 +25,6 @@ export default {
             data: params,
         }).then(res => {
             let result = res.data;
-            console.log(result);
             if (result.code === 200) {
                 for (let i = 0; i < result.data.total; i++) {
                     let item = result.data.results[i];

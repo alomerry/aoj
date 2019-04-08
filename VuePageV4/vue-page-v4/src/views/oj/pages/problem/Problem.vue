@@ -312,9 +312,13 @@
                     code_lenght: code.length(),
                 };
                 API.insertNewSolution(submit, this.$store.state.token).then(res => {
-
+                    let result = res.data;
+                    console.log(result);
+                    this.submitLoadingFlag = false;
                 }).catch(res => {
-
+                    this.submitLoadingFlag = false;
+                    console.log(res);
+                    this.$Message.error(res.message);
                 });
             }
         }

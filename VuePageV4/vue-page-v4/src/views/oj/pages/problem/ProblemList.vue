@@ -135,7 +135,7 @@
         },
         computed: {
             tableLoadingIsFinish() {
-                console.log((this.tableData1.length > 0 && this.tableLoading));
+                // console.log((this.tableData1.length > 0 && this.tableLoading));
                 return !(this.tableData1.length > 0 && this.tableLoading);
             }
         }
