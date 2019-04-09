@@ -2,7 +2,7 @@
     <div id="headerDiv">
         <Modal v-model="loginModal_flag" width="360" :mask-closable="false" shadow>
             <p slot="header" style="text-align:left">
-
+                
                 <span>Welcome to MOoj</span>
             </p>
             <div style="text-align:center; padding:3px">
@@ -209,6 +209,6 @@
         created() {
             this.user = this.$store.state.user;
             this.admin = this.$store.state.admin;
-        }
+        },
     };
 </script>

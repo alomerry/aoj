@@ -124,6 +124,22 @@
             changePage() {
                 // The simulated data is changed directly here, and the actual usage scenario should fetch the data from the server
                 this.tableData1 = this.mockTableData1();
+            },
+            updateActiveClass(path) {
+                switch (path) {
+                    case "/status": {
+                        this.$store.dispatch("updateActiveName", 'status');
+                        break;
+                    }
+                    case "/home": {
+                        this.$store.dispatch("updateActiveName", 'home');
+                        break;
+                    }
+                    case "/problems": {
+                        this.$store.dispatch("updateActiveName", 'problems');
+                        break;
+                    }
+                }
             }
         },
         created() {
@@ -131,6 +147,7 @@
             //ajax
             this.totalPage = 1;
             this.tableLoading = true;
+            this.updateActiveClass(this.$route.path);
         },
         computed: {
             tableLoadingIsFinish() {

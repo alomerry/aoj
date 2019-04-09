@@ -21,6 +21,7 @@
         name: "status",
         data() {
             return {
+                buttonLoading: false,
                 current: 1,
                 totalPage: 1,
                 per_page: 10,
@@ -165,6 +166,27 @@
                     }
                 ]
             }
+        },
+        methods: {
+            updateActiveClass(path) {
+                switch (path) {
+                    case "/status": {
+                        this.$store.dispatch("updateActiveName", 'status');
+                        break;
+                    }
+                    case "/home": {
+                        this.$store.dispatch("updateActiveName", 'home');
+                        break;
+                    }
+                    case "/problems": {
+                        this.$store.dispatch("updateActiveName", 'problems');
+                        break;
+                    }
+                }
+            }
+        },
+        created() {
+            this.updateActiveClass(this.$route.path);
         }
     }
 </script>
@@ -176,6 +198,7 @@
         margin: 0 0 0 20px;
         height: 35px;
     }
+    
     .card-content {
         margin: 10px 20px 0 20px;
     }
