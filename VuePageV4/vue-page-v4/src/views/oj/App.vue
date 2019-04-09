@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" style="background-color: #edecec;" :style="htmlHeight">
     <div class="sk-loading" v-if="loading">
       <div id="loading-img">
         <div class="sk-folding-cube">
@@ -27,6 +27,7 @@
     data() {
       return {
         loading: false,
+        htmlHeight: "height:" + window.innerHeight + "px;",
       }
     },
     components: {

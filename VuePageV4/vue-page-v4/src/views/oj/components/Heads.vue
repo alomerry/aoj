@@ -188,7 +188,7 @@
                 window.location.href = "/admin.html";
             },
             logger() {
-                console.log("md5:" + hex_md5(encodeURIComponent('120211onlinejudge')));
+                // console.log("md5:" + hex_md5(encodeURIComponent('120211onlinejudge')));
             }
         },
         watch: {

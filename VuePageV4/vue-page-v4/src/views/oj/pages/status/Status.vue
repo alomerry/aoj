@@ -1,9 +1,12 @@
 <template>
-    <div style="margin: 0 15px 0 15px">
+    <div class="card-content">
         <Card>
-            <div slot="title">The standard card</div>
-            <div style="margin-bottom: 2px;">
-                <Table :columns="statusColumns"></Table>
+            <p class="card-title">Status</p>
+            <Button slot="extra" style="margin-right: 60px" :loading="buttonLoading" @click.native="refresh">
+                ReSet
+            </Button>
+            <div style="margin-bottom: 2px;margin-top: 10px">
+                <Table :columns="statusColumns" stripe></Table>
             </div>
             <div style="float: right;margin: 5px;">
                 <Page :total="totalPage" :page-size="per_page" :current="current" show-sizer/>
@@ -23,16 +26,113 @@
                 per_page: 10,
                 statusColumns: [
                     {
-                        title: 'when',
+                        title: 'When',
                         key: 'when',
-                        width: 600,
-                        /*render: (h, params) => {
+                        align: 'center',
+                        render: (h, params) => {
                             return h('span', {
                                 style: {
                                     fontSize: '15px'
                                 },
-                            }, params.row.title);
-                        }*/
+                            }, params.row.solution.create_at);
+                        }
+                    },
+                    {
+                        title: 'Id',
+                        key: 'id',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('a', {
+                                style: {
+                                    fontSize: '15px'
+                                },
+                            }, params.row.solution.solution_id);
+                        }
+                    },
+                    {
+                        title: 'Status',
+                        key: 'status',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('span', {
+                                style: {
+                                    fontSize: '15px'
+                                },
+                            }, params.row.solution.result);
+                        }
+                    },
+                    {
+                        title: 'Problem',
+                        key: 'problem',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('a', {
+                                style: {
+                                    fontSize: '15px'
+                                },
+                            }, params.row.problem.title);
+                        }
+                    },
+                    {
+                        title: 'Time',
+                        key: 'time',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('span', {
+                                style: {
+                                    fontSize: '15px'
+                                },
+                            }, params.row.solution.time);
+                        }
+                    },
+                    {
+                        title: 'Memory',
+                        key: 'memory',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('span', {
+                                style: {
+                                    fontSize: '15px'
+                                },
+                            }, params.row.solution.memory);
+                        }
+                    },
+                    {
+                        title: 'Language',
+                        key: 'language',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('span', {
+                                style: {
+                                    fontSize: '15px'
+                                },
+                            }, params.row.solution.language);
+                        }
+                    },
+                    {
+                        title: 'Author',
+                        key: 'author',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('a', {
+                                style: {
+                                    fontSize: '15px'
+                                },
+                            }, params.row.user.username);
+                        }
+                    },
+                    {
+                        title: 'Option',
+                        key: 'option',
+                        fixed: 'right',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('span', {
+                                style: {
+                                    fontSize: '15px'
+                                },
+                            }, "Rejudge");
+                        }
                     },
                 ],
                 statusData: [
@@ -48,11 +148,11 @@
                             ip: "127.0.0.1",
                             judgetime: null,
                             language: 2,
-                            language: null,
+                            memory: 0,
                             num: 0,
                             problem_id: 7,
                             result: 0,
-                            solution_id: 30,
+                            solution_id: "dsfs25ess",
                             time: null,
                             user_id: 10,
                             valid: 1
@@ -70,5 +170,13 @@
 </script>
 
 <style scoped>
-
+    p.card-title {
+        text-align: left;
+        font-size: 20px;
+        margin: 0 0 0 20px;
+        height: 35px;
+    }
+    .card-content {
+        margin: 10px 20px 0 20px;
+    }
 </style>

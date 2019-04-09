@@ -145,14 +145,14 @@
 </script>
 <style>
   .card-content {
-    margin: 20px 80px 0 80px;
+    margin: 10px 20px 0 20px;
     padding-left: 30px;
     padding-right: 30px;
   }
   
   p.card-title {
     text-align: left;
-    font-size: 30px;
+    font-size: 20px;
     margin: 0 0 25px 20px;
     height: 35px;
   }

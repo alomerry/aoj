@@ -9,13 +9,13 @@
                     </Button>
                     <Table :data="tableData1" :columns="tableColumns1" stripe
                            :loading="tableLoadingIsFinish"></Table>
+                </Card>
                     <div style="margin:25px 10px 10px 10px;overflow: hidden">
                         <div style="float: right;">
                             <Page :total="totalPage" :current="current" :page-size="per_page" show-sizer show-elevator
                                   @on-change="changePage"></Page>
                         </div>
                     </div>
-                </Card>
 
             </Col>
             <Col span="5">
@@ -28,7 +28,6 @@
                 </Card>
             </Col>
         </Row>
-
     </div>
 </template>
 <script>
@@ -143,13 +142,13 @@
 </script>
 <style>
     .card-content {
-        margin: 20px 0 0 50px;
+        margin: 10px 0 0 50px;
     }
 
     p.card-title {
         text-align: left;
-        font-size: 30px;
-        margin: 0 0 25px 20px;
+        font-size: 20px;
+        margin: 0 0 10px 20px;
         height: 35px;
     }
 </style>
