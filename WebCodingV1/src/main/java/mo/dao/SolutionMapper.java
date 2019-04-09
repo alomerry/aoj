@@ -16,6 +16,7 @@ public interface SolutionMapper {
     /**
      * 插入结果表
      *
+     * @param solution_id 12位随机唯一字符串
      * @param problem_id  问题Id
      * @param user_id     用户Id
      * @param result      结果（4:AC 0:WA）
@@ -25,9 +26,10 @@ public interface SolutionMapper {
      * @param code_lenght 代码长度
      * @return
      */
-    @Insert("insert into solution (problem_id,user_id,create_at,result,language,ip,code_lenght) " +
-            "values (#{problem_id},#{user_id},#{create_at},#{result},#{language},#{ip},#{code_lenght})")
-    int insertOneItemIntoSolution(@Param("problem_id") Integer problem_id,
+    @Insert("insert into solution (solution_id,problem_id,user_id,create_at,result,language,ip,code_lenght) " +
+            "values (#{solution_id},#{problem_id},#{user_id},#{create_at},#{result},#{language},#{ip},#{code_lenght})")
+    int insertOneItemIntoSolution(@Param("solution_id") String solution_id,
+                                  @Param("problem_id") Integer problem_id,
                                   @Param("user_id") Integer user_id,
                                   @Param("create_at") String create_at,
                                   @Param("result") Integer result,
@@ -43,7 +45,25 @@ public interface SolutionMapper {
      * @return 影响行数
      */
     @Insert("insert into source_code (solution_id,source) values (#{solution_id},#{source})")
-    int insertCodeIntoSource(@Param("solution_id") long solution_id, @Param("source") String source);
+    int insertCodeIntoSource(@Param("solution_id") String solution_id, @Param("source") String source);
+
+    /**
+     * 按页码以判题时间降序获取结果集
+     *
+     * @param start    起始
+     * @param per_page 每页数量
+     * @return 结果集
+     */
+    @Select("select * from solution order by judgetime desc limit #{start},#{per_page}")
+    List<Solution> findSolutionOrderByJudgeTimeAndPage(@Param("start") int start, @Param("per_page") int per_page);
+
+    /**
+     * 获取12位不重复随机字符串
+     *
+     * @return
+     */
+    @Select("SELECT solution_id FROM ((select substring(MD5(RAND()),1,12)AS solution_id) AS solution_id) WHERE solution_id NOT IN (SELECT solution_id FROM solution) LIMIT 1")
+    String getUniqueSolutionId();
 
     /**
      * 按判题时间降序获取结果集
@@ -63,15 +83,6 @@ public interface SolutionMapper {
 //    @Select("select * from solution where user_id = #{user_id} order by judgetime asc")
 //    List<Solution> findSolutionByUserIdOrderByJudgeTimeAsc(@Param("user_id") Integer user_id);
 
-    /**
-     * 按页码以判题时间降序获取结果集
-     *
-     * @param start    起始
-     * @param per_page 每页数量
-     * @return 结果集
-     */
-    @Select("select * from solution order by judgetime desc limit #{start},#{per_page}")
-    List<Solution> findSolutionOrderByJudgeTimeAndPage(@Param("start") int start, @Param("per_page") int per_page);
 
     /**
      * 按页码以判题时间升序获取结果集
@@ -84,11 +95,4 @@ public interface SolutionMapper {
 //    @Select("select * from solution where user_id = #{user_id} order by judgetime asc limit #{start},#{end}")
 //    List<Solution> findSolutionByUserIdOrderByJudgeTimeAscByPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("end") int end);
 
-    /**
-     * 查询上次插入的主键
-     *
-     * @return
-     */
-    @Select("SELECT LAST_INSERT_ID()")
-    long findLastInsertId();
 }

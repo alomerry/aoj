@@ -36,7 +36,8 @@ public class SolutionServiceImpl implements SolutionService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public boolean insertIntoNewSolution(Solution solution, SourceCode sourceCode) {
-        int res = solutionMapper.insertOneItemIntoSolution(solution.getProblem_id(),
+        String solution_id = solutionMapper.getUniqueSolutionId();
+        int res = solutionMapper.insertOneItemIntoSolution(solution_id, solution.getProblem_id(),
                 solution.getUser_id(),
                 solution.getCreate_at().toString(),
                 solution.getResult(),
@@ -44,7 +45,7 @@ public class SolutionServiceImpl implements SolutionService {
                 solution.getIp(),
                 solution.getCode_lenght());
         if (res > 0) {
-            int lines = solutionMapper.insertCodeIntoSource(solutionMapper.findLastInsertId(), sourceCode.getSource());
+            int lines = solutionMapper.insertCodeIntoSource(solution_id, sourceCode.getSource());
             if (lines > 0) {
                 return true;
             } else {

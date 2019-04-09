@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @Getter
 public class Solution {
     //运行id
-    private Integer solution_id;
+    private String solution_id;
     //问题id
     private Integer problem_id;
     //用户id

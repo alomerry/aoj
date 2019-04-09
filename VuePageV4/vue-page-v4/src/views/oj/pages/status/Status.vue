@@ -35,6 +35,35 @@
                         }*/
                     },
                 ],
+                statusData: [
+                    {
+                        problem: {
+                            problem_id: 7,
+                            title: "方阵填数"
+                        },
+                        solution: {
+                            code_lenght: 110,
+                            contest_id: null,
+                            create_at: 1554760701000,
+                            ip: "127.0.0.1",
+                            judgetime: null,
+                            language: 2,
+                            language: null,
+                            num: 0,
+                            problem_id: 7,
+                            result: 0,
+                            solution_id: 30,
+                            time: null,
+                            user_id: 10,
+                            valid: 1
+                        },
+                        user: {
+                            nickname: "就当一次路过丶",
+                            user_id: 10,
+                            username: "morizunzhu"
+                        }
+                    }
+                ]
             }
         }
     }

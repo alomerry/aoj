@@ -10,7 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class SourceCode {
-    private Integer solution_id;//运行id
+    private String solution_id;//运行id
     private String source;//源代码
 
     public SourceCode(String source) {
