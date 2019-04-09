@@ -21,16 +21,16 @@
                         <Divider/>
                     </Row>
                 </div>
-                <div style="margin: 10px;overflow: hidden">
-                    <div style="float: right;">
-                        <Page :total="totalPage" :current="current" :page-size="per_page" show-sizer show-elevator @on-change="changePage"></Page>
-                    </div>
-                </div>
             </div>
             <div v-else>
                 <div id="news-item-content" v-text="news_item.content"></div>
             </div>
         </Card>
+        <div style="margin: 10px;overflow: hidden" v-show="news_show === 0">
+            <div style="float: right;">
+                <Page :total="totalPage" :current="current" :page-size="per_page" show-sizer show-elevator @on-change="changePage"></Page>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -155,12 +155,13 @@
         },
         created() {
             //TODO
-            this.refresh();
+            this.header_info.button_info = this.news_show === 0 ? 'Refresh' : 'Back';
+            this.header_info.title = this.news_show === 0 ? 'Annocement' : '';
             this.updateActiveClass(this.$route.path);
         }
     }
 </script>
-<style>
+<style scoped>
     .card-content {
         margin: 10px 20px 0 20px;
         padding-left: 30px;

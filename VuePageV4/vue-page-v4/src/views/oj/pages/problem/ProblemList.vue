@@ -4,9 +4,24 @@
             <Col span="18" style="margin-right: 10px">
                 <Card>
                     <p class="card-title">Problem List</p>
-                    <Button slot="extra" style="margin-right: 60px" :loading="buttonLoading" @click.native="refresh">
-                        ReSet
-                    </Button>
+                    <div slot="extra">
+                        <Dropdown>
+                            <a href="javascript:void(0)">
+                                下拉菜单
+                                <Icon type="ios-arrow-down"></Icon>
+                            </a>
+                            <DropdownMenu slot="list">
+                                <DropdownItem>驴打滚</DropdownItem>
+                                <DropdownItem>炸酱面</DropdownItem>
+                                <DropdownItem disabled>豆汁儿</DropdownItem>
+                                <DropdownItem>冰糖葫芦</DropdownItem>
+                                <DropdownItem divided>北京烤鸭</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                        <Button style="margin-right: 60px" :loading="buttonLoading" @click.native="refresh" type="primary">
+                            Refresh
+                        </Button>
+                    </div>
                     <Table :data="tableData1" :columns="tableColumns1" stripe
                            :loading="tableLoadingIsFinish"></Table>
                 </Card>
@@ -157,7 +172,7 @@
         }
     }
 </script>
-<style>
+<style scoped>
     .card-content {
         margin: 10px 0 0 50px;
     }

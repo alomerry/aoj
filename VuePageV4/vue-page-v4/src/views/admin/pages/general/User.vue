@@ -72,8 +72,10 @@
             </Modal>
         </div>
         <Card style="margin: 15px">
-            <div slot="title" style="height: 40px">
+            <div slot="title" style="height: 30px">
                 <span style="font-size: 25px;font-weight: 400">User</span>
+            </div>
+            <div slot="extra">
                 <i-input v-model="searchKeyWord" placeholder="Keywords"
                          style="width: auto;float: right;margin-right: 50px;"
                          clearable>

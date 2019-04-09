@@ -2,17 +2,17 @@
     <div class="card-content">
         <Card>
             <p class="card-title">Status</p>
-            <Button slot="extra" style="margin-right: 60px" :loading="buttonLoading" @click.native="refresh">
-                ReSet
+            <Button slot="extra" style="margin-right: 60px" :loading="buttonLoading" @click.native="refresh" type="primary">
+                Refresh
             </Button>
             <div style="margin-bottom: 2px;margin-top: 10px">
                 <Table :columns="statusColumns" stripe></Table>
             </div>
-            <div style="float: right;margin: 5px;">
-                <Page :total="totalPage" :page-size="per_page" :current="current" show-sizer/>
-            </div>
             <p style="margin-top: 30px"></p>
         </Card>
+        <div style="float: right;margin: 5px;">
+            <Page :total="totalPage" :page-size="per_page" :current="current" show-sizer/>
+        </div>
     </div>
 </template>
 
@@ -200,6 +200,6 @@
     }
     
     .card-content {
-        margin: 10px 20px 0 20px;
+        margin: 10px 50px 0 50px;
     }
 </style>
