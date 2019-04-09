@@ -311,8 +311,8 @@
                     code: code,
                     code_lenght: code.length,
                 };
-                this.$router.push({name: 'status'});
-                /*API.insertNewSolution(submit, this.$store.state.token).then(res => {
+                // this.$router.push({name: 'status'});
+                API.insertNewSolution(submit, this.$store.state.token).then(res => {
                     let result = res.data;
                     console.log(result);
                     if (result.code == 200) {
@@ -336,7 +336,7 @@
                     this.submitLoadingFlag = false;
                     console.log(res);
                     this.$Message.error(res.message);
-                });*/
+                });
             }
         }
     }

@@ -5,33 +5,44 @@
                 <Card>
                     <p class="card-title">Problem List</p>
                     <div slot="extra">
-                        <Dropdown>
-                            <a href="javascript:void(0)">
-                                下拉菜单
-                                <Icon type="ios-arrow-down"></Icon>
-                            </a>
-                            <DropdownMenu slot="list">
-                                <DropdownItem>驴打滚</DropdownItem>
-                                <DropdownItem>炸酱面</DropdownItem>
-                                <DropdownItem disabled>豆汁儿</DropdownItem>
-                                <DropdownItem>冰糖葫芦</DropdownItem>
-                                <DropdownItem divided>北京烤鸭</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                        <Button style="margin-right: 60px" :loading="buttonLoading" @click.native="refresh" type="primary">
-                            Refresh
-                        </Button>
+                        <Row>
+                            <Col span="8">
+                                <Input v-model="searchKeyWord" placeholder="Keywords" clearable>
+                                    <Icon type="ios-search" slot="prefix"/>
+                                </Input>
+                            </Col>
+                            <!--<Col span="6">
+                                <Dropdown style="margin-top: 4px">
+                                    <a href="javascript:void(0)" style="color: #515a6e">
+                                        下拉菜单
+                                        <Icon type="ios-arrow-down"></Icon>
+                                    </a>
+                                    <DropdownMenu slot="list">
+                                        <DropdownItem>驴打滚</DropdownItem>
+                                        <DropdownItem>炸酱面</DropdownItem>
+                                        <DropdownItem disabled>豆汁儿</DropdownItem>
+                                        <DropdownItem>冰糖葫芦</DropdownItem>
+                                        <DropdownItem divided>北京烤鸭</DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </Col>-->
+                            <Col span="2">
+                                <Button style="margin-left: 10px;margin-right: 60px" :loading="buttonLoading" @click.native="refresh" type="primary">
+                                    Refresh
+                                </Button>
+                            </Col>
+                        </Row>
                     </div>
                     <Table :data="tableData1" :columns="tableColumns1" stripe
                            :loading="tableLoadingIsFinish"></Table>
                 </Card>
-                    <div style="margin:25px 10px 10px 10px;overflow: hidden">
-                        <div style="float: right;">
-                            <Page :total="totalPage" :current="current" :page-size="per_page" show-sizer show-elevator
-                                  @on-change="changePage"></Page>
-                        </div>
+                <div style="margin:25px 10px 10px 10px;overflow: hidden">
+                    <div style="float: right;">
+                        <Page :total="totalPage" :current="current" :page-size="per_page" show-sizer show-elevator
+                              @on-change="changePage"></Page>
                     </div>
-
+                </div>
+            
             </Col>
             <Col span="5">
                 <Card>
@@ -52,6 +63,7 @@
         name: 'ProblemList',
         data() {
             return {
+                searchKeyWord: "",//搜索框的内容
                 current: 1,
                 totalPage: 1,
                 per_page: 10,
@@ -176,7 +188,7 @@
     .card-content {
         margin: 10px 0 0 50px;
     }
-
+    
     p.card-title {
         text-align: left;
         font-size: 20px;

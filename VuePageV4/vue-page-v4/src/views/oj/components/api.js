@@ -69,6 +69,12 @@ export default {
         });
     },
 
+    /**
+     * 提交解题
+     * @param submit 解题json对象
+     * @param jwt 令牌
+     * @returns {AxiosPromise}
+     */
     insertNewSolution(submit, jwt) {
         return axios({
             url: '/api/api-oj/submit',
@@ -77,6 +83,27 @@ export default {
             headers: {
                 "jwt": jwt,
                 "Content-Type": "application/json"
+            }
+        })
+    },
+
+    /**
+     * 获取solutions集合
+     * @param page 页码
+     * @param per_page 每页数量
+     * @param jwt 令牌
+     * @returns {AxiosPromise}
+     */
+    getSolutions(page, per_page, jwt) {
+        let params = new URLSearchParams();
+        params.append("page", page);
+        params.append("per_page", per_page);
+        return axios({
+            url: "/api/api-oj/solutions",
+            method: "get",
+            data: params,
+            headers: {
+                "jwt": jwt,
             }
         })
     }

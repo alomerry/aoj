@@ -2,11 +2,44 @@
     <div class="card-content">
         <Card>
             <p class="card-title">Status</p>
-            <Button slot="extra" style="margin-right: 60px" :loading="buttonLoading" @click.native="refresh" type="primary">
-                Refresh
-            </Button>
+            
+            <div slot="extra">
+                <Row>
+                    <Col span="3" style="margin-top: 4px;">
+                        <i-switch v-model="onlyShowMe" size="large" @on-change="">
+                            <span slot="open">Mine</span>
+                            <span slot="close">All</span>
+                        </i-switch>
+                    </Col>
+                    <Col span="6">
+                        <Dropdown style="margin-top: 4px">
+                            <a href="javascript:void(0)" style="color: #515a6e">
+                                下拉菜单
+                                <Icon type="ios-arrow-down"></Icon>
+                            </a>
+                            <DropdownMenu slot="list">
+                                <DropdownItem>驴打滚</DropdownItem>
+                                <DropdownItem>炸酱面</DropdownItem>
+                                <DropdownItem disabled>豆汁儿</DropdownItem>
+                                <DropdownItem>冰糖葫芦</DropdownItem>
+                                <DropdownItem divided>北京烤鸭</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </Col>
+                    <Col span="8">
+                        <Input v-model="searchKeyWord" placeholder="Keywords" clearable>
+                            <Icon type="ios-search" slot="prefix"/>
+                        </Input>
+                    </Col>
+                    <Col span="2">
+                        <Button :loading="buttonLoading" @click.native="refresh" type="primary" style="margin-right: 60px;margin-left: 7px">
+                            Refresh
+                        </Button>
+                    </Col>
+                </Row>
+            </div>
             <div style="margin-bottom: 2px;margin-top: 10px">
-                <Table :columns="statusColumns" stripe></Table>
+                <Table :columns="statusColumns" :data="statusSearchData" stripe :loading="tableLoadingFlag"></Table>
             </div>
             <p style="margin-top: 30px"></p>
         </Card>
@@ -17,25 +50,32 @@
 </template>
 
 <script>
+    import debounce from "lodash/debounce"
+    import Api from "../../components/api"
+
     export default {
         name: "status",
         data() {
             return {
+                onlyShowMe: false,
                 buttonLoading: false,
+                searchKeyWord: "",//搜索框的内容
                 current: 1,
                 totalPage: 1,
                 per_page: 10,
+                tableLoadingFlag: false,
                 statusColumns: [
                     {
                         title: 'When',
                         key: 'when',
                         align: 'center',
                         render: (h, params) => {
-                            return h('span', {
-                                style: {
-                                    fontSize: '15px'
+                            return h('Time', {
+                                props: {
+                                    time: params.row.solution.create_at,
+                                    type: 'datetime'
                                 },
-                            }, params.row.solution.create_at);
+                            });
                         }
                     },
                     {
@@ -119,7 +159,7 @@
                                 style: {
                                     fontSize: '15px'
                                 },
-                            }, params.row.user.username);
+                            }, params.row.user.nickname);
                         }
                     },
                     {
@@ -128,10 +168,13 @@
                         fixed: 'right',
                         align: 'center',
                         render: (h, params) => {
-                            return h('span', {
-                                style: {
-                                    fontSize: '15px'
-                                },
+                            return h('Button', {
+                                props: {
+                                    ghost: true,
+                                    shape: "circle",
+                                    type: "info",
+                                    size: "small"
+                                }
                             }, "Rejudge");
                         }
                     },
@@ -164,7 +207,8 @@
                             username: "morizunzhu"
                         }
                     }
-                ]
+                ],
+                statusSearchData: [],
             }
         },
         methods: {
@@ -183,10 +227,49 @@
                         break;
                     }
                 }
-            }
+            },
+            getSolutions() {
+                this.tableLoadingFlag = true;
+                Api.getSolutions(this.current, this.per_page, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    if (result.code === 401) {
+                        this.$Message.error("身份信息失效，请重新登录");
+                    } else if (result.code === 200) {
+                        this.statusData = result.data.solutions;
+                        this.statusSearchData = this.statusData;
+                    }
+                    this.tableLoadingFlag = false;
+                }).catch(res => {
+                    this.$Message.error(res.message);
+                    this.tableLoadingFlag = false;
+                });
+                this.tableLoadingFlag = false;
+            },
+            //搜索查询表格
+            DelaySearchTable: function () {
+                if (this.searchKeyWord === "") {
+                    this.statusSearchData = this.statusData;
+                } else {
+                    this.statusSearchData = [];
+                    let that = this;
+                    this.statusData.forEach(function (is, i) {
+                        let item = that.statusData[i];
+                        if (item.problem.title.indexOf(that.searchKeyWord) !== -1 || item.user.nickname.indexOf(that.searchKeyWord) !== -1) {
+                            that.statusSearchData.push(item);
+                        }
+                    });
+                }
+            },
         },
         created() {
             this.updateActiveClass(this.$route.path);
+            this.getSolutions();
+            this.debouncedsearchData = debounce(this.DelaySearchTable, 500, null);//延时加载
+        },
+        watch: {
+            searchKeyWord: function (newVal, oldVal) {
+                this.debouncedsearchData();
+            }
         }
     }
 </script>

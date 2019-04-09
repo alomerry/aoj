@@ -3,7 +3,7 @@
         <Card style="margin: 15px">
             <div slot="title" style="height: 30px;padding-top: 10px">
                 <span style="font-size: 25px;font-weight: 400;">Contests</span>
-                
+            
             </div>
             <div slot="extra">
                 <i-input v-model="searchKeyWord" placeholder="Keywords"
@@ -293,7 +293,7 @@
                     },
                 ],
                 nowTime: "2016-10-03 07:08:16",
-                timer: null,
+                timer: null,//定时器修改nowtime
                 page: 1,
                 per_page: 10,
             }
