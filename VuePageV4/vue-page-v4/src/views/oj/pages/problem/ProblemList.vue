@@ -6,7 +6,7 @@
                     <p class="card-title">Problem List</p>
                     <div slot="extra">
                         <Row>
-                            <Col span="8">
+                            <Col span="10">
                                 <Input v-model="searchKeyWord" placeholder="Keywords" clearable>
                                     <Icon type="ios-search" slot="prefix"/>
                                 </Input>
@@ -27,19 +27,19 @@
                                 </Dropdown>
                             </Col>-->
                             <Col span="2">
-                                <Button style="margin-left: 10px;margin-right: 60px" :loading="buttonLoading" @click.native="refresh" type="primary">
+                                <Button style="margin-left: 10px;" :loading="buttonLoading" @click.native="refresh" type="primary">
                                     Refresh
                                 </Button>
                             </Col>
                         </Row>
                     </div>
-                    <Table :data="tableData1" :columns="tableColumns1" stripe
-                           :loading="tableLoadingIsFinish"></Table>
+                    <Table :data="tableSearchData" :columns="tableColumns1" stripe
+                           :loading="tableLoading"></Table>
                 </Card>
                 <div style="margin:25px 10px 10px 10px;overflow: hidden">
                     <div style="float: right;">
                         <Page :total="totalPage" :current="current" :page-size="per_page" show-sizer show-elevator
-                              @on-change="changePage"></Page>
+                              @on-change=""></Page>
                     </div>
                 </div>
             
@@ -58,6 +58,7 @@
 </template>
 <script>
     import Api from '../../components/api';
+    import debounce from "lodash/debounce";
 
     export default {
         name: 'ProblemList',
@@ -68,7 +69,29 @@
                 totalPage: 1,
                 per_page: 10,
                 buttonLoading: false,//表格重载'按钮'加载中状态
-                tableData1: this.mockTableData1(),//表格数据
+                tableData1: [],//表格数据
+                tableSearchData: [
+                    {
+                        accepted: 0,
+                        click: null,
+                        create_by: 10,
+                        created_at: 1517101561000,
+                        defunct: "1",
+                        description: null,
+                        display_id: 1,
+                        hint: null,
+                        input: null,
+                        memory_limit: null,
+                        output: null,
+                        problem_id: 2,
+                        sample_input: null,
+                        sample_output: null,
+                        source: null,
+                        submit: 0,
+                        time_limit: null,
+                        title: "A+B"
+                    },
+                ],
                 tableColumns1: [
                     {
                         title: 'title',
@@ -92,7 +115,7 @@
                     },
                     //todo level
                     /*{
-
+    
                     },*/
                     {
                         title: 'Total',
@@ -125,18 +148,42 @@
                             ]);
                         }
                     }
-                ],//表格行数据
-                tableLoading: true,//'表格'加载中状态
+                ], //表格行数据
+                tableLoading: false,//'表格'加载中状态
             }
         },
         methods: {
-            mockTableData1() {
-                let problems = [];
-                problems = Api.findProblemsByPagePer_PageAndResultType(this.current, this.per_page, "simple");
-                if (problems.length === 0) {
-                    this.tableLoading = false;
+            //搜索查询表格
+            DelaySearchTable: function () {
+                if (this.searchKeyWord === "") {
+                    this.tableSearchData = this.tableData1;
+                } else {
+                    this.tableSearchData = [];
+                    let that = this;
+                    this.tableData1.forEach(function (is, i) {
+                        let item = that.tableData1[i];
+                        if (item.title.indexOf(that.searchKeyWord) !== -1) {
+                            that.tableSearchData.push(item);
+                        }
+                    });
                 }
-                return problems;
+            },
+            getProblems() {
+                this.tableLoading = true;
+                Api.findProblemsByPagePer_PageAndResultType(this.current, this.per_page, "simple").then(res => {
+                    let result = res.data;
+                    if (result.code === 200) {
+                        this.tableData1 = result.data.results;
+                        this.tableSearchData = this.tableData1;
+                        this.tableLoading = false;
+                    } else {
+                        console.log('Failed! ' + result.message);
+                        this.tableLoading = false;
+                    }
+                }).catch(err => {
+                    console.log('An error has occurred! ' + err);
+                    this.tableLoading = false;
+                });
             },
 
             formatDate(date) {
@@ -146,11 +193,6 @@
                 let d = date.getDate();
                 d = d < 10 ? ('0' + d) : d;
                 return y + '-' + m + '-' + d;
-            },
-
-            changePage() {
-                // The simulated data is changed directly here, and the actual usage scenario should fetch the data from the server
-                this.tableData1 = this.mockTableData1();
             },
             updateActiveClass(path) {
                 switch (path) {
@@ -171,15 +213,16 @@
         },
         created() {
             this.current = 1;
-            //ajax
             this.totalPage = 1;
-            this.tableLoading = true;
             this.updateActiveClass(this.$route.path);
+            this.debouncedsearchData = debounce(this.DelaySearchTable, 500, null);//延时加载
+            this.getProblems();
         },
         computed: {
-            tableLoadingIsFinish() {
-                // console.log((this.tableData1.length > 0 && this.tableLoading));
-                return !(this.tableData1.length > 0 && this.tableLoading);
+        },
+        watch: {
+            searchKeyWord: function (newVal, oldVal) {
+                this.debouncedsearchData();
             }
         }
     }

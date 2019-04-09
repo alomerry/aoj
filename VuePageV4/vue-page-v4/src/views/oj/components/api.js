@@ -11,50 +11,18 @@ export default {
      * @param page
      * @param per_page
      * @param resType 需求结果类型
-     * @returns {Array}
+     * @returns {AxiosPromise}
      */
     findProblemsByPagePer_PageAndResultType(page, per_page, resType) {
-        let problems = [];
         let params = new URLSearchParams();
         params.append("page", page);
         params.append("per_page", per_page);
         params.append("resType", resType);//需求结果类型
-        axios({
+        return axios({
             url: "/api/api-oj/problems/defunct/1",
             method: 'get',
             data: params,
-        }).then(res => {
-            let result = res.data;
-            if (result.code === 200) {
-                for (let i = 0; i < result.data.total; i++) {
-                    let item = result.data.results[i];
-                    problems.push({
-                        accepted: item.accepted,
-                        click: item.click,
-                        create_time: item.create_time,
-                        defunct: item.defunct,
-                        description: item.description,
-                        hint: item.hint,
-                        input: item.input,
-                        memory_limit: item.memory_limit,
-                        output: item.output,
-                        problem_id: item.problem_id,
-                        sample_input: item.sample_input,
-                        sample_output: item.sample_output,
-                        source: item.source,
-                        submit: item.submit,
-                        time_limit: item.time_limit,
-                        title: item.title,
-                        user_id: item.user_id
-                    });
-                }
-            } else {
-                console.log('Failed! ' + result.message);
-            }
-        }).catch(err => {
-            console.log('An error has occurred! ' + err);
-        });
-        return problems;
+        })
     },
 
     /**
