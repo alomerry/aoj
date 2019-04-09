@@ -1,5 +1,6 @@
 package mo.controller.index.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import mo.controller.AbstractController;
 import mo.controller.index.SubmitController;
 import mo.core.Result;
@@ -14,13 +15,11 @@ import mo.service.SolutionService;
 import mo.utils.InetAddressUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -60,6 +59,15 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
             }
         }
         return null;
+    }
+
+    @Override
+    @AuthCheck({RequiredType.JWT})
+    @RequestMapping(value = "/solutions", method = RequestMethod.GET)
+    public Result getSolutions(@RequestParam(value = "page", defaultValue = "1") String page, @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
+        JSONObject solutions = new JSONObject();
+        solutions.put("solutions", solutionService.getSolutions(Integer.valueOf(page), Integer.valueOf(per_page)));
+        return new Result().setCode(ResultCode.OK).setData(solutions);
     }
 
     /**

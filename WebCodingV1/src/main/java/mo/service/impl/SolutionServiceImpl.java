@@ -1,8 +1,11 @@
 package mo.service.impl;
 
+import mo.dao.ProblemMapper;
 import mo.dao.SolutionMapper;
+import mo.dao.UserMapper;
 import mo.entity.po.Solution;
 import mo.entity.po.SourceCode;
+import mo.entity.vo.SolutionLink;
 import mo.exception.ServiceException;
 import mo.service.SolutionService;
 import org.slf4j.Logger;
@@ -13,6 +16,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SolutionServiceImpl implements SolutionService {
@@ -21,6 +26,12 @@ public class SolutionServiceImpl implements SolutionService {
 
     @Resource
     private SolutionMapper solutionMapper;
+
+    @Resource
+    private UserMapper userMapper;
+
+    @Resource
+    private ProblemMapper problemMapper;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
@@ -44,5 +55,16 @@ public class SolutionServiceImpl implements SolutionService {
             logger.error("solution 插入失败");
             throw new ServiceException("solution 插入失败");
         }
+    }
+
+    @Override
+    public List<SolutionLink> getSolutions(int page, int per_page) {
+        List<Solution> solution = solutionMapper.findSolutionOrderByJudgeTimeAndPage((page - 1) * per_page, per_page);
+        List<SolutionLink> solutionLinks = new ArrayList<>(solution.size() + 3);
+        for (Solution s : solution) {
+            solutionLinks.add(new SolutionLink(userMapper.findUserIdUserNameUserNickNameByUserId(s.getUser_id()),
+                    s, problemMapper.findProblemIdProblemTitleByProblemId(s.getProblem_id())));
+        }
+        return solutionLinks;
     }
 }

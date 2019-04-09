@@ -130,5 +130,6 @@ public interface UserMapper {
      */
     @Update("update users set nickname = #{user.nickname},email = #{user.email},passwd=#{user.passwd},disabled=#{user.disabled} where user_id =#{user.user_id}")
     int updateUserNickNameEmailPasswdDisAbled(@Param("user") User user);
+
 }
 

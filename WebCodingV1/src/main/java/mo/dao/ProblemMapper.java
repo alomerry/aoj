@@ -83,4 +83,13 @@ public interface ProblemMapper {
     @Select("select create_by from problems where problem_id = #{problem_id}")
     Integer findCreatorIdByProblemId(@Param("problem_id") Integer problem_id);
 
+    /**
+     * 根据题目Id查询题目标题
+     *
+     * @param problem_id 题目Id
+     * @return 题目实体
+     */
+    @Select("select problem_id,title from problems where  problem_id = #{problem_id}")
+    Problem findProblemIdProblemTitleByProblemId(@Param("problem_id") Integer problem_id);
+
 }

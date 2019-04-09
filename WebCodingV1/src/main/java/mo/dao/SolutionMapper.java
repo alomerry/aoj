@@ -66,13 +66,12 @@ public interface SolutionMapper {
     /**
      * 按页码以判题时间降序获取结果集
      *
-     * @param user_id 用户Id
-     * @param start   起始
-     * @param end     结束
+     * @param start    起始
+     * @param per_page 每页数量
      * @return 结果集
      */
-//    @Select("select * from solution where user_id = #{user_id} order by judgetime desc limit #{start},#{end}")
-//    List<Solution> findSolutionByUserIdOrderByJudgeTimeDescByPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("end") int end);
+    @Select("select * from solution order by judgetime desc limit #{start},#{per_page}")
+    List<Solution> findSolutionOrderByJudgeTimeAndPage(@Param("start") int start, @Param("per_page") int per_page);
 
     /**
      * 按页码以判题时间升序获取结果集
