@@ -25,21 +25,36 @@ public final class StringValue {
     };
 
     //OJ状态
-    public static final int OJ_WT0 = 0;//Waiting:等待判题
-    public static final int OJ_WT1 = 1;//Waiting:排队中
-    public static final int OJ_CI = 2;//compiling
-    public static final int OJ_RI = 3;//Running
-    public static final int OJ_AC = 4;//Accept:答案正确，请再接再厉。
-    public static final int OJ_PE = 5;//Presentation Error:答案基本正确，但是格式不对。
-    public static final int OJ_WA = 6;//Wrong Answer:答案不对，仅仅通过样例数据的测试并不一定是正确答案，一定还有你没想到的地方，点击查看系统可能提供的对比信息。
-    public static final int OJ_TL = 7;//Time Out of Limit:运行超出时间限制，检查下是否有死循环，或者应该有更快的计算方法
-    public static final int OJ_ML = 8;//Merrory Out of Limit:超出内存限制，数据可能需要压缩，检查内存是否有泄露
-    public static final int OJ_OL = 9;//Output Out of Limit:输出超过限制，你的输出比正确答案长了两倍，一定是哪里弄错了
-    public static final int OJ_RE = 10;//Runtime Error:运行时错误，非法的内存访问，数组越界，指针漂移，调用禁用的系统函数。请点击后获得详细输出
-    public static final int OJ_CE = 11;//Compile Error:编译错误，请点击后获得编译器的详细输出
-    public static final int OJ_CO = 12;//Competition Over
-    public static final int OJ_TR = 13;
-    public static final int OJ_JE = 14;//Judge Error
+    //Pending:等待判题
+    public static final int OJ_WT0 = 0;
+    //Waiting:排队中
+    public static final int OJ_WT1 = 1;
+    //compiling:编译中
+    public static final int OJ_CI = 2;
+    ////Judging:运行中
+    public static final int OJ_JI = 3;
+    //Accepted:答案正确，请再接再厉。
+    public static final int OJ_AC = 4;
+    //Presentation Error:答案基本正确，但是格式不对。
+    public static final int OJ_PE = 5;
+    //Wrong Answer:答案不对，仅仅通过样例数据的测试并不一定是正确答案，一定还有你没想到的地方，点击查看系统可能提供的对比信息。
+    public static final int OJ_WA = 6;
+    //Time Limit Exceeded:运行超出时间限制，检查下是否有死循环，或者应该有更快的计算方法
+    public static final int OJ_TL = 7;
+    //Merrory Limit Exceeded:超出内存限制，数据可能需要压缩，检查内存是否有泄露
+    public static final int OJ_ML = 8;
+    //Output Limit Exceeded:输出超过限制，你的输出超出了正确答案，一定是哪里弄错了
+    public static final int OJ_OL = 9;
+    //Runtime Error:运行时错误，非法的内存访问，数组越界，指针漂移，调用禁用的系统函数。请点击后获得详细输出
+    public static final int OJ_RE = 10;
+    //Compile Error:编译错误，请点击后获得编译器的详细输出
+    public static final int OJ_CE = 11;
+    //Competition Over:竞赛结束???? 废弃
+    public static final int OJ_CO = 12;
+    //Partial Accepted:部分正确
+    public static final int OJ_PA = 13;
+    //System Error
+    public static final int OJ_SE = 14;
 
     //msg的key
     public static final String error404_msg = "error_msg";//向404页面发送错误信息的key

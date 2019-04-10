@@ -14,15 +14,25 @@
                     <Col span="6">
                         <Dropdown style="margin-top: 4px">
                             <a href="javascript:void(0)" style="color: #515a6e">
-                                下拉菜单
+                                Status
                                 <Icon type="ios-arrow-down"></Icon>
                             </a>
                             <DropdownMenu slot="list">
-                                <DropdownItem>驴打滚</DropdownItem>
-                                <DropdownItem>炸酱面</DropdownItem>
-                                <DropdownItem disabled>豆汁儿</DropdownItem>
-                                <DropdownItem>冰糖葫芦</DropdownItem>
-                                <DropdownItem divided>北京烤鸭</DropdownItem>
+                                <DropdownItem name="-1">All</DropdownItem>
+                                <DropdownItem name="0">Waiting</DropdownItem>
+                                <DropdownItem name="1">Pending</DropdownItem>
+                                <DropdownItem name="2">Compiling</DropdownItem>
+                                <DropdownItem name="3">Judging</DropdownItem>
+                                <DropdownItem name="4">Accepted</DropdownItem>
+                                <DropdownItem name="5">Presentation Error</DropdownItem>
+                                <DropdownItem name="5">Wrong Answer</DropdownItem>
+                                <DropdownItem name="7">Time Limit Exceeded</DropdownItem>
+                                <DropdownItem name="8">Merrory Limit Exceeded</DropdownItem>
+                                <DropdownItem name="9">Output Limit Exceeded</DropdownItem>
+                                <DropdownItem name="10">Runtime Error</DropdownItem>
+                                <DropdownItem name="11">Compile Error</DropdownItem>
+                                <DropdownItem name="13">Partial Accepted</DropdownItem>
+                                <DropdownItem name="14">System Error</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </Col>
@@ -84,9 +94,6 @@
                         align: 'center',
                         render: (h, params) => {
                             return h('a', {
-                                style: {
-                                    fontSize: '15px'
-                                },
                             }, params.row.solution.solution_id);
                         }
                     },
@@ -95,11 +102,9 @@
                         key: 'status',
                         align: 'center',
                         render: (h, params) => {
-                            return h('span', {
-                                style: {
-                                    fontSize: '15px'
-                                },
-                            }, params.row.solution.result);
+                            return h('Tag', {
+                                props: this.getStatusRenderProps(params.row.solution.result),
+                            }, this.statusRenderText[params.row.solution.result]);
                         }
                     },
                     {
@@ -108,9 +113,6 @@
                         align: 'center',
                         render: (h, params) => {
                             return h('a', {
-                                style: {
-                                    fontSize: '15px'
-                                },
                             }, params.row.problem.title);
                         }
                     },
@@ -120,10 +122,7 @@
                         align: 'center',
                         render: (h, params) => {
                             return h('span', {
-                                style: {
-                                    fontSize: '15px'
-                                },
-                            }, params.row.solution.time);
+                            }, params.row.solution.time === null ? "-" : params.row.solution.time);
                         }
                     },
                     {
@@ -132,10 +131,7 @@
                         align: 'center',
                         render: (h, params) => {
                             return h('span', {
-                                style: {
-                                    fontSize: '15px'
-                                },
-                            }, params.row.solution.memory);
+                            }, params.row.solution.memory === null ? "-" : params.row.solution.memory);
                         }
                     },
                     {
@@ -144,10 +140,7 @@
                         align: 'center',
                         render: (h, params) => {
                             return h('span', {
-                                style: {
-                                    fontSize: '15px'
-                                },
-                            }, params.row.solution.language);
+                            }, this.codeLanguage(params.row.solution.language));
                         }
                     },
                     {
@@ -156,9 +149,6 @@
                         align: 'center',
                         render: (h, params) => {
                             return h('a', {
-                                style: {
-                                    fontSize: '15px'
-                                },
                             }, params.row.user.nickname);
                         }
                     },
@@ -209,6 +199,9 @@
                     }
                 ],
                 statusSearchData: [],
+                statusRenderText: ["Pending", "Waiting", "Compiling", "Judging", "Accepted", "Presentation Error",
+                    "Wrong Answer", "Time Limit Exceeded", "Merrory Limit Exceeded", "Output Limit Exceeded", "Runtime Error",
+                    "Compile Error", "Partial Accepted", "System Error"],
             }
         },
         methods: {
@@ -239,11 +232,12 @@
                         this.statusSearchData = this.statusData;
                     }
                     this.tableLoadingFlag = false;
+                    this.buttonLoading = false;
                 }).catch(res => {
                     this.$Message.error(res.message);
                     this.tableLoadingFlag = false;
+                    this.buttonLoading = false;
                 });
-                this.tableLoadingFlag = false;
             },
             //搜索查询表格
             DelaySearchTable: function () {
@@ -260,6 +254,100 @@
                     });
                 }
             },
+            codeLanguage(code) {
+                switch (code) {
+                    case 0: {
+                        return 'Java';
+                    }
+                    case 1: {
+                        return 'C';
+                    }
+                    case 2: {
+                        return 'C++';
+                    }
+                    case 3: {
+                        return 'Python';
+                    }
+                }
+            },
+            getStatusRenderProps(code) {
+                switch (code) {
+                    case 0: {
+                        return {
+                            color: "blue",
+                        };
+                    }
+                    case 1: {
+                        return {
+                            color: "cyan",
+                        };
+                    }
+                    case 2: {
+                        return {
+                            color: "geekblue",
+                        };
+                    }
+                    case 3: {
+                        return {
+                            color: "lime",
+                        };
+                    }
+                    case 4: {
+                        return {
+                            color: "success",
+                        };
+                    }
+                    case 5: {
+                        return {
+                            color: "yellow",
+                        };
+                    }
+                    case 6: {
+                        return {
+                            color: "#FFA2D3",
+                        };
+                    }
+                    case 7: {
+                        return {
+                            color: "gold",
+                        };
+                    }
+                    case 8: {
+                        return {
+                            color: "orange",
+                        };
+                    }
+                    case 9: {
+                        return {
+                            color: "volcano",
+                        };
+                    }
+                    case 10: {
+                        return {
+                            color: "error",
+                        };
+                    }
+                    case 11: {
+                        return {
+                            color: "warning",
+                        };
+                    }
+                    case 13: {
+                        return {
+                            color: "green",
+                        };
+                    }
+                    case 14: {
+                        return {
+                            color: "purple",
+                        };
+                    }
+                }
+            },
+            refresh() {
+                this.buttonLoading = true;
+                this.getSolutions();
+            }
         },
         created() {
             this.updateActiveClass(this.$route.path);
@@ -270,7 +358,8 @@
             searchKeyWord: function (newVal, oldVal) {
                 this.debouncedsearchData();
             }
-        }
+        },
+        computed: {}
     }
 </script>
 
@@ -286,3 +375,23 @@
         margin: 10px 50px 0 50px;
     }
 </style>
+<!--
+    <Tag color="blue">blue			Pending 0
+    <Tag color="cyan">cyan			Waiting 1
+    <Tag color="geekblue">geekblue		Compiling 2
+    <Tag color="lime">lime			Judging 3
+    <Tag color="success">success		Accepted 4
+    <Tag color="yellow">yellow			Presentation Error 5
+    <Tag color="#FFA2D3">Custom Color		Wrong Answer 6
+    <Tag color="gold">gold			Time Limit Exceeded 7
+    <Tag color="orange">orange		Merrory Limit Exceeded 8
+    <Tag color="volcano">volcano		Output Limit Exceeded 9
+    <Tag color="error">error			Runtime Error 10
+    <Tag color="warning">warning		Compile Error 11
+    <Tag color="green">green			Partial Accepted 13
+    <Tag color="purple">purple			System Error 14
+    <Tag color="magenta">magenta
+    <Tag color="red">red</Tag>
+    <Tag color="default">default</Tag>
+    <Tag color="primary">primary</Tag>
+-->
