@@ -104,4 +104,12 @@ public interface ProblemService {
      */
     boolean isProblemCreator(Integer problemId, Integer userId);
 
+    /**
+     * 删除指定题目
+     *
+     * @param problemId 题目Id
+     * @return 是否删除成功
+     */
+    boolean deleteProblemByProblemId(Integer problemId);
+
 }

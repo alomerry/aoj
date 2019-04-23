@@ -32,6 +32,8 @@ public final class PermissionManager {
      * @return 是否是该级别管理员
      */
     public static boolean isLegalAdmin(Permission admin_type, String rightstr) {
+        if (rightstr == null)
+            return false;
         return rightstr.contains("" + admin_types[admin_type.code()]);
     }
 

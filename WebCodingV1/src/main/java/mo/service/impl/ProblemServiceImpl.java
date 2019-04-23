@@ -102,6 +102,11 @@ public class ProblemServiceImpl implements ProblemService {
         return userId.equals(problemMapper.findCreatorIdByProblemId(problemId));
     }
 
+    @Override
+    public boolean deleteProblemByProblemId(Integer problemId) {
+        return problemMapper.deleteProblemByPorblemId(problemId) > 0;
+    }
+
     /**
      * 查询题目公开级别是否满足asklLevel级别
      *

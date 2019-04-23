@@ -16,11 +16,19 @@ public interface AdminProblemController {
     /**
      * 查询指定比赛题目集
      *
-     * @param resType  结果类型
+     * @param resType    结果类型
      * @param page       页码
      * @param per_page   每页数量
      * @param contest_id 比赛Id
      * @return 题目集
      */
-    Result problems(String resType,String page, String per_page, Integer contest_id);
+    Result problems(String resType, String page, String per_page, Integer contest_id);
+
+    /**
+     * 删除指定题目
+     *
+     * @param problem_id 题目Id
+     * @return 是否成功
+     */
+    Result deleteProblem(Integer problem_id);
 }

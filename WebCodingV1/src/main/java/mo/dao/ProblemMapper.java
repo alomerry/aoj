@@ -92,4 +92,12 @@ public interface ProblemMapper {
     @Select("select problem_id,title from problems where  problem_id = #{problem_id}")
     Problem findProblemIdProblemTitleByProblemId(@Param("problem_id") Integer problem_id);
 
+    /**
+     * 删除指定题目
+     *
+     * @param problem_id 题目Id
+     * @return 影响行数
+     */
+    @Delete("delete from problems where problem_id = #{problem_id}")
+    int deleteProblemByPorblemId(@Param("problem_id") Integer problem_id);
 }

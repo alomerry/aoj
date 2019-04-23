@@ -1,6 +1,7 @@
 package mo.controller.admin.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import mo.controller.AbstractController;
 import mo.controller.admin.AdminProblemController;
 import mo.core.Permission;
 import mo.core.PermissionManager;
@@ -13,6 +14,7 @@ import mo.entity.vo.ProblemLink;
 import mo.entity.vo.UserLink;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
+import mo.service.PrivilegeService;
 import mo.service.ProblemService;
 import mo.service.UserService;
 import mo.utils.JWTUtils;
@@ -30,7 +32,7 @@ import static mo.utils.StringValue.ONLINEJUDGE_SESSION_GROUP;
 import static mo.utils.StringValue.ONLINEJUDGE_SESSION_UER;
 
 @RestController
-public class AdminProblemControllerImpl implements AdminProblemController {
+public class AdminProblemControllerImpl extends AbstractController implements AdminProblemController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminProblemControllerImpl.class);
 
@@ -39,6 +41,9 @@ public class AdminProblemControllerImpl implements AdminProblemController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private PrivilegeService privilegeService;
 
     @Override
     @ResponseBody
@@ -87,5 +92,30 @@ public class AdminProblemControllerImpl implements AdminProblemController {
             }
         }
         return new Result().setCode(ResultCode.OK).setData(problems);
+    }
+
+    @Override
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/problem/{problem_id}", method = RequestMethod.DELETE)
+    public Result deleteProblem(@PathVariable Integer problem_id) {
+        /*
+         * 1.判断题目是否已有提交
+         * 2.无提交则判断权限是否足够，否则删除失败
+         * */
+
+        Problem problem = problemService.findProblemByProblemId(problem_id);
+        if (problem.getSubmit() > 0) {
+            return new Result().setCode(ResultCode.FORBIDDEN).setMessage("题目已有提交，无法删除！");
+        } else if (PermissionManager.isLegalAdmin(Permission.Topic_adder, privilegeService.findPrivilegeByUserId(getJWTUserId()).getRightstr())) {
+            if (problemService.deleteProblemByProblemId(problem_id)) {
+                return new Result().setCode(ResultCode.OK).setMessage("删除成功!");
+            } else {
+                return new Result().setCode(ResultCode.FORBIDDEN).setMessage("内部错误，删除失败!");
+            }
+        } else {
+            return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足！");
+        }
+
     }
 }

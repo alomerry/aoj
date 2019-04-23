@@ -155,6 +155,21 @@ export default {
     },
 
     /**
+     * 删除指定题目
+     * @param problem_id 题目Id
+     * @param jwt 令牌
+     * @returns {AxiosPromise}
+     */
+    deleteProblemByProblemId(problem_id, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/problem/" + problem_id,
+            method: "delete",
+            headers: {
+                "jwt": jwt,
+            }
+        })
+    },
+    /**
      * 删除指定用户
      * @param user_id 用户Id
      * @param jwt 令牌
