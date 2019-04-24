@@ -37,7 +37,7 @@
                    @on-selection-change="selectionChange" stripe>
             </Table>
             <br>
-            <Button type="info" style="font-size: 10px;margin-right: 10px">
+            <Button type="info" style="font-size: 10px;margin-right: 10px" to="/admin/problem/create">
                 <Icon type="ios-add" size="17"/>
                 create
             </Button>

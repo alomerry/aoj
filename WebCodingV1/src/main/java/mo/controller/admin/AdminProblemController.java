@@ -1,6 +1,7 @@
 package mo.controller.admin;
 
 import mo.core.Result;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface AdminProblemController {
     /**
@@ -31,4 +32,12 @@ public interface AdminProblemController {
      * @return 是否成功
      */
     Result deleteProblem(Integer problem_id);
+
+    /**
+     * 上传测试文件
+     *
+     * @param testCase 测试文件
+     * @return
+     */
+    Result uploadTestCase(MultipartFile testCase);
 }

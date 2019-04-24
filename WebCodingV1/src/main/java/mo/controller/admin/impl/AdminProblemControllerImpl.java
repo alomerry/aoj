@@ -18,15 +18,21 @@ import mo.service.PrivilegeService;
 import mo.service.ProblemService;
 import mo.service.UserService;
 import mo.utils.JWTUtils;
+import mo.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.NumberUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import static mo.utils.StringValue.ONLINEJUDGE_SESSION_GROUP;
 import static mo.utils.StringValue.ONLINEJUDGE_SESSION_UER;
@@ -118,4 +124,26 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
         }
 
     }
+
+    @Override
+    public Result uploadTestCase(MultipartFile testCase) {
+        if (!testCase.isEmpty()) {
+            String dirName = "" + System.currentTimeMillis() + StringUtils.generateString(6);
+            String path = getHttpServletRequest().getServletContext().getRealPath("/problem_cases") + File.separator + dirName;
+            String filename = testCase.getOriginalFilename();
+            File filepath = new File(path,filename);
+            //判断路径是否存在，如果不存在就创建一个
+            if (!filepath.getParentFile().exists()) {
+                filepath.getParentFile().mkdirs();
+            }
+            //将上传文件保存到一个目标文件当中
+            try {
+                testCase.transferTo(new File(path + File.separator +filename));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
 }

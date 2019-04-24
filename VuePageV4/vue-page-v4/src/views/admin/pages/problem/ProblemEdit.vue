@@ -110,7 +110,7 @@
                                              v-for="item in formProblem.tags">
                                             {{item.tagname}}
                                         </Tag>
-                                        <Button icon="ios-add" type="dashed" size="small" @click="handleAdd">添加标签
+                                        <Button icon="ios-add" type="dashed" size="small" @click="handleAddTag">添加标签
                                         </Button>
                                     </Col>
                                 </FormItem>
@@ -133,17 +133,15 @@
                             Test Case
                         </div>
                         <FormItem>
-                            <Upload
-                                    :before-upload="handleUpload"
-                                    action="//jsonplaceholder.typicode.com/posts/">
+                            <Upload :show-upload-list="false" :format="['zip']"
+                                    :on-format-error="fileFormatError"
+                                    action="">
                                 <Button icon="ios-cloud-upload" color="#19be6b" type="info">Choose File</Button>
                             </Upload>
+                            <span v-if="file_testCase !== null">{{ file_testCase.name }}
+                                    <Icon type="md-close" size="15" @click="clearUploadFile"/>
+                            </span>
                         </FormItem>
-                        <p v-if="file_testCase !== null">Upload file: {{ file_testCase.name }}
-                            <Button type="text" @click="upload" :loading="loadingStatus">{{ loadingStatus ? 'Uploading'
-                                : 'Click to upload' }}
-                            </Button>
-                        </p>
                     </div>
                     <!-- Test Case -->
                     <div class="problem-eidt problem-eidt-testcase">
@@ -173,7 +171,7 @@
             return {
                 method: null,//Edit模式/New模式
                 file_testCase: null,
-                loadingStatus: false,//上传状态
+                file_index: null,
                 content: '',
                 formProblem: {
                     display_id: "",
@@ -224,13 +222,8 @@
                 this.file_testCase = file;
                 return false;
             },
-            upload() {
-                this.loadingStatus = true;
-                setTimeout(() => {
-                    this.file_testCase = null;
-                    this.loadingStatus = false;
-                    this.$Message.success('Success')
-                }, 1000);
+            clearUploadFile() {
+                this.file_testCase = null;
             },
             initFormDataWithProblemAndTag(problem, tag) {
                 if (problem == null) {
@@ -263,8 +256,14 @@
                     }
                 }
             },
-            handleAdd() {
+            handleAddTag() {//添加标签
 
+            },
+            fileFormatError(file) {
+                this.$Notice.warning({
+                    title: 'The file format is incorrect',
+                    desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+                });
             }
         },
         created() {
