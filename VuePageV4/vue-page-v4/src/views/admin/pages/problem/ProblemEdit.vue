@@ -133,9 +133,16 @@
                             Test Case
                         </div>
                         <FormItem>
-                            <Upload :show-upload-list="false" :format="['zip']"
+                            <Upload
+                                    action="/api/admin/test_case"
+                                    name="testCase"
+                                    :show-file-list="true"
+                                    :show-upload-list="false"
+                                    :format="['zip']"
                                     :on-format-error="fileFormatError"
-                                    action="">
+                                    :on-success="uploadSucceeded"
+                                    :on-error="uploadFailed"
+                                    action="/api/api-oj/problem/test_case">
                                 <Button icon="ios-cloud-upload" color="#19be6b" type="info">Choose File</Button>
                             </Upload>
                             <span v-if="file_testCase !== null">{{ file_testCase.name }}
@@ -171,7 +178,7 @@
             return {
                 method: null,//Edit模式/New模式
                 file_testCase: null,
-                file_index: null,
+                testCase_dir_id: null,
                 content: '',
                 formProblem: {
                     display_id: "",
@@ -262,8 +269,14 @@
             fileFormatError(file) {
                 this.$Notice.warning({
                     title: 'The file format is incorrect',
-                    desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+                    desc: 'File format of ' + file.name + ' is incorrect, please select zip.'
                 });
+            },
+            uploadFailed() {
+                this.$Message.error("上传失败");
+            },
+            uploadSucceeded(response) {
+                console.log(response);
             }
         },
         created() {

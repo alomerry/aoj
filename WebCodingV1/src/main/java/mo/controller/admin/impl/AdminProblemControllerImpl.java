@@ -17,6 +17,7 @@ import mo.interceptor.annotation.RequiredType;
 import mo.service.PrivilegeService;
 import mo.service.ProblemService;
 import mo.service.UserService;
+import mo.utils.FileUtils;
 import mo.utils.JWTUtils;
 import mo.utils.StringUtils;
 import org.slf4j.Logger;
@@ -126,24 +127,40 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
     }
 
     @Override
+    @ResponseBody
+    @RequestMapping(value = "/problem/test_case", method = RequestMethod.POST)
     public Result uploadTestCase(MultipartFile testCase) {
         if (!testCase.isEmpty()) {
             String dirName = "" + System.currentTimeMillis() + StringUtils.generateString(6);
             String path = getHttpServletRequest().getServletContext().getRealPath("/problem_cases") + File.separator + dirName;
             String filename = testCase.getOriginalFilename();
-            File filepath = new File(path,filename);
+            File filepath = new File(path, filename);
             //判断路径是否存在，如果不存在就创建一个
             if (!filepath.getParentFile().exists()) {
                 filepath.getParentFile().mkdirs();
             }
-            //将上传文件保存到一个目标文件当中
+            //将上传文件保存到一个目标文件当中//TODO 优化:直接解压，去除保存到本地这一步
             try {
-                testCase.transferTo(new File(path + File.separator +filename));
+                File file_out = new File(path + File.separator + filename);
+                testCase.transferTo(file_out);
+                if (FileUtils.ZipFileDecompression(file_out, path)) {
+                    file_out.delete();
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("testCase_dir_id", dirName);
+                    logger.info("文件保存成功,路径[{}]", path);
+                    return new Result().setCode(ResultCode.OK).setData(jsonObject).setMessage("上传成功");
+                } else {
+                    //压缩包中包含非in/out文件
+                    file_out.delete();
+                    logger.info("Zip中包含非法文件");
+                    return new Result().setCode(ResultCode.FORBIDDEN).setMessage("测试用例只可包含in/out文件!");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
+                return new Result().setCode(ResultCode.FORBIDDEN).setMessage("文件上传失败");
             }
+        } else {
+            return new Result().setCode(ResultCode.FORBIDDEN).setMessage("文件上传失败");
         }
-        return null;
     }
-
 }
