@@ -5,10 +5,13 @@ import mo.entity.po.User;
 import mo.entity.vo.UserLink;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
+import mo.utils.FileUtils;
 import mo.utils.JWTUtils;
 import org.junit.Test;
 //import redis.clients.jedis.Jedis;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.sql.Timestamp;
@@ -111,5 +114,16 @@ public class TestMain {
     public void test07() {
         InetAddress address = InetAddress.getLoopbackAddress();
         System.out.println(address.getHostAddress());
+    }
+
+    @Test
+    public void testUnzip() {
+        File file = new File("C:\\Users\\wu1ji\\Desktop\\Project\\OnlineJudge\\WebCodingV1\\src\\main\\webapp\\problem_cases\\1\\20977.zip");
+        String path = "C:\\Users\\wu1ji\\Desktop\\Project\\OnlineJudge\\WebCodingV1\\src\\main\\webapp\\problem_cases\\1";
+        try {
+            FileUtils.ZipFileDecompression(file, path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

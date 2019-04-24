@@ -7,6 +7,7 @@ import mo.entity.po.User;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
 import mo.service.UserService;
+import mo.utils.FileUtils;
 import mo.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +49,14 @@ public class TestController extends AbstractController {
         } else {
             logger.info("文件夹不存在");
         }
+        return new Result().setCode(ResultCode.OK);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/test/unzip", method = RequestMethod.POST)
+    public Result testFileUnzip() {
+
         return new Result().setCode(ResultCode.OK);
     }
 }

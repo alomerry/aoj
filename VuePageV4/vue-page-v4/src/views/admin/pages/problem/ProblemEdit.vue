@@ -134,15 +134,14 @@
                         </div>
                         <FormItem>
                             <Upload
-                                    action="/api/admin/test_case"
+                                    action="/api/api-oj/problem/test_case"
                                     name="testCase"
                                     :show-file-list="true"
                                     :show-upload-list="false"
                                     :format="['zip']"
                                     :on-format-error="fileFormatError"
                                     :on-success="uploadSucceeded"
-                                    :on-error="uploadFailed"
-                                    action="/api/api-oj/problem/test_case">
+                                    :on-error="uploadFailed">
                                 <Button icon="ios-cloud-upload" color="#19be6b" type="info">Choose File</Button>
                             </Upload>
                             <span v-if="file_testCase !== null">{{ file_testCase.name }}

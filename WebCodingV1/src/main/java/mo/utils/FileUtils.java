@@ -24,10 +24,12 @@ public class FileUtils {
         File fout = null;
         ZipEntry entry;
         boolean resultFlag = true;
+        logger.info("文件[{}]开始解压!", inputFile);
         try {
-            while ((entry = zipIn.getNextEntry()) != null && !entry.isDirectory() && resultFlag) {
+            while ((entry = zipIn.getNextEntry()) != null && resultFlag) {
                 fout = new File(filePath, entry.getName());
                 if (!fout.exists()) {
+                    logger.info("创建父文件夹!");
                     (new File(fout.getParent())).mkdirs();
                 }
 
@@ -43,6 +45,7 @@ public class FileUtils {
                 }
                 Bout.close();
                 out.close();
+                logger.info("文件[{}]解压成功!", fout.getName());
             }
             logger.info("文件[{}]解压至[{}]成功!", inputFile.getName(), filePath);
             binIn.close();
