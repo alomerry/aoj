@@ -59,13 +59,15 @@ public class ProblemServiceImpl implements ProblemService {
         User user = userMapper.findUserByUserId(user_id);
         List<Problem> problems = problemMapper.findSimpleProblemsWithOwnByDefunctAndPage(defunct, user_id, (page - 1) * per_page, per_page);
         List<ProblemLink> problemLinks = new ArrayList<>(problems.size() + 3);
+        ProblemLink pl = null;
         for (Problem p : problems) {
-            if (user.getUser_id().equals(p.getCreate_by())) {
-                problemLinks.add(new ProblemLink(p, user));
-            } else {
-                problemLinks.add(new ProblemLink(p, userMapper.findUserByUserId(p.getCreate_by())));
-            }
+//            if (user.getUser_id().equals(p.getCreate_by())) {
+//                problemLinks.add(new ProblemLink(p, user));
+//            } else {
+//            }
+            problemLinks.add(new ProblemLink(p, userMapper.findUserByUserId(p.getCreate_by())));
         }
+        logger.info("problemLink[{}]", problemLinks);
         return problemLinks;
     }
 
@@ -124,9 +126,10 @@ public class ProblemServiceImpl implements ProblemService {
             problem.setProblem_id(problemMapper.findLastInsertId());
             logger.info("题目新建成功!题目Id[{}]", problem.getProblem_id());
             if (tags != null) {
+                Integer id = 0;
                 for (Tag tag : tags) {
                     tag.setTag_id(tagMapper.findTagByTagName(tag.getTagname()));
-                    if (tag.getTag_id() <= 0) {//tag不存在，新建tag
+                    if (tag.getTag_id() == null) {//tag不存在，新建tag
                         tagMapper.insertTag(tag.getTagname());
                         tag.setTag_id(tagMapper.findLastInsertId());
                         logger.info("标签新建成功!标签Id[{}]", tag.getTag_id());

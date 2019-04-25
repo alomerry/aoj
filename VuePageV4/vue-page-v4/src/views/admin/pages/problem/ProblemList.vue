@@ -353,7 +353,11 @@
                                                                         this.$Message.error('Delete !');
                                                                     })
                                                                 }
-                                                            }
+                                                            },
+                                                            onCancel: () => {
+                                                                this.tableLoadingFlag = false;
+                                                                this.$Modal.remove();
+                                                            },
                                                         });
 
                                                     }
@@ -598,6 +602,7 @@
                     //查询题目集合
                     Api.getProblemsByPagePer_Page(this.page, this.per_page, this.$store.state.token).then(res => {
                         let result = res.data;
+                        console.log(result);
                         if (result.code === 200) {
                             this.datas = result.data.problems;
                             this.selectData = this.datas;
@@ -614,6 +619,7 @@
                 } else {
                     Api.getContestProblemsByPageAndContestId(this.page, this.per_page, this.contest_id, this.$store.state.token).then(res => {
                         let result = res.data;
+                        console.log(result);
                         if (result.code === 200) {
                             this.datas = result.data.problems;
                             this.selectData = this.datas;

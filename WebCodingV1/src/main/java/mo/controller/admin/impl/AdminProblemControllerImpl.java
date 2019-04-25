@@ -1,8 +1,10 @@
 package mo.controller.admin.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import mo.controller.AbstractController;
 import mo.controller.admin.AdminProblemController;
 import mo.core.Permission;
@@ -73,6 +75,8 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
         switch (resType) {
             case "simple": {
                 problems.put("problems", problemService.findSimpleProblemLinksByDefunct(defunct, userLink.getUser().getUser_id(), Integer.valueOf(page), Integer.valueOf(per_page)));
+                logger.info("json problems[{}]", JSON.toJSONString(problems, SerializerFeature.DisableCircularReferenceDetect));
+                logger.info("json result[{}]",new JSONObject());
                 break;
             }
             case "detail": {

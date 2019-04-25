@@ -99,7 +99,7 @@
                                 <FormItem>
                                     <Col style="margin-bottom: 15px;" span="3">
                                         <span class="problem-info-item" style="margin-right: 10px"><span class="item-require-red">*</span> Visible</span>
-                                        <i-switch size="default" v-model="formProblem.visible">
+                                        <i-switch size="default" v-model="formProblem.defunct">
                                             <span slot="open">️</span>
                                             <span slot="close"></span>
                                         </i-switch>
@@ -225,7 +225,7 @@
                     description: "",
                     input: "",
                     output: "",
-                    visible: false,
+                    defunct: false,
                     hint: "",
                     source: "",
                     memory_limit: 64,
@@ -235,6 +235,7 @@
                     //tag info
                     tags: [],
                 },
+                tmp_index: 0,//标签key
                 color: [
                     "default",
                     "primary",
@@ -291,9 +292,10 @@
             //添加tag
             addTag() {
                 this.formProblem.tags.push({
-                    tag_id: this.tag_input_value,
+                    tag_id: this.tmp_index,
                     tagname: this.tag_input_value,
                 });
+                this.tmp_index++;
                 this.tag_input_value = "";
             },
             //删除标签
@@ -391,13 +393,21 @@
                     this.$Message.error("Out Description is required!");
                     return;
                 }
-                this.formProblem.visible = this.formProblem.visible ? '1' : '4';
+                this.formProblem.defunct = this.formProblem.defunct ? '1' : '4';
                 let tags = this.formProblem.tags;
                 let problem = this.formProblem;
                 delete problem.tags;
-                Api.createNewProblem(problem, tags.length === 0 ? null : tags, this.testCase_dir_id, this.$store.state.token).then(res => {
+                this.$Loading.start();
+                Api.createNewProblem(problem, tags, this.testCase_dir_id, this.$store.state.token).then(res => {
                     let result = res.data;
                     console.log(result);
+                    if (result.code === 200) {
+                        this.$Loading.finish();
+                        this.$Message.success("Create Problem Successed!");
+                    } else {
+                        this.$Loading.error();
+                        this.$Message.error(result.message);
+                    }
                 }).catch(res => {
                     console.log(res);
                 });

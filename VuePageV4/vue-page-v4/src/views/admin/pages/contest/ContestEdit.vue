@@ -59,7 +59,7 @@
                                         <DatePicker v-model="end_at" size="large" type="datetime" placeholder="Select date" :options="false"></DatePicker>
                                     </Col>
                                     <Col span="5" offset="1">
-                                        <i-switch size="default" v-model="formContest.visible">
+                                        <i-switch size="default" v-model="formContest.defunct">
                                             <span slot="open">️</span>
                                             <span slot="close"></span>
                                         </i-switch>
@@ -104,7 +104,7 @@
                 formContest: {
                     title: '',
                     description: "",
-                    visible: false,
+                    defunct: false,
                     end_at: null,
                     start_at: null,
                     //tag info
@@ -196,7 +196,7 @@
                         description: "",
                         input: "",
                         output: "",
-                        visible: false,
+                        defunct: false,
                         hint: "",
                         source: "",
                         memory_limit: 64,
@@ -210,7 +210,7 @@
                         description: problem.description,
                         input: problem.input,
                         output: problem.output,
-                        visible: problem.defunct === "1",
+                        defunct: problem.defunct === "1",
                         hint: problem.hint,
                         source: problem.source,
                         memory_limit: problem.memory_limit,

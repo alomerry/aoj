@@ -18,7 +18,7 @@ public class Problem {
     //问题标题
     private String title;
     //屏蔽-公开-部分公开-绝对私有0/1/2/3
-    private char defunct;
+    private String defunct;
     //创建者
     private Integer create_by;
     //暗示
