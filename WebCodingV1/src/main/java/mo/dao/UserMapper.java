@@ -34,15 +34,6 @@ public interface UserMapper {
     @Select(value = "select * from users where username = #{username} and passwd = #{passwd}")
     User findUserByUserNameAndUserPwd(@Param("username") String username, @Param("passwd") String passwd);
 
-    /**
-     * 插入新用户
-     *
-     * @param user 用户数据
-     * @return 返回影响行数
-     */
-    @Insert("insert into users (username,passwd,nickname,school,email) values (#{username},#{passwd},#{nickname},#{school},#{email})")
-    int insertUser(User user);
-
 
     /**
      * 按指定序列查询指定页数用户

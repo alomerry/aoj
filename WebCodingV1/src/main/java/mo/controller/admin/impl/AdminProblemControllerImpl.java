@@ -178,15 +178,25 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
         /**
          * 1.判断测试文件是否存在
          * 2.插入题目
-         * 3.判断标签是否存在，不存在则新建
-         * 4.绑定标签和题目
+         *  2.1判断标签是否存在，不存在则新建
+         *  2.2绑定标签和题目
+         * 3.更改文件夹名称
          */
-        logger.info("Problem[{}]\nTags[{}]\nTestCaseId[{}]", problem, tags, testCaseId);
+        //json转JavaBean
         Problem pro = JSON.parseObject(problem, new TypeReference<Problem>() {
         });
         List<Tag> tagList = JSON.parseObject(tags, new TypeReference<ArrayList<Tag>>() {
         });
         logger.info("Problem[{}]\nTags[{}]\nTestCaseId[{}]", pro, tagList, testCaseId);
+
+        File testcase = new File(getHttpServletRequest().getServletContext().getRealPath("/problem_cases"));
+        if (!testcase.exists()) {
+            //文件不存在
+            return new Result().setCode(ResultCode.FORBIDDEN).setMessage("Please upload test case!");
+        }
+        if () {
+
+        }
         return new Result().setCode(ResultCode.OK).setMessage("题目新建成功!");
     }
 }

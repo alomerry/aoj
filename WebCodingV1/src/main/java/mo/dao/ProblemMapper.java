@@ -1,10 +1,7 @@
 package mo.dao;
 
 import mo.entity.po.Problem;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -100,4 +97,17 @@ public interface ProblemMapper {
      */
     @Delete("delete from problems where problem_id = #{problem_id}")
     int deleteProblemByPorblemId(@Param("problem_id") Integer problem_id);
+
+    @Insert("insert into problems (display_id ,title,create_by," +
+            "hint,source,description," +
+            "created_at,memory_limit,time_limit," +
+            "sample_input,sample_output,defunct,output,input) " +
+            "values (#{problem.display_id},#{problem.title},#{create_by}," +
+            "#{problem.hint},#{problem.source},#{problem.description}," +
+            "#{problem.created_at},#{problem.memory_limit},#{problem.time_limit}," +
+            "#{problem.sample_input},#{problem.sample_output},#{problem.defunct},#{problem.output},#{problem.input})")
+    int insertProblem(@Param("problem") Problem problem, @Param("create_by") Integer user_id);
+
+    @Select("select LAST_INSERT_ID()")
+    Integer findLastInsertId();
 }

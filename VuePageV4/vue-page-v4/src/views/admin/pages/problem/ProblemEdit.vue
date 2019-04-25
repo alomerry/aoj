@@ -127,6 +127,35 @@
                             </Row>
                         </div>
                     </div>
+                    <!-- simple -->
+                    <div class="problem-eidt problem-eidt-discribe">
+                        <div class="problem-info-item">
+                            <span class="item-require-red">*</span> Simple Case
+                        </div>
+                        <Collapse accordion>
+                            <Panel name="1">
+                                Simple 1
+                                <div class="problem-info-item" slot="content">
+                                    <Row>
+                                        <Col span="11">
+                                            <div style="margin-bottom: 15px">
+                                                <span class="item-require-red">*</span> Simple input
+                                            </div>
+                                            <Input type="textarea" :rows="4" placeholder="Enter simple input" v-model="formProblem.sample_input"/>
+                                        </Col>
+                                        <Col span="11" offset="1">
+                                            <div style="margin-bottom: 15px">
+                                                <span class="item-require-red">*</span> Simple output
+                                            </div>
+                                            <Input type="textarea" :rows="4" placeholder="Enter simple output" v-model="formProblem.sample_output"/>
+                                        </Col>
+                                    </Row>
+                                </div>
+                            </Panel>
+                        </Collapse>
+                    </div>
+                    
+                    
                     <!--Hint-->
                     <div class="problem-eidt problem-eidt-hit">
                         <div class="problem-info-item">
@@ -201,6 +230,8 @@
                     source: "",
                     memory_limit: 64,
                     time_limit: 1000,
+                    sample_input: "",
+                    sample_output: "",
                     //tag info
                     tags: [],
                 },
@@ -301,6 +332,8 @@
                         hint: problem.hint,
                         source: problem.source,
                         memory_limit: problem.memory_limit,
+                        sample_output: problem.sample_output,
+                        sample_input: problem.sample_input,
                         time_limit: problem.time_limit,
                         tags: tag,
                     }
@@ -328,7 +361,7 @@
             submit() {
                 if (this.testCase_dir_id == null) {
                     this.$Message.error("Please upload test case first!");
-                    // return ;
+                    return;
                 }
                 if (this.formProblem.display_id == null || this.formProblem.display_id === "") {
                     this.$Message.error("Display Id is required!");
@@ -347,6 +380,14 @@
                     return;
                 }
                 if (this.formProblem.output == null || this.formProblem.output === "") {
+                    this.$Message.error("Out Description is required!");
+                    return;
+                }
+                if (this.formProblem.sample_input == null || this.formProblem.sample_input === "") {
+                    this.$Message.error("Out Description is required!");
+                    return;
+                }
+                if (this.formProblem.sample_output == null || this.formProblem.sample_output === "") {
                     this.$Message.error("Out Description is required!");
                     return;
                 }

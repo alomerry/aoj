@@ -1,6 +1,7 @@
 package mo.service;
 
 import mo.entity.po.Problem;
+import mo.entity.po.Tag;
 import mo.entity.vo.ProblemLink;
 
 import java.util.List;
@@ -111,5 +112,15 @@ public interface ProblemService {
      * @return 是否删除成功
      */
     boolean deleteProblemByProblemId(Integer problemId);
+
+    /**
+     * 新建题目
+     *
+     * @param problem 题目实体
+     * @param tags    标签集合
+     * @param user_id 创题者Id
+     * @return 题目主键
+     */
+    Integer insertNewProblemAndTags(Problem problem, List<Tag> tags, Integer user_id);
 
 }

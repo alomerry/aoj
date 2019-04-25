@@ -5,14 +5,17 @@ import mo.dao.ProblemMapper;
 import mo.dao.UserMapper;
 import mo.entity.po.ContestProblem;
 import mo.entity.po.Problem;
+import mo.entity.po.Tag;
 import mo.entity.po.User;
 import mo.entity.vo.ProblemLink;
 import mo.service.ProblemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,6 +108,17 @@ public class ProblemServiceImpl implements ProblemService {
     @Override
     public boolean deleteProblemByProblemId(Integer problemId) {
         return problemMapper.deleteProblemByPorblemId(problemId) > 0;
+    }
+
+    @Override
+    @Transactional
+    public Integer insertNewProblemAndTags(Problem problem, List<Tag> tag, Integer user_id) {
+        problem.setCreated_at(new Timestamp(System.currentTimeMillis()));
+        if (problemMapper.insertProblem(problem, user_id) > 0) {
+            problem.setProblem_id(problemMapper.findLastInsertId());
+
+        }
+        return null;
     }
 
     /**
