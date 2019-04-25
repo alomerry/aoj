@@ -53,6 +53,6 @@ public interface AdminProblemController {
      * @param testCaseId 测试用例文件夹名称
      * @return
      */
-    Result createNewProblem(Problem problem, List<Tag> tags, String testCaseId);
-//    Result createNewProblem(String problem, String tags, String testCaseId);
+//    Result createNewProblem(Problem problem, List<Tag> tags, String testCaseId);
+    Result createNewProblem(String problem, String tags, String testCaseId);
 }

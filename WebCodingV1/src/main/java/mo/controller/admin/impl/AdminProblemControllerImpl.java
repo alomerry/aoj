@@ -1,6 +1,8 @@
 package mo.controller.admin.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import mo.controller.AbstractController;
 import mo.controller.admin.AdminProblemController;
 import mo.core.Permission;
@@ -32,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -169,8 +172,8 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
     @ResponseBody
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
     @RequestMapping(value = "/admin/problem", method = RequestMethod.POST)
-    public Result createNewProblem(@RequestParam("problem") Problem problem,
-                                   @RequestParam("tags") List<Tag> tags,
+    public Result createNewProblem(@RequestParam("problem") String problem,
+                                   @RequestParam("tags") String tags,
                                    @RequestParam("testCaseId") String testCaseId) {
         /**
          * 1.判断测试文件是否存在
@@ -179,6 +182,11 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
          * 4.绑定标签和题目
          */
         logger.info("Problem[{}]\nTags[{}]\nTestCaseId[{}]", problem, tags, testCaseId);
+        Problem pro = JSON.parseObject(problem, new TypeReference<Problem>() {
+        });
+        List<Tag> tagList = JSON.parseObject(tags, new TypeReference<ArrayList<Tag>>() {
+        });
+        logger.info("Problem[{}]\nTags[{}]\nTestCaseId[{}]", pro, tagList, testCaseId);
         return new Result().setCode(ResultCode.OK).setMessage("题目新建成功!");
     }
 }
