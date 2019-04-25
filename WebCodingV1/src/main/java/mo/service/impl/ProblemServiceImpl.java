@@ -123,20 +123,24 @@ public class ProblemServiceImpl implements ProblemService {
         if (problemMapper.insertProblem(problem, user_id) > 0) {
             problem.setProblem_id(problemMapper.findLastInsertId());
             logger.info("题目新建成功!题目Id[{}]", problem.getProblem_id());
-            for (Tag tag : tags) {
-                tag.setTag_id(tagMapper.findTagByTagName(tag.getTagname()));
-                if (tag.getTag_id() <= 0) {//tag不存在，新建tag
-                    tagMapper.insertTag(tag.getTagname());
-                    tag.setTag_id(tagMapper.findLastInsertId());
-                    logger.info("标签新建成功!标签Id[{}]", tag.getTag_id());
+            if (tags != null) {
+                for (Tag tag : tags) {
+                    tag.setTag_id(tagMapper.findTagByTagName(tag.getTagname()));
+                    if (tag.getTag_id() <= 0) {//tag不存在，新建tag
+                        tagMapper.insertTag(tag.getTagname());
+                        tag.setTag_id(tagMapper.findLastInsertId());
+                        logger.info("标签新建成功!标签Id[{}]", tag.getTag_id());
+                    }
+                    //绑定关系
+                    if (problemTagMapper.insertProblemTagWithTagIdAndProblemId(problem.getProblem_id(), tag.getTag_id()) > 0) {
+                        logger.info("题目[{}]与标签[{}]绑定成功!", problem.getProblem_id(), tag.getTag_id());
+                        return problem.getProblem_id();
+                    } else {
+                        throw new ServiceException("题目与标签绑定失败");
+                    }
                 }
-                //绑定关系
-                if (problemTagMapper.insertProblemTagWithTagIdAndProblemId(problem.getProblem_id(), tag.getTag_id()) > 0) {
-                    logger.info("题目[{}]与标签[{}]绑定成功!", problem.getProblem_id(), tag.getTag_id());
-                    return problem.getProblem_id();
-                } else {
-                    throw new ServiceException("题目与标签绑定失败");
-                }
+            } else {
+                return problem.getProblem_id();
             }
         }
         throw new ServiceException("题目新建失败!");

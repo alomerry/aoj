@@ -56,7 +56,7 @@ public class TestController extends AbstractController {
     @ResponseBody
     @RequestMapping(value = "/test/unzip", method = RequestMethod.POST)
     public Result testFileUnzip() {
-
+        File file = new File("1556176958407Bv41eR");
         return new Result().setCode(ResultCode.OK);
     }
 }

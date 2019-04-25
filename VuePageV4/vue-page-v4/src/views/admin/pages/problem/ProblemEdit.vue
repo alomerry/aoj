@@ -195,7 +195,7 @@
                         </div>
                         <FormItem>
                             <label>
-                                <Input type="text" title=""/>
+                                <Input type="text" title="" v-model="formProblem.source"/>
                             </label>
                         </FormItem>
                         <Button type="primary" @click="submit">Save</Button>
@@ -353,7 +353,7 @@
                 console.log(response);
                 if (response.code == 200) {
                     this.testCase_dir_id = response.data.testCase_dir_id;
-                    this.$Message.success("success");
+                    this.$Message.success("upload success!");
                 } else {
                     this.$Message.error(response.message);
                 }
@@ -391,11 +391,11 @@
                     this.$Message.error("Out Description is required!");
                     return;
                 }
-
+                this.formProblem.visible = this.formProblem.visible ? '1' : '4';
                 let tags = this.formProblem.tags;
                 let problem = this.formProblem;
                 delete problem.tags;
-                Api.createNewProblem(problem, tags.length === 0 ? null : tags, this.tag_input_value, this.$store.state.token).then(res => {
+                Api.createNewProblem(problem, tags.length === 0 ? null : tags, this.testCase_dir_id, this.$store.state.token).then(res => {
                     let result = res.data;
                     console.log(result);
                 }).catch(res => {

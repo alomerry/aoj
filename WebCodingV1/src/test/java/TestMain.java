@@ -17,6 +17,7 @@ import java.net.InetAddress;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TestMain {
@@ -124,6 +125,14 @@ public class TestMain {
             FileUtils.ZipFileDecompression(file, path);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void test08() {
+        List<String> a = null;
+        for (String s : a) {
+            System.out.println(s);
         }
     }
 }
