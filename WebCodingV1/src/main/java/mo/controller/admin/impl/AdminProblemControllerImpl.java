@@ -9,6 +9,7 @@ import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.Privilege;
 import mo.entity.po.Problem;
+import mo.entity.po.Tag;
 import mo.entity.po.User;
 import mo.entity.vo.ProblemLink;
 import mo.entity.vo.UserLink;
@@ -162,5 +163,22 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
         } else {
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage("文件上传失败");
         }
+    }
+
+    @Override
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/problem", method = RequestMethod.POST)
+    public Result createNewProblem(@RequestParam("problem") Problem problem,
+                                   @RequestParam("tags") List<Tag> tags,
+                                   @RequestParam("testCaseId") String testCaseId) {
+        /**
+         * 1.判断测试文件是否存在
+         * 2.插入题目
+         * 3.判断标签是否存在，不存在则新建
+         * 4.绑定标签和题目
+         */
+        logger.info("Problem[{}]\nTags[{}]\nTestCaseId[{}]", problem, tags, testCaseId);
+        return new Result().setCode(ResultCode.OK).setMessage("题目新建成功!");
     }
 }

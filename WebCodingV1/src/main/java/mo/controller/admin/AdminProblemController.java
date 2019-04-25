@@ -1,7 +1,11 @@
 package mo.controller.admin;
 
 import mo.core.Result;
+import mo.entity.po.Problem;
+import mo.entity.po.Tag;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface AdminProblemController {
     /**
@@ -40,4 +44,14 @@ public interface AdminProblemController {
      * @return
      */
     Result uploadTestCase(MultipartFile testCase);
+
+    /**
+     * 新建题目
+     *
+     * @param problem    题目实体
+     * @param tags       标签数组
+     * @param testCaseId 测试用例文件夹名称
+     * @return
+     */
+    Result createNewProblem(Problem problem, List<Tag> tags, String testCaseId);
 }

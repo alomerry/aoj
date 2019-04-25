@@ -154,6 +154,20 @@ export default {
         });
     },
 
+    createNewProblem(problem, tags, testcase_id, jwt) {
+        let params = new URLSearchParams();
+        params.append("problem", problem);
+        params.append("tags", tags);
+        params.append("testCaseId", testcase_id);
+        return axios({
+            url: "/api/api-oj/admin/problem",
+            method: "post",
+            data: params,
+            headers: {
+                "jwt": jwt,
+            }
+        })
+    },
     /**
      * 删除指定题目
      * @param problem_id 题目Id

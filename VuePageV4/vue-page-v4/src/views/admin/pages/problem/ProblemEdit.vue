@@ -13,10 +13,10 @@
                         <div class="problem-info-item">
                             <Row>
                                 <Col span="4">
-                                    Display Id
+                                    <span class="item-require-red">*</span> Display Id
                                 </Col>
                                 <Col span="5" offset="4">
-                                    Title
+                                    <span class="item-require-red">*</span> Title
                                 </Col>
                             </Row>
                         </div>
@@ -38,7 +38,7 @@
                     <!-- Description -->
                     <div class="problem-eidt problem-eidt-discribe">
                         <div class="problem-info-item">
-                            Description
+                            <span class="item-require-red">*</span> Description
                         </div>
                         <div class="problem-info-item">
                             <FormItem>
@@ -50,7 +50,7 @@
                     <!-- Input Description -->
                     <div class="problem-eidt problem-eidt-discribe">
                         <div class="problem-info-item">
-                            Input Description
+                            <span class="item-require-red">*</span> Input Description
                         </div>
                         <div class="problem-info-item">
                             <FormItem>
@@ -62,7 +62,7 @@
                     <!-- Output Description -->
                     <div class="problem-eidt problem-eidt-discribe">
                         <div class="problem-info-item">
-                            Output Description
+                            <span class="item-require-red">*</span> Output Description
                         </div>
                         <div class="problem-info-item">
                             <FormItem>
@@ -75,8 +75,8 @@
                     <div class="problem-eidt problem-eidt-discribe">
                         <div class="problem-info-item">
                             <Row>
-                                <Col span="7">Time Limit (ms)</Col>
-                                <Col span="7" offset="1">Memory limit (MB)</Col>
+                                <Col span="7"><span class="item-require-red">*</span> Time Limit (ms)</Col>
+                                <Col span="7" offset="1"><span class="item-require-red">*</span> Memory limit (MB)</Col>
                             </Row>
                         </div>
                         <div class="problem-info-item">
@@ -98,7 +98,7 @@
                             <Row>
                                 <FormItem>
                                     <Col style="margin-bottom: 15px;" span="3">
-                                        <span class="problem-info-item" style="margin-right: 10px">Visible</span>
+                                        <span class="problem-info-item" style="margin-right: 10px"><span class="item-require-red">*</span> Visible</span>
                                         <i-switch size="default" v-model="formProblem.visible">
                                             <span slot="open">️</span>
                                             <span slot="close"></span>
@@ -140,7 +140,7 @@
                     <!-- Test Case -->
                     <div class="problem-eidt problem-eidt-testcase">
                         <div class="problem-info-item">
-                            Test Case
+                            <span class="item-require-red">*</span> Test Case
                         </div>
                         <FormItem>
                             <Upload
@@ -169,7 +169,7 @@
                                 <Input type="text" title=""/>
                             </label>
                         </FormItem>
-                        <Button type="primary">Save</Button>
+                        <Button type="primary" @click="submit">Save</Button>
                     </div>
                 </div>
             </Form>
@@ -254,10 +254,6 @@
             }
         },
         methods: {
-            handleUpload(file) {
-                this.file_testCase = file;
-                return false;
-            },
             clearUploadFile() {
                 this.file_testCase = null;
             },
@@ -318,6 +314,7 @@
             },
             uploadFailed() {
                 this.$Message.error("上传失败");
+                this.testCase_dir_id = null;
             },
             uploadSucceeded(response) {
                 console.log(response);
@@ -327,6 +324,42 @@
                 } else {
                     this.$Message.error(response.message);
                 }
+            },
+            submit() {
+                if (this.testCase_dir_id == null) {
+                    this.$Message.error("Please upload test case first!");
+                    // return ;
+                }
+                if (this.formProblem.display_id == null || this.formProblem.display_id === "") {
+                    this.$Message.error("Display Id is required!");
+                    return;
+                }
+                if (this.formProblem.title == null || this.formProblem.title === "") {
+                    this.$Message.error("Title is required!");
+                    return;
+                }
+                if (this.formProblem.description == null || this.formProblem.description === "") {
+                    this.$Message.error("Description is required!");
+                    return;
+                }
+                if (this.formProblem.input == null || this.formProblem.input === "") {
+                    this.$Message.error("Input Description is required!");
+                    return;
+                }
+                if (this.formProblem.output == null || this.formProblem.output === "") {
+                    this.$Message.error("Out Description is required!");
+                    return;
+                }
+
+                let tags = this.formProblem.tags;
+                let problem = this.formProblem;
+                delete problem.tags;
+                Api.createNewProblem(problem, tags, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    console.log(result);
+                }).catch(res => {
+                    console.log(res);
+                });
             }
         },
         created() {
@@ -374,5 +407,9 @@
     
     .bg {
         background-color: #edecec;
+    }
+    
+    span.item-require-red {
+        color: red;
     }
 </style>
