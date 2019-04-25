@@ -354,7 +354,7 @@
                 let tags = this.formProblem.tags;
                 let problem = this.formProblem;
                 delete problem.tags;
-                Api.createNewProblem(problem, tags, this.$store.state.token).then(res => {
+                Api.createNewProblem(problem, tags, this.tag_input_value, this.$store.state.token).then(res => {
                     let result = res.data;
                     console.log(result);
                 }).catch(res => {

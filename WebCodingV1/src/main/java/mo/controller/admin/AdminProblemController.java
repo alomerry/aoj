@@ -54,4 +54,5 @@ public interface AdminProblemController {
      * @return
      */
     Result createNewProblem(Problem problem, List<Tag> tags, String testCaseId);
+//    Result createNewProblem(String problem, String tags, String testCaseId);
 }

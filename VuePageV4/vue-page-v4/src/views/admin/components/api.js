@@ -156,8 +156,8 @@ export default {
 
     createNewProblem(problem, tags, testcase_id, jwt) {
         let params = new URLSearchParams();
-        params.append("problem", problem);
-        params.append("tags", tags);
+        params.append("problem", JSON.stringify(problem));
+        params.append("tags", JSON.stringify(tags));
         params.append("testCaseId", testcase_id);
         return axios({
             url: "/api/api-oj/admin/problem",
