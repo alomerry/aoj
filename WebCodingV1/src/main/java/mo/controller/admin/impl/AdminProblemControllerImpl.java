@@ -144,14 +144,14 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
                 File file_out = new File(path + File.separator + filename);
                 testCase.transferTo(file_out);
                 if (FileUtils.ZipFileDecompression(file_out, path)) {
-//                    file_out.delete();
+                    file_out.delete();
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("testCase_dir_id", dirName);
                     logger.info("文件保存成功,路径[{}]", path);
                     return new Result().setCode(ResultCode.OK).setData(jsonObject).setMessage("上传成功");
                 } else {
                     //压缩包中包含非in/out文件
-//                    file_out.delete();
+                    file_out.delete();
                     logger.info("Zip中包含非法文件");
                     return new Result().setCode(ResultCode.FORBIDDEN).setMessage("测试用例只可包含in/out文件!");
                 }

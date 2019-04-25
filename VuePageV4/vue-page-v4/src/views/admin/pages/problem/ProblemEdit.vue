@@ -42,7 +42,7 @@
                         </div>
                         <div class="problem-info-item">
                             <FormItem>
-                                <Simditor>
+                                <Simditor v-model="formProblem.description">
                                 </Simditor>
                             </FormItem>
                         </div>
@@ -54,7 +54,7 @@
                         </div>
                         <div class="problem-info-item">
                             <FormItem>
-                                <Simditor>
+                                <Simditor v-model="formProblem.input">
                                 </Simditor>
                             </FormItem>
                         </div>
@@ -66,7 +66,7 @@
                         </div>
                         <div class="problem-info-item">
                             <FormItem>
-                                <Simditor>
+                                <Simditor v-model="formProblem.output">
                                 </Simditor>
                             </FormItem>
                         </div>
@@ -106,12 +106,22 @@
                                     </Col>
                                     <Col span="10">
                                         <span class="problem-info-item" style="margin-right: 10px">Tag</span>
-                                        <Tag type="dot" closable color="green" :key="item.tag_id"
-                                             v-for="item in formProblem.tags">
+                                        <Tag closable
+                                             v-for="(item,index) in formProblem.tags"
+                                             :key="item.tag_id"
+                                             :name="item.tag_id"
+                                             :color="color[index]"
+                                             @on-close="deleteTag">
                                             {{item.tagname}}
                                         </Tag>
-                                        <Button icon="ios-add" type="dashed" size="small" @click="handleAddTag">添加标签
-                                        </Button>
+                                        <Poptip>
+                                            <div slot="content">
+                                                <Input size="small" placeholder="tag content" @on-blur="addTag" v-model="tag_input_value"/>
+                                            </div>
+                                            <Button icon="ios-add" size="small">添加标签
+                                            </Button>
+                                        
+                                        </Poptip>
                                     </Col>
                                 </FormItem>
                             </Row>
@@ -123,7 +133,7 @@
                             Hint
                         </div>
                         <div class="problem-info-item">
-                            <Simditor>
+                            <Simditor v-model="formProblem.hint">
                             </Simditor>
                         </div>
                     </div>
@@ -149,7 +159,7 @@
                             </span>
                         </FormItem>
                     </div>
-                    <!-- Test Case -->
+                    <!-- Source -->
                     <div class="problem-eidt problem-eidt-testcase">
                         <div class="problem-info-item">
                             Source
@@ -179,6 +189,7 @@
                 file_testCase: null,
                 testCase_dir_id: null,
                 content: '',
+                tag_input_value: '',//添加tag的input的value
                 formProblem: {
                     display_id: "",
                     title: '',
@@ -191,8 +202,27 @@
                     memory_limit: 64,
                     time_limit: 1000,
                     //tag info
-                    tags: null,
-                }
+                    tags: [],
+                },
+                color: [
+                    "default",
+                    "primary",
+                    "success",
+                    "error",
+                    "magenta",
+                    "red",
+                    "volcano",
+                    "orange",
+                    "gold",
+                    "yellow",
+                    "lime",
+                    "green",
+                    "cyan",
+                    "blue",
+                    "geekblue",
+                    "purple",
+                    "#FFA2D3",
+                ],
             }
         },
         components: {
@@ -231,6 +261,24 @@
             clearUploadFile() {
                 this.file_testCase = null;
             },
+            //添加tag
+            addTag() {
+                this.formProblem.tags.push({
+                    tag_id: this.tag_input_value,
+                    tagname: this.tag_input_value,
+                });
+                this.tag_input_value = "";
+            },
+            //删除标签
+            deleteTag(event, tag_id) {
+                let res = this.formProblem.tags.findIndex(function (currentItem, index) {
+                    if (currentItem.tag_id == tag_id) {
+                        return true;
+                    }
+                });
+                // console.log(res);
+                this.formProblem.tags.splice(res, 1);
+            },
             initFormDataWithProblemAndTag(problem, tag) {
                 if (problem == null) {
                     this.formProblem = {
@@ -244,7 +292,7 @@
                         source: "",
                         memory_limit: 64,
                         time_limit: 1000,
-                        tags: null,
+                        tags: [],
                     }
                 } else {
                     this.formProblem = {
@@ -262,9 +310,6 @@
                     }
                 }
             },
-            handleAddTag() {//添加标签
-
-            },
             fileFormatError(file) {
                 this.$Notice.warning({
                     title: 'The file format is incorrect',
@@ -276,6 +321,12 @@
             },
             uploadSucceeded(response) {
                 console.log(response);
+                if (response.code == 200) {
+                    this.testCase_dir_id = response.data.testCase_dir_id;
+                    this.$Message.success("success");
+                } else {
+                    this.$Message.error(response.message);
+                }
             }
         },
         created() {

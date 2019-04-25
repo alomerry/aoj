@@ -14,6 +14,7 @@
         data() {
             return {
                 editor: null,
+                currentValue: this.value,
             }
         },
         props: {
@@ -34,13 +35,34 @@
                 pasteImage: true,
                 markdown: true,
                 upload: {
-                    url: '/api/admin/upload_image/',
+                    // url: '/api/admin/upload_image/',
                     params: null,
                     fileKey: 'image',
                     connectionCount: 3,
                     leaveConfirm: 'Uploading is in progress, are you sure to leave this page?'
                 }
-            })
+            });
+            this.editor.on('valuechanged', (e, src) => {
+                this.currentValue = this.editor.getValue();
+            });
+            this.editor.on('decorate', (e, src) => {
+                this.currentValue = this.editor.getValue();
+            });
+            this.editor.setValue(this.value);
+        },
+        watch: {
+            'value'(val) {
+                if (this.currentValue !== val) {
+                    this.currentValue = val;
+                    this.editor.setValue(val)
+                }
+            },
+            'currentValue'(newVal, oldVal) {
+                if (newVal !== oldVal) {
+                    this.$emit('change', newVal);
+                    this.$emit('input', newVal)
+                }
+            }
         }
     }
 </script>
