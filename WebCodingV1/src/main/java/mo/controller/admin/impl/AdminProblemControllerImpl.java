@@ -190,14 +190,14 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
         });
         logger.info("Problem[{}]\nTags[{}]\nTestCaseId[{}]", pro, tagList, testCaseId);
 
-        File testcase = new File(getHttpServletRequest().getServletContext().getRealPath("/problem_cases"));
+        File testcase = new File(getHttpServletRequest().getServletContext().getRealPath("/problem_cases") + File.separator + testCaseId);
         if (!testcase.exists()) {
             //文件不存在
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage("Please upload test case!");
         }
         try {
             pro.setProblem_id(problemService.insertNewProblemAndTags(pro, tagList, getJWTUserId()));
-
+            testcase.renameTo(new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + pro.getProblem_id()));
             return new Result().setCode(ResultCode.OK).setMessage("题目新建成功!");
         } catch (ServiceException e) {
             e.printStackTrace();
