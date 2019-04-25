@@ -1,18 +1,18 @@
 package mo.service.impl;
 
-import mo.dao.ContestProblemMapper;
-import mo.dao.ProblemMapper;
-import mo.dao.UserMapper;
+import mo.dao.*;
 import mo.entity.po.ContestProblem;
 import mo.entity.po.Problem;
 import mo.entity.po.Tag;
 import mo.entity.po.User;
 import mo.entity.vo.ProblemLink;
+import mo.exception.ServiceException;
 import mo.service.ProblemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.text.resources.da.FormatData_da;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
@@ -32,6 +32,12 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Resource
     private ContestProblemMapper contestProblemMapper;
+
+    @Resource
+    private TagMapper tagMapper;
+
+    @Resource
+    private ProblemTagMapper problemTagMapper;
 
     @Override
     public Problem findProblemByProblemId(Integer problem_id) {
@@ -112,13 +118,28 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     @Transactional
-    public Integer insertNewProblemAndTags(Problem problem, List<Tag> tag, Integer user_id) {
+    public Integer insertNewProblemAndTags(Problem problem, List<Tag> tags, Integer user_id) throws ServiceException {
         problem.setCreated_at(new Timestamp(System.currentTimeMillis()));
         if (problemMapper.insertProblem(problem, user_id) > 0) {
             problem.setProblem_id(problemMapper.findLastInsertId());
-
+            logger.info("题目新建成功!题目Id[{}]", problem.getProblem_id());
+            for (Tag tag : tags) {
+                tag.setTag_id(tagMapper.findTagByTagName(tag.getTagname()));
+                if (tag.getTag_id() <= 0) {//tag不存在，新建tag
+                    tagMapper.insertTag(tag.getTagname());
+                    tag.setTag_id(tagMapper.findLastInsertId());
+                    logger.info("标签新建成功!标签Id[{}]", tag.getTag_id());
+                }
+                //绑定关系
+                if (problemTagMapper.insertProblemTagWithTagIdAndProblemId(problem.getProblem_id(), tag.getTag_id()) > 0) {
+                    logger.info("题目[{}]与标签[{}]绑定成功!", problem.getProblem_id(), tag.getTag_id());
+                    return problem.getProblem_id();
+                } else {
+                    throw new ServiceException("题目与标签绑定失败");
+                }
+            }
         }
-        return null;
+        throw new ServiceException("题目新建失败!");
     }
 
     /**

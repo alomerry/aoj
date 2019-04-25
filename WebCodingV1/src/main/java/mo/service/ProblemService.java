@@ -3,6 +3,7 @@ package mo.service;
 import mo.entity.po.Problem;
 import mo.entity.po.Tag;
 import mo.entity.vo.ProblemLink;
+import mo.exception.ServiceException;
 
 import java.util.List;
 
@@ -121,6 +122,6 @@ public interface ProblemService {
      * @param user_id 创题者Id
      * @return 题目主键
      */
-    Integer insertNewProblemAndTags(Problem problem, List<Tag> tags, Integer user_id);
+    Integer insertNewProblemAndTags(Problem problem, List<Tag> tags, Integer user_id) throws ServiceException;
 
 }

@@ -15,6 +15,7 @@ import mo.entity.po.Tag;
 import mo.entity.po.User;
 import mo.entity.vo.ProblemLink;
 import mo.entity.vo.UserLink;
+import mo.exception.ServiceException;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
 import mo.service.PrivilegeService;
@@ -194,9 +195,13 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
             //文件不存在
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage("Please upload test case!");
         }
-        if () {
+        try {
+            pro.setProblem_id(problemService.insertNewProblemAndTags(pro, tagList, getJWTUserId()));
 
+            return new Result().setCode(ResultCode.OK).setMessage("题目新建成功!");
+        } catch (ServiceException e) {
+            e.printStackTrace();
+            return new Result().setCode(ResultCode.FORBIDDEN).setMessage(e.getMessage());
         }
-        return new Result().setCode(ResultCode.OK).setMessage("题目新建成功!");
     }
 }
