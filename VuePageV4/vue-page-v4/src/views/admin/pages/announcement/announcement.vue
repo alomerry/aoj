@@ -132,13 +132,9 @@
                                         click: () => {
                                             this.modal_falg = true;
                                             this.formAnno = {
-                                                news_id: null,//新闻Id
-                                                user_id: params.row.user.user_id,//用户Id
+                                                news_id: params.row.news.news_id,//新闻Id
                                                 title: params.row.news.title,//新闻标题
                                                 content: params.row.news.content,//新闻内容
-                                                update_time: null,//更新时间
-                                                create_at: null,//创造时间
-                                                contest_id: null,//所属竞赛号
                                                 defunct: params.row.news.defunct == 1 ? true : false,//公开状态
                                             }
                                         }
@@ -200,7 +196,7 @@
         },
         methods: {
             createAnno() {
-                if (this.formAnno.user_id == null) {//create
+                if (this.formAnno.news_id == null) {//create
                     let news = {
                         title: this.formAnno.title,//新闻标题
                         content: this.formAnno.content,//新闻内容
@@ -221,10 +217,24 @@
                     });
                 } else {//update
                     let news = {
+                        news_id: this.formAnno.news_id,
                         title: this.formAnno.title,//新闻标题
                         content: this.formAnno.content,//新闻内容
                         defunct: this.formAnno.defunct ? "1" : "0",//公开状态
                     }
+                    Api.updateNews(news, this.$store.state.token).then(res => {
+                        let result = res.data;
+                        if (result.code === 200) {
+                            this.getNews();
+                            this.$Message.success("修改成功");
+                        } else {
+                            this.$Message.error(result.message);
+                        }
+                        this.modal_falg = false;
+                    }).catch(res => {
+                        console.log(res);
+                        this.modal_falg = false;
+                    });
                 }
 
             },
@@ -263,7 +273,7 @@
                         }
                     ];*/
                     let result = res.data;
-                    console.log(result);
+                    // console.log(result);
                     if (result.code === 200) {
                         this.anno_data = result.data.newsLink;
                     } else {

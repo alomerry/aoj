@@ -46,6 +46,7 @@ export default {
             }
         });
     },
+
     /**
      * 查询题目
      * @param page 页码
@@ -65,6 +66,7 @@ export default {
             }
         });
     },
+
     /**
      * 根据竞赛Id查询题目集
      * @param page 页码
@@ -85,6 +87,7 @@ export default {
             }
         });
     },
+
     /**
      * 查询制定Id题目
      * @param problem_id
@@ -96,6 +99,7 @@ export default {
             method: 'get',
         });
     },
+
     /**
      * 查询公开题目集
      */
@@ -109,6 +113,7 @@ export default {
             data: params,
         })
     },
+
     /**
      * 根据题目Id查询标签集合
      * @param problem_id
@@ -120,6 +125,7 @@ export default {
             method: "get",
         });
     },
+
     /**
      * 将指定Id的题目添加至指定Id的竞赛
      * @param contest_id 比赛Id
@@ -154,6 +160,14 @@ export default {
         });
     },
 
+    /**
+     * 创建题目
+     * @param problem 题目实体
+     * @param tags 标签
+     * @param testcase_id 测试用例文件夹名称
+     * @param jwt 令牌
+     * @returns {AxiosPromise}
+     */
     createNewProblem(problem, tags, testcase_id, jwt) {
         let params = new URLSearchParams();
         params.append("problem", JSON.stringify(problem));
@@ -168,6 +182,7 @@ export default {
             }
         })
     },
+
     /**
      * 删除指定题目
      * @param problem_id 题目Id
@@ -183,6 +198,7 @@ export default {
             }
         })
     },
+
     /**
      * 删除指定用户
      * @param user_id 用户Id
@@ -214,6 +230,7 @@ export default {
             }
         })
     },
+
     /**
      * 查询新闻
      * @param page 页码
@@ -233,9 +250,10 @@ export default {
             }
         })
     },
+
     /**
-     * 创建新闻
-     * @param news 新闻实体
+     * 创建公告
+     * @param news 公告实体
      * @param jwt 令牌
      * @returns {AxiosPromise}
      */
@@ -250,5 +268,25 @@ export default {
                 "jwt": jwt,
             }
         });
-    }
+    },
+
+    /**
+     * 更新公告
+     * @param news 公告实体
+     * @param jwt 令牌
+     * @returns {AxiosPromise}
+     */
+    updateNews(news, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/news",
+            method: "put",
+            dataType: "json",
+            data: JSON.stringify(news),
+            headers: {
+                "jwt": jwt,
+                "Content-Type": "application/json;charset-UTF-8",
+            }
+        });
+    },
+
 }

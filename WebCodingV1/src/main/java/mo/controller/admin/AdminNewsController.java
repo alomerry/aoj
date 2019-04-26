@@ -1,6 +1,7 @@
 package mo.controller.admin;
 
 import mo.core.Result;
+import mo.entity.po.News;
 
 public interface AdminNewsController {
     /**
@@ -26,5 +27,5 @@ public interface AdminNewsController {
      * @param news 新闻实体json
      * @return http状态码
      */
-    Result updateNews(String news);
+    Result updateNews(News news);
 }

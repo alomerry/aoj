@@ -51,6 +51,7 @@ public class WebMvcConfiger extends WebMvcConfigurationSupport {
         converters.add(0, converter);
     }
 
+    //配置内部错误解析
     @Override
     public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
         exceptionResolvers.add(new HandlerExceptionResolver() {
@@ -96,6 +97,7 @@ public class WebMvcConfiger extends WebMvcConfigurationSupport {
         //registry.addMapping("/**");
     }
 
+    //发送请求
     private void responseResult(HttpServletResponse response, Result result) {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Content-type", "application/json;charset=UTF-8");
@@ -106,4 +108,10 @@ public class WebMvcConfiger extends WebMvcConfigurationSupport {
             logger.error(ex.getMessage());
         }
     }
+
+    //强制接收put请求
+//    @Bean
+//    public HttpPutFormContentFilter httpPutFormContentFilter() {
+//        return new HttpPutFormContentFilter();
+//    }
 }

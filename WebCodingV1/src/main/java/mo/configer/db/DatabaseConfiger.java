@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 @PropertySource(value = {"jdbc.properties"})
 public class DatabaseConfiger {
 
+    //TODO 配置多数据源
     @Bean("db_mysql")
     @ConfigurationProperties(prefix = "spring.datasource.oj-mysql-v1")
     public DataSource getMySQL() {
