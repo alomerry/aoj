@@ -48,6 +48,6 @@ public interface NewsMapper {
      * @param news 公告实体
      * @return 影响行数
      */
-    @Update("update news set title = #{news.title},content=#{news.content},update_time=#{news.update_time},defunct=#{news.defunct} where news_id = #{news.new_id} ")
+    @Update("update news set title = #{news.title},content=#{news.content},update_time=#{news.update_time},defunct=#{news.defunct} where news_id = #{news.news_id} ")
     int updateNewsByNewsId(@Param("news") News news);
 }
