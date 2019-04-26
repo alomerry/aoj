@@ -4,12 +4,44 @@ import mo.entity.po.News;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface NewsMapper {
 
-    @Insert("insert into news () values ()")
-    int insertNewsBlindToContest(@Param("news") News news);
+    /**
+     * 为竞赛添加新闻
+     *
+     * @param news       新闻实体
+     * @param user_id    创建者Id
+     * @param contest_id 竞赛Id
+     * @return 影响行数
+     */
+    @Insert("insert into news (user_id,title,content,update_time,create_at,defunct,contest_id) values " +
+            "(#{user_id},#{news.title},#{news.content},#{news.update_time},#{news.create_at},#{news.defunct},#{contest_id})")
+    int insertNewsBlindToContest(@Param("news") News news, @Param("user_id") Integer user_id, @Param("contest_id") Integer contest_id);
 
-    int insertNews(@Param("news") News news);
+    /**
+     * 创建新闻
+     *
+     * @param news    新闻实体
+     * @param user_id 创建者Id
+     * @return 影响行数
+     */
+    @Insert("insert into news (user_id,title,content,update_time,create_at,defunct) values " +
+            "(#{user_id},#{news.title},#{news.content},#{news.update_time},#{news.create_at},#{news.defunct})")
+    int insertNews(@Param("news") News news, @Param("user_id") Integer user_id);
+
+    /**
+     * 查询新闻
+     *
+     * @param user_id  创建者Id
+     * @param start    起始
+     * @param per_page 查询数量
+     * @return
+     */
+    @Select("select * from news where user_id = #{} limit #{start},#{per_page}")
+    List<News> findNewsByPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
 }
