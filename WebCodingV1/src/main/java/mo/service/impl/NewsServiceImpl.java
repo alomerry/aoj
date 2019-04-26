@@ -42,7 +42,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<NewsUserLink> findNews(int page, int per_page) {
-        List<News> newsList = newsMapper.findNewsByPageAndCreatorId((page - 1) * per_page, per_page);
+        List<News> newsList = newsMapper.findNewsByPage((page - 1) * per_page, per_page);
         return makeLinkUser(newsList);
     }
 
@@ -54,6 +54,11 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public News findNews(Integer news_id) {
         return newsMapper.findNewsByNewsId(news_id);
+    }
+
+    @Override
+    public List<NewsUserLink> findNewsByPageAndDefunct(int page, int per_page, String defunct) {
+        return makeLinkUser(newsMapper.findNewsByPageAndDefunct(defunct, (page - 1) * per_page, per_page));
     }
 
     private List<NewsUserLink> makeLinkUser(List<News> newsList) {

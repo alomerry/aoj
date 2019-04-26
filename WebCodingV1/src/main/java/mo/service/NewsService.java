@@ -57,4 +57,14 @@ public interface NewsService {
      * @return 公告
      */
     News findNews(Integer news_id);
+
+    /**
+     * 根据页码和公开级别查询公告
+     *
+     * @param page     页码
+     * @param per_page 每页数量
+     * @param defunct  公开级别
+     * @return
+     */
+    List<NewsUserLink> findNewsByPageAndDefunct(int page, int per_page, String defunct);
 }

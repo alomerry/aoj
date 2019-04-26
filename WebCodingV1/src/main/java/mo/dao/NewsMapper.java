@@ -1,6 +1,7 @@
 package mo.dao;
 
 import mo.entity.po.News;
+import mo.entity.vo.NewsUserLink;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public interface NewsMapper {
      * @return
      */
     @Select("select * from news limit #{start},#{per_page}")
-    List<News> findNewsByPageAndCreatorId(@Param("start") int start, @Param("per_page") int per_page);
+    List<News> findNewsByPage(@Param("start") int start, @Param("per_page") int per_page);
 
     /**
      * 修改公告
@@ -78,4 +79,15 @@ public interface NewsMapper {
      */
     @Select("select * from news where news_id = #{news_id}")
     News findNewsByNewsId(@Param("news_id") Integer news_id);
+
+    /**
+     * 根据公开级别查询公告
+     *
+     * @param defunct  公开级别
+     * @param start    起始
+     * @param per_page 每页数量
+     * @return
+     */
+    @Select("select * from news where defunct = #{defunct} limit #{start},#{per_page}")
+    List<News> findNewsByPageAndDefunct(@Param("defunct") String defunct, @Param("start") int start, @Param("per_page") int per_page);
 }
