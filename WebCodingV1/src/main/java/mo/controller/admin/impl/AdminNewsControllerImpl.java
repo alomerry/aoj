@@ -82,4 +82,27 @@ public class AdminNewsControllerImpl extends AbstractController implements Admin
             }
         }
     }
+
+    @Override
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/news/{news_id}", method = RequestMethod.DELETE)
+    public Result deleteNews(@PathVariable Integer news_id) {
+        Integer user_id = getJWTUserId();
+        Privilege privilege = privilegeService.findPrivilegeByUserId(user_id);
+        News news = null;
+        if ((news = newsService.findNews(news_id)) == null) {
+            return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("该公告不存在!");
+        } else {
+            if (!news.getUser_id().equals(user_id) && !PermissionManager.isLegalAdmin(Permission.Announcement_manager, privilege.getRightstr())) {
+                return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("权限不足!");
+            } else {
+                if (newsService.deleteNews(news_id)) {
+                    return new Result().setCode(ResultCode.OK);
+                } else {
+                    return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("内部错误删除失败!");
+                }
+            }
+        }
+    }
 }

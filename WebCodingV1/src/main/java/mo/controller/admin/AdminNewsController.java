@@ -28,4 +28,13 @@ public interface AdminNewsController {
      * @return http状态码
      */
     Result updateNews(News news);
+
+
+    /**
+     * 删除指定公告
+     *
+     * @param news_id 公告Id
+     * @return http状态码
+     */
+    Result deleteNews(Integer news_id);
 }

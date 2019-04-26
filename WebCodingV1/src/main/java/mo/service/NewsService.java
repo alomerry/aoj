@@ -32,4 +32,20 @@ public interface NewsService {
      * @return
      */
     List<NewsUserLink> findNews(Integer user_id, int page, int per_page);
+
+    /**
+     * 删除指定公告
+     *
+     * @param news_id 公告Id
+     * @return 影响行数
+     */
+    boolean deleteNews(Integer news_id);
+
+    /**
+     * 查找指定公告
+     *
+     * @param news_id 公告Id
+     * @return 公告
+     */
+    News findNews(Integer news_id);
 }

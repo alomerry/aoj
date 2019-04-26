@@ -289,4 +289,19 @@ export default {
         });
     },
 
+    /**
+     * 删除公告
+     * @param news_id 公告Id
+     * @param jwt 令牌
+     * @returns {AxiosPromise}
+     */
+    delNews(news_id, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/news/" + news_id,
+            method: "delete",
+            headers: {
+                "jwt": jwt,
+            }
+        });
+    }
 }

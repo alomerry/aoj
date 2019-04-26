@@ -50,4 +50,22 @@ public interface NewsMapper {
      */
     @Update("update news set title = #{news.title},content=#{news.content},update_time=#{news.update_time},defunct=#{news.defunct} where news_id = #{news.news_id} ")
     int updateNewsByNewsId(@Param("news") News news);
+
+    /**
+     * 删除制定公告
+     *
+     * @param news_id 公告Id
+     * @return 影响行数
+     */
+    @Delete("delete form news where news_id = #{news_id}")
+    int deleteNewsByNewsId(@Param("news_id") Integer news_id);
+
+    /**
+     * 查找指定公告
+     *
+     * @param news_id 公告Id
+     * @return 公告
+     */
+    @Select("select * from news where news_id = #{news_id}")
+    News findNewsByNewsId(@Param("news_id") Integer news_id);
 }

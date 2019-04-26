@@ -43,4 +43,14 @@ public class NewsServiceImpl implements NewsService {
         }
         return newsUserLinks;
     }
+
+    @Override
+    public boolean deleteNews(Integer news_id) {
+        return newsMapper.deleteNewsByNewsId(news_id) > 0;
+    }
+
+    @Override
+    public News findNews(Integer news_id) {
+        return newsMapper.findNewsByNewsId(news_id);
+    }
 }
