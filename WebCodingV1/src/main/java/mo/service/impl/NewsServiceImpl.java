@@ -29,6 +29,12 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    public boolean updateNews(News news) {
+        news.setUpdate_time(new Timestamp(System.currentTimeMillis()));
+        return newsMapper.updateNewsByNewsId(news) > 0;
+    }
+
+    @Override
     public List<NewsUserLink> findNews(Integer user_id, int page, int per_page) {
         List<News> newsList = newsMapper.findNewsByPage(user_id, (page - 1) * per_page, per_page);
         List<NewsUserLink> newsUserLinks = new ArrayList<>(newsList.size() + 3);

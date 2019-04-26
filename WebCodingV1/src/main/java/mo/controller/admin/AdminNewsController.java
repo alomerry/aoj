@@ -19,4 +19,12 @@ public interface AdminNewsController {
      * @return
      */
     Result getNews(String page, String per_page);
+
+    /**
+     * 创建新闻
+     *
+     * @param news 新闻实体json
+     * @return http状态码
+     */
+    Result updateNews(String news);
 }

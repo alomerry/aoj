@@ -1,10 +1,7 @@
 package mo.dao;
 
 import mo.entity.po.News;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -44,4 +41,13 @@ public interface NewsMapper {
      */
     @Select("select * from news where user_id = #{user_id} limit #{start},#{per_page}")
     List<News> findNewsByPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
+
+    /**
+     * 修改公告
+     *
+     * @param news 公告实体
+     * @return 影响行数
+     */
+    @Update("update news set title = #{news.title},content=#{news.content},update_time=#{news.update_time},defunct=#{news.defunct} where new_id = #{news.new_id} ")
+    int updateNewsByNewsId(@Param("news") News news);
 }

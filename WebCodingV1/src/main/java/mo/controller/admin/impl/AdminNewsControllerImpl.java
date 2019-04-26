@@ -47,8 +47,25 @@ public class AdminNewsControllerImpl extends AbstractController implements Admin
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
     public Result getNews(@RequestParam(value = "page", defaultValue = "1") String page,
                           @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
+        //TODO 如果是公告管理者,可以查找所有人的公告
         JSONObject news = new JSONObject();
         news.put("newsLink", newsService.findNews(getJWTUserId(), Integer.valueOf(page), Integer.valueOf(per_page)));
         return new Result().setCode(ResultCode.OK).setData(news);
+    }
+
+    @Override
+    public Result updateNews(String news) {
+        News topic = JSON.parseObject(news, new TypeReference<News>() {
+        });
+        logger.info("前端Json转JavaBean成功,news[{}]", topic);
+        if (topic.getNews_id() == null) {
+            return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("此公告不存在!");
+        } else {
+            if (newsService.createNews(topic, getJWTUserId())) {
+                return new Result().setCode(ResultCode.OK);
+            } else {
+                return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("添加失败!");
+            }
+        }
     }
 }

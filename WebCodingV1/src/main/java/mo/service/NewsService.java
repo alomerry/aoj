@@ -16,6 +16,14 @@ public interface NewsService {
     boolean createNews(News news, Integer user_id);
 
     /**
+     * 创建新闻
+     *
+     * @param news 新闻实体
+     * @return 修改结果
+     */
+    boolean updateNews(News news);
+
+    /**
      * 查询题目
      *
      * @param user_id  创建者Id
