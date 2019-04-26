@@ -1,6 +1,7 @@
 package mo.controller.admin.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import mo.controller.AbstractController;
 import mo.controller.admin.AdminNewsController;
@@ -12,10 +13,7 @@ import mo.interceptor.annotation.RequiredType;
 import mo.service.NewsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -45,10 +43,12 @@ public class AdminNewsControllerImpl extends AbstractController implements Admin
 
     @Override
     @ResponseBody
-    @AuthCheck(re)
-    public Result getNews(String page, String per_page, String defunct) {
-        return null;
+    @RequestMapping(value = "/admin/news", method = RequestMethod.GET)
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    public Result getNews(@RequestParam(value = "page", defaultValue = "1") String page,
+                          @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
+        JSONObject news = new JSONObject();
+        news.put("newsLink", newsService.findNews(getJWTUserId(), Integer.valueOf(page), Integer.valueOf(per_page)));
+        return new Result().setCode(ResultCode.OK).setData(news);
     }
-
-
 }

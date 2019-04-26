@@ -85,6 +85,7 @@ public interface UserMapper {
     @Select("select * from users limit #{start},#{per_page}")
     List<User> findUsersByPage(@Param("start") int start, @Param("per_page") int per_page);
 
+
     /**
      * 根据用户Id查询用户的用户名昵称
      *

@@ -16,8 +16,7 @@ public interface AdminNewsController {
      *
      * @param page     页码
      * @param per_page 每页数量
-     * @param defunct  公开级别
      * @return
      */
-    Result getNews(String page, String per_page, String defunct);
+    Result getNews(String page, String per_page);
 }
