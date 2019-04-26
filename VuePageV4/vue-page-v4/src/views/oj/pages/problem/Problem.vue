@@ -30,13 +30,13 @@
                                 <Col span="12">
                                     <label>Simple Input</label>
                                     <div class="oj-code">
-                                        <p v-html="problem.sample_input"></p>
+                                        <pre style="padding: 9px" v-html="problem.sample_input"></pre>
                                     </div>
                                 </Col>
                                 <Col span="12">
                                     <label>Simple Output</label>
                                     <div class="oj-code">
-                                        <p v-html="problem.sample_output"></p>
+                                        <pre style="padding: 9px" v-html="problem.sample_output"></pre>
                                     </div>
                                 </Col>
                             </Row>

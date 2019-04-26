@@ -80,6 +80,7 @@
                         title: 'Problem_id',
                         key: 'problem.problem_id',
                         width: 150,
+                        sortable: true,
                         align: "center",
                         render: (h, params) => {
                             return h('span', {}, params.row.problem.problem_id)
@@ -110,12 +111,13 @@
                     {
                         title: 'Create Time',
                         key: 'problem.created_at',
+                        sortable: true,
                         width: 250,
                         render: (h, params) => {
                             return h('Time', {
                                 props: {
                                     time: params.row.problem.created_at,
-                                    type: 'datetime'
+                                    type: 'datetime',
                                 },
                             })
                         },
@@ -263,118 +265,119 @@
                                         )
                                     ]
                                 ),
-                                h("Tooltip", {
-                                        props: {
-                                            placement: "top",
-                                            theme: "light",
-                                            content: "删除"
-                                        }
-                                    }, [
-                                        h('Button', {
-                                                props: {
-                                                    type: 'default',
-                                                    size: 'large',
-                                                },
-                                                on: {
-                                                    click: () => {
-                                                        this.tableLoadingFlag = true;
+                                (params.row.created_by.user_id) === this.$store.getters.localUserId ?
+                                    h("Tooltip", {
+                                            props: {
+                                                placement: "top",
+                                                theme: "light",
+                                                content: "删除"
+                                            }
+                                        }, [
+                                            h('Button', {
+                                                    props: {
+                                                        type: 'default',
+                                                        size: 'large',
+                                                    },
+                                                    on: {
+                                                        click: () => {
+                                                            this.tableLoadingFlag = true;
 
-                                                        this.$Modal.confirm({
-                                                            title: 'Confirm',
-                                                            content: '<p>Are you sure to delete, only no submitt can be deleted</p>',
-                                                            loading: true,
-                                                            onOk: () => {
-                                                                if (!this.contest_Add) {
-                                                                    //删除题目
-                                                                    Api.deleteProblemByProblemId(
-                                                                        params.row.problem.problem_id,
-                                                                        this.$store.state.token
-                                                                    ).then(res => {
-                                                                        let result = res.data;
-                                                                        switch (result.code) {
-                                                                            case 200: {
-                                                                                this.$Message.success("删除成功!");
-                                                                                this.updateDatas(params.row.problem.problem_id, null);
-                                                                                break;
+                                                            this.$Modal.confirm({
+                                                                title: 'Confirm',
+                                                                content: '<p>Are you sure to delete, only no submitt can be deleted</p>',
+                                                                loading: true,
+                                                                onOk: () => {
+                                                                    if (!this.contest_Add) {
+                                                                        //删除题目
+                                                                        Api.deleteProblemByProblemId(
+                                                                            params.row.problem.problem_id,
+                                                                            this.$store.state.token
+                                                                        ).then(res => {
+                                                                            let result = res.data;
+                                                                            switch (result.code) {
+                                                                                case 200: {
+                                                                                    this.$Message.success("删除成功!");
+                                                                                    this.updateDatas(params.row.problem.problem_id, null);
+                                                                                    break;
+                                                                                }
+                                                                                case 401: {
+                                                                                    this.$Message.error("签名过期,请重新登录!");
+                                                                                    window.location.replace("/admin/login");
+                                                                                    break;
+                                                                                }
+                                                                                default: {
+                                                                                    this.$Message.error(result.message);
+                                                                                    break;
+                                                                                }
                                                                             }
-                                                                            case 401: {
-                                                                                this.$Message.error("签名过期,请重新登录!");
-                                                                                window.location.replace("/admin/login");
-                                                                                break;
+                                                                            this.tableLoadingFlag = false;
+                                                                            this.$Modal.remove();
+                                                                        }).catch(res => {
+                                                                            console.log("错误原因:" + res);
+                                                                            this.tableLoadingFlag = false;
+                                                                            this.$Modal.remove();
+                                                                            this.$Message.success('Delete failed!');
+                                                                        })
+                                                                    } else {
+                                                                        //从竞赛中删除题目
+                                                                        Api.deleteProblemFromContest(this.contest_id,
+                                                                            params.row.problem.problem_id,
+                                                                            this.$store.state.token
+                                                                        ).then(res => {
+                                                                            let result = res.data;
+                                                                            // console.log("正在从竞赛[" + this.contest_id + "]中删除题目[" + params.row.problem.problem_id + "]...")
+                                                                            // console.log(result);
+                                                                            switch (result.code) {
+                                                                                case 200: {
+                                                                                    this.$Message.success("删除成功!");
+                                                                                    this.updateDatas(params.row.problem.problem_id, null);
+                                                                                    break;
+                                                                                }
+                                                                                case 401: {
+                                                                                    this.$Message.error("签名过期,请重新登录!");
+                                                                                    window.location.replace("/admin/login");
+                                                                                    break;
+                                                                                }
+                                                                                case 403: {
+                                                                                    this.$Message.error(result.message);//权限不足
+                                                                                    break;
+                                                                                }
+                                                                                case 400: {
+                                                                                    this.$Message.error(result.message);//删除题目失败
+                                                                                    break;
+                                                                                }
                                                                             }
-                                                                            default: {
-                                                                                this.$Message.error(result.message);
-                                                                                break;
-                                                                            }
-                                                                        }
-                                                                        this.tableLoadingFlag = false;
-                                                                        this.$Modal.remove();
-                                                                    }).catch(res => {
-                                                                        console.log("错误原因:" + res);
-                                                                        this.tableLoadingFlag = false;
-                                                                        this.$Modal.remove();
-                                                                        this.$Message.success('Delete failed!');
-                                                                    })
-                                                                } else {
-                                                                    //从竞赛中删除题目
-                                                                    Api.deleteProblemFromContest(this.contest_id,
-                                                                        params.row.problem.problem_id,
-                                                                        this.$store.state.token
-                                                                    ).then(res => {
-                                                                        let result = res.data;
-                                                                        // console.log("正在从竞赛[" + this.contest_id + "]中删除题目[" + params.row.problem.problem_id + "]...")
-                                                                        // console.log(result);
-                                                                        switch (result.code) {
-                                                                            case 200: {
-                                                                                this.$Message.success("删除成功!");
-                                                                                this.updateDatas(params.row.problem.problem_id, null);
-                                                                                break;
-                                                                            }
-                                                                            case 401: {
-                                                                                this.$Message.error("签名过期,请重新登录!");
-                                                                                window.location.replace("/admin/login");
-                                                                                break;
-                                                                            }
-                                                                            case 403: {
-                                                                                this.$Message.error(result.message);//权限不足
-                                                                                break;
-                                                                            }
-                                                                            case 400: {
-                                                                                this.$Message.error(result.message);//删除题目失败
-                                                                                break;
-                                                                            }
-                                                                        }
-                                                                        this.tableLoadingFlag = false;
-                                                                        this.$Modal.remove();
-                                                                    }).catch(res => {
-                                                                        console.log("错误原因:" + res);
-                                                                        this.tableLoadingFlag = false;
-                                                                        this.$Modal.remove();
-                                                                        this.$Message.error('Delete !');
-                                                                    })
-                                                                }
-                                                            },
-                                                            onCancel: () => {
-                                                                this.tableLoadingFlag = false;
-                                                                this.$Modal.remove();
-                                                            },
-                                                        });
+                                                                            this.tableLoadingFlag = false;
+                                                                            this.$Modal.remove();
+                                                                        }).catch(res => {
+                                                                            console.log("错误原因:" + res);
+                                                                            this.tableLoadingFlag = false;
+                                                                            this.$Modal.remove();
+                                                                            this.$Message.error('Delete !');
+                                                                        })
+                                                                    }
+                                                                },
+                                                                onCancel: () => {
+                                                                    this.tableLoadingFlag = false;
+                                                                    this.$Modal.remove();
+                                                                },
+                                                            });
 
-                                                    }
-                                                }
-                                            }, [
-                                                h('Icon', {
-                                                        props: {
-                                                            type: "md-trash",
-                                                            size: 17,
-                                                            color: "#e1a331"
                                                         }
                                                     }
-                                                ),
-                                            ]
-                                        )
-                                    ]
-                                ),
+                                                }, [
+                                                    h('Icon', {
+                                                            props: {
+                                                                type: "md-trash",
+                                                                size: 17,
+                                                                color: "#e1a331"
+                                                            }
+                                                        }
+                                                    ),
+                                                ]
+                                            )
+                                        ]
+                                    ) : null,
                             ]);
                         }
                     }
@@ -537,6 +540,7 @@
         },
         mounted() {
             this.nowTime = (new Date()).getTime();//当前时间
+            console.log(this.nowTime);
             this.getProblems();
             this.selectData = this.datas;//表格数据
         },
@@ -559,9 +563,12 @@
                     this.selectData = [];
                     let that = this;
                     this.datas.forEach(function (is, i) {
-                        let item = that.datas[i];
-                        if (item.username.indexOf(that.searchKeyWord) !== -1 || item.nickname.indexOf(that.searchKeyWord) !== -1) {
-                            that.selectData.push(item);
+                        if (is.created_by.username.indexOf(that.searchKeyWord) !== -1 ||
+                            is.created_by.nickname.indexOf(that.searchKeyWord) !== -1 ||
+                            is.problem.problem_id == that.searchKeyWord ||
+                            is.problem.title.indexOf(that.searchKeyWord) !== -1
+                        ) {
+                            that.selectData.push(is);
                         }
                     });
                 }
@@ -597,16 +604,13 @@
             //获取题目集
             getProblems: function () {
                 this.tableLoadingFlag = true;
-                // console.log(this.$route.params);
                 if (!this.contest_Add) {
                     //查询题目集合
                     Api.getProblemsByPagePer_Page(this.page, this.per_page, this.$store.state.token).then(res => {
                         let result = res.data;
-                        console.log(result);
                         if (result.code === 200) {
                             this.datas = result.data.problems;
                             this.selectData = this.datas;
-                            console.log(this.selectData);
                         } else if (result.code === 401) {
                             this.$Message.error("签名过期,请重新登录!");
                             window.location.replace("/admin/login");

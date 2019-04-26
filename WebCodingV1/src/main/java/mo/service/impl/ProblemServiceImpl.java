@@ -134,7 +134,7 @@ public class ProblemServiceImpl implements ProblemService {
         if (problemMapper.insertProblem(problem, user_id) > 0) {
             problem.setProblem_id(problemMapper.findLastInsertId());
             logger.info("题目新建成功!题目Id[{}]", problem.getProblem_id());
-            if (tags != null) {
+            if (tags != null || tags.size() != 0) {
                 Integer id = 0;
                 for (Tag tag : tags) {
                     tag.setTag_id(tagMapper.findTagByTagName(tag.getTagname()));
@@ -154,6 +154,8 @@ public class ProblemServiceImpl implements ProblemService {
             } else {
                 return problem.getProblem_id();
             }
+        } else {
+            logger.info("新建题目失败");
         }
         throw new ServiceException("题目新建失败!");
     }
