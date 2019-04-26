@@ -40,7 +40,17 @@ public interface NewsMapper {
      * @return
      */
     @Select("select * from news where user_id = #{user_id} limit #{start},#{per_page}")
-    List<News> findNewsByPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
+    List<News> findNewsByPageAndCreatorId(@Param("user_id") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
+
+    /**
+     * 查询新闻
+     *
+     * @param start    起始
+     * @param per_page 查询数量
+     * @return
+     */
+    @Select("select * from news limit #{start},#{per_page}")
+    List<News> findNewsByPageAndCreatorId(@Param("start") int start, @Param("per_page") int per_page);
 
     /**
      * 修改公告
@@ -57,7 +67,7 @@ public interface NewsMapper {
      * @param news_id 公告Id
      * @return 影响行数
      */
-    @Delete("delete form news where news_id = #{news_id}")
+    @Delete("delete from news where news_id = #{news_id}")
     int deleteNewsByNewsId(@Param("news_id") Integer news_id);
 
     /**

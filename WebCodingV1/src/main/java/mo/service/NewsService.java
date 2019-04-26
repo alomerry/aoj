@@ -34,6 +34,15 @@ public interface NewsService {
     List<NewsUserLink> findNews(Integer user_id, int page, int per_page);
 
     /**
+     * 查询题目
+     *
+     * @param page     页码
+     * @param per_page 每页数量
+     * @return
+     */
+    List<NewsUserLink> findNews(int page, int per_page);
+
+    /**
      * 删除指定公告
      *
      * @param news_id 公告Id

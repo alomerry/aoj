@@ -161,6 +161,31 @@
                                     },
                                     on: {
                                         click: () => {
+                                            this.anno_loading_flag = true;
+                                            this.$Modal.confirm({
+                                                title: 'Confirm',
+                                                content: '<p>Are you sure to delete ?</p>',
+                                                loading: true,
+                                                onOk: () => {
+                                                    Api.deleteNews(params.row.news.news_id, this.$store.state.token).then(res => {
+                                                        let result = res.data;
+                                                        if (result.code === 200) {
+                                                            this.$Message.success("delete successed!");
+                                                            this.updateDatas(params.row.news.news_id, null);
+                                                        } else {
+                                                            this.$Message.error(result.message);
+                                                        }
+                                                    }).catch(res => {
+                                                        console.log(res);
+                                                    });
+                                                    this.$Modal.remove();
+                                                    this.anno_loading_flag = false;
+                                                },
+                                                onCancel: () => {
+                                                    this.$Modal.remove();
+                                                    this.anno_loading_flag = false;
+                                                },
+                                            });
                                         }
                                     }
                                 }, [h('Icon', {
@@ -284,7 +309,20 @@
                     console.log(res);
                     this.anno_loading_flag = false;
                 });
-            }
+            },
+            //更新表格
+            updateDatas(news_id, news) {
+                if (news != null) {
+                    console.log("添加成功");
+                    this.anno_data.splice(0, 1, news);
+                } else {
+                    let unUpdatedItemIndex = this.anno_data.findIndex(function (currentItem) {
+                        return currentItem.news.news_id === news_id;
+                    });
+                    console.log("更新序号：" + unUpdatedItemIndex);
+                    this.anno_data.splice(unUpdatedItemIndex, 1);
+                }
+            },
         }
     }
 </script>

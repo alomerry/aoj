@@ -295,7 +295,7 @@ export default {
      * @param jwt 令牌
      * @returns {AxiosPromise}
      */
-    delNews(news_id, jwt) {
+    deleteNews(news_id, jwt) {
         return axios({
             url: "/api/api-oj/admin/news/" + news_id,
             method: "delete",

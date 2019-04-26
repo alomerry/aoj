@@ -36,12 +36,14 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<NewsUserLink> findNews(Integer user_id, int page, int per_page) {
-        List<News> newsList = newsMapper.findNewsByPage(user_id, (page - 1) * per_page, per_page);
-        List<NewsUserLink> newsUserLinks = new ArrayList<>(newsList.size() + 3);
-        for (News news : newsList) {
-            newsUserLinks.add(new NewsUserLink(userMapper.findUserByUserId(news.getUser_id()), news));
-        }
-        return newsUserLinks;
+        List<News> newsList = newsMapper.findNewsByPageAndCreatorId(user_id, (page - 1) * per_page, per_page);
+        return makeLinkUser(newsList);
+    }
+
+    @Override
+    public List<NewsUserLink> findNews(int page, int per_page) {
+        List<News> newsList = newsMapper.findNewsByPageAndCreatorId((page - 1) * per_page, per_page);
+        return makeLinkUser(newsList);
     }
 
     @Override
@@ -52,5 +54,13 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public News findNews(Integer news_id) {
         return newsMapper.findNewsByNewsId(news_id);
+    }
+
+    private List<NewsUserLink> makeLinkUser(List<News> newsList) {
+        List<NewsUserLink> newsUserLinks = new ArrayList<>(newsList.size() + 3);
+        for (News news : newsList) {
+            newsUserLinks.add(new NewsUserLink(userMapper.findUserByUserId(news.getUser_id()), news));
+        }
+        return newsUserLinks;
     }
 }
