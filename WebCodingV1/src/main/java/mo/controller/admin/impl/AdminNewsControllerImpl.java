@@ -29,11 +29,11 @@ public class AdminNewsControllerImpl extends AbstractController implements Admin
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
     @ResponseBody
     @RequestMapping(value = "/admin/news", method = RequestMethod.POST)
-    public Result createNews(String news) {
+    public Result createNews(@RequestParam("") String news) {
 
         News topic = JSON.parseObject(news, new TypeReference<News>() {
         });
-
+        logger.info("前端Json转JavaBean成功,news[{}]", topic);
         if (newsService.createNews(topic, getJWTUserId())) {
             return new Result().setCode(ResultCode.OK);
         } else {

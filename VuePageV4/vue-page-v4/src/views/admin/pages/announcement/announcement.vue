@@ -7,20 +7,20 @@
             <div>
                 <div class="anno-item">
                     <span class="item-require-red">*</span> Title
-                    <Input size="large" style="margin-top: 15px"></Input>
+                    <Input size="large" style="margin-top: 15px" v-model="formAnno.title"></Input>
                 </div>
                 <div class="anno-item">
                     <div style="margin-bottom: 15px">
                         <span class="item-require-red">*</span> Content
                     </div>
-                    <Simditor>
+                    <Simditor v-model="formAnno.content">
                     </Simditor>
                 </div>
                 <div class="anno-item">
                     <span style="margin-right: 10px">
                         Status
                     </span>
-                    <i-switch>
+                    <i-switch v-model="formAnno.defunct">
                         <span slot="open">️</span>
                         <span slot="close"></span>
                     </i-switch>
@@ -36,7 +36,7 @@
                 <span style="font-size: 25px;font-weight: 400;">Problems</span>
             </div>
             <div slot="extra">
-                <Button>Refresh</Button>
+                <Button @click="getNews">Refresh</Button>
             </div>
             <Table :columns="anno_column" :data="anno_data" :loading="anno_loading_flag"></Table>
             <Button @click="modal_falg = true" style="margin-top: 15px" type="info">Create</Button>
@@ -168,7 +168,7 @@
                         }
                     }
                 ],
-                anno_data: null,
+                anno_data: [],
                 formAnno: {
                     news_id: null,//新闻Id
                     user_id: null,//用户Id
@@ -185,17 +185,32 @@
             Simditor,
         },
         mounted() {
-
+            this.getNews();
         },
         methods: {
             createAnno() {
-                modal_falg = false;
-                
+                let news = {
+                    title: this.formAnno.title,//新闻标题
+                    content: this.formAnno.content,//新闻内容
+                    defunct: this.formAnno.defunct ? "1" : "0",//公开状态
+                }
+                Api.createNews(news, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    if (result.code === 200) {
+                        this.getNews();
+                        this.$Message.success("添加成功");
+                    } else {
+                        this.$Message.error(result.message);
+                    }
+                }).catch(res => {
+                    console.log(res);
+                });
+                this.modal_falg = false;
             },
             getNews() {
-                anno_loading_flag = true;
+                this.anno_loading_flag = true;
                 Api.findNews(this.page, this.per_page, this.$store.state.token).then(res => {
-                    this.anno_data = [
+                    /*this.anno_data = [
                         {
                             news: {
                                 news_id: 0,//新闻Id
@@ -211,9 +226,12 @@
                                 nickname: "ad",
                             }
                         }
-                    ];
+                    ];*/
+                    let result = res.data;
+                    console.log(result);
                     this.anno_loading_flag = false;
                 }).catch(res => {
+                    console.log(res);
                     this.anno_loading_flag = false;
                 });
             }

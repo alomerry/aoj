@@ -240,10 +240,12 @@ export default {
      * @returns {AxiosPromise}
      */
     createNews(news, jwt) {
+        let params = new URLSearchParams();
+        params.append("news", JSON.stringify(news));
         return axios({
             url: "/api/api-oj/admin/news",
             method: "post",
-            data: JSON.stringify(news),
+            data: params,
             headers: {
                 "jwt": jwt,
             }

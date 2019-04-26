@@ -42,6 +42,6 @@ public interface NewsMapper {
      * @param per_page 查询数量
      * @return
      */
-    @Select("select * from news where user_id = #{} limit #{start},#{per_page}")
+    @Select("select * from news where user_id = #{user_id} limit #{start},#{per_page}")
     List<News> findNewsByPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
 }

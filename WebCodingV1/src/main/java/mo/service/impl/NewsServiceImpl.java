@@ -8,6 +8,7 @@ import mo.service.NewsService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public boolean createNews(News news, Integer user_id) {
+        news.setCreate_at(new Timestamp(System.currentTimeMillis()));
+        news.setUpdate_time(news.getCreate_at());
         return newsMapper.insertNews(news, user_id) > 0;
     }
 
