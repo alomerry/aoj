@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sun.text.resources.da.FormatData_da;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,8 +115,16 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
-    public boolean deleteProblemByProblemId(Integer problemId) {
-        return problemMapper.deleteProblemByPorblemId(problemId) > 0;
+    public int deleteProblemByProblemId(Integer problemId, File underDel) {
+        if (problemMapper.deleteProblemByPorblemId(problemId) > 0) {
+            if (underDel.delete()) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else {
+            return 0;
+        }
     }
 
     @Override

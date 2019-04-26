@@ -76,7 +76,7 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
             case "simple": {
                 problems.put("problems", problemService.findSimpleProblemLinksByDefunct(defunct, userLink.getUser().getUser_id(), Integer.valueOf(page), Integer.valueOf(per_page)));
                 logger.info("json problems[{}]", JSON.toJSONString(problems, SerializerFeature.DisableCircularReferenceDetect));
-                logger.info("json result[{}]",new JSONObject());
+                logger.info("json result[{}]", new JSONObject());
                 break;
             }
             case "detail": {
@@ -124,10 +124,17 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
         if (problem.getSubmit() > 0) {
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage("题目已有提交，无法删除！");
         } else if (PermissionManager.isLegalAdmin(Permission.Topic_adder, privilegeService.findPrivilegeByUserId(getJWTUserId()).getRightstr())) {
-            if (problemService.deleteProblemByProblemId(problem_id)) {
-                return new Result().setCode(ResultCode.OK).setMessage("删除成功!");
-            } else {
-                return new Result().setCode(ResultCode.FORBIDDEN).setMessage("内部错误，删除失败!");
+            File underDel = new File(getHttpServletRequest().getServletContext().getRealPath("/problem_cases") + File.separator + problem_id);
+            switch (problemService.deleteProblemByProblemId(problem_id, underDel)) {
+                case -1: {
+                    return new Result().setCode(ResultCode.FORBIDDEN).setMessage("测试文件删除失败!");
+                }
+                case 1: {
+                    return new Result().setCode(ResultCode.OK).setMessage("删除成功!");
+                }
+                default: {
+                    return new Result().setCode(ResultCode.FORBIDDEN).setMessage("内部错误，删除失败!");
+                }
             }
         } else {
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足！");

@@ -5,6 +5,7 @@ import mo.entity.po.Tag;
 import mo.entity.vo.ProblemLink;
 import mo.exception.ServiceException;
 
+import java.io.File;
 import java.util.List;
 
 public interface ProblemService {
@@ -110,9 +111,10 @@ public interface ProblemService {
      * 删除指定题目
      *
      * @param problemId 题目Id
-     * @return 是否删除成功
+     * @param underDel  待删文件
+     * @return 是否删除成功 0数据库删除失败 -1文件删除失败 1删除成功
      */
-    boolean deleteProblemByProblemId(Integer problemId);
+    int deleteProblemByProblemId(Integer problemId, File underDel);
 
     /**
      * 新建题目

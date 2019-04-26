@@ -12,7 +12,7 @@
                     General
                 </template>
                 <MenuItem name="2-1" to="/admin/user">User</MenuItem>
-                <MenuItem name="2-2">Announcement</MenuItem>
+                <MenuItem name="2-2" to="/admin/announcement">Announcement</MenuItem>
                 <MenuItem name="2-3">System Config</MenuItem>
                 <MenuItem name="2-4">Judge Server</MenuItem>
             </Submenu>

@@ -41,6 +41,14 @@ const routes = [
         component: resolve => require(['../pages/problem/ProblemList'], resolve),
     },
     {
+        path: "/admin/announcement",
+        name: 'Announcement',
+        meta: {
+            title: 'Online Judge'
+        },
+        component: resolve => require(['../pages/announcement/announcement'], resolve),
+    },
+    {
         path: "/admin/problem/:method/:problem_id",
         name: 'ProblemEdit',
         meta: {
