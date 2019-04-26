@@ -19,4 +19,5 @@ public class News {
     private Timestamp update_time;//更新时间
     private Timestamp create_at;//创造时间
     private Integer contest_id;//所属竞赛号
+    private String defunct;//公开状态
 }

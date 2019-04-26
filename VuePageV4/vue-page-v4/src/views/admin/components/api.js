@@ -204,7 +204,6 @@ export default {
      * @param jwt 令牌
      */
     updateUser(user, jwt) {
-        let params = new URLSearchParams();
         return axios({
             url: '/api/api-oj/admin/user',
             data: JSON.stringify(user),
@@ -214,5 +213,40 @@ export default {
                 "Content-Type": "application/json"
             }
         })
+    },
+    /**
+     * 查询新闻
+     * @param page 页码
+     * @param per_page 每页数量
+     * @param jwt 令牌
+     */
+    findNews(page, per_page, jwt) {
+        let params = new URLSearchParams();
+        params.append("page", page);
+        params.append("per_page", per_page);
+        return axios({
+            url: "/api/api-oj/admin/news",
+            method: "get",
+            data: params,
+            headers: {
+                "jwt": jwt,
+            }
+        })
+    },
+    /**
+     * 创建新闻
+     * @param news 新闻实体
+     * @param jwt 令牌
+     * @returns {AxiosPromise}
+     */
+    createNews(news, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/news",
+            method: "post",
+            data: JSON.stringify(news),
+            headers: {
+                "jwt": jwt,
+            }
+        });
     }
 }
