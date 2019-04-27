@@ -25,4 +25,9 @@ public class TagControllerImpl implements TagController {
         tags.put("tags", tagService.findTagsByProblemId(problem_id));
         return new Result().setCode(ResultCode.OK).setData(tags);
     }
+
+    @Override
+    public Result tags(int page, int per_page) {
+        return null;
+    }
 }

@@ -11,4 +11,13 @@ public interface TagController {
      * @return 标签集
      */
     Result tags(Integer problem_id);
+
+    /**
+     * 查询标签
+     *
+     * @param page     页码
+     * @param per_page 每页数量
+     * @return
+     */
+    Result tags(int page, int per_page);
 }
