@@ -48,7 +48,7 @@
                 <Card>
                     <p slot="title" style="font-size: 18px;">Tag</p>
                     <div>
-                        <Button v-for="" shape="circle"></Button>
+                        <Tag color="red" v-for="(item) in tag_list" @click.native="getProblemsByTag(item.tag_id)">{{item.tagname}}</Tag>
                     </div>
                     <Button long ghost type="info" @click.native="" style="margin-top: 15px">Pick One</Button>
                 </Card>
@@ -150,7 +150,32 @@
                     }
                 ], //表格行数据
                 tableLoading: false,//'表格'加载中状态
-                tag_list: [{}]
+                tag_list: [],
+                tag_color: [
+                    "#FFA2D3",
+                    "purple",
+                    "geekblue",
+                    "#ff5075",
+                    "red",
+                    "blue",
+                    "#ffa365",
+                    "cyan",
+                    "green",
+                    "#cb95ff",
+                    "gold",
+                    "lime",
+                    "#8eebff",
+                    "yellow",
+                    "orange",
+                    "volcano",
+                    "#514eff",
+                    "magenta",
+                    "error",
+                    "success",
+                    "#cbff5e",
+                    "primary",
+                    "default",
+                ],
             }
         },
         methods: {
@@ -169,6 +194,7 @@
                     });
                 }
             },
+            //获取题目
             getProblems() {
                 this.tableLoading = true;
                 Api.findProblemsByPagePer_PageAndResultType(this.current, this.per_page, "simple").then(res => {
@@ -186,7 +212,7 @@
                     this.tableLoading = false;
                 });
             },
-
+            //格式化时间
             formatDate(date) {
                 const y = date.getFullYear();
                 let m = date.getMonth() + 1;
@@ -195,6 +221,7 @@
                 d = d < 10 ? ('0' + d) : d;
                 return y + '-' + m + '-' + d;
             },
+            //更新激活
             updateActiveClass(path) {
                 switch (path) {
                     case "/status": {
@@ -210,6 +237,23 @@
                         break;
                     }
                 }
+            },
+            //获取标签
+            getTags() {
+                Api.findTags(this.current, this.per_page).then(res => {
+                    let result = res.data;
+                    if (result.code === 200) {
+                        this.tag_list = result.data.tags;
+                    } else {
+                        console.log(result.message);
+                    }
+                }).catch(res => {
+                    console.log(res);
+                })
+            },
+            //根据标签修改题目列表
+            getProblemsByTag(tag_id) {
+            
             }
         },
         created() {
@@ -218,6 +262,9 @@
             this.updateActiveClass(this.$route.path);
             this.debouncedsearchData = debounce(this.DelaySearchTable, 500, null);//延时加载
             this.getProblems();
+        },
+        mounted() {
+            this.getTags();
         },
         computed: {},
         watch: {

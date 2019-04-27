@@ -29,7 +29,7 @@ public class TagControllerImpl implements TagController {
     @ResponseBody
     @RequestMapping(value = "/tags", method = RequestMethod.GET)
     public Result tags(@RequestParam(value = "page", defaultValue = "1") String page,
-                       @RequestParam(value = "page", defaultValue = "1") String per_page) {
+                       @RequestParam(value = "page", defaultValue = "10") String per_page) {
 
         JSONObject tags = new JSONObject();
         tags.put("tags", tagService.findTagsByPage(Integer.valueOf(page), Integer.valueOf(per_page)));

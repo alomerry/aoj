@@ -76,7 +76,6 @@ export default {
         })
     },
 
-
     /**
      * 查询新闻
      * @param page 页码
@@ -91,5 +90,21 @@ export default {
             method: "get",
             data: params,
         })
+    },
+
+    /**
+     * 查询标签
+     * @param page 页码
+     * @param per_page 每页数量
+     */
+    findTags(page, per_page) {
+        let params = new URLSearchParams();
+        params.append("page", page);
+        params.append("per_page", per_page);
+        return axios({
+            url: "/api/api-oj/tags",
+            method: "get",
+            data: params,
+        });
     },
 }

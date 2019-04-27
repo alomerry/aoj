@@ -29,7 +29,7 @@ public class ProblemControllerImpl implements ProblemController {
 
     //Don't use
     @Override
-    @RequestMapping(value = "/problems")
+    @RequestMapping(value = "/problems", method = RequestMethod.GET)
     public Result problems(@RequestParam(value = "page", defaultValue = "1") String page,
                            @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
         List<Problem> problems = problemService.findSimpleProblemsByDefunct("(1)", 1, 10);
@@ -37,6 +37,17 @@ public class ProblemControllerImpl implements ProblemController {
         res.put("total", problems.size());
         res.put("results", problems);
         return new Result().setCode(ResultCode.OK).setData(res);
+    }
+
+    @Override
+    @ResponseBody
+    @RequestMapping("/problems/tag/{tag_id}")
+    public Result problems(@PathVariable String tagId,
+                           @RequestParam(value = "page", defaultValue = "1") String page,
+                           @RequestParam(value = "per_page", defaultValue = "10") String per_page,
+                           @RequestParam(value = "resType", defaultValue = "simple") String resType) {
+
+        return null;
     }
 
     @Override

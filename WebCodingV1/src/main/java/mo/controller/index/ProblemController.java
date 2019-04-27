@@ -32,4 +32,16 @@ public interface ProblemController {
      * @return 第一页题目
      */
     Result problems(String page, String per_page);
+
+    /**
+     * 根据Tag查询题目
+     *
+     * @param tagId    标签Id
+     * @param page     当前页码
+     * @param per_page 每页数量
+     * @param resType  请求返回类型
+     * @param defunct  公开级别
+     * @return 题目集合
+     */
+    Result problems(String tagId, String page, String per_page, String resType, String defunct);
 }

@@ -1,10 +1,7 @@
 package mo.service.impl;
 
 import mo.dao.*;
-import mo.entity.po.ContestProblem;
-import mo.entity.po.Problem;
-import mo.entity.po.Tag;
-import mo.entity.po.User;
+import mo.entity.po.*;
 import mo.entity.vo.ProblemLink;
 import mo.exception.ServiceException;
 import mo.service.ProblemService;
@@ -158,6 +155,13 @@ public class ProblemServiceImpl implements ProblemService {
             logger.info("新建题目失败");
         }
         throw new ServiceException("题目新建失败!");
+    }
+
+    @Override
+    public List<Problem> findProblemsByTagId(Integer tag_id) {
+        List<ProblemTag> problemTags = problemTagMapper.findProblemIdFromProblemTagByTagId(tag_id);
+        String
+        return null;
     }
 
     /**

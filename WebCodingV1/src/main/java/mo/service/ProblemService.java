@@ -126,4 +126,12 @@ public interface ProblemService {
      */
     Integer insertNewProblemAndTags(Problem problem, List<Tag> tags, Integer user_id) throws ServiceException;
 
+    /**
+     * 根据标签查询题目
+     *
+     * @param tag_id 标签Id
+     * @return
+     */
+    List<Problem> findProblemsByTagId(Integer tag_id);
+
 }

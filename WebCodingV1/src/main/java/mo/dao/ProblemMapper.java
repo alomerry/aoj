@@ -110,4 +110,6 @@ public interface ProblemMapper {
 
     @Select("select LAST_INSERT_ID()")
     Integer findLastInsertId();
+
+    List<Problem>
 }
