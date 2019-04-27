@@ -64,5 +64,5 @@ public interface AdminProblemController {
      * @param testCaseId 测试用例文件夹名称
      * @return
      */
-    Result updateProblem(Problem problem, List<Tag> tags, String testCaseId);
+    Result updateProblem(String problem, String tags, String testCaseId);
 }

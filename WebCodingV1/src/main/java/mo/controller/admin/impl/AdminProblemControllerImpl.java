@@ -219,7 +219,14 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
     @Override
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
     @RequestMapping(value = "/admin/problem", method = RequestMethod.PUT)
-    public Result updateProblem(@RequestBody Problem problem, @RequestBody List<Tag> tags, @RequestBody String testCaseId) {
+    public Result updateProblem(@RequestParam("problem") String problem,
+                                @RequestParam("tags") String tags,
+                                @RequestParam(value = "testCaseId", required = false) String testCaseId) {
+        Problem pro = JSON.parseObject(problem, new TypeReference<Problem>() {
+        });
+        List<Tag> tagList = JSON.parseObject(tags, new TypeReference<ArrayList<Tag>>() {
+        });
+
         logger.info("problem[{}],tags[{}],testCaseId[{}]", problem, tags, testCaseId);
         return new Result().setCode(ResultCode.OK);
     }
