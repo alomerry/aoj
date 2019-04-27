@@ -98,6 +98,13 @@ public interface ProblemMapper {
     @Delete("delete from problems where problem_id = #{problem_id}")
     int deleteProblemByPorblemId(@Param("problem_id") Integer problem_id);
 
+    /**
+     * 新建题目
+     *
+     * @param problem
+     * @param user_id
+     * @return
+     */
     @Insert("insert into problems (display_id ,title,create_by," +
             "hint,source,description," +
             "created_at,memory_limit,time_limit," +
@@ -111,5 +118,7 @@ public interface ProblemMapper {
     @Select("select LAST_INSERT_ID()")
     Integer findLastInsertId();
 
-    List<Problem>
+    @Select("select problem_id,submit,defunct,accepted,created_at,create_by,title,display_id from problems " +
+            "where problem_id in ${problem_ids} limit #{start},#{per_page}")
+    List<Problem> findSimpleProblemByProblemIdS(@Param("problem_ids") String problem_ids, @Param("start") int start, @Param("per_page") int per_page);
 }

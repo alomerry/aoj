@@ -158,10 +158,14 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
-    public List<Problem> findProblemsByTagId(Integer tag_id) {
+    public List<Problem> findSimpleProblemsByTagId(Integer tag_id, int page, int per_page) {
         List<ProblemTag> problemTags = problemTagMapper.findProblemIdFromProblemTagByTagId(tag_id);
-        String
-        return null;
+        //('11','12');
+        if (problemTags == null || problemTags.size() == 0) {
+            return null;
+        }
+        String ids = makeProblemIds(problemTags);
+        return problemMapper.findSimpleProblemByProblemIdS(ids, (page - 1) * per_page, per_page);
     }
 
     /**
@@ -179,6 +183,29 @@ public class ProblemServiceImpl implements ProblemService {
             }
         }
         return false;
+    }
+
+    /**
+     * 拼接id
+     *
+     * @param problemTags
+     * @return
+     */
+    private String makeProblemIds(List<ProblemTag> problemTags) {
+        StringBuilder sbf = new StringBuilder();
+        sbf.append("(");
+        boolean index = true;
+        for (ProblemTag pId : problemTags) {
+            sbf.append("'").append(pId.getProblem_id()).append("'");
+            if (index) {
+                index = false;
+            } else {
+                sbf.append(",");
+            }
+        }
+        sbf.append(")");
+        logger.info("查询题目Ids[{}]", sbf.toString());
+        return sbf.toString();
     }
 
 }

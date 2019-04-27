@@ -107,4 +107,21 @@ export default {
             data: params,
         });
     },
+
+    /**
+     * 根据页码和标签Id查询题目
+     * @param tag_id 标签Id
+     * @param page 页码
+     * @param per_page 每页数量
+     */
+    findProblemsByTagId(tag_id, page, per_page) {
+        let params = new URLSearchParams();
+        params.append("page", page);
+        params.append("per_page", per_page);
+        return axios({
+            url: "/api/api-oj/problems/tag/" + tag_id,
+            method: "get",
+            data: params,
+        });
+    }
 }

@@ -40,8 +40,7 @@ public interface ProblemController {
      * @param page     当前页码
      * @param per_page 每页数量
      * @param resType  请求返回类型
-     * @param defunct  公开级别
      * @return 题目集合
      */
-    Result problems(String tagId, String page, String per_page, String resType, String defunct);
+    Result problemsByTag(String tagId, String page, String per_page, String resType);
 }

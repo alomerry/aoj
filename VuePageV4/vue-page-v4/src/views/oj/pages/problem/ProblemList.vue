@@ -253,7 +253,22 @@
             },
             //根据标签修改题目列表
             getProblemsByTag(tag_id) {
-            
+                this.current = 1;
+                this.tableLoading = true;
+                Api.findProblemsByTagId(tag_id, this.current, this.per_page).then(res => {
+                    let result = res.data;
+                    if (result.code === 200) {
+                        this.tableData1 = result.data.problems;
+                        this.tableSearchData = this.tableData1;
+                        this.tableLoading = false;
+                    } else {
+                        this.$Message.error(result.message);
+                        this.tableLoading = false;
+                    }
+                }).catch(res => {
+                    console.log(res);
+                    this.tableLoading = false;
+                });
             }
         },
         created() {

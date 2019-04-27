@@ -42,12 +42,24 @@ public class ProblemControllerImpl implements ProblemController {
     @Override
     @ResponseBody
     @RequestMapping("/problems/tag/{tag_id}")
-    public Result problems(@PathVariable String tagId,
-                           @RequestParam(value = "page", defaultValue = "1") String page,
-                           @RequestParam(value = "per_page", defaultValue = "10") String per_page,
-                           @RequestParam(value = "resType", defaultValue = "simple") String resType) {
-
-        return null;
+    public Result problemsByTag(@PathVariable String tag_id,
+                                @RequestParam(value = "page", defaultValue = "1") String page,
+                                @RequestParam(value = "per_page", defaultValue = "10") String per_page,
+                                @RequestParam(value = "resType", defaultValue = "simple") String resType) {
+        List<Problem> problems = null;
+        switch (resType) {
+            case "simple": {
+                problems = problemService.findSimpleProblemsByTagId(Integer.valueOf(tag_id), Integer.parseInt(page), Integer.parseInt(per_page));
+                break;
+            }
+            case "much": {
+                //TOD 权限检测
+                break;
+            }
+        }
+        JSONObject res = new JSONObject();
+        res.put("problems", problems);
+        return new Result().setCode(ResultCode.OK).setData(res);
     }
 
     @Override

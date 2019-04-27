@@ -129,9 +129,11 @@ public interface ProblemService {
     /**
      * 根据标签查询题目
      *
-     * @param tag_id 标签Id
+     * @param tag_id   标签Id
+     * @param page     页码
+     * @param per_page 每页数量
      * @return
      */
-    List<Problem> findProblemsByTagId(Integer tag_id);
+    List<Problem> findSimpleProblemsByTagId(Integer tag_id, int page, int per_page);
 
 }
