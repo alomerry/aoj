@@ -308,6 +308,7 @@
                 // console.log(res);
                 this.formProblem.tags.splice(res, 1);
             },
+            //初始化页面数据
             initFormDataWithProblemAndTag(problem, tag) {
                 if (problem == null) {
                     this.formProblem = {
@@ -341,16 +342,19 @@
                     }
                 }
             },
+            //上传文件格式错误时的回调
             fileFormatError(file) {
                 this.$Notice.warning({
                     title: 'The file format is incorrect',
                     desc: 'File format of ' + file.name + ' is incorrect, please select zip.'
                 });
             },
+            //上传文件失败时的回调
             uploadFailed() {
                 this.$Message.error("上传失败");
                 this.testCase_dir_id = null;
             },
+            //上传文件成功时的回调
             uploadSucceeded(response) {
                 console.log(response);
                 if (response.code == 200) {
@@ -361,6 +365,20 @@
                 }
             },
             submit() {
+                switch (this.$route.params.method) {
+                    case "edit": {
+                        this.updateProblem();
+                        break;
+                    }
+                    case "create": {
+                        this.createProblem();
+                        break;
+                    }
+                }
+
+            },
+            //创建题目
+            createProblem() {
                 if (this.testCase_dir_id == null) {
                     this.$Message.error("Please upload test case first!");
                     return;
@@ -411,7 +429,56 @@
                 }).catch(res => {
                     console.log(res);
                 });
-            }
+            },
+            //更新题目
+            updateProblem() {
+                if (this.formProblem.display_id == null || this.formProblem.display_id === "") {
+                    this.$Message.error("Display Id is required!");
+                    return;
+                }
+                if (this.formProblem.title == null || this.formProblem.title === "") {
+                    this.$Message.error("Title is required!");
+                    return;
+                }
+                if (this.formProblem.description == null || this.formProblem.description === "") {
+                    this.$Message.error("Description is required!");
+                    return;
+                }
+                if (this.formProblem.input == null || this.formProblem.input === "") {
+                    this.$Message.error("Input Description is required!");
+                    return;
+                }
+                if (this.formProblem.output == null || this.formProblem.output === "") {
+                    this.$Message.error("Out Description is required!");
+                    return;
+                }
+                if (this.formProblem.sample_input == null || this.formProblem.sample_input === "") {
+                    this.$Message.error("Out Description is required!");
+                    return;
+                }
+                if (this.formProblem.sample_output == null || this.formProblem.sample_output === "") {
+                    this.$Message.error("Out Description is required!");
+                    return;
+                }
+                this.formProblem.defunct = this.formProblem.defunct ? '1' : '2';
+                let tags = this.formProblem.tags;
+                let problem = this.formProblem;
+                delete problem.tags;
+                this.$Loading.start();
+                Api.updateProblem(problem, tags, this.testCase_dir_id, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    console.log(result);
+                    if (result.code === 200) {
+                        this.$Loading.finish();
+                        this.$Message.success("Update Problem Successed!");
+                    } else {
+                        this.$Loading.error();
+                        this.$Message.error(result.message);
+                    }
+                }).catch(res => {
+                    console.log(res);
+                });
+            },
         },
         created() {
         },

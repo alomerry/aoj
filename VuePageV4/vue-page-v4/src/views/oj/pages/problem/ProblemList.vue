@@ -27,7 +27,7 @@
                                 </Dropdown>
                             </Col>-->
                             <Col span="2">
-                                <Button style="margin-left: 10px;" :loading="buttonLoading" @click.native="refresh" type="primary">
+                                <Button style="margin-left: 10px;" :loading="buttonLoading" @click.native="getProblems" type="primary">
                                     Refresh
                                 </Button>
                             </Col>
@@ -42,13 +42,12 @@
                               @on-change=""></Page>
                     </div>
                 </div>
-            
             </Col>
             <Col span="5">
                 <Card>
                     <p slot="title" style="font-size: 18px;">Tag</p>
                     <div>
-                        <Tag color="red" v-for="(item) in tag_list" @click.native="getProblemsByTag(item.tag_id)">{{item.tagname}}</Tag>
+                        <Tag :color="tag_color[(item.tag_id%tag_color.length)]" v-for="(item) in tag_list" @click.native="getProblemsByTag(item.tag_id)">{{item.tagname}}</Tag>
                     </div>
                     <Button long ghost type="info" @click.native="" style="margin-top: 15px">Pick One</Button>
                 </Card>
@@ -258,7 +257,11 @@
                 Api.findProblemsByTagId(tag_id, this.current, this.per_page).then(res => {
                     let result = res.data;
                     if (result.code === 200) {
-                        this.tableData1 = result.data.problems;
+                        if (result.data.problems == null) {
+                            this.tableData1 = [];
+                        } else {
+                            this.tableData1 = result.data.problems;
+                        }
                         this.tableSearchData = this.tableData1;
                         this.tableLoading = false;
                     } else {

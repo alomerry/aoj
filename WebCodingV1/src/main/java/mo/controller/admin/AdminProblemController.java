@@ -55,4 +55,14 @@ public interface AdminProblemController {
      */
 //    Result createNewProblem(Problem problem, List<Tag> tags, String testCaseId);
     Result createNewProblem(String problem, String tags, String testCaseId);
+
+    /**
+     * 更新题目
+     *
+     * @param problem    题目实体
+     * @param tags       标签数组
+     * @param testCaseId 测试用例文件夹名称
+     * @return
+     */
+    Result updateProblem(Problem problem, List<Tag> tags, String testCaseId);
 }

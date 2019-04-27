@@ -215,4 +215,12 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage(e.getMessage());
         }
     }
+
+    @Override
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/problem", method = RequestMethod.PUT)
+    public Result updateProblem(@RequestBody Problem problem, @RequestBody List<Tag> tags, @RequestBody String testCaseId) {
+        logger.info("problem[{}],tags[{}],testCaseId[{}]", problem, tags, testCaseId);
+        return new Result().setCode(ResultCode.OK);
+    }
 }

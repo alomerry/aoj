@@ -50,10 +50,15 @@
                         <Icon type="ios-construct"/>
                         Rank
                     </MenuItem>
-                    <MenuItem name="about" @click.native="logger" to="/about">
-                        <Icon type="ios-construct"/>
-                        About
-                    </MenuItem>
+                    <Submenu name="about">
+                        <template slot="title">
+                            <Icon type="ios-help-circle"/>
+                            About
+                        </template>
+                        <MenuItem name="3-1" @click.native="" to="/about">A</MenuItem>
+                        <MenuItem name="3-2">B</MenuItem>
+                        <MenuItem name="3-3">C</MenuItem>
+                    </Submenu>
                     <!--<Submenu name="7">
                       <template slot="title">
                         <Icon type="ios-stats"/>
@@ -187,9 +192,6 @@
             GoToAdmin() {
                 window.location.href = "/admin.html";
             },
-            logger() {
-                // console.log("md5:" + hex_md5(encodeURIComponent('120211onlinejudge')));
-            }
         },
         watch: {
             active_class: function (value, oldValue) {

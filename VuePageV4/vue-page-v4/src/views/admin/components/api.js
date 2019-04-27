@@ -303,5 +303,30 @@ export default {
                 "jwt": jwt,
             }
         });
+    },
+
+    /**
+     * 更新题目
+     * @param problem 题目实体
+     * @param tags 标签
+     * @param testcase_id 测试用例文件夹名称
+     * @param jwt 令牌
+     * @returns {AxiosPromise}
+     */
+    updateProblem(problem, tags, testcase_id, jwt) {
+        let params = {
+            "testCaseId": testcase_id,
+            "problem": JSON.stringify(problem),
+            "tags": tags == null ? null : JSON.stringify(tags),
+        };
+        return axios({
+            url: "/api/api-oj/admin/problem",
+            method: "put",
+            data: params,
+            headers: {
+                "jwt": jwt,
+                "Content-Type": "application/json;charset-UTF-8",
+            }
+        })
     }
 }
