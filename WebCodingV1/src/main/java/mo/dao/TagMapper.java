@@ -38,6 +38,21 @@ public interface TagMapper {
     @Insert("insert into tag (tagname) values (#{tagname})")
     int insertTag(@Param("tagname") String tagname);
 
+    /**
+     * 查询上个插入Id
+     *
+     * @return
+     */
     @Select("select LAST_INSERT_ID()")
     Integer findLastInsertId();
+
+    /**
+     * 查询标签
+     *
+     * @param start    起始
+     * @param per_page 每页数量
+     * @return
+     */
+    @Select("select * from tag limit #{start},#{per_page}")
+    List<Tag> findTagsByPage(@Param("start") int start, @Param("per_page") int per_page);
 }

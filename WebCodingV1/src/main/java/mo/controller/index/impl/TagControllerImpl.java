@@ -6,9 +6,7 @@ import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.Tag;
 import mo.service.TagService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -19,7 +17,8 @@ public class TagControllerImpl implements TagController {
     private TagService tagService;
 
     @Override
-    @RequestMapping(value = "/tags/problem/{problem_id}")
+    @ResponseBody
+    @RequestMapping(value = "/tags/problem/{problem_id}", method = RequestMethod.GET)
     public Result tags(@PathVariable Integer problem_id) {
         JSONObject tags = new JSONObject();
         tags.put("tags", tagService.findTagsByProblemId(problem_id));
@@ -27,7 +26,13 @@ public class TagControllerImpl implements TagController {
     }
 
     @Override
-    public Result tags(int page, int per_page) {
-        return null;
+    @ResponseBody
+    @RequestMapping(value = "/tags", method = RequestMethod.GET)
+    public Result tags(@RequestParam(value = "page", defaultValue = "1") String page,
+                       @RequestParam(value = "page", defaultValue = "1") String per_page) {
+
+        JSONObject tags = new JSONObject();
+        tags.put("tags", tagService.findTagsByPage(Integer.valueOf(page), Integer.valueOf(per_page)));
+        return new Result().setCode(ResultCode.OK).setData(tags);
     }
 }

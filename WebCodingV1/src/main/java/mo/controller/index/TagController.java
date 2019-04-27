@@ -19,5 +19,5 @@ public interface TagController {
      * @param per_page 每页数量
      * @return
      */
-    Result tags(int page, int per_page);
+    Result tags(String page, String per_page);
 }
