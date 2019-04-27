@@ -5,7 +5,7 @@ import mo.dao.SolutionMapper;
 import mo.dao.UserMapper;
 import mo.entity.po.Solution;
 import mo.entity.po.SourceCode;
-import mo.entity.vo.SolutionLink;
+import mo.entity.vo.link.SolutionLink;
 import mo.exception.ServiceException;
 import mo.service.SolutionService;
 import org.slf4j.Logger;

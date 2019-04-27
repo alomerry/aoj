@@ -1,7 +1,6 @@
 package mo.dao;
 
 import mo.entity.po.News;
-import mo.entity.vo.NewsUserLink;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

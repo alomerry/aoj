@@ -1,8 +1,7 @@
 package mo.service;
 
-import com.alibaba.druid.sql.visitor.functions.Char;
 import mo.entity.po.Contest;
-import mo.entity.vo.ContestLinkUser;
+import mo.entity.vo.link.ContestLinkUser;
 
 import java.util.List;
 

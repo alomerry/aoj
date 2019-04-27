@@ -115,6 +115,26 @@ public interface ProblemMapper {
             "#{problem.sample_input},#{problem.sample_output},#{problem.defunct},#{problem.output},#{problem.input})")
     int insertProblem(@Param("problem") Problem problem, @Param("create_by") Integer user_id);
 
+    /**
+     * 更新题目
+     *
+     * @param problem 题目实体
+     * @return
+     */
+    @Update("update problems set display_id =#{problem.display_id}," +
+            "title=#{problem.title}," +
+            "hint=#{problem.hint}," +
+            "source=#{problem.source}," +
+            "description=#{problem.description}," +
+            "memory_limit=#{problem.memory_limit}," +
+            "time_limit=#{problem.time_limit}," +
+            "sample_input=#{problem.sample_input}," +
+            "sample_output=#{problem.sample_output}," +
+            "defunct=#{problem.defunct}," +
+            "output=#{problem.output}," +
+            "input=#{problem.input} where problem_id = #{problem_id}")
+    int updateProblem(@Param("problem") Problem problem);
+
     @Select("select LAST_INSERT_ID()")
     Integer findLastInsertId();
 

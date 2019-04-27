@@ -7,7 +7,7 @@ import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.Privilege;
 import mo.entity.po.User;
-import mo.entity.vo.UserLink;
+import mo.entity.vo.link.UserLink;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
 import mo.utils.JWTUtils;
@@ -22,7 +22,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.lang.reflect.Method;
-import java.util.logging.Level;
 
 import static mo.utils.StringValue.ONLINEJUDGE_SESSION_GROUP;
 import static mo.utils.StringValue.ONLINEJUDGE_SESSION_UER;

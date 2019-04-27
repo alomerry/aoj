@@ -7,7 +7,7 @@ import mo.dao.ContestProblemMapper;
 import mo.dao.PrivilegeMapper;
 import mo.dao.UserMapper;
 import mo.entity.po.Contest;
-import mo.entity.vo.ContestLinkUser;
+import mo.entity.vo.link.ContestLinkUser;
 import mo.exception.ServiceException;
 import mo.service.ContestService;
 import org.slf4j.Logger;

@@ -463,6 +463,7 @@
                 this.formProblem.defunct = this.formProblem.defunct ? '1' : '2';
                 let tags = this.formProblem.tags;
                 let problem = this.formProblem;
+                problem.problem_id = this.$route.params.problem_id;
                 delete problem.tags;
                 this.$Loading.start();
                 Api.updateProblem(problem, tags, this.testCase_dir_id, this.$store.state.token).then(res => {

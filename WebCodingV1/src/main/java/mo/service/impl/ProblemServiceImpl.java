@@ -2,14 +2,13 @@ package mo.service.impl;
 
 import mo.dao.*;
 import mo.entity.po.*;
-import mo.entity.vo.ProblemLink;
+import mo.entity.vo.link.ProblemLink;
 import mo.exception.ServiceException;
 import mo.service.ProblemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.text.resources.da.FormatData_da;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -155,6 +154,14 @@ public class ProblemServiceImpl implements ProblemService {
             logger.info("新建题目失败");
         }
         throw new ServiceException("题目新建失败!");
+    }
+
+    @Override
+    public boolean updateProblemInfo(Problem problem) throws ServiceException {
+        if (problemMapper.updateProblem(problem) > 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override

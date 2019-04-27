@@ -1,7 +1,7 @@
 package mo.utils;
 
 import io.jsonwebtoken.*;
-import mo.entity.vo.UserLink;
+import mo.entity.vo.link.UserLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

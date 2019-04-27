@@ -1,4 +1,4 @@
-package mo.entity.vo;
+package mo.entity.vo.link;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -5,7 +5,7 @@ import mo.controller.index.ProblemController;
 import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.Problem;
-import mo.entity.vo.ProblemLink;
+import mo.entity.vo.link.ProblemLink;
 import mo.service.ProblemService;
 import mo.service.UserService;
 import org.slf4j.Logger;
@@ -33,6 +33,7 @@ public class ProblemControllerImpl implements ProblemController {
     public Result problems(@RequestParam(value = "page", defaultValue = "1") String page,
                            @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
         List<Problem> problems = problemService.findSimpleProblemsByDefunct("(1)", 1, 10);
+        //Todo 判断题目的公开级别 限制非公开题目,此处可查询,但要消除非公开题目除了标题以外的其他信息
         JSONObject res = new JSONObject();
         res.put("total", problems.size());
         res.put("results", problems);
@@ -50,6 +51,7 @@ public class ProblemControllerImpl implements ProblemController {
         switch (resType) {
             case "simple": {
                 problems = problemService.findSimpleProblemsByTagId(Integer.valueOf(tag_id), Integer.parseInt(page), Integer.parseInt(per_page));
+                //Todo 判断题目的公开级别 限制非公开题目
                 break;
             }
             case "much": {
@@ -73,6 +75,7 @@ public class ProblemControllerImpl implements ProblemController {
         switch (resType) {
             case "simple": {
                 problems = problemService.findSimpleProblemsByDefunct("(" + defunct + ")", Integer.parseInt(page), Integer.parseInt(per_page));
+                //Todo 判断题目的公开级别 限制非公开题目,此处可查询,但要消除非公开题目除了标题以外的其他信息
                 break;
             }
             case "much": {
@@ -96,10 +99,15 @@ public class ProblemControllerImpl implements ProblemController {
         if (problem.getProblem() == null) {
             return new Result().setCode(ResultCode.NOT_FOUND).setMessage("问题不存在!");
         } else {
-            problem.setCreated_by(userService.findUserByUserId(problem.getProblem().getCreate_by()));
-            JSONObject json = new JSONObject();
-            json.put("result", problem);
-            return new Result().setCode(ResultCode.OK).setData(json);
+            //Todo 判断题目的公开级别 限制非公开题目
+            if (!"1".equals(problem.getProblem().getDefunct())) {
+                return new Result().setCode(ResultCode.NOT_FOUND).setMessage("问题不存在!");
+            } else {
+                problem.setCreated_by(userService.findUserByUserId(problem.getProblem().getCreate_by()));
+                JSONObject jsons = new JSONObject();
+                jsons.put("result", problem);
+                return new Result().setCode(ResultCode.OK).setData(jsons);
+            }
         }
     }
 }

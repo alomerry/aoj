@@ -95,7 +95,7 @@ export default {
      */
     findProblemByProblemId(problem_id) {
         return axios({
-            url: '/api/api-oj/problem/' + problem_id,
+            url: '/api/api-oj/admin/problem/' + problem_id,
             method: 'get',
         });
     },
@@ -314,16 +314,19 @@ export default {
      * @returns {AxiosPromise}
      */
     updateProblem(problem, tags, testcase_id, jwt) {
-        let params = new URLSearchParams();
-        params.append("problem", JSON.stringify(problem));
-        params.append("tags", tags == null ? null : JSON.stringify(tags));
-        params.append("testCaseId", testcase_id);
+        let problemTagTestCase = {
+            "problem": problem,
+            "tags": tags == null || tags.length == 0 ? null : tags,
+            "testCaseId": testcase_id,
+        };
         return axios({
             url: "/api/api-oj/admin/problem",
             method: "put",
-            data: params,
+            data: JSON.stringify(problemTagTestCase),
+            dataType: "json",
             headers: {
                 "jwt": jwt,
+                "Content-Type": "application/json;charset-UTF-8",
             }
         })
     }

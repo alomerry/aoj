@@ -2,7 +2,7 @@ package mo.service;
 
 import mo.entity.po.Problem;
 import mo.entity.po.Tag;
-import mo.entity.vo.ProblemLink;
+import mo.entity.vo.link.ProblemLink;
 import mo.exception.ServiceException;
 
 import java.io.File;
@@ -125,6 +125,15 @@ public interface ProblemService {
      * @return 题目主键
      */
     Integer insertNewProblemAndTags(Problem problem, List<Tag> tags, Integer user_id) throws ServiceException;
+
+    /**
+     * 更新题目信息
+     *
+     * @param problem 题目实体
+     * @return
+     * @throws ServiceException
+     */
+    boolean updateProblemInfo(Problem problem) throws ServiceException;
 
     /**
      * 根据标签查询题目

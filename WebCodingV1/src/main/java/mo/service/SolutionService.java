@@ -2,7 +2,7 @@ package mo.service;
 
 import mo.entity.po.Solution;
 import mo.entity.po.SourceCode;
-import mo.entity.vo.SolutionLink;
+import mo.entity.vo.link.SolutionLink;
 
 import java.util.List;
 

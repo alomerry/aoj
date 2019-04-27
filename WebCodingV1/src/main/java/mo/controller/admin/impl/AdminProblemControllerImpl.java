@@ -1,7 +1,6 @@
 package mo.controller.admin.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -14,9 +13,9 @@ import mo.core.ResultCode;
 import mo.entity.po.Privilege;
 import mo.entity.po.Problem;
 import mo.entity.po.Tag;
-import mo.entity.po.User;
-import mo.entity.vo.ProblemLink;
-import mo.entity.vo.UserLink;
+import mo.entity.vo.ProblemTagTestCase;
+import mo.entity.vo.link.ProblemLink;
+import mo.entity.vo.link.UserLink;
 import mo.exception.ServiceException;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
@@ -28,7 +27,6 @@ import mo.utils.JWTUtils;
 import mo.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.NumberUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -39,11 +37,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-
-import static mo.utils.StringValue.ONLINEJUDGE_SESSION_GROUP;
-import static mo.utils.StringValue.ONLINEJUDGE_SESSION_UER;
 
 @RestController
 public class AdminProblemControllerImpl extends AbstractController implements AdminProblemController {
@@ -218,16 +211,56 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
 
     @Override
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
-    @RequestMapping(value = "/admin/problem", method = RequestMethod.PUT)
-    public Result updateProblem(@RequestParam("problem") String problem,
-                                @RequestParam("tags") String tags,
-                                @RequestParam(value = "testCaseId", required = false) String testCaseId) {
-        Problem pro = JSON.parseObject(problem, new TypeReference<Problem>() {
-        });
-        List<Tag> tagList = JSON.parseObject(tags, new TypeReference<ArrayList<Tag>>() {
-        });
+    @RequestMapping(value = "/admin/problem", method = RequestMethod.PUT, consumes = "application/json")
+    public Result updateProblem(@RequestBody ProblemTagTestCase problemTagTestCase) {
+        /**
+         * 1.判断权限
+         * 2.判断测试文件是否存在
+         * 3.插入题目
+         *  3.1 题目信息更新
+         *  3.2 Tag更新
+         *   3.2.1
+         *  3.3 文件更新
+         *   3.3.1 修改旧文件名称,保存
+         *   3.3.2 修改新文件名称
+         *   3.3.3 删除就文件
+         */
+        Integer operator_id = getJWTUserId();
+        Problem problem = problemTagTestCase.getProblem();
+        List<Tag> tags = problemTagTestCase.getTags();
+        String testCaseId = problemTagTestCase.getTestCaseId();
+        if (problem.getCreate_by().equals(operator_id) || PermissionManager.isLegalAdmin(Permission.Topic_adder, privilegeService.findPrivilegeByUserId(operator_id).getRightstr())) {
+            //题目信息更新
+            if (problemService.updateProblemInfo(problemTagTestCase.getProblem())) {
+                //更新文件
+                if (testCaseId != null || testCaseId != "") {
+                    File old = new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + problem.getProblem_id());
+                }
+                //更新Tag
 
-        logger.info("problem[{}],tags[{}],testCaseId[{}]", problem, tags, testCaseId);
-        return new Result().setCode(ResultCode.OK);
+            } else {
+                return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("题目信息更新失败!");
+            }
+            return null;
+        } else {
+            return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足!");
+        }
+    }
+
+    @Override
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/problem/{id}", method = RequestMethod.GET)
+    public Result problem(@PathVariable Integer id) {
+        ProblemLink problem = new ProblemLink();
+        problem.setProblem(problemService.findProblemByProblemId(id));
+        if (problem.getProblem() == null) {
+            return new Result().setCode(ResultCode.NOT_FOUND).setMessage("问题不存在!");
+        } else {
+            problem.setCreated_by(userService.findUserByUserId(problem.getProblem().getCreate_by()));
+            JSONObject json = new JSONObject();
+            json.put("result", problem);
+            return new Result().setCode(ResultCode.OK).setData(json);
+        }
     }
 }

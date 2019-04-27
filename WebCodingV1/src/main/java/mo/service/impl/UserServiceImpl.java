@@ -7,7 +7,7 @@ import mo.dao.PrivilegeMapper;
 import mo.dao.UserMapper;
 import mo.entity.po.Privilege;
 import mo.entity.po.User;
-import mo.entity.vo.UserLink;
+import mo.entity.vo.link.UserLink;
 import mo.service.UserService;
 import mo.utils.JWTUtils;
 import org.slf4j.Logger;

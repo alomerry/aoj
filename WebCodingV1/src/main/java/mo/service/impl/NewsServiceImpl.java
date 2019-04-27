@@ -3,7 +3,7 @@ package mo.service.impl;
 import mo.dao.NewsMapper;
 import mo.dao.UserMapper;
 import mo.entity.po.News;
-import mo.entity.vo.NewsUserLink;
+import mo.entity.vo.link.NewsUserLink;
 import mo.service.NewsService;
 import org.springframework.stereotype.Service;
 

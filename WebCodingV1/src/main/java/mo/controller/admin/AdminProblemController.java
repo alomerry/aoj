@@ -3,6 +3,7 @@ package mo.controller.admin;
 import mo.core.Result;
 import mo.entity.po.Problem;
 import mo.entity.po.Tag;
+import mo.entity.vo.ProblemTagTestCase;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -59,10 +60,17 @@ public interface AdminProblemController {
     /**
      * 更新题目
      *
-     * @param problem    题目实体
-     * @param tags       标签数组
-     * @param testCaseId 测试用例文件夹名称
+     * @param problemTagTestCase 题目Vo
      * @return
      */
-    Result updateProblem(String problem, String tags, String testCaseId);
+    Result updateProblem(ProblemTagTestCase problemTagTestCase);
+
+
+    /**
+     * 查询指定题目
+     *
+     * @param id 题目Id
+     * @return 题目
+     */
+    Result problem(Integer id);
 }

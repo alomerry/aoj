@@ -2,7 +2,7 @@ package mo.service;
 
 import mo.core.Result;
 import mo.entity.po.User;
-import mo.entity.vo.UserLink;
+import mo.entity.vo.link.UserLink;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;

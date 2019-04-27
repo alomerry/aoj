@@ -8,7 +8,7 @@ import mo.core.PermissionManager;
 import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.Privilege;
-import mo.entity.vo.UserLink;
+import mo.entity.vo.link.UserLink;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
 import mo.service.PrivilegeService;
