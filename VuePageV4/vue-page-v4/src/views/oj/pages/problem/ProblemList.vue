@@ -46,10 +46,10 @@
             </Col>
             <Col span="5">
                 <Card>
-                    <p slot="title">Borderless card</p>
-                    <p>Content of card</p>
-                    <p>Content of card</p>
-                    <p>Content of card</p>
+                    <p slot="title" style="font-size: 18px;">Tag</p>
+                    <div>
+                        <Button v-for="" shape="circle"></Button>
+                    </div>
                     <Button long ghost type="info" @click.native="" style="margin-top: 15px">Pick One</Button>
                 </Card>
             </Col>
@@ -150,6 +150,7 @@
                     }
                 ], //表格行数据
                 tableLoading: false,//'表格'加载中状态
+                tag_list: [{}]
             }
         },
         methods: {
@@ -218,8 +219,7 @@
             this.debouncedsearchData = debounce(this.DelaySearchTable, 500, null);//延时加载
             this.getProblems();
         },
-        computed: {
-        },
+        computed: {},
         watch: {
             searchKeyWord: function (newVal, oldVal) {
                 this.debouncedsearchData();

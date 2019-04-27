@@ -174,7 +174,7 @@
                                 {
                                     props: {
                                         size: 'default',
-                                        value: params.row.problem.defunct === '1',
+                                        value: params.row.problem.defunct !== '0',
                                         disabled: (params.row.created_by.user_id) === this.$store.getters.localUserId ? false : true,
                                     }
                                 },

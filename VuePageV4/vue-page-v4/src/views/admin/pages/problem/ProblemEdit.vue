@@ -393,7 +393,7 @@
                     this.$Message.error("Out Description is required!");
                     return;
                 }
-                this.formProblem.defunct = this.formProblem.defunct ? '1' : '4';
+                this.formProblem.defunct = this.formProblem.defunct ? '1' : '2';
                 let tags = this.formProblem.tags;
                 let problem = this.formProblem;
                 delete problem.tags;
