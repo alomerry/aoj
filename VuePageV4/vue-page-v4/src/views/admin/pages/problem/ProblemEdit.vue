@@ -261,12 +261,12 @@
             Simditor,
         },
         mounted() {
-            console.log("mounted:$route.params:" + this.$route.params.method);
+            // console.log("mounted:$route.params:" + this.$route.params.method);
             switch (this.$route.params.method) {
                 case "edit": {
                     //search,init formProblem's problem and tag
                     this.method = "Edit Problem";
-                    Api.findProblemByProblemId(this.$route.params.problem_id).then(res => {
+                    Api.findProblemByProblemId(this.$route.params.problem_id, this.$store.state.token).then(res => {
                         let tags = [];
                         Api.findTagsByProblemId(this.$route.params.problem_id).then(result => {
                             tags = result.data.data.tags;
@@ -325,21 +325,20 @@
                         tags: [],
                     }
                 } else {
-                    this.formProblem = {
-                        display_id: problem.display_id,
-                        title: problem.title,
-                        description: problem.description,
-                        input: problem.input,
-                        output: problem.output,
-                        visible: problem.defunct === "1",
-                        hint: problem.hint,
-                        source: problem.source,
-                        memory_limit: problem.memory_limit,
-                        sample_output: problem.sample_output,
-                        sample_input: problem.sample_input,
-                        time_limit: problem.time_limit,
-                        tags: tag,
-                    }
+                    this.formProblem.display_id = problem.display_id;
+                    this.formProblem.title = problem.title;
+                    this.formProblem.description = problem.description;
+                    this.formProblem.input = problem.input;
+                    this.formProblem.output = problem.output;
+                    this.formProblem.visible = problem.defunct === "1";
+                    this.formProblem.hint = problem.hint;
+                    this.formProblem.source = problem.source;
+                    this.formProblem.memory_limit = problem.memory_limit;
+                    this.formProblem.sample_input = problem.sample_input;
+                    this.formProblem.sample_output = problem.sample_output;
+                    this.formProblem.time_limit = problem.time_limit;
+                    this.formProblem.problem_id = problem.problem_id;
+                    this.formProblem.tags = tag;
                 }
             },
             //上传文件格式错误时的回调

@@ -234,7 +234,15 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
             if (problemService.updateProblemInfo(problemTagTestCase.getProblem())) {
                 //更新文件
                 if (testCaseId != null || testCaseId != "") {
-                    File old = new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + problem.getProblem_id());
+                    File oldCase = new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + problem.getProblem_id());
+                    oldCase.renameTo(new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + System.currentTimeMillis() + StringUtils.generateString(6)));
+                    File newCase = new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + testCaseId);
+                    if (newCase.renameTo(new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + problem.getProblem_id()))) {
+                        oldCase.delete();
+                    } else {
+                        newCase.delete();
+                        return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("测试用例更新失败!");
+                    }
                 }
                 //更新Tag
 

@@ -91,12 +91,16 @@ export default {
     /**
      * 查询制定Id题目
      * @param problem_id
+     * @param jwt 令牌
      * @returns {AxiosPromise}
      */
-    findProblemByProblemId(problem_id) {
+    findProblemByProblemId(problem_id, jwt) {
         return axios({
             url: '/api/api-oj/admin/problem/' + problem_id,
             method: 'get',
+            headers: {
+                "jwt": jwt,
+            }
         });
     },
 
