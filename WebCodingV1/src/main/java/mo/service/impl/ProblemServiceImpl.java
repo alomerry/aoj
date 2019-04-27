@@ -3,6 +3,7 @@ package mo.service.impl;
 import mo.dao.*;
 import mo.entity.po.*;
 import mo.entity.vo.link.ProblemLink;
+import mo.entity.vo.link.ProblemTagLink;
 import mo.exception.ServiceException;
 import mo.service.ProblemService;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -133,7 +135,7 @@ public class ProblemServiceImpl implements ProblemService {
             if (tags != null && tags.size() != 0) {
                 Integer id = 0;
                 for (Tag tag : tags) {
-                    tag.setTag_id(tagMapper.findTagByTagName(tag.getTagname()));
+                    tag.setTag_id(tagMapper.findTagIdByTagName(tag.getTagname()));
                     if (tag.getTag_id() == null) {//tag不存在，新建tag
                         tagMapper.insertTag(tag.getTagname());
                         tag.setTag_id(tagMapper.findLastInsertId());
@@ -173,6 +175,101 @@ public class ProblemServiceImpl implements ProblemService {
         }
         String ids = makeProblemIds(problemTags);
         return problemMapper.findSimpleProblemByProblemIdS(ids, (page - 1) * per_page, per_page);
+    }
+
+    @Override
+    @Transactional
+    public boolean updateProblemTags(List<Tag> tags, Integer problem_id) {
+        /**
+         * 1.查询题目已有标签
+         * 2.对比当前标签 保存新增和不存在的
+         * 3.删除不存在的,添加新增的
+         */
+        if (tags == null || tags.size() == 0) {
+            //删除全部
+            if (problemTagMapper.deleteProblemTagByProblemId(problem_id) > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            //修改
+            List<ProblemTag> problemTags = problemTagMapper.findProblemTagByProblemId(problem_id);
+            List<ProblemTagLink> problemTagLink = null;
+            if (problemTags == null || problemTags.size() == 0) {
+                //添加全部tags
+                //TODO 性能优化 批量执行
+                problemTags = new ArrayList<>(tags.size() + 3);
+                //遍历Tags 依次插入
+                for (Tag tag : tags) {
+                    if (tagMapper.insertTag(tag.getTagname()) > 0) {
+                        problemTags.add(new ProblemTag(tagMapper.findLastInsertId(), problem_id));
+                    } else {
+                        throw new RuntimeException();
+                    }
+                }
+                //遍历problemTags 全部插入
+                if (problemTagMapper.insertProblemTagList(problemTags) > 0) {
+                    return true;
+                } else {
+                    throw new RuntimeException();
+                }
+            } else {
+                //修改部分
+                List<ProblemTag> underDel = null;
+                List<Tag> underAdd = new ArrayList<>();
+
+                problemTagLink = new ArrayList<>();
+                for (ProblemTag p : problemTags) {
+                    problemTagLink.add(new ProblemTagLink(p, tagMapper.findTagByTagId(p.getTag_id())));
+                }
+
+                Iterator oldTags = problemTagLink.iterator(), newTags = tags.iterator();
+                while (oldTags.hasNext()) {
+                    ProblemTagLink oldItem = (ProblemTagLink) oldTags.next();
+                    while (newTags.hasNext()) {
+                        Tag newItem = (Tag) newTags.next();
+                        if (newItem.getTagname().equals(oldItem.getTag().getTagname())) {//如果相等,则此标签不变
+                            tags.remove(newItem);
+                            problemTagLink.remove(oldItem);
+                            break;
+                        } else {//如果不等,则此标签需删除
+                            if (underDel == null) {
+                                underDel = new ArrayList<>();
+                            }
+                            underDel.add(oldItem.getProblemTag());
+                            problemTagLink.remove(oldItem);
+                        }
+                    }
+                }
+
+                if (tags.size() > 0) {//遍历完毕,tags剩余元素即是待添加元素
+                    if (underAdd == null) {
+                        underAdd = new ArrayList<>();
+                    }
+                    for (Tag tag : tags) {
+                        underAdd.add(tag);
+                    }
+                }
+
+                if (problemTagMapper.deleteProblemTagList(underDel) > 0) {
+                    for (Tag tag : underAdd) {
+                        if (tagMapper.insertTag(tag.getTagname()) > 0) {
+                            if (problemTagMapper.insertProblemTagWithTagIdAndProblemId(problem_id, tagMapper.findLastInsertId()) > 0) {
+                                continue;
+                            } else {
+                                throw new RuntimeException();
+                            }
+                        } else {
+                            throw new RuntimeException();
+                        }
+                    }
+                    return true;
+                } else {
+                    throw new RuntimeException();
+                }
+            }
+        }
     }
 
     /**

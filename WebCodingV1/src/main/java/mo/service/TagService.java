@@ -21,4 +21,5 @@ public interface TagService {
      * @return
      */
     List<Tag> findTagsByPage(int page, int per_page);
+
 }

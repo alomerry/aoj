@@ -245,11 +245,14 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
                     }
                 }
                 //更新Tag
-
+                if (problemService.updateProblemTags(tags)) {
+                    return new Result().setCode(ResultCode.OK);
+                } else {
+                    return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("题目标签更新失败!");
+                }
             } else {
                 return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("题目信息更新失败!");
             }
-            return null;
         } else {
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足!");
         }

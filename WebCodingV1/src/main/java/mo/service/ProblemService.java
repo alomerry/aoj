@@ -145,4 +145,12 @@ public interface ProblemService {
      */
     List<Problem> findSimpleProblemsByTagId(Integer tag_id, int page, int per_page);
 
+    /**
+     * 更新题目标签
+     *
+     * @param tags       标签集合
+     * @param problem_id 待更新的题目Id
+     * @return
+     */
+    boolean updateProblemTags(List<Tag> tags, Integer problem_id);
 }

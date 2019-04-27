@@ -1,5 +1,6 @@
 package mo.dao;
 
+import mo.entity.po.ProblemTag;
 import mo.entity.po.Tag;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -27,7 +28,16 @@ public interface TagMapper {
      * @return
      */
     @Select("select tag_id from tag where tagname = #{tagname}")
-    Integer findTagByTagName(@Param("tagname") String tagname);
+    Integer findTagIdByTagName(@Param("tagname") String tagname);
+
+    /**
+     * 根据标签Id查找tag
+     *
+     * @param tag_id 标签Id
+     * @return
+     */
+    @Select("select * from tag where tag_id = #{tag_id}")
+    Tag findTagByTagId(@Param("tag_id") int tag_id);
 
     /**
      * 添加新标签
@@ -55,4 +65,5 @@ public interface TagMapper {
      */
     @Select("select * from tag limit #{start},#{per_page}")
     List<Tag> findTagsByPage(@Param("start") int start, @Param("per_page") int per_page);
+
 }
