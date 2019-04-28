@@ -68,8 +68,11 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
         switch (resType) {
             case "simple": {
                 problems.put("problems", problemService.findSimpleProblemLinksByDefunct(defunct, userLink.getUser().getUser_id(), Integer.valueOf(page), Integer.valueOf(per_page)));
-                logger.info("json problems[{}]", JSON.toJSONString(problems, SerializerFeature.DisableCircularReferenceDetect));
-                logger.info("json result[{}]", new JSONObject());
+//                logger.info("json problems[{}]", JSON.toJSONString(problems, SerializerFeature.DisableCircularReferenceDetect));
+//                logger.info("json result[{}]", new JSONObject());
+                //查询页码信息
+                logger.info("total[{}]", problemService.findProblemTotalNumByDefunct(defunct));
+                problems.put("total", problemService.findProblemTotalNumByDefunct(defunct));
                 break;
             }
             case "detail": {

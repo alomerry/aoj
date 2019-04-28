@@ -292,6 +292,11 @@ public class ProblemServiceImpl implements ProblemService {
         }
     }
 
+    @Override
+    public int findProblemTotalNumByDefunct(String defunct) {
+        return problemMapper.findProblemTotalNumsByDefunct(defunct);
+    }
+
     /**
      * 查询题目公开级别是否满足asklLevel级别
      *

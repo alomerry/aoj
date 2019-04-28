@@ -45,8 +45,7 @@
                 <Icon type="ios-add" size="17"/>
                 Add From Public Problem
             </Button>
-            <br>
-            <Page :current="page" :page-size="per_page" size="small" style="float: right"/>
+            <Page :current="page" size="small" style="float: right" :total="total" show-sizer @on-page-size-change="pageSizeChange"/>
             <br>
         </Card>
         
@@ -174,7 +173,7 @@
                                 {
                                     props: {
                                         size: 'default',
-                                        value: params.row.problem.defunct !== '0',
+                                        value: params.row.problem.defunct !== '0' ? true : false,
                                         disabled: (params.row.created_by.user_id) === this.$store.getters.localUserId ? false : true,
                                     }
                                 },
@@ -404,6 +403,7 @@
                 nowTime: "2016-10-03 07:08:16",
                 page: 1,
                 per_page: 10,
+                total: 10,
 
                 publicProblemColumns: [//problem_id,submit,defunct,accepted,created_at,create_by,title,display_id
                     {
@@ -610,6 +610,8 @@
                         let result = res.data;
                         if (result.code === 200) {
                             this.datas = result.data.problems;
+                            console.log(result.data);
+                            this.total = result.data.total;
                             this.selectData = this.datas;
                         } else if (result.code === 401) {
                             this.$Message.error("签名过期,请重新登录!");
@@ -672,6 +674,11 @@
             //修改modal表格
             updateModalDatas() {
 
+            },
+            //每页数量修改回调函数
+            pageSizeChange(pageSize) {
+                this.per_page = pageSize;
+                this.getProblems();
             },
         },
         watch: {

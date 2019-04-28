@@ -153,4 +153,12 @@ public interface ProblemService {
      * @return
      */
     boolean updateProblemTags(List<Tag> tags, Integer problem_id);
+
+    /**
+     * 根据公开级别查询题目数量
+     *
+     * @param defunct 公开级别
+     * @return
+     */
+    int findProblemTotalNumByDefunct(String defunct);
 }

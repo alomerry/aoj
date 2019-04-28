@@ -138,7 +138,24 @@ public interface ProblemMapper {
     @Select("select LAST_INSERT_ID()")
     Integer findLastInsertId();
 
+    /**
+     * 根据题目Ids查询
+     *
+     * @param problem_ids 题目Id数组
+     * @param start       起始
+     * @param per_page    每页数量
+     * @return
+     */
     @Select("select problem_id,submit,defunct,accepted,created_at,create_by,title,display_id from problems " +
             "where problem_id in ${problem_ids} limit #{start},#{per_page}")
     List<Problem> findSimpleProblemByProblemIdS(@Param("problem_ids") String problem_ids, @Param("start") int start, @Param("per_page") int per_page);
+
+    /**
+     * 根据公开级别查询题目数量
+     *
+     * @param defunct "(1,2,3)"
+     * @return
+     */
+    @Select("select count(problem_id) from problems where defunct in ${defunct}")
+    Integer findProblemTotalNumsByDefunct(@Param("defunct") String defunct);
 }

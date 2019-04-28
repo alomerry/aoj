@@ -57,6 +57,7 @@ export default {
         let params = new URLSearchParams();
         params.append("page", page);
         params.append("per_page", per_page);
+        console.log(page + ":" + per_page);
         return axios({
             url: "/api/api-oj/admin/problems",
             method: 'get',
