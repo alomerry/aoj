@@ -338,6 +338,7 @@
                     this.formProblem.sample_output = problem.sample_output;
                     this.formProblem.time_limit = problem.time_limit;
                     this.formProblem.problem_id = problem.problem_id;
+                    this.formProblem.create_by = problem.create_by;
                     this.formProblem.tags = tag;
                 }
             },
@@ -410,7 +411,7 @@
                     this.$Message.error("Out Description is required!");
                     return;
                 }
-                this.formProblem.defunct = this.formProblem.defunct ? '1' : '2';
+                this.formProblem.defunct = this.formProblem.defunct ? '1' : '3';
                 let tags = this.formProblem.tags;
                 let problem = this.formProblem;
                 delete problem.tags;
@@ -459,7 +460,7 @@
                     this.$Message.error("Out Description is required!");
                     return;
                 }
-                this.formProblem.defunct = this.formProblem.defunct ? '1' : '2';
+                this.formProblem.defunct = this.formProblem.defunct ? '1' : '3';
                 let tags = this.formProblem.tags;
                 let problem = this.formProblem;
                 problem.problem_id = this.$route.params.problem_id;

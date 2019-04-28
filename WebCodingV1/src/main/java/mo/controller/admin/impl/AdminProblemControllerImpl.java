@@ -226,6 +226,7 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
          *   3.3.3 删除就文件
          */
         Integer operator_id = getJWTUserId();
+        logger.info("获取到更新数据[{}]", problemTagTestCase);
         Problem problem = problemTagTestCase.getProblem();
         List<Tag> tags = problemTagTestCase.getTags();
         String testCaseId = problemTagTestCase.getTestCaseId();
@@ -233,7 +234,7 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
             //题目信息更新
             if (problemService.updateProblemInfo(problemTagTestCase.getProblem())) {
                 //更新文件
-                if (testCaseId != null || testCaseId != "") {
+                if (testCaseId != null && testCaseId != "") {
                     File oldCase = new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + problem.getProblem_id());
                     oldCase.renameTo(new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + System.currentTimeMillis() + StringUtils.generateString(6)));
                     File newCase = new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + testCaseId);

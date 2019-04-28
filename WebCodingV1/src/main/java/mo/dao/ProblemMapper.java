@@ -132,7 +132,7 @@ public interface ProblemMapper {
             "sample_output=#{problem.sample_output}," +
             "defunct=#{problem.defunct}," +
             "output=#{problem.output}," +
-            "input=#{problem.input} where problem_id = #{problem_id}")
+            "input=#{problem.input} where problem_id = #{problem.problem_id}")
     int updateProblem(@Param("problem") Problem problem);
 
     @Select("select LAST_INSERT_ID()")

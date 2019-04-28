@@ -53,10 +53,10 @@ public interface ProblemTagMapper {
      * @return
      */
     @Insert("<script>" +
-            "insert into problem_tag (problem_id,tag_id) values " +
-            "<foreach collection = 'list' item='item' index='index' separator=','> " +
-            "(#{item.problem_id},#{item.tag_id} )" +
-            "</foreach>" +
+            " insert into problem_tag (problem_id,tag_id) values " +
+            " <foreach collection = 'list' item='item' index='index' separator=',' > " +
+            " (#{item.problem_id},#{item.tag_id} )" +
+            " </foreach>" +
             "</script>")
     int insertProblemTagList(@Param("list") List<ProblemTag> problemTags);
 
@@ -67,10 +67,19 @@ public interface ProblemTagMapper {
      * @return
      */
     @Delete("<script>" +
-            "delete from problem_tag where id in " +
-            "<foreach collection = 'list' item='item' index='index' separator=',' open='(' , close=')')> " +
-            "#{list.id}" +
-            "</foreach>" +
+            " delete from problem_tag where id in " +
+            "<foreach collection = 'list' item='item' index='index' separator=',' open='('  close=')' > " +
+            " #{list.id}" +
+            " </foreach>" +
             "</script>")
     int deleteProblemTagList(@Param("list") List<ProblemTag> problemTags);
+
+    /**
+     * 查询题目的标签数量
+     *
+     * @param problem_id 题目Id
+     * @return
+     */
+    @Select("select count(id) from problem_tag where problem_id = #{problem_id}")
+    int findProblemTagNumByProblemId(@Param("problem_id") Integer problem_id);
 }

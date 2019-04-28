@@ -187,10 +187,14 @@ public class ProblemServiceImpl implements ProblemService {
          */
         if (tags == null || tags.size() == 0) {
             //删除全部
-            if (problemTagMapper.deleteProblemTagByProblemId(problem_id) > 0) {
-                return true;
+            if (problemTagMapper.findProblemTagNumByProblemId(problem_id) > 0) {
+                if (problemTagMapper.deleteProblemTagByProblemId(problem_id) > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
-                return false;
+                return true;
             }
         } else {
             //修改
@@ -200,12 +204,17 @@ public class ProblemServiceImpl implements ProblemService {
                 //添加全部tags
                 //TODO 性能优化 批量执行
                 problemTags = new ArrayList<>(tags.size() + 3);
-                //遍历Tags 依次插入
+                //遍历Tags 判断是否存在,不存在依次插入,存在的则查询tagId
                 for (Tag tag : tags) {
-                    if (tagMapper.insertTag(tag.getTagname()) > 0) {
-                        problemTags.add(new ProblemTag(tagMapper.findLastInsertId(), problem_id));
+                    int tagId = 0;
+                    if ((tagId = tagMapper.findTagIdByTagName(tag.getTagname())) != 0) {
+                        problemTags.add(new ProblemTag(tagId, problem_id));
                     } else {
-                        throw new RuntimeException();
+                        if (tagMapper.insertTag(tag.getTagname()) > 0) {
+                            problemTags.add(new ProblemTag(tagMapper.findLastInsertId(), problem_id));
+                        } else {
+                            throw new RuntimeException();
+                        }
                     }
                 }
                 //遍历problemTags 全部插入
