@@ -226,7 +226,7 @@ public class ProblemServiceImpl implements ProblemService {
             } else {
                 //修改部分
                 List<ProblemTag> underDel = null;
-                List<Tag> underAdd = new ArrayList<>();
+                List<ProblemTag> underAdd = new ArrayList<>();
 
                 problemTagLink = new ArrayList<>();
                 for (ProblemTag p : problemTags) {
@@ -239,43 +239,54 @@ public class ProblemServiceImpl implements ProblemService {
                     while (newTags.hasNext()) {
                         Tag newItem = (Tag) newTags.next();
                         if (newItem.getTagname().equals(oldItem.getTag().getTagname())) {//如果相等,则此标签不变
-                            tags.remove(newItem);
-                            problemTagLink.remove(oldItem);
+                            logger.info("标签[{}]已存在无需修改!", oldItem.getTag().getTagname());
+                            newTags.remove();
+                            oldTags.remove();
                             break;
                         } else {//如果不等,则此标签需删除
                             if (underDel == null) {
                                 underDel = new ArrayList<>();
                             }
+                            logger.info("标签[{}]需要删除!", oldItem.getTag().getTagname());
                             underDel.add(oldItem.getProblemTag());
-                            problemTagLink.remove(oldItem);
+                            oldTags.remove();
                         }
                     }
                 }
 
+                //添加新的
                 if (tags.size() > 0) {//遍历完毕,tags剩余元素即是待添加元素
                     if (underAdd == null) {
                         underAdd = new ArrayList<>();
                     }
                     for (Tag tag : tags) {
-                        underAdd.add(tag);
-                    }
-                }
-
-                if (problemTagMapper.deleteProblemTagList(underDel) > 0) {
-                    for (Tag tag : underAdd) {
-                        if (tagMapper.insertTag(tag.getTagname()) > 0) {
-                            if (problemTagMapper.insertProblemTagWithTagIdAndProblemId(problem_id, tagMapper.findLastInsertId()) > 0) {
-                                continue;
+                        int tagId = 0;
+                        if ((tagId = tagMapper.findTagIdByTagName(tag.getTagname())) != 0) {
+                            underAdd.add(new ProblemTag(tagId, problem_id));
+                            logger.info("标签[{}]不存在,需要添加!", tag.getTagname());
+                        } else {
+                            logger.info("标签[{}]存在,需要添加并绑定关系!", tag.getTagname());
+                            if (tagMapper.insertTag(tag.getTagname()) > 0) {
+                                underAdd.add(new ProblemTag(tagMapper.findLastInsertId(), problem_id));
                             } else {
                                 throw new RuntimeException();
                             }
-                        } else {
-                            throw new RuntimeException();
                         }
                     }
-                    return true;
+                    if (problemTagMapper.insertProblemTagList(underAdd) <= 0) {
+                        throw new RuntimeException();
+                    }
+                }
+
+                //删除需要删除的
+                if (underDel != null) {
+                    if (problemTagMapper.deleteProblemTagList(underDel) > 0) {
+                        return true;
+                    } else {
+                        throw new RuntimeException();
+                    }
                 } else {
-                    throw new RuntimeException();
+                    return true;
                 }
             }
         }

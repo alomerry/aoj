@@ -166,7 +166,7 @@
                         },
                     },
                     {
-                        title: "Visiable",
+                        title: "Disabled",
                         key: "problem.defunct",
                         render: (h, params) => {
                             return h(

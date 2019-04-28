@@ -110,7 +110,7 @@
                                              v-for="(item,index) in formProblem.tags"
                                              :key="item.tag_id"
                                              :name="item.tag_id"
-                                             :color="color[index]"
+                                             :color="color[(index*16+23)%(color.length)]"
                                              @on-close="deleteTag">
                                             {{item.tagname}}
                                         </Tag>
@@ -422,6 +422,20 @@
                     if (result.code === 200) {
                         this.$Loading.finish();
                         this.$Message.success("Create Problem Successed!");
+                        this.formProblem = {
+                            display_id: "",
+                            title: '',
+                            description: "",
+                            input: "",
+                            output: "",
+                            visible: false,
+                            hint: "",
+                            source: "",
+                            memory_limit: 64,
+                            time_limit: 1000,
+                            tags: [],
+                        }
+                        this.testCase_dir_id = null;
                     } else {
                         this.$Loading.error();
                         this.$Message.error(result.message);
@@ -464,7 +478,7 @@
                 let tags = this.formProblem.tags;
                 let problem = this.formProblem;
                 problem.problem_id = this.$route.params.problem_id;
-                delete problem.tags;
+                // delete problem.tags;
                 this.$Loading.start();
                 Api.updateProblem(problem, tags, this.testCase_dir_id, this.$store.state.token).then(res => {
                     let result = res.data;
