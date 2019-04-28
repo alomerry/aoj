@@ -45,7 +45,9 @@
                 <Icon type="ios-add" size="17"/>
                 Add From Public Problem
             </Button>
-            <Page :current="page" size="small" style="float: right" :total="total" show-sizer @on-page-size-change="pageSizeChange"/>
+            <Page :current="page" size="small" style="float: right" :total="total" show-sizer
+                  @on-change="pageChange"
+                  @on-page-size-change="pageSizeChange"/>
             <br>
         </Card>
         
@@ -540,7 +542,7 @@
         },
         mounted() {
             this.nowTime = (new Date()).getTime();//当前时间
-            console.log(this.nowTime);
+            // console.log(this.nowTime);
             this.getProblems();
             this.selectData = this.datas;//表格数据
         },
@@ -610,7 +612,6 @@
                         let result = res.data;
                         if (result.code === 200) {
                             this.datas = result.data.problems;
-                            console.log(result.data);
                             this.total = result.data.total;
                             this.selectData = this.datas;
                         } else if (result.code === 401) {
@@ -680,6 +681,11 @@
                 this.per_page = pageSize;
                 this.getProblems();
             },
+            //页码修改时的回调函数
+            pageChange(page) {
+                this.page = page;
+                this.getProblems();
+            }
         },
         watch: {
             searchKeyWord: function (newVal, oldVal) {

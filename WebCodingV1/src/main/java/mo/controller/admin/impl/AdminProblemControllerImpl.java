@@ -63,7 +63,7 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
         UserLink userLink = userService.findUserLinkByUserId(Integer.valueOf((String) JWTUtils.getBodyValue((((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader("jwt")), "jti")));
         logger.info("userLink[{}]", userLink);
         String level = userLink.getPrivilege().getRightstr();
-        String defunct = PermissionManager.isLegalAdmin(Permission.Topic_adder, level) ? "(0,1,2,3)" : (PermissionManager.isAdmin(level) ? "(1,2)" : "(1)");
+        String defunct = PermissionManager.isLegalAdmin(Permission.Topic_adder, level) ? "(0,1,2,3)" : (PermissionManager.isAdmin(level) ? "(1,2,3)" : "(1)");
         JSONObject problems = new JSONObject();
         switch (resType) {
             case "simple": {
@@ -71,7 +71,7 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
 //                logger.info("json problems[{}]", JSON.toJSONString(problems, SerializerFeature.DisableCircularReferenceDetect));
 //                logger.info("json result[{}]", new JSONObject());
                 //查询页码信息
-                logger.info("total[{}]", problemService.findProblemTotalNumByDefunct(defunct));
+                logger.info("题目总数[{}]", problemService.findProblemTotalNumByDefunct(defunct));
                 problems.put("total", problemService.findProblemTotalNumByDefunct(defunct));
                 break;
             }
@@ -239,11 +239,16 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
                 //更新文件
                 if (testCaseId != null && testCaseId != "") {
                     File oldCase = new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + problem.getProblem_id());
-                    oldCase.renameTo(new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + System.currentTimeMillis() + StringUtils.generateString(6)));
-                    File newCase = new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + testCaseId);
-                    if (newCase.renameTo(new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + problem.getProblem_id()))) {
-                        oldCase.delete();
+                    if (oldCase.renameTo(new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + (System.currentTimeMillis() + StringUtils.generateString(6))))) {
+                        File newCase = new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + testCaseId);
+                        if (newCase.renameTo(new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + problem.getProblem_id()))) {
+                            oldCase.delete();
+                        } else {
+                            newCase.delete();
+                            return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("测试用例更新失败!");
+                        }
                     } else {
+                        File newCase = new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + testCaseId);
                         newCase.delete();
                         return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("测试用例更新失败!");
                     }

@@ -14,13 +14,9 @@ export default {
      * @param jwt token
      */
     getUsersByPagePer_Page(page, per_page, jwt) {
-        let params = new URLSearchParams();
-        params.append("page", page);
-        params.append("per_page", per_page);
         return axios({
-            url: "/api/api-oj/admin/users",
+            url: "/api/api-oj/admin/users?page=" + page + "&per_page=" + per_page,
             method: 'get',
-            data: params,
             headers: {
                 "jwt": jwt,
             }
@@ -34,13 +30,9 @@ export default {
      * @param jwt
      */
     getContestsByPagePer_PageAndCreator(page, per_page, jwt) {
-        let params = new URLSearchParams();
-        params.append("page", page);
-        params.append("per_page", per_page);
         return axios({
-            url: "/api/api-oj/admin/contests",
+            url: "/api/api-oj/admin/contests?page=" + page + "&per_page=" + per_page,
             method: 'get',
-            data: params,
             headers: {
                 "jwt": jwt,
             }
@@ -54,14 +46,9 @@ export default {
      * @param jwt token
      */
     getProblemsByPagePer_Page(page, per_page, jwt) {
-        let params = new URLSearchParams();
-        params.append("page", page);
-        params.append("per_page", per_page);
-        console.log(page + ":" + per_page);
         return axios({
-            url: "/api/api-oj/admin/problems",
+            url: "/api/api-oj/admin/problems?page=" + page + "&per_page=" + per_page,
             method: 'get',
-            data: params,
             headers: {
                 "jwt": jwt,
             }
@@ -76,13 +63,9 @@ export default {
      * @param jwt token
      */
     getContestProblemsByPageAndContestId(page, per_page, contest_id, jwt) {
-        let params = new URLSearchParams();
-        params.append("page", page);
-        params.append("per_page", per_page);
         return axios({
-            url: "/api/api-oj/admin/contest/" + contest_id + "/problems",
+            url: "/api/api-oj/admin/contest/" + contest_id + "/problems?page=" + page + "&per_page=" + per_page,
             method: "get",
-            data: params,
             headers: {
                 "jwt": jwt,
             }
@@ -110,12 +93,9 @@ export default {
      */
     findPublicProblemsByPage(page, per_page) {
         let params = new URLSearchParams();
-        params.append("page", page);
-        params.append("per_page", per_page);
         return axios({
-            url: "/api/api-oj/problems/defunct/1",
+            url: "/api/api-oj/problems/defunct/1?page=" + page + "&per_page=" + per_page,
             method: "get",
-            data: params,
         })
     },
 
@@ -243,13 +223,9 @@ export default {
      * @param jwt 令牌
      */
     findNews(page, per_page, jwt) {
-        let params = new URLSearchParams();
-        params.append("page", page);
-        params.append("per_page", per_page);
         return axios({
-            url: "/api/api-oj/admin/news",
+            url: "/api/api-oj/admin/news?page=" + page + "&per_page=" + per_page,
             method: "get",
-            data: params,
             headers: {
                 "jwt": jwt,
             }

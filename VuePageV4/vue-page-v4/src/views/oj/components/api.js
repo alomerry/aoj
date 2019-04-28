@@ -14,12 +14,8 @@ export default {
      * @returns {AxiosPromise}
      */
     findProblemsByPagePer_PageAndResultType(page, per_page, resType) {
-        let params = new URLSearchParams();
-        params.append("page", page);
-        params.append("per_page", per_page);
-        params.append("resType", resType);//需求结果类型
         return axios({
-            url: "/api/api-oj/problems/defunct/1",
+            url: "/api/api-oj/problems/defunct/1?page=" + page + "&per_page=" + per_page + "&resType=" + resType,
             method: 'get',
             data: params,
         })
@@ -63,11 +59,8 @@ export default {
      * @returns {AxiosPromise}
      */
     getSolutions(page, per_page, jwt) {
-        let params = new URLSearchParams();
-        params.append("page", page);
-        params.append("per_page", per_page);
         return axios({
-            url: "/api/api-oj/solutions",
+            url: "/api/api-oj/solutions?page=" + page + "&per_page=" + per_page ,
             method: "get",
             data: params,
             headers: {
@@ -82,11 +75,8 @@ export default {
      * @param per_page 每页数量
      */
     findNews(page, per_page) {
-        let params = new URLSearchParams();
-        params.append("page", page);
-        params.append("per_page", per_page);
         return axios({
-            url: "/api/api-oj/news",
+            url: "/api/api-oj/news?page=" + page + "&per_page=" + per_page ,
             method: "get",
             data: params,
         })
@@ -98,11 +88,8 @@ export default {
      * @param per_page 每页数量
      */
     findTags(page, per_page) {
-        let params = new URLSearchParams();
-        params.append("page", page);
-        params.append("per_page", per_page);
         return axios({
-            url: "/api/api-oj/tags",
+            url: "/api/api-oj/tags?page=" + page + "&per_page=" + per_page ,
             method: "get",
             data: params,
         });

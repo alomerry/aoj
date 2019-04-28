@@ -198,7 +198,7 @@
                                 <Input type="text" title="" v-model="formProblem.source"/>
                             </label>
                         </FormItem>
-                        <Button type="primary" @click="submit">Save</Button>
+                        <Button type="primary" @click="submit" :loading="saveLoadingFlag">Save</Button>
                     </div>
                 </div>
             </Form>
@@ -236,6 +236,7 @@
                     tags: [],
                 },
                 tmp_index: 0,//标签key
+                saveLoadingFlag: false,//保存按钮加载标签
                 color: [
                     "#FFA2D3",
                     "purple",
@@ -365,6 +366,7 @@
                 }
             },
             submit() {
+                this.saveLoadingFlag = true;
                 switch (this.$route.params.method) {
                     case "edit": {
                         this.updateProblem();
@@ -440,8 +442,10 @@
                         this.$Loading.error();
                         this.$Message.error(result.message);
                     }
+                    this.saveLoadingFlag = false;
                 }).catch(res => {
                     console.log(res);
+                    this.saveLoadingFlag = false;
                 });
             },
             //更新题目
@@ -490,8 +494,10 @@
                         this.$Loading.error();
                         this.$Message.error(result.message);
                     }
+                    this.saveLoadingFlag = false;
                 }).catch(res => {
                     console.log(res);
+                    this.saveLoadingFlag = false;
                 });
             },
         },
