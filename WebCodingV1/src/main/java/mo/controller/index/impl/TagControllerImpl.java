@@ -6,12 +6,16 @@ import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.Tag;
 import mo.service.TagService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
 @RestController
 public class TagControllerImpl implements TagController {
+
+    private static final Logger logger = LoggerFactory.getLogger(TagControllerImpl.class);
 
     @Resource
     private TagService tagService;
@@ -29,8 +33,8 @@ public class TagControllerImpl implements TagController {
     @ResponseBody
     @RequestMapping(value = "/tags", method = RequestMethod.GET)
     public Result tags(@RequestParam(value = "page", defaultValue = "1") String page,
-                       @RequestParam(value = "page", defaultValue = "10") String per_page) {
-
+                       @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
+        logger.info("page[{}],per_page[{}]", page, per_page);
         JSONObject tags = new JSONObject();
         tags.put("tags", tagService.findTagsByPage(Integer.valueOf(page), Integer.valueOf(per_page)));
         return new Result().setCode(ResultCode.OK).setData(tags);

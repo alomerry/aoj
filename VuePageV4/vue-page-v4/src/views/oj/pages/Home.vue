@@ -41,7 +41,7 @@
         </Card>
         <div style="margin: 10px;overflow: hidden" v-show="news_show === 0">
             <div style="float: right;">
-                <Page :total="totalPage" :current="current" :page-size="per_page" show-sizer show-elevator></Page>
+                <Page :total="totalPage" :current="page" :page-size="per_page" show-sizer show-elevator></Page>
             </div>
         </div>
     </div>
@@ -53,8 +53,8 @@
         name: 'Home',
         data() {
             return {
-                current: 1,
                 totalPage: 1,
+                page: 1,
                 per_page: 10,
                 loading: false,
                 news_show: 0,//显示新闻列表

@@ -54,7 +54,7 @@
             <p style="margin-top: 30px"></p>
         </Card>
         <div style="float: right;margin: 5px;">
-            <Page :total="totalPage" :page-size="per_page" :current="current" show-sizer/>
+            <Page :total="totalPage" :page-size="per_page" :current="page" show-sizer/>
         </div>
     </div>
 </template>
@@ -70,7 +70,7 @@
                 onlyShowMe: false,
                 buttonLoading: false,
                 searchKeyWord: "",//搜索框的内容
-                current: 1,
+                page: 1,
                 totalPage: 1,
                 per_page: 10,
                 tableLoadingFlag: false,
@@ -93,8 +93,7 @@
                         key: 'id',
                         align: 'center',
                         render: (h, params) => {
-                            return h('a', {
-                            }, params.row.solution.solution_id);
+                            return h('a', {}, params.row.solution.solution_id);
                         }
                     },
                     {
@@ -112,8 +111,7 @@
                         key: 'problem',
                         align: 'center',
                         render: (h, params) => {
-                            return h('a', {
-                            }, params.row.problem.title);
+                            return h('a', {}, params.row.problem.title);
                         }
                     },
                     {
@@ -121,8 +119,7 @@
                         key: 'time',
                         align: 'center',
                         render: (h, params) => {
-                            return h('span', {
-                            }, params.row.solution.time === null ? "-" : params.row.solution.time);
+                            return h('span', {}, params.row.solution.time === null ? "-" : params.row.solution.time);
                         }
                     },
                     {
@@ -130,8 +127,7 @@
                         key: 'memory',
                         align: 'center',
                         render: (h, params) => {
-                            return h('span', {
-                            }, params.row.solution.memory === null ? "-" : params.row.solution.memory);
+                            return h('span', {}, params.row.solution.memory === null ? "-" : params.row.solution.memory);
                         }
                     },
                     {
@@ -139,8 +135,7 @@
                         key: 'language',
                         align: 'center',
                         render: (h, params) => {
-                            return h('span', {
-                            }, this.codeLanguage(params.row.solution.language));
+                            return h('span', {}, this.codeLanguage(params.row.solution.language));
                         }
                     },
                     {
@@ -148,8 +143,7 @@
                         key: 'author',
                         align: 'center',
                         render: (h, params) => {
-                            return h('a', {
-                            }, params.row.user.nickname);
+                            return h('a', {}, params.row.user.nickname);
                         }
                     },
                     {

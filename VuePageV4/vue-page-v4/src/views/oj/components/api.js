@@ -17,7 +17,6 @@ export default {
         return axios({
             url: "/api/api-oj/problems/defunct/1?page=" + page + "&per_page=" + per_page + "&resType=" + resType,
             method: 'get',
-            data: params,
         })
     },
 
@@ -62,7 +61,6 @@ export default {
         return axios({
             url: "/api/api-oj/solutions?page=" + page + "&per_page=" + per_page ,
             method: "get",
-            data: params,
             headers: {
                 "jwt": jwt,
             }
@@ -78,7 +76,6 @@ export default {
         return axios({
             url: "/api/api-oj/news?page=" + page + "&per_page=" + per_page ,
             method: "get",
-            data: params,
         })
     },
 
@@ -91,7 +88,6 @@ export default {
         return axios({
             url: "/api/api-oj/tags?page=" + page + "&per_page=" + per_page ,
             method: "get",
-            data: params,
         });
     },
 

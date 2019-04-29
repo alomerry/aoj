@@ -239,11 +239,19 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
                 //更新文件
                 if (testCaseId != null && testCaseId != "") {
                     File oldCase = new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + problem.getProblem_id());
-                    if (oldCase.renameTo(new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + (System.currentTimeMillis() + StringUtils.generateString(6))))) {
+                    File oldTemp = new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + (System.currentTimeMillis() + StringUtils.generateString(6)));
+                    if (oldCase.renameTo(oldTemp)) {
                         File newCase = new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + testCaseId);
                         if (newCase.renameTo(new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + problem.getProblem_id()))) {
-                            oldCase.delete();
+                            for (File cases : oldTemp.listFiles()) {
+                                cases.delete();
+                            }
+                            oldTemp.delete();
                         } else {
+                            oldTemp.renameTo(new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + problem.getProblem_id()));
+                            for (File cases : newCase.listFiles()) {
+                                newCase.delete();
+                            }
                             newCase.delete();
                             return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("测试用例更新失败!");
                         }

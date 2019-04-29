@@ -38,7 +38,7 @@
                 </Card>
                 <div style="margin:25px 10px 10px 10px;overflow: hidden">
                     <div style="float: right;">
-                        <Page :total="totalPage" :current="current" :page-size="per_page" show-sizer show-elevator
+                        <Page :total="totalPage" :current="page" :page-size="per_page" show-sizer show-elevator
                               @on-change=""></Page>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
         data() {
             return {
                 searchKeyWord: "",//搜索框的内容
-                current: 1,
+                page: 1,
                 totalPage: 1,
                 per_page: 10,
                 buttonLoading: false,//表格重载'按钮'加载中状态
@@ -239,8 +239,9 @@
             },
             //获取标签
             getTags() {
-                Api.findTags(this.current, this.per_page).then(res => {
+                Api.findTags(1, 100).then(res => {
                     let result = res.data;
+                    // console.log(result);
                     if (result.code === 200) {
                         this.tag_list = result.data.tags;
                     } else {
