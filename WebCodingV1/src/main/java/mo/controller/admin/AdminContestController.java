@@ -1,6 +1,7 @@
 package mo.controller.admin;
 
 import mo.core.Result;
+import mo.entity.po.Contest;
 
 public interface AdminContestController {
 
@@ -30,4 +31,12 @@ public interface AdminContestController {
      * @return 操作结果
      */
     Result deleteProblem(String problem_id, String contest_id);
+
+    /**
+     * 创建新竞赛
+     *
+     * @param contest 竞赛实体
+     * @return
+     */
+    Result contest(Contest contest);
 }

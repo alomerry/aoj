@@ -310,5 +310,23 @@ export default {
                 "Content-Type": "application/json;charset-UTF-8",
             }
         })
+    },
+
+    /**
+     * 创建新竞赛
+     * @param contest 竞赛实体
+     * @param jwt 令牌
+     */
+    createNewContest(contest, jwt) {
+        let params = new URLSearchParams();
+        params.append("contest", contest);
+        return axios({
+            url: "/api/api-oj/admin/contest",
+            method: "post",
+            data: params,
+            headers: {
+                "jwt": jwt,
+            }
+        });
     }
 }

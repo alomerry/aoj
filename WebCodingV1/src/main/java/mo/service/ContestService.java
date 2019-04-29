@@ -83,4 +83,13 @@ public interface ContestService {
      * @return
      */
     boolean isProblemInContest(Integer contestId, Integer problemId);
+
+    /**
+     * 新建竞赛
+     *
+     * @param contest   竞赛实体
+     * @param creatorId 创建者Id
+     * @return
+     */
+    boolean createNewContest(Contest contest, Integer creatorId);
 }

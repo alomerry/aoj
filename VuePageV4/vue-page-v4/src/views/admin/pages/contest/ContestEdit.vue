@@ -21,7 +21,7 @@
                             <Row>
                                 <Col span="7">
                                     <FormItem label="">
-                                        <Input size="large" placeholder="large size" v-model="formContest.title"/>
+                                        <Input size="large" placeholder="title" v-model="formContest.title"/>
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -34,54 +34,60 @@
                         </div>
                         <div class="contest-info-item">
                             <FormItem>
-                                <Simditor>
+                                <Simditor v-model="formContest.describes">
                                 </Simditor>
                             </FormItem>
                         </div>
                     </div>
-                    <!-- Limits -->
+                    <!-- Info -->
                     <div class="contest-eidt contest-eidt-discribe">
                         <div class="contest-info-item">
                             <Row>
                                 <Col span="5">Start Time</Col>
                                 <Col span="5" offset="1">End Time</Col>
-                                <Col span="5" offset="1">Visible</Col>
-                                <Col span="5" offset="1">Status</Col>
+                                <Col span="3" offset="1">Visible</Col>
+                                <Col span="5" offset="1">Max</Col>
+                                <!--<Col span="5" offset="1">Status</Col>-->
                             </Row>
                         </div>
                         <div class="contest-info-item">
                             <Row>
                                 <FormItem>
                                     <Col span="5">
-                                        <DatePicker v-model="start_at" size="large" type="datetime" placeholder="Select date" :options="startTimeLimit"></DatePicker>
+                                        <DatePicker v-model="formContest.start_at" size="large" type="datetime"
+                                                    placeholder="Select date" :options="startTimeLimit"></DatePicker>
                                     </Col>
                                     <Col span="5" offset="1">
-                                        <DatePicker v-model="end_at" size="large" type="datetime" placeholder="Select date" :options="false"></DatePicker>
+                                        <DatePicker v-model="formContest.end_at" size="large" type="datetime"
+                                                    placeholder="Select date" :options="endTimeLimit"></DatePicker>
                                     </Col>
-                                    <Col span="5" offset="1">
+                                    <Col span="3" offset="1">
                                         <i-switch size="default" v-model="formContest.defunct">
                                             <span slot="open">️</span>
                                             <span slot="close"></span>
                                         </i-switch>
                                     </Col>
-                                    <Col span="5" offset="1">
-                                        <Badge type="success" text="Accessable"></Badge>
+                                    <Col span="3" offset="1">
+                                        <Input placeholder="参赛人数" v-model="formContest.max"></Input>
                                     </Col>
+                                    <!--<Col span="5" offset="1">-->
+                                    <!--<Badge type="success" text="Accessable"></Badge>-->
+                                    <!--</Col>-->
                                 </FormItem>
                             </Row>
                         </div>
                     </div>
-                    <!-- Source -->
+                    <!-- Save -->
                     <div class="contest-eidt contest-eidt-testcase">
-                        <div class="contest-info-item">
-                            Source
+                        <div class="problem-info-item">
+                            Organizer
                         </div>
                         <FormItem>
                             <label>
-                                <Input type="text" title=""/>
+                                <Input type="text" title="" v-model="formContest.organizer"/>
                             </label>
                         </FormItem>
-                        <Button type="primary" @click="handleAdd">Save</Button>
+                        <Button type="primary" @click="save" :loading="loadingStatus">Save</Button>
                     </div>
                 </div>
             </Form>
@@ -102,16 +108,18 @@
                 loadingStatus: false,//上传状态
                 content: '',
                 formContest: {
-                    title: '',
-                    description: "",
-                    defunct: false,
-                    end_at: null,
-                    start_at: null,
-                    //tag info
-                    tags: null,
+                    "access": false,
+                    "contest_id": null,
+                    "describes": null,
+                    "end_at": null,
+                    "max": 0,
+                    "now": 0,
+                    "organizer": null,
+                    "privates": 0,
+                    "start_at": null,
+                    "title": null,
+                    "user_id": null,
                 },
-                end_at: null,
-                start_at: null,
                 startTimeLimit: {
                     disabledDate(date) {
                         return date && date.valueOf() < Date.now();
@@ -133,17 +141,7 @@
                 case "edit": {
                     //search,init formContest's problem and tag
                     this.method = "Edit Contest";
-                    Api.findProblemByProblemId(this.$route.params.problem_id).then(res => {
-                        let tags = [];
-                        Api.findTagsByProblemId(this.$route.params.problem_id).then(result => {
-                            tags = result.data.data.tags;
-                            this.initFormDataWithProblemAndTag(res.data.data.result.problem, tags);
-                        }).catch(error => {
-                            console.log(error);
-                        });
-                    }).catch(error => {
-                        console.log(error);
-                    });
+
                     break;
                 }
                 case "create": {
@@ -172,64 +170,49 @@
                 s = s < 10 ? ('0' + s) : s;
                 return y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s;
             },
-            //上传文件
-            handleUpload(file) {
-                this.file_testCase = file;
-                return false;
-            },
             //save
-            upload() {
-                this.loadingStatus = true;
-                setTimeout(() => {
-                    this.file_testCase = null;
-                    this.loadingStatus = false;
-                    this.$Message.success('Success')
-                }, 1000);
+            save() {
+                this.createContest();
             },
             //初始化显示
             //TODO 修改
             initFormDataWithProblemAndTag(problem, tag) {
                 if (problem == null) {
-                    this.formContest = {
-                        display_id: "",
-                        title: '',
-                        description: "",
-                        input: "",
-                        output: "",
-                        defunct: false,
-                        hint: "",
-                        source: "",
-                        memory_limit: 64,
-                        time_limit: 1000,
-                        tags: null,
-                    }
+                    this.formContest = {}
                 } else {
-                    this.formContest = {
-                        display_id: problem.display_id,
-                        title: problem.title,
-                        description: problem.description,
-                        input: problem.input,
-                        output: problem.output,
-                        defunct: problem.defunct === "1",
-                        hint: problem.hint,
-                        source: problem.source,
-                        memory_limit: problem.memory_limit,
-                        time_limit: problem.time_limit,
-                        tags: tag,
-                    }
+                    this.formContest = {}
                 }
             },
-            handleAdd() {
-                alert(this.formatDate(this.formContest.start_at));
+            //新建竞赛
+            createContest() {
+                if (this.formContest.max === null || this.formContest.max === "" || this.formContest.max ===0) {
+                    this.$Message.error("Please input max number!");
+                    return;
+                } else if (this.formContest.title === null || this.formContest.title === "") {
+                    this.$Message.error("Please input title!");
+                    return;
+                } else if (this.formContest.describes === null || this.formContest.describes === "") {
+                    this.$Message.error("Please input describe!");
+                    return;
+                } else if (this.formContest.end_at === null || this.formContest.start_at === null) {
+                    this.$Message.error("Please input start time or end time!");
+                    return;
+                } else if (this.formContest.end_at <= this.formContest.start_at) {
+                    this.$Message.error("End time can early than start time!");
+                    return;
+                }
+                this.loadingStatus = true;
+                Api.createNewContest(this.formContest, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    if (result.code === 200) {
+                        this.$Message.success("add contest successed!");
+                    } else {
+                        this.$Message.error(result.message);
+                    }
+                }).catch(res => {
+                    console.log(res);
+                });
             }
-        },
-        watch: {
-            start_at: function (newVal, oldVal) {
-                this.formContest.start_at = this.formatDate(newVal);
-            },
-            end_at: function (newVal, oldVal) {
-                this.formContest.end_at = this.formatDate(newVal);
-            },
         },
         created() {
         },
@@ -238,7 +221,6 @@
                 console.log("reload");
                 next(vm => {
                     vm.method = "Add Contest";
-                    // vm.initFormDataWithProblemAndTag(null, null);
                 });
             } else {
                 next();

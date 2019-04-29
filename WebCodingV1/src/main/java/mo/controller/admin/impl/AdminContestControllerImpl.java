@@ -5,6 +5,7 @@ import mo.controller.AbstractController;
 import mo.controller.admin.AdminContestController;
 import mo.core.Result;
 import mo.core.ResultCode;
+import mo.entity.po.Contest;
 import mo.entity.po.Privilege;
 import mo.entity.po.User;
 import mo.interceptor.annotation.AuthCheck;
@@ -111,6 +112,17 @@ public class AdminContestControllerImpl extends AbstractController implements Ad
             return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("删除题目失败，可能原因：1.题目不存在；2.内部错误");//0/-1
         }
 
+    }
+
+    @Override
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/contest", method = RequestMethod.POST)
+    public Result contest(@RequestBody Contest contest) {
+        if (contestService.createNewContest(contest, getJWTUserId())) {
+            return new Result().setCode(ResultCode.OK);
+        }
+        return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("新建竞赛失败");
     }
 
 }
