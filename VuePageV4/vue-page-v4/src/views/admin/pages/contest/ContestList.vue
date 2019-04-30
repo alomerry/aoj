@@ -216,7 +216,7 @@
                                                 props: {
                                                     type: 'default',
                                                     size: 'large',
-                                                    to: '/admin/contest/' + params.row.contest.contest_id + 'announcement',
+                                                    to: '/admin/contest/' + params.row.contest.contest_id + '/announcement',
                                                 },
                                                 style: {
                                                     marginRight: '5px'
@@ -367,10 +367,10 @@
             //查询比赛集
             getContests: function () {
                 this.tableLoadingFlag = true;
-                console.log("刷新");
+                // console.log("刷新");
                 Api.getContestsByPagePer_PageAndCreator(this.page, this.per_page, this.$store.state.token).then(res => {
                     let result = res.data;
-                    console.log(result);
+                    // console.log(result);
                     if (result.code === 200) {
                         this.datas = result.data.contests;
                         this.selectData = this.datas;

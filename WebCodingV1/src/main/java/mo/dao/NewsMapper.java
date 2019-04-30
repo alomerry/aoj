@@ -52,6 +52,9 @@ public interface NewsMapper {
     @Select("select * from news limit #{start},#{per_page}")
     List<News> findNewsByPage(@Param("start") int start, @Param("per_page") int per_page);
 
+    @Select("select * from news where contest_id = #{contest_id} limit #{start},#{per_page}")
+    List<News> findNewsByContestIdAndPage(@Param("contest_id") int contest_id, @Param("start") int start, @Param("per_page") int per_page);
+
     /**
      * 修改公告
      *

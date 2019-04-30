@@ -109,4 +109,17 @@ public class AdminNewsControllerImpl extends AbstractController implements Admin
             }
         }
     }
+
+    @Override
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/contest/{contest_id}/news", method = RequestMethod.GET)
+    public Result getNews(@PathVariable Integer contest_id,
+                          @RequestParam(value = "page", defaultValue = "1") Integer page,
+                          @RequestParam(value = "per_page", defaultValue = "10") Integer per_page) {
+        JSONObject news = new JSONObject();
+        logger.info("查询竞赛Id为[{}]的公告集合", contest_id);
+        news.put("newsLink", newsService.findNewsByContestId(contest_id, page, per_page));
+        return new Result().setCode(ResultCode.OK).setData(news);
+    }
 }

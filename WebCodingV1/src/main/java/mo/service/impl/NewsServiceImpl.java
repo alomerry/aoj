@@ -47,6 +47,12 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    public List<NewsUserLink> findNewsByContestId(Integer contest_id, int page, int per_page) {
+        List<News> newsList = newsMapper.findNewsByContestIdAndPage(contest_id, (page - 1) * per_page, per_page);
+        return makeLinkUser(newsList);
+    }
+
+    @Override
     public boolean deleteNews(Integer news_id) {
         return newsMapper.deleteNewsByNewsId(news_id) > 0;
     }

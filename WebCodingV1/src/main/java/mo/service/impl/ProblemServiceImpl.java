@@ -206,8 +206,8 @@ public class ProblemServiceImpl implements ProblemService {
                 problemTags = new ArrayList<>(tags.size() + 3);
                 //遍历Tags 判断是否存在,不存在依次插入,存在的则查询tagId
                 for (Tag tag : tags) {
-                    int tagId = 0;
-                    if ((tagId = tagMapper.findTagIdByTagName(tag.getTagname())) != 0) {
+                    Integer tagId = 0;
+                    if ((tagId = tagMapper.findTagIdByTagName(tag.getTagname())) != null) {
                         problemTags.add(new ProblemTag(tagId, problem_id));
                     } else {
                         if (tagMapper.insertTag(tag.getTagname()) > 0) {
@@ -295,6 +295,11 @@ public class ProblemServiceImpl implements ProblemService {
     @Override
     public int findProblemTotalNumByDefunct(String defunct) {
         return problemMapper.findProblemTotalNumsByDefunct(defunct);
+    }
+
+    @Override
+    public boolean updateProblemDefunct(Integer problem_id, String defunct) {
+        return problemMapper.updateDefunctByProblemId(problem_id, defunct) > 0;
     }
 
     /**

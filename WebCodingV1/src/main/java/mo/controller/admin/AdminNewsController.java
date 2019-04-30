@@ -37,4 +37,14 @@ public interface AdminNewsController {
      * @return http状态码
      */
     Result deleteNews(Integer news_id);
+
+    /**
+     * 查询指定竞赛公告
+     *
+     * @param contest_id 竞赛Id
+     * @param page       页码
+     * @param per_page   每页数量
+     * @return
+     */
+    Result getNews(Integer contest_id, Integer page, Integer per_page);
 }

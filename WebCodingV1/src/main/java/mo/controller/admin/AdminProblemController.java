@@ -73,4 +73,13 @@ public interface AdminProblemController {
      * @return 题目
      */
     Result problem(Integer id);
+
+    /**
+     * 修改指定题目的禁用状态
+     *
+     * @param problem_id 题目
+     * @param state      状态
+     * @return
+     */
+    Result problemDisableState(Integer problem_id, boolean state);
 }

@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
 
+    //todo 不规范
     @Override
     public Result checkLogin(String username, String passwd, HttpSession session) {
         logger.info("salt : [{}]", SALT);
@@ -65,6 +66,9 @@ public class UserServiceImpl implements UserService {
                 tmp_user.setSession_id("");
                 res.put("user", tmp_user);
                 res.put("admin", privilege.getRightstr().startsWith("admin"));
+                if (privilege.getRightstr().startsWith("admin")) {
+                    res.put("level", privilege.getRightstr());
+                }
                 res.put("jwt", JWTUtils.makeToken(new UserLink(tmp_user, privilege), 300));
                 return new Result().setCode(ResultCode.OK).setData(res).setMessage("登录成功!");
             }
@@ -123,7 +127,7 @@ public class UserServiceImpl implements UserService {
         }
         oldUser.getUser().setNickname("".equals(user.get("nickname")) ? oldUser.getUser().getNickname() : user.get("nickname"));
         oldUser.getUser().setPasswd("".equals(user.get("passwd")) ? oldUser.getUser().getPasswd() : DigestUtils.md5DigestAsHex((user.get("passwd") + SALT).getBytes()));
-        oldUser.getUser().setEmail("".equals(user.get("email"))? oldUser.getUser().getEmail() : user.get("email"));
+        oldUser.getUser().setEmail("".equals(user.get("email")) ? oldUser.getUser().getEmail() : user.get("email"));
         oldUser.getUser().setDisabled(user.get("disabled") == null ? oldUser.getUser().isDisabled() : Boolean.valueOf(user.get("disabled")));
         logger.info("修改用户信息[{}]", (userMapper.updateUserNickNameEmailPasswdDisAbled(oldUser.getUser())) > 0 ? "成功" : "失败");
         return 1;

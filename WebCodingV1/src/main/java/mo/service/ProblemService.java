@@ -161,4 +161,13 @@ public interface ProblemService {
      * @return
      */
     int findProblemTotalNumByDefunct(String defunct);
+
+    /**
+     * 更新题目公开级别
+     *
+     * @param problem_id 题目Id
+     * @param defunct    公开级别
+     * @return
+     */
+    boolean updateProblemDefunct(Integer problem_id, String defunct);
 }

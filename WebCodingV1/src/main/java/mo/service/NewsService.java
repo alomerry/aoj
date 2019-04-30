@@ -43,6 +43,16 @@ public interface NewsService {
     List<NewsUserLink> findNews(int page, int per_page);
 
     /**
+     * 根据竞赛Id查询公告
+     *
+     * @param contest_id 竞赛Id
+     * @param page       页码
+     * @param per_page   每页数量
+     * @return
+     */
+    List<NewsUserLink> findNewsByContestId(Integer contest_id, int page, int per_page);
+
+    /**
      * 删除指定公告
      *
      * @param news_id 公告Id

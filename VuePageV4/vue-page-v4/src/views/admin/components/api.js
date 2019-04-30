@@ -217,7 +217,7 @@ export default {
     },
 
     /**
-     * 查询新闻
+     * 查询公告
      * @param page 页码
      * @param per_page 每页数量
      * @param jwt 令牌
@@ -225,6 +225,24 @@ export default {
     findNews(page, per_page, jwt) {
         return axios({
             url: "/api/api-oj/admin/news?page=" + page + "&per_page=" + per_page,
+            method: "get",
+            headers: {
+                "jwt": jwt,
+            }
+        })
+    },
+
+    /**
+     * 查询指定竞赛的公告
+     * @param contest_id 竞赛Id
+     * @param page 页码
+     * @param per_page 每页数量
+     * @param jwt 令牌
+     * @returns {AxiosPromise}
+     */
+    findContestNews(contest_id, page, per_page, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/contest/" + contest_id + "/news?page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,
@@ -327,5 +345,22 @@ export default {
                 "Content-Type": "application/json;charset-UTF-8",
             }
         });
-    }
+    },
+
+    /**
+     * 修改题目禁用状态
+     * @param problem_id 题目
+     * @param state 题目状态
+     * @param jwt 令牌
+     * @returns {AxiosPromise}
+     */
+    disableProblem(problem_id, state, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/problem/" + problem_id + "/state?state=" + state,
+            method: "put",
+            headers: {
+                "jwt": jwt,
+            }
+        });
+    },
 }

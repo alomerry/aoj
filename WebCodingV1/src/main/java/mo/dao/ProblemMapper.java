@@ -158,4 +158,14 @@ public interface ProblemMapper {
      */
     @Select("select count(problem_id) from problems where defunct in ${defunct}")
     Integer findProblemTotalNumsByDefunct(@Param("defunct") String defunct);
+
+    /**
+     * 更新指定题目公开级别
+     *
+     * @param problem_id 题目Id
+     * @param defunct    公开级别
+     * @return
+     */
+    @Update("update problems set defunct =#{defunct} where problem_id = #{problem_id}")
+    int updateDefunctByProblemId(@Param("problem_id") Integer problem_id, @Param("defunct") String defunct);
 }

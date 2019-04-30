@@ -53,6 +53,7 @@
         name: "announcement",
         data() {
             return {
+                method: this.$route.params.contest_id === null ? null : "contest",
                 page: 1,
                 per_page: 10,
                 modal_falg: false,
@@ -210,7 +211,8 @@
                     create_at: null,//创造时间
                     contest_id: null,//所属竞赛号
                     defunct: null,//公开状态
-                }
+                },
+                contest_id: this.$route.params.contest_id,
             }
         },
         components: {
@@ -279,36 +281,53 @@
             },
             getNews() {
                 this.anno_loading_flag = true;
-                Api.findNews(this.page, this.per_page, this.$store.state.token).then(res => {
-                    /*this.anno_data = [
-                        {
-                            news: {
-                                news_id: 0,//新闻Id
-                                title: "dsafdas",//新闻标题
-                                content: "asdfsd",//新闻内容
-                                update_time: "2016-10-03 07:08:16",//更新时间
-                                create_at: "2016-10-03 07:08:16",//创造时间
-                                contest_id: 123,//所属竞赛号
-                                defunct: 0,//公开状态
-                            },
-                            user: {
-                                username: "ad",
-                                nickname: "ad",
-                            }
+                if (this.contest_id != null) {
+                    //查询指定竞赛的公告
+                    Api.findContestNews(this.contest_id, this.page, this.per_page, this.$store.state.token).then(res => {
+                        let result = res.data;
+                        // console.log(result);
+                        if (result.code === 200) {
+                            this.anno_data = result.data.newsLink;
+                        } else {
+                            this.$Message.error(result.message);
                         }
-                    ];*/
-                    let result = res.data;
-                    // console.log(result);
-                    if (result.code === 200) {
-                        this.anno_data = result.data.newsLink;
-                    } else {
-                        this.$Message.error(result.message);
-                    }
-                    this.anno_loading_flag = false;
-                }).catch(res => {
-                    console.log(res);
-                    this.anno_loading_flag = false;
-                });
+                        this.anno_loading_flag = false;
+                    }).catch(res => {
+                        console.log(res);
+                        this.anno_loading_flag = false;
+                    });
+                } else {
+                    Api.findNews(this.page, this.per_page, this.$store.state.token).then(res => {
+                        /*this.anno_data = [
+                            {
+                                news: {
+                                    news_id: 0,//新闻Id
+                                    title: "dsafdas",//新闻标题
+                                    content: "asdfsd",//新闻内容
+                                    update_time: "2016-10-03 07:08:16",//更新时间
+                                    create_at: "2016-10-03 07:08:16",//创造时间
+                                    contest_id: 123,//所属竞赛号
+                                    defunct: 0,//公开状态
+                                },
+                                user: {
+                                    username: "ad",
+                                    nickname: "ad",
+                                }
+                            }
+                        ];*/
+                        let result = res.data;
+                        // console.log(result);
+                        if (result.code === 200) {
+                            this.anno_data = result.data.newsLink;
+                        } else {
+                            this.$Message.error(result.message);
+                        }
+                        this.anno_loading_flag = false;
+                    }).catch(res => {
+                        console.log(res);
+                        this.anno_loading_flag = false;
+                    });
+                }
             },
             //更新表格
             updateDatas(news_id, news) {
@@ -323,7 +342,7 @@
                     this.anno_data.splice(unUpdatedItemIndex, 1);
                 }
             },
-        }
+        },
     }
 </script>
 
