@@ -62,7 +62,7 @@
                                                     placeholder="Select date" :options="endTimeLimit"></DatePicker>
                                     </Col>
                                     <Col span="3" offset="1">
-                                        <i-switch size="default" v-model="formContest.defunct">
+                                        <i-switch size="default" v-model="formContest.access">
                                             <span slot="open">️</span>
                                             <span slot="close"></span>
                                         </i-switch>
@@ -115,7 +115,7 @@
                     "max": 0,
                     "now": 0,
                     "organizer": null,
-                    "privates": 0,
+                    "privates": 1,//默认公开，新建后才能修改
                     "start_at": null,
                     "title": null,
                     "user_id": null,
@@ -185,7 +185,7 @@
             },
             //新建竞赛
             createContest() {
-                if (this.formContest.max === null || this.formContest.max === "" || this.formContest.max ===0) {
+                if (this.formContest.max === null || this.formContest.max === "" || this.formContest.max === 0) {
                     this.$Message.error("Please input max number!");
                     return;
                 } else if (this.formContest.title === null || this.formContest.title === "") {
@@ -202,15 +202,21 @@
                     return;
                 }
                 this.loadingStatus = true;
+                this.$Loading.start();
                 Api.createNewContest(this.formContest, this.$store.state.token).then(res => {
                     let result = res.data;
                     if (result.code === 200) {
                         this.$Message.success("add contest successed!");
+                        this.$Loading.finish();
                     } else {
                         this.$Message.error(result.message);
+                        this.$Loading.error();
                     }
+                    this.loadingStatus = false;
                 }).catch(res => {
                     console.log(res);
+                    this.$Loading.error();
+                    this.loadingStatus = false;
                 });
             }
         },

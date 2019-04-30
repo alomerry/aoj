@@ -119,6 +119,7 @@ public class AdminContestControllerImpl extends AbstractController implements Ad
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
     @RequestMapping(value = "/admin/contest", method = RequestMethod.POST)
     public Result contest(@RequestBody Contest contest) {
+        logger.info("创建竞赛[{}]", contest);
         if (contestService.createNewContest(contest, getJWTUserId())) {
             return new Result().setCode(ResultCode.OK);
         }

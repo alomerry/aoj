@@ -3,12 +3,14 @@ package mo.entity.po;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Setter
 @Getter
+@ToString
 public class Contest {
     //竞赛Id
     private Integer contest_id;
@@ -18,7 +20,7 @@ public class Contest {
     private Timestamp start_at;
     //结束时间(年月日时分)
     private Timestamp end_at;
-    //公开/内部（0/1）
+    //内部/公开（0/1）
     private Integer privates;
     //主办方
     private String organizer;
@@ -34,16 +36,5 @@ public class Contest {
     private Integer max;
     //当前人数
     private Integer now;
-
-    @Override
-    public String toString() {
-        return "contest{" +
-                "contest_id=" + contest_id +
-                ", title='" + title + '\'' +
-                ", privates=" + privates +
-                ", access=" + access +
-//                ", status=" + status +
-                '}';
-    }
 
 }

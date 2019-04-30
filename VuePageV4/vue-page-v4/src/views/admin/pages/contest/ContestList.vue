@@ -90,10 +90,10 @@
                         render: (h, params) => {
                             return h('Badge', {
                                 props: {
-                                    type: params.row.contest.access === 1 ? "primary" :
+                                    type: params.row.contest.access ? "primary" :
                                         (params.row.contest.start_at <= this.nowTime) && (this.nowTime <= params.row.contest.end_at) ? "success" :
                                             (this.nowTime > params.row.contest.end_at) ? "error" : "warning",
-                                    text: params.row.contest.access === 1 ? "可报名" :
+                                    text: params.row.contest.access ? "可报名" :
                                         (params.row.contest.start_at <= this.nowTime) && (this.nowTime <= params.row.contest.end_at) ? "进行中" :
                                             (this.nowTime > params.row.contest.end_at) ? "已结束" : "待开始",
                                     offset: [10, -15]
@@ -216,6 +216,7 @@
                                                 props: {
                                                     type: 'default',
                                                     size: 'large',
+                                                    to: '/admin/contest/' + params.row.contest.contest_id + 'announcement',
                                                 },
                                                 style: {
                                                     marginRight: '5px'

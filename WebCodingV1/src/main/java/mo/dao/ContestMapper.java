@@ -74,7 +74,7 @@ public interface ContestMapper {
      * @param user_id 创建者Id
      * @return
      */
-    @Insert("insert into contest (title,access,user_id, start_at,end_at,describes,max) values " +
-            "(#{contest.title},#{contest.access},#{user_id},#{contest.start_at},#{contest.end_at},#{contest.describes},#{contest.max}) ")
+    @Insert("insert into contest (title,access,user_id, start_at,end_at,describes,max,organizer) values " +
+            "(#{contest.title},#{contest.access},#{user_id},#{contest.start_at},#{contest.end_at},#{contest.describes},#{contest.max},#{contest.organizer}) ")
     int insertNewContest(@Param("contest") Contest contest, @Param("user_id") Integer user_id);
 }
