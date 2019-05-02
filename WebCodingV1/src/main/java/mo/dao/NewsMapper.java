@@ -52,6 +52,14 @@ public interface NewsMapper {
     @Select("select * from news limit #{start},#{per_page}")
     List<News> findNewsByPage(@Param("start") int start, @Param("per_page") int per_page);
 
+    /**
+     * 查询指定竞赛的公告
+     *
+     * @param contest_id 竞赛Id
+     * @param start      起始
+     * @param per_page   每页数量
+     * @return
+     */
     @Select("select * from news where contest_id = #{contest_id} limit #{start},#{per_page}")
     List<News> findNewsByContestIdAndPage(@Param("contest_id") int contest_id, @Param("start") int start, @Param("per_page") int per_page);
 
@@ -92,4 +100,14 @@ public interface NewsMapper {
      */
     @Select("select * from news where defunct = #{defunct} limit #{start},#{per_page}")
     List<News> findNewsByPageAndDefunct(@Param("defunct") String defunct, @Param("start") int start, @Param("per_page") int per_page);
+
+    /**
+     * 更新公告的公开级别
+     *
+     * @param news_id 公告Id
+     * @param state   公开级别
+     * @return
+     */
+    @Update("update news set defunct =#{state} where news_id = #{news_id}")
+    int updateNewsDefunct(@Param("news_id") int news_id, @Param("state") String state);
 }

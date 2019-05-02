@@ -176,19 +176,33 @@
                                     props: {
                                         size: 'default',
                                         value: params.row.problem.defunct !== '0' ? true : false,
-                                        disabled: this.isLevel("Topic_adder") ? false : (params.row.created_by.user_id) === this.$store.getters.localUserId ? false : true,
+                                        disabled: this.isLevel("Topic_adder") ? false : (params.row.created_by.user_id) === this.$store.getters.localUserId ? params.row.problem.defunct !== '0' ? true : false : true,
                                     },
                                     on: {
                                         "on-change": (state) => {
                                             // console.log(this);
-
-                                            Api.disableProblem(params.row.problem.problem_id, state, this.$store.state.token).then(res => {
+                                            let val = "";
+                                            if (this.isLevel("Topic_adder") && ((params.row.created_by.user_id) !== this.$store.getters.localUserId)) {
+                                                if (state) {
+                                                    val = "2";//隐私
+                                                } else {
+                                                    val = "0";//禁用
+                                                }
+                                            } else {
+                                                if (state) {
+                                                    val = "1";//公开
+                                                } else {
+                                                    val = "2";//隐私
+                                                }
+                                            }
+                                            let old = params.row.problem.defunct;
+                                            Api.disableProblem(params.row.problem.problem_id, val, this.$store.state.token).then(res => {
                                                 let result = res.data;
                                                 if (result.code == 200) {
                                                     this.$Message.success("Change Successed!");
-                                                    params.row.problem.defunct = state == true ? '1' : '0';
+                                                    params.row.problem.defunct = val;
                                                 } else {
-                                                    params.row.problem.defunct = state == true ? '0' : '1';
+                                                    params.row.problem.defunct = old;
                                                     this.$Message.error("Change Failed!");
                                                 }
                                             }).catch(res => {

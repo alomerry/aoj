@@ -67,6 +67,11 @@ public class NewsServiceImpl implements NewsService {
         return makeLinkUser(newsMapper.findNewsByPageAndDefunct(defunct, (page - 1) * per_page, per_page));
     }
 
+    @Override
+    public boolean updateNewsDefunct(int newsId, String state) {
+        return newsMapper.updateNewsDefunct(newsId, state) > 0;
+    }
+
     private List<NewsUserLink> makeLinkUser(List<News> newsList) {
         List<NewsUserLink> newsUserLinks = new ArrayList<>(newsList.size() + 3);
         for (News news : newsList) {

@@ -106,6 +106,31 @@
                             return h("i-switch", {
                                 props: {
                                     value: params.row.news.defunct === "1" ? true : false,
+                                    disabled: this.$store.getters.isLevel("Announcement_manager") ? false : (params.row.user.user_id) === this.$store.getters.localUserId ? false : true,
+                                },
+                                on: {
+                                    "on-change": (state) => {
+                                        // console.log(this);
+                                        let val = "";
+                                        if (state) {
+                                            val = "1";
+                                        } else {
+                                            val = "0";
+                                        }
+                                        let old = params.row.news.defunct;
+                                        Api.disableNews(params.row.news.news_id, val, this.$store.state.token).then(res => {
+                                            let result = res.data;
+                                            if (result.code == 200) {
+                                                this.$Message.success("Change Successed!");
+                                                params.row.news.defunct = state;
+                                            } else {
+                                                params.row.news.defunct = old;
+                                                this.$Message.error("Change Failed!");
+                                            }
+                                        }).catch(res => {
+                                            console.log(res);
+                                        });
+                                    }
                                 }
                             });
                         }

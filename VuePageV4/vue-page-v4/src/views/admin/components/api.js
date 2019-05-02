@@ -363,4 +363,20 @@ export default {
             }
         });
     },
+    /**
+     * 修改公告禁用状态
+     * @param news_id 公告
+     * @param state 题目状态
+     * @param jwt 令牌
+     * @returns {AxiosPromise}
+     */
+    disableNews(news_id, state, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/news/" + news_id + "/state?state=" + state,
+            method: "put",
+            headers: {
+                "jwt": jwt,
+            }
+        });
+    },
 }

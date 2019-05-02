@@ -122,4 +122,22 @@ public class AdminNewsControllerImpl extends AbstractController implements Admin
         news.put("newsLink", newsService.findNewsByContestId(contest_id, page, per_page));
         return new Result().setCode(ResultCode.OK).setData(news);
     }
+
+    @Override
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/news/{news_id}/state", method = RequestMethod.PUT)
+    public Result newsDisableState(@PathVariable Integer news_id, @RequestParam("state") String state) {
+        Privilege privilege = privilegeService.findPrivilegeByUserId(getJWTUserId());
+        News news = newsService.findNews(news_id);
+        if (news.getUser_id() != getJWTUserId() && !PermissionManager.isLegalAdmin(Permission.Announcement_manager, privilege.getRightstr())) {
+            return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足！");
+        } else {
+            if (newsService.updateNewsDefunct(news_id, state)) {
+                return new Result().setCode(ResultCode.OK).setMessage("修改成功！");
+            } else {
+                return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("修改失败！");
+            }
+        }
+    }
 }

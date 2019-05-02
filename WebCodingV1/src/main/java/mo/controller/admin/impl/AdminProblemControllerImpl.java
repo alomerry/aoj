@@ -296,13 +296,13 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
     @ResponseBody
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
     @RequestMapping(value = "/admin/problem/{problem_id}/state", method = RequestMethod.PUT)
-    public Result problemDisableState(@PathVariable Integer problem_id, @RequestParam("state") boolean state) {
+    public Result problemDisableState(@PathVariable Integer problem_id, @RequestParam("state") String state) {
         Privilege privilege = privilegeService.findPrivilegeByUserId(getJWTUserId());
         Problem problem = problemService.findProblemByProblemId(problem_id);
-        if (problem.getCreate_by() != getJWTUserId() && PermissionManager.isLegalAdmin(Permission.Topic_adder, privilege.getRightstr())) {
+        if (problem.getCreate_by() != getJWTUserId() && !PermissionManager.isLegalAdmin(Permission.Topic_adder, privilege.getRightstr())) {
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足！");
         } else {
-            if (problemService.updateProblemDefunct(problem_id, state ? "1" : "0")) {
+            if (problemService.updateProblemDefunct(problem_id, state)) {
                 return new Result().setCode(ResultCode.OK).setMessage("修改成功！");
             } else {
                 return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("修改失败！");

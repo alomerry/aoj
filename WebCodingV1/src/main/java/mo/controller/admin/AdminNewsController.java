@@ -47,4 +47,13 @@ public interface AdminNewsController {
      * @return
      */
     Result getNews(Integer contest_id, Integer page, Integer per_page);
+
+    /**
+     * 更新公告公开状态
+     *
+     * @param news_id 公告Id
+     * @param state   公开状态
+     * @return
+     */
+    Result newsDisableState(Integer news_id, String state);
 }

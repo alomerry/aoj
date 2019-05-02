@@ -81,5 +81,5 @@ public interface AdminProblemController {
      * @param state      状态
      * @return
      */
-    Result problemDisableState(Integer problem_id, boolean state);
+    Result problemDisableState(Integer problem_id, String state);
 }
