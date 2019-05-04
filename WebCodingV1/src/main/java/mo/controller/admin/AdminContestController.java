@@ -39,4 +39,12 @@ public interface AdminContestController {
      * @return
      */
     Result contest(Contest contest);
+
+    /**
+     * 查询指定竞赛信息
+     *
+     * @param contest_id 竞赛号
+     * @return
+     */
+    Result contest(Integer contest_id);
 }

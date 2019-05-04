@@ -92,4 +92,12 @@ public interface ContestService {
      * @return
      */
     boolean createNewContest(Contest contest, Integer creatorId);
+
+    /**
+     * 根据竞赛Id查询竞赛
+     *
+     * @param contest_id 竞赛Id
+     * @return 竞赛实体
+     */
+    Contest findContestByContestId(Integer contest_id);
 }

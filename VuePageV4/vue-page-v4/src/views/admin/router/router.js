@@ -48,14 +48,7 @@ const routes = [
         },
         component: resolve => require(['../pages/announcement/announcement'], resolve),
     },
-    {
-        path: "/admin/contest/:contest_id/announcement",
-        name: 'Announcement',
-        meta: {
-            title: 'Online Judge'
-        },
-        component: resolve => require(['../pages/announcement/announcement'], resolve),
-    },
+
     {
         path: "/admin/problem/:method/:problem_id",
         name: 'ProblemEdit',
@@ -72,7 +65,17 @@ const routes = [
         },
         component: resolve => require(['../pages/problem/ProblemEdit'], resolve),
     },
-
+    /**
+     * Contest
+     */
+    {
+        path: "/admin/contest/:contest_id/announcement",
+        name: 'Announcement',
+        meta: {
+            title: 'Online Judge'
+        },
+        component: resolve => require(['../pages/announcement/announcement'], resolve),
+    },
     {
         path: "/admin/contest/:method",
         name: 'ContestEdit',
@@ -97,6 +100,17 @@ const routes = [
         },
         component: resolve => require(['../pages/problem/ProblemList'], resolve),
     },
+    {
+        path: "/admin/contest/edit/:contest_id",
+        name: 'Contest-Edit',
+        meta: {
+            title: 'Contest Edit',
+        },
+        component: resolve => require(['../pages/contest/ContestEdit'], resolve),
+    },
+    /**
+     * Home
+     */
     {
         path: "/admin/",
         redirect: '/admin/home'

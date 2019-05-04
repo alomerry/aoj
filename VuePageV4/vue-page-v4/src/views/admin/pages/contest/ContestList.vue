@@ -139,6 +139,7 @@
                                                 props: {
                                                     type: 'default',
                                                     size: 'large',
+                                                    to: '/admin/contest/edit/' + params.row.contest.contest_id,
                                                 },
                                                 style: {
                                                     marginRight: '5px'

@@ -77,4 +77,13 @@ public interface ContestMapper {
     @Insert("insert into contest (title,access,user_id, start_at,end_at,describes,max,organizer) values " +
             "(#{contest.title},#{contest.access},#{user_id},#{contest.start_at},#{contest.end_at},#{contest.describes},#{contest.max},#{contest.organizer}) ")
     int insertNewContest(@Param("contest") Contest contest, @Param("user_id") Integer user_id);
+
+    /**
+     * 根据竞赛Id查询竞赛
+     *
+     * @param contest_id 竞赛Id
+     * @return 竞赛实体
+     */
+    @Select("select * from contest where contest_id = #{contest_id}")
+    Contest findContestByContestId(@Param("contest_id") int contest_id);
 }

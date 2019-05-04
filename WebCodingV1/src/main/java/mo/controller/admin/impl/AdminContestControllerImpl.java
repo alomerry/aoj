@@ -3,6 +3,8 @@ package mo.controller.admin.impl;
 import com.alibaba.fastjson.JSONObject;
 import mo.controller.AbstractController;
 import mo.controller.admin.AdminContestController;
+import mo.core.Permission;
+import mo.core.PermissionManager;
 import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.Contest;
@@ -124,6 +126,19 @@ public class AdminContestControllerImpl extends AbstractController implements Ad
             return new Result().setCode(ResultCode.OK);
         }
         return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("新建竞赛失败");
+    }
+
+    @Override
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/contest/{contest_id}", method = RequestMethod.GET)
+    public Result contest(@PathVariable Integer contest_id) {
+        Privilege privilege = privilegeService.findPrivilegeByUserId(getJWTUserId());
+        if(!PermissionManager.isLegalAdmin(Permission.Contest_organizer,privilege.getRightstr())){
+            //查询创建者
+            contestService.
+        }
+        return null;
     }
 
 }

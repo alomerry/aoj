@@ -32,7 +32,14 @@
                     <Time :time="news_item.news.update_time" type="datetime"/>
                     &nbsp;&nbsp;发布者:<span v-text="news_item.user.username"></span>
                 </div>
-                <div id="news-item-content" v-html="news_item.news.content"></div>
+                <div class="simditor">
+                    <div class="simditor-markdown">
+                        <div class="simditor-body new-content">
+                            <div id="news-item-content" v-html="news_item.news.content"></div>
+                        
+                        </div>
+                    </div>
+                </div>
                 <div style="text-align: right;">
                     最后编辑于
                     <Time :time="news_item.news.update_time" type="datetime"/>
@@ -48,6 +55,8 @@
 </template>
 <script>
     import Api from "../components/api"
+    import 'tar-simditor/styles/simditor.css'
+    import 'tar-simditor-markdown/styles/simditor-markdown.css'
 
     export default {
         name: 'Home',
@@ -208,5 +217,11 @@
     div.item-name {
         text-align: left;
         margin-left: 20px;
+    }
+    
+    div.new-content {
+        text-align: left;
+        /*padding: 15px 50px 0 50px;*/
+        background: #f3f3f3;
     }
 </style>

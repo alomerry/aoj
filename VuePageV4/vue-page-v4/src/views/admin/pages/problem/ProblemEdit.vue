@@ -505,7 +505,7 @@
         },
         beforeRouteEnter(to, from, next) {
             if (to.path === "/admin/problem/create") {
-                console.log("reload");
+                // console.log("reload");
                 next(vm => {
                     vm.method = "Add Problem";
                     vm.initFormDataWithProblemAndTag(null, null);

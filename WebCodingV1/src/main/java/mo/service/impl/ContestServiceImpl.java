@@ -117,6 +117,11 @@ public class ContestServiceImpl implements ContestService {
         return contestMapper.insertNewContest(contest, creatorId) > 0;
     }
 
+    @Override
+    public Contest findContestByContestId(Integer contest_id) {
+        return contestMapper.findContestByContestId(contest_id);
+    }
+
     /**
      * 将指定公开级别的竞赛集属性整合成string
      *

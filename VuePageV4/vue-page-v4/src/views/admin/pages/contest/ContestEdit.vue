@@ -107,6 +107,7 @@
                 file_testCase: null,
                 loadingStatus: false,//上传状态
                 content: '',
+                contest_id: this.$route.params.contest_id,
                 formContest: {
                     "access": false,
                     "contest_id": null,
@@ -136,18 +137,11 @@
             Simditor,
         },
         mounted() {
-            console.log("mounted:$route.params:" + this.$route.params.method);
-            switch (this.$route.params.method) {
-                case "edit": {
-                    //search,init formContest's problem and tag
-                    this.method = "Edit Contest";
-
-                    break;
-                }
-                case "create": {
-                    this.method = "Add Contest";
-                    break;
-                }
+            if (this.$route.params.contest_id != null) {
+                this.method = "Edit Contest";
+                
+            } else {
+                this.method = "Add Contest";
             }
         },
         methods: {
@@ -223,14 +217,24 @@
         created() {
         },
         beforeRouteEnter(to, from, next) {
-            if (to.path === "/admin/contest/create") {
-                console.log("reload");
+            if (to.params.contest_id == null) {
                 next(vm => {
-                    vm.method = "Add Contest";
+                    vm.formContest = {
+                        "access": false,
+                        "contest_id": null,
+                        "describes": null,
+                        "end_at": null,
+                        "max": 0,
+                        "now": 0,
+                        "organizer": null,
+                        "privates": 1,//默认公开，新建后才能修改
+                        "start_at": null,
+                        "title": null,
+                        "user_id": null,
+                    }
                 });
-            } else {
-                next();
             }
+            next();
         },
     }
 </script>
