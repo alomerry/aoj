@@ -139,12 +139,32 @@
         mounted() {
             if (this.$route.params.contest_id != null) {
                 this.method = "Edit Contest";
-                
+                Api.getContestByContestId(this.$route.params.contest_id, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    // console.log(result);
+                    if (result.code === 200) {
+                        this.formContest = result.data.contest;
+                        this.formContest.start_at = this.formatLongToDate(this.formContest.start_at);
+                        this.formContest.end_at = this.formatLongToDate(this.formContest.end_at);
+                    } else {
+                        this.$Message.error(result.message);
+                    }
+                }).catch(res => {
+                    console.log(res);
+                });
+
             } else {
                 this.method = "Add Contest";
             }
         },
         methods: {
+            //long转date
+            formatLongToDate(longDataTime) {
+                let date = new Date();
+                date.setTime(longDataTime);
+                return date;
+            },
+            //标准化date转为 yyyy-mm-dd hh:mm:ss
             formatDate(date) {
                 const y = date.getFullYear();
 
@@ -166,16 +186,39 @@
             },
             //save
             save() {
-                this.createContest();
-            },
-            //初始化显示
-            //TODO 修改
-            initFormDataWithProblemAndTag(problem, tag) {
-                if (problem == null) {
-                    this.formContest = {}
+                if (this.contest_id == null) {
+                    this.createContest();
                 } else {
-                    this.formContest = {}
+                    this.updateContest();
                 }
+            },
+            //更新竞赛
+            updateContest() {
+                if (this.formContest.max === null || this.formContest.max === "" || this.formContest.max === 0) {
+                    this.$Message.error("Please input max number!");
+                    return;
+                } else if (this.formContest.title === null || this.formContest.title === "") {
+                    this.$Message.error("Please input title!");
+                    return;
+                } else if (this.formContest.describes === null || this.formContest.describes === "") {
+                    this.$Message.error("Please input describe!");
+                    return;
+                } else if (this.formContest.end_at === null || this.formContest.start_at === null) {
+                    this.$Message.error("Please input start time or end time!");
+                    return;
+                } else if (this.formContest.end_at <= this.formContest.start_at) {
+                    this.$Message.error("End time can early than start time!");
+                    return;
+                }
+                this.loadingStatus = true;
+                this.$Loading.start();
+                Api.updateContest(this.formContest, this.contest_id, this.$store.state.token).then(res => {
+                
+                }).catch(res => {
+                    console.log(res);
+                    this.$Loading.error();
+                });
+
             },
             //新建竞赛
             createContest() {

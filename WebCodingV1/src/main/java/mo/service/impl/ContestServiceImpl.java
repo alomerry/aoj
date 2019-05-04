@@ -122,6 +122,11 @@ public class ContestServiceImpl implements ContestService {
         return contestMapper.findContestByContestId(contest_id);
     }
 
+    @Override
+    public boolean updateContestByContestId(Contest contest, Integer contest_id) {
+        return contestMapper.updateContestByContestId(contest, contest_id) > 0;
+    }
+
     /**
      * 将指定公开级别的竞赛集属性整合成string
      *

@@ -1,10 +1,7 @@
 package mo.dao;
 
 import mo.entity.po.Contest;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -86,4 +83,15 @@ public interface ContestMapper {
      */
     @Select("select * from contest where contest_id = #{contest_id}")
     Contest findContestByContestId(@Param("contest_id") int contest_id);
+
+    /**
+     * 更新竞赛
+     *
+     * @param contest    竞赛信息
+     * @param contest_id 竞赛Id
+     * @return
+     */
+    @Update("update contest set title=#{contest.title}, describes=#{contest.describes},start_at=#{contest.start_at},end_at=#{contest.end_at}," +
+            "privates=#{contest.privates},organizer=#{contest.organizer},max=#{contest.max} where contest_id = #{contest_id}")
+    int updateContestByContestId(@Param("contest") Contest contest, @Param("contest_id") Integer contest_id);
 }

@@ -47,4 +47,13 @@ public interface AdminContestController {
      * @return
      */
     Result contest(Integer contest_id);
+
+    /**
+     * 更新竞赛
+     *
+     * @param contest    竞赛实体
+     * @param contest_id 竞赛Id
+     * @return
+     */
+    Result contest(Contest contest, Integer contest_id);
 }

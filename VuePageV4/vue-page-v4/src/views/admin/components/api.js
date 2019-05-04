@@ -40,6 +40,21 @@ export default {
     },
 
     /**
+     * 根据竞赛Id查询竞赛
+     * @param contest_id 竞赛Id
+     * @param jwt 令牌
+     */
+    getContestByContestId(contest_id, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/contest/" + contest_id,
+            method: "get",
+            headers: {
+                "jwt": jwt,
+            }
+        })
+    },
+
+    /**
      * 查询题目
      * @param page 页码
      * @param per_page 每页数量
@@ -345,6 +360,25 @@ export default {
                 "Content-Type": "application/json;charset-UTF-8",
             }
         });
+    },
+
+    /**
+     * 更新竞赛
+     * @param contest 竞赛实体
+     * @param contest_id 竞赛Id
+     * @param jwt 令牌
+     */
+    updateContest(contest, contest_id, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/contest/" + contest_id,
+            data: JSON.stringify(contest),
+            method: "put",
+            dataType: "json",
+            headers: {
+                "jwt": jwt,
+                "Content-Type": "application/json;charset-UTF-8",
+            }
+        })
     },
 
     /**

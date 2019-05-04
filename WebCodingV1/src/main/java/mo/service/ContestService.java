@@ -100,4 +100,13 @@ public interface ContestService {
      * @return 竞赛实体
      */
     Contest findContestByContestId(Integer contest_id);
+
+    /**
+     * 更新竞赛
+     *
+     * @param contest    竞赛
+     * @param contest_id 竞赛Id
+     * @return
+     */
+    boolean updateContestByContestId(Contest contest, Integer contest_id);
 }

@@ -134,11 +134,33 @@ public class AdminContestControllerImpl extends AbstractController implements Ad
     @RequestMapping(value = "/admin/contest/{contest_id}", method = RequestMethod.GET)
     public Result contest(@PathVariable Integer contest_id) {
         Privilege privilege = privilegeService.findPrivilegeByUserId(getJWTUserId());
-        if(!PermissionManager.isLegalAdmin(Permission.Contest_organizer,privilege.getRightstr())){
-            //查询创建者
-            contestService.
+        Contest contest = contestService.findContestByContestId(contest_id);
+        if (contest == null) {
+            return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("竞赛不存在!");
+        } else if (getJWTUserId() != contest.getUser_id() && !PermissionManager.isLegalAdmin(Permission.Contest_organizer, privilege.getRightstr())) {
+            return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足!");
+        } else {
+            JSONObject res = new JSONObject();
+            res.put("contest", contest);
+            return new Result().setCode(ResultCode.OK).setData(res);
         }
-        return null;
     }
 
+    @Override
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/contest/{contest_id}", method = RequestMethod.PUT)
+    public Result contest(@RequestBody Contest contest, @PathVariable Integer contest_id) {
+        Privilege privilege = privilegeService.findPrivilegeByUserId(getJWTUserId());
+        Integer creator = contestService.findContestByContestId(contest_id).getUser_id();
+        if (getJWTUserId() != creator && !PermissionManager.isLegalAdmin(Permission.Contest_organizer, privilege.getRightstr())) {
+            return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足!");
+        } else {
+            if (contestService.updateContestByContestId(contest, contest_id)) {
+                return new Result().setCode(ResultCode.OK);
+            } else {
+                return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("更新失败!");
+            }
+        }
+    }
 }
