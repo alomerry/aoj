@@ -254,6 +254,9 @@
                         content: this.formAnno.content,//新闻内容
                         defunct: this.formAnno.defunct ? "1" : "0",//公开状态
                     };
+                    if (this.contest_id != null) {
+                        news.contest_id = this.contest_id;
+                    }
                     Api.createNews(news, this.$store.state.token).then(res => {
                         let result = res.data;
                         if (result.code === 200) {
@@ -273,7 +276,7 @@
                         title: this.formAnno.title,//新闻标题
                         content: this.formAnno.content,//新闻内容
                         defunct: this.formAnno.defunct ? "1" : "0",//公开状态
-                    }
+                    };
                     Api.updateNews(news, this.$store.state.token).then(res => {
                         let result = res.data;
                         if (result.code === 200) {

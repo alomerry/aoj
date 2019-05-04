@@ -27,8 +27,8 @@ public interface NewsMapper {
      * @param user_id 创建者Id
      * @return 影响行数
      */
-    @Insert("insert into news (user_id,title,content,update_time,create_at,defunct) values " +
-            "(#{user_id},#{news.title},#{news.content},#{news.update_time},#{news.create_at},#{news.defunct})")
+    @Insert("insert into news (user_id,title,content,update_time,create_at,defunct,contest_id) values " +
+            "(#{user_id},#{news.title},#{news.content},#{news.update_time},#{news.create_at},#{news.defunct},#{news.contest_id})")
     int insertNews(@Param("news") News news, @Param("user_id") Integer user_id);
 
     /**
