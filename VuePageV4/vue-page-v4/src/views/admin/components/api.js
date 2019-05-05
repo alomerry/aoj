@@ -457,5 +457,22 @@ export default {
                 "jwt": jwt,
             }
         });
+    },
+
+    /**
+     * 更新指定申请
+     * @param id 申请Id
+     * @param status 状态
+     * @param jwt 令牌
+     * @returns {AxiosPromise}
+     */
+    updateContestApplyStatus(id, status, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/contest_apply/" + id + "?status=" + status,
+            method: "put",
+            headers: {
+                "jwt": jwt,
+            }
+        })
     }
 }

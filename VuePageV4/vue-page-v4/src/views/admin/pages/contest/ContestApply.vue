@@ -73,7 +73,7 @@
                                     status: "active",
                                     "hide-info": false,
                                     "success-percent": 0,
-                                    percent: (params.row.contest.now / params.row.contest.max),
+                                    percent: (params.row.contest.now / params.row.contest.max) * 100,
                                 }
                             })
                         }
@@ -121,6 +121,14 @@
                         align: 'center',
                     },
                     {
+                        title: "userId",
+                        align: "center",
+                        key: "user.user_id",
+                        render: (h, params) => {
+                            return h("span", {}, params.row.user.user_id);
+                        }
+                    },
+                    {
                         title: "username",
                         align: "center",
                         key: "user.username",
@@ -137,34 +145,114 @@
                         }
                     },
                     {
+                        title: "apply time",
+                        align: "center",
+                        key: "contestApply.apply_time",
+                        render: (h, params) => {
+                            return h("Time", {
+                                props: {
+                                    type: "datetime",
+                                    time: params.row.contestApply.apply_time,
+                                }
+                            });
+                        }
+                    },
+                    {
+                        title: "status",
+                        sortable: true,
+                        align: "center",
+                        filters: [
+                            {
+                                label: 'waitting',
+                                value: 0
+                            },
+                            {
+                                label: 'joined',
+                                value: 1
+                            },
+                            {
+                                label: 'rejected',
+                                value: 2
+                            }
+                        ],
+                        key: "contestApply.status",
+                        render: (h, params) => {
+                            return h("Tag", {
+                                props: {
+                                    color: params.row.contestApply.status == 0 ? "default" :
+                                        params.row.contestApply.status == 1 ? "success" : "error",
+                                }
+                            }, params.row.contestApply.status == 0 ? "waitting" :
+                                params.row.contestApply.status == 1 ? "joined" : "rejected");
+                        },
+                        filterMethod(value, row) {
+                            return row.contestApply.status == value;
+                        }
+                    },
+                    {
                         title: "操作",
+                        align: "center",
                         render: (h, params) => {
                             return h("div", {}, [
                                 h("Button", {
                                     props: {
                                         type: "success",
                                         icon: "md-checkmark",
+                                        disabled: params.row.contestApply.status == 1,
                                     },
                                     style: {
                                         marginRight: "10px",
                                     },
                                     on: {
                                         click: () => {
-
+                                            Api.updateContestApplyStatus(params.row.contestApply.id, 1, this.$store.state.token).then(res => {
+                                                let result = res.data;
+                                                if (result.code === 200) {
+                                                    params.row.contestApply.status = 1;
+                                                    this.$Message.success("Accepted!");
+                                                } else {
+                                                    this.$Message.error(result.message);
+                                                }
+                                            }).catch(res => {
+                                                console.log(res);
+                                            });
                                         }
                                     }
                                 }, "Agree"),
                                 h("Button", {
                                     props: {
                                         icon: "md-close",
-                                        type: "error"
+                                        type: "error",
+                                        disabled: params.row.contestApply.status == 2,
+                                    },
+                                    on: {
+                                        click: () => {
+                                            Api.updateContestApplyStatus(params.row.contestApply.id, 2, this.$store.state.token).then(res => {
+                                                let result = res.data;
+                                                if (result.code === 200) {
+                                                    params.row.contestApply.status = 2;
+                                                    this.$Message.success("Rejected!");
+                                                } else {
+                                                    this.$Message.error(result.message);
+                                                }
+                                            }).catch(res => {
+                                                console.log(res);
+                                            });
+                                        }
+                                    }
+                                }, "Refuse"),
+                                /*h("Button", {
+                                    props: {
+                                        icon: "ios-cut",
+                                        type: "error",
+                                        disabled: params.row.contestApply.status != 0,
                                     },
                                     on: {
                                         click: () => {
 
                                         }
                                     }
-                                }, "Refuse"),
+                                }, "Refuse"),*/
                             ]);
                         },
                     }
@@ -211,9 +299,12 @@
             }
         },
         methods: {
+            //返回
             Back() {
                 this.location_flag = true;
+                this.getContests();
             },
+            //查询竞赛
             getContests() {
                 this.contest_table_loading = true;
                 Api.getContestByCreator(this.$store.state.token).then(res => {
@@ -230,6 +321,7 @@
                     this.contest_table_loading = false;
                 });
             },
+            //查询竞赛申请人数
             getApplyNums() {
                 this.contest_data.forEach(function (item, index) {
                     Api.getApplyNumsByContestId(item.contest.contest_id, _this.$store.state.token).then(res => {
@@ -245,6 +337,14 @@
                     });
                 });
             },
+            //同意申请
+            AgreeApplication() {
+
+            },
+            //拒绝申请
+            RefushApplication() {
+
+            }
         },
         mounted() {
             this.getContests();

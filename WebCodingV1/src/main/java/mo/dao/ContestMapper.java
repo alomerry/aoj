@@ -115,4 +115,22 @@ public interface ContestMapper {
      */
     @Select("select contest_id from contest where user_id = #{user_id} and contest_id = #{contest_id}")
     int findContestByContestIdAndCreatorId(@Param("user_id") Integer user_id, @Param("contest_id") Integer contest_id);
+
+    /**
+     * 给指定竞赛添加一个参赛人员
+     *
+     * @param contest_id 竞赛Id
+     * @return
+     */
+    @Update("update contest set now = now+1 where contest_id = #{contest_id}")
+    int addContestNowNumberByContestId(@Param("contest_id") Integer contest_id);
+
+    /**
+     * 给指定竞赛减少一个参赛人员
+     *
+     * @param contest_id 竞赛Id
+     * @return
+     */
+    @Update("update contest set now = now-1 where contest_id = #{contest_id}")
+    int delContestNowNumberByContestId(@Param("contest_id") Integer contest_id);
 }

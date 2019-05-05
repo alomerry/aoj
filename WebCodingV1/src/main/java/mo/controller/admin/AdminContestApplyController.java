@@ -21,4 +21,13 @@ public interface AdminContestApplyController {
      * @return
      */
     Result applyNumber(Integer contest_id);
+
+    /**
+     * 更新申请状态
+     *
+     * @param id  申请Id
+     * @param val 状态
+     * @return
+     */
+    Result operateApply(Integer id, Integer val);
 }

@@ -1,6 +1,7 @@
 package mo.service;
 
 
+import mo.entity.po.ContestApply;
 import mo.entity.vo.link.ContestApplyLink;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface ContestApplyService {
      * @param per_page  每页数量
      * @return
      */
-    List<ContestApplyLink> getContestApplyByContestId(Integer contestId, int page, int per_page);
+    List<ContestApplyLink> getContestAppliesByContestId(Integer contestId, int page, int per_page);
 
     /**
      * 查询指定竞赛的申请(待确定)
@@ -23,4 +24,21 @@ public interface ContestApplyService {
      * @return
      */
     int getUncheckedApplyNumberByContestId(int contestId);
+
+    /**
+     * 根据Id查询申请
+     *
+     * @param id 申请Id
+     * @return
+     */
+    ContestApply findContestApplyById(Integer id);
+
+    /**
+     * 更新指定申请
+     *
+     * @param id     申请Id
+     * @param status 状态
+     * @return
+     */
+    boolean updateContestApply(Integer id, Integer status);
 }

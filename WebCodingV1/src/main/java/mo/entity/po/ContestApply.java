@@ -14,7 +14,7 @@ public class ContestApply {
     private Integer contest_id;
     private Integer user_id;
     private Timestamp apply_time;
-    private boolean status;
+    private Integer status;
 
     @Override
     public String toString() {
