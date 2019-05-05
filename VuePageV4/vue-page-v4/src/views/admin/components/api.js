@@ -431,9 +431,31 @@ export default {
 
     /**
      * 查询指定竞赛申请人数
+     * @param contest_id 竞赛Id
      * @param jwt 令牌
      */
-    getApplyNumsByContestId(jwt) {
+    getApplyNumsByContestId(contest_id, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/contest/" + contest_id + "/contest_apply_num",
+            method: "get",
+            headers: {
+                "jwt": jwt,
+            }
+        })
+    },
 
+    /**
+     * 查询指定竞赛的申请
+     * @param contest_id 竞赛Id
+     * @param jwt 令牌
+     */
+    getContestApplyByContestId(contest_id, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/contest/" + contest_id + "/contest_apply",
+            method: "get",
+            headers: {
+                "jwt": jwt,
+            }
+        });
     }
 }

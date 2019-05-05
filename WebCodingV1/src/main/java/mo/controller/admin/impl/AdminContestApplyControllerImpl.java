@@ -50,7 +50,9 @@ public class AdminContestApplyControllerImpl extends AbstractController implemen
     @RequestMapping(value = "/admin/contest/{contest_id}/contest_apply_num", method = RequestMethod.GET)
     public Result applyNumber(@PathVariable Integer contest_id) {
         if (contestService.isCreator(getJWTUserId(), contest_id)) {
-
+            JSONObject num = new JSONObject();
+            num.put("apply_number", contestApplyService.getUncheckedApplyNumberByContestId(contest_id));
+            return new Result().setCode(ResultCode.OK).setData(num);
         } else {
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足!");
         }

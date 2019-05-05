@@ -7,6 +7,7 @@ import mo.dao.ContestProblemMapper;
 import mo.dao.PrivilegeMapper;
 import mo.dao.UserMapper;
 import mo.entity.po.Contest;
+import mo.entity.vo.ContestNumber;
 import mo.entity.vo.link.ContestLinkUser;
 import mo.exception.ServiceException;
 import mo.service.ContestService;
@@ -123,8 +124,8 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public List<Contest> findContestsByCreatorIdAndPage(Integer creatorId, int page, int per_page) {
-        return contestMapper.findContestsByCreatorIdAndPage(creatorId, (page - 1) * per_page, per_page);
+    public List<ContestNumber> findContestsByCreatorIdAndPage(Integer creatorId, int page, int per_page) {
+        return makeContestNumber(contestMapper.findContestsByCreatorIdAndPage(creatorId, (page - 1) * per_page, per_page));
     }
 
     @Override
@@ -135,6 +136,14 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public boolean isCreator(Integer user_id, Integer contestId) {
         return contestMapper.findContestByContestIdAndCreatorId(user_id, contestId) > 0;
+    }
+
+    private List<ContestNumber> makeContestNumber(List<Contest> contests) {
+        List<ContestNumber> contestNumbers = new ArrayList<>(contests.size() + 3);
+        for (Contest c : contests) {
+            contestNumbers.add(new ContestNumber(c, 0));
+        }
+        return contestNumbers;
     }
 
     /**

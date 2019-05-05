@@ -59,7 +59,7 @@ const routes = [
     },
     {
         path: "/admin/problem/:method",
-        name: 'ProblemEdit',
+        name: 'ProblemCreate',
         meta: {
             title: 'Online Judge'
         },
@@ -70,7 +70,7 @@ const routes = [
      */
     {
         path: "/admin/contest/:contest_id/announcement",
-        name: 'Announcement',
+        name: 'AnnouncementAdd',
         meta: {
             title: 'Online Judge'
         },

@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -11,6 +13,7 @@ public class ContestApply {
     private Integer id;
     private Integer contest_id;
     private Integer user_id;
+    private Timestamp apply_time;
     private boolean status;
 
     @Override
