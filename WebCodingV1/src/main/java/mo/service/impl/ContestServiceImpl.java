@@ -123,6 +123,11 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    public List<Contest> findContestsByCreatorIdAndPage(Integer creatorId, int page, int per_page) {
+        return contestMapper.findContestsByCreatorIdAndPage(creatorId, (page - 1) * per_page, per_page);
+    }
+
+    @Override
     public boolean updateContestByContestId(Contest contest, Integer contest_id) {
         return contestMapper.updateContestByContestId(contest, contest_id) > 0;
     }

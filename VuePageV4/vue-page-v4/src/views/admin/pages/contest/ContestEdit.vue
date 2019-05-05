@@ -213,10 +213,19 @@
                 this.loadingStatus = true;
                 this.$Loading.start();
                 Api.updateContest(this.formContest, this.contest_id, this.$store.state.token).then(res => {
-                
+                    let result = res.data;
+                    if (result.code === 200) {
+                        this.$Message.success("Update contest successed!");
+                        this.$Loading.finish();
+                    } else {
+                        this.$Message.error(result.message);
+                        this.$Loading.error();
+                    }
+                    this.loadingStatus = false;
                 }).catch(res => {
                     console.log(res);
                     this.$Loading.error();
+                    this.loadingStatus = false;
                 });
 
             },

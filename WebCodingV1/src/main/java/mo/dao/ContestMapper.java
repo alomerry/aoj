@@ -94,4 +94,15 @@ public interface ContestMapper {
     @Update("update contest set title=#{contest.title}, describes=#{contest.describes},start_at=#{contest.start_at},end_at=#{contest.end_at}," +
             "privates=#{contest.privates},organizer=#{contest.organizer},max=#{contest.max} where contest_id = #{contest_id}")
     int updateContestByContestId(@Param("contest") Contest contest, @Param("contest_id") Integer contest_id);
+
+    /**
+     * 查询指定用户创建的竞赛
+     *
+     * @param user_id  创建者Id
+     * @param start    起始
+     * @param per_page 每页数量
+     * @return
+     */
+    @Select("select * from contest where user_id = #{user_id} limit #{start} ,#{per_page}")
+    List<Contest> findContestsByCreatorIdAndPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
 }

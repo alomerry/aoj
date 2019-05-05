@@ -108,6 +108,14 @@ const routes = [
         },
         component: resolve => require(['../pages/contest/ContestEdit'], resolve),
     },
+    {
+        path: "/admin/contest_apply",
+        name: 'Contest-Apply',
+        meta: {
+            title: 'Contest Apply',
+        },
+        component: resolve => require(['../pages/contest/ContestApply'], resolve),
+    },
     /**
      * Home
      */

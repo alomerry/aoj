@@ -8,5 +8,16 @@ import java.util.List;
 @Mapper
 public interface ContestApplyMapper {
 
-
+    /**
+     * 根据页码查询指定竞赛的竞赛申请
+     *
+     * @param contestId 竞赛Id
+     * @param start     起始
+     * @param per_page  每页数量
+     * @return
+     */
+    @Select("select * from contest_apply where contest_id = #{contest_id} limit #{start},#{per_page}")
+    List<ContestApply> getContestApplyByCreatorId(@Param("contest_id") Integer contestId,
+                                                  @Param("start") int start,
+                                                  @Param("per_page") int per_page);
 }

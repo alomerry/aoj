@@ -1,6 +1,7 @@
 package mo.service;
 
 import mo.entity.po.Contest;
+import mo.entity.vo.link.ContestApplyLink;
 import mo.entity.vo.link.ContestLinkUser;
 
 import java.util.List;
@@ -100,6 +101,16 @@ public interface ContestService {
      * @return 竞赛实体
      */
     Contest findContestByContestId(Integer contest_id);
+
+    /**
+     * 查询指定用户创建的竞赛
+     *
+     * @param creatorId 创建者id
+     * @param page      页码
+     * @param per_page  每页数量
+     * @return
+     */
+    List<Contest> findContestsByCreatorIdAndPage(Integer creatorId, int page, int per_page);
 
     /**
      * 更新竞赛

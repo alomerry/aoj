@@ -32,9 +32,10 @@
                 </template>
                 <MenuItem name="4-1" to="/admin/contests">Contest List</MenuItem>
                 <MenuItem name="4-2" to="/admin/contest/create">Create Contest</MenuItem>
+                <MenuItem name="4-3" to="/admin/contest_apply">Contest Apply</MenuItem>
             </Submenu>
         </Menu>
-
+    
     </div>
 </template>
 

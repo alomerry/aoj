@@ -56,4 +56,13 @@ public interface AdminContestController {
      * @return
      */
     Result contest(Contest contest, Integer contest_id);
+
+    /**
+     *
+     * @param creatorId
+     * @param page
+     * @param per_page
+     * @return
+     */
+    Result contests(Integer creatorId,String page,String per_page);
 }

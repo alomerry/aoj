@@ -72,11 +72,11 @@
                 deleteShowFlag: false,//勾选批量时显示删除按钮标记
                 tableLoadingFlag: false,//表格加载中标记
                 columns: [
-                    {
+                    /*{
                         type: 'selection',
                         width: 60,
                         align: 'center',
-                    },
+                    },*/
                     {
                         title: 'Problem_id',
                         key: 'problem.problem_id',
