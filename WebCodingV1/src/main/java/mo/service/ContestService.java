@@ -120,4 +120,13 @@ public interface ContestService {
      * @return
      */
     boolean updateContestByContestId(Contest contest, Integer contest_id);
+
+    /**
+     * 查询指定用户是否是指定竞赛的创建者
+     *
+     * @param user_id   用户Id
+     * @param contestId 竞赛Id
+     * @return
+     */
+    boolean isCreator(Integer user_id, Integer contestId);
 }

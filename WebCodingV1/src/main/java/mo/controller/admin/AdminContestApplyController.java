@@ -13,4 +13,12 @@ public interface AdminContestApplyController {
      * @return
      */
     Result contestApply(Integer contest_id, String page, String per_page);
+
+    /**
+     * 查询指定竞赛参赛人数
+     *
+     * @param contest_id 竞赛Id
+     * @return
+     */
+    Result applyNumber(Integer contest_id);
 }

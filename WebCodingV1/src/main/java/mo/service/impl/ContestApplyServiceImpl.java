@@ -25,6 +25,11 @@ public class ContestApplyServiceImpl implements ContestApplyService {
         return makeLink(contestApplyMapper.getContestApplyByCreatorId(contestId, (page - 1) * per_page, per_page));
     }
 
+    @Override
+    public int getUncheckedApplyNumberByContestId(int contestId) {
+        return 0;
+    }
+
     private List<ContestApplyLink> makeLink(List<ContestApply> contestApplies) {
         List<ContestApplyLink> contestApplyLinks = new ArrayList<>(contestApplies.size() + 3);
         for (ContestApply item : contestApplies) {

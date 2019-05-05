@@ -20,4 +20,13 @@ public interface ContestApplyMapper {
     List<ContestApply> getContestApplyByCreatorId(@Param("contest_id") Integer contestId,
                                                   @Param("start") int start,
                                                   @Param("per_page") int per_page);
+
+    /**
+     * 查询指定竞赛的为操作申请数
+     *
+     * @param contestId 竞赛Id
+     * @return
+     */
+    @Select("select count(id) from contest_apply where contest_id = #{contest_id} and status = 0")
+    Integer getUncheckedContestApplyNumberByContestId(@Param("contest_id") Integer contestId);
 }

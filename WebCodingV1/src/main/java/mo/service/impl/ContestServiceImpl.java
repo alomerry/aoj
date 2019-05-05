@@ -132,6 +132,11 @@ public class ContestServiceImpl implements ContestService {
         return contestMapper.updateContestByContestId(contest, contest_id) > 0;
     }
 
+    @Override
+    public boolean isCreator(Integer user_id, Integer contestId) {
+        return contestMapper.findContestByContestIdAndCreatorId(user_id, contestId) > 0;
+    }
+
     /**
      * 将指定公开级别的竞赛集属性整合成string
      *

@@ -15,4 +15,12 @@ public interface ContestApplyService {
      * @return
      */
     List<ContestApplyLink> getContestApplyByContestId(Integer contestId, int page, int per_page);
+
+    /**
+     * 查询指定竞赛的申请(待确定)
+     *
+     * @param contestId 竞赛Id
+     * @return
+     */
+    int getUncheckedApplyNumberByContestId(int contestId);
 }

@@ -58,11 +58,11 @@ public interface AdminContestController {
     Result contest(Contest contest, Integer contest_id);
 
     /**
+     * 查询操作者创建的竞赛
      *
-     * @param creatorId
-     * @param page
-     * @param per_page
+     * @param page     页码
+     * @param per_page 每页数量
      * @return
      */
-    Result contests(Integer creatorId,String page,String per_page);
+    Result contests(String page, String per_page);
 }

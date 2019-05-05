@@ -414,4 +414,26 @@ export default {
             }
         });
     },
+
+    /**
+     * 根据管理员Id查询创建的竞赛
+     * @param jwt 令牌
+     */
+    getContestByCreator(jwt) {
+        return axios({
+            url: "/api/api-oj/admin/creator/contest",
+            method: "get",
+            headers: {
+                "jwt": jwt,
+            }
+        })
+    },
+
+    /**
+     * 查询指定竞赛申请人数
+     * @param jwt 令牌
+     */
+    getApplyNumsByContestId(jwt) {
+
+    }
 }

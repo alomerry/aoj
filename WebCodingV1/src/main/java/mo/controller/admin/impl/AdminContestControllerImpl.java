@@ -167,12 +167,11 @@ public class AdminContestControllerImpl extends AbstractController implements Ad
     @Override
     @ResponseBody
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
-    @RequestMapping(value = "/admin/contest/creator/{creatorId}", method = RequestMethod.GET)
-    public Result contests(@PathVariable Integer creatorId,
-                           @RequestParam(name = "page", defaultValue = "1") String page,
+    @RequestMapping(value = "/admin/creator/contest", method = RequestMethod.GET)
+    public Result contests(@RequestParam(name = "page", defaultValue = "1") String page,
                            @RequestParam(name = "per_page", defaultValue = "10") String per_page) {
         JSONObject contests = new JSONObject();
-        contests.put("contests", contestService.findContestsByCreatorIdAndPage(creatorId, Integer.valueOf(page), Integer.valueOf(per_page)));
+        contests.put("contests", contestService.findContestsByCreatorIdAndPage(getJWTUserId(), Integer.valueOf(page), Integer.valueOf(per_page)));
         return new Result().setCode(ResultCode.OK).setData(contests);
     }
 }

@@ -105,4 +105,14 @@ public interface ContestMapper {
      */
     @Select("select * from contest where user_id = #{user_id} limit #{start} ,#{per_page}")
     List<Contest> findContestsByCreatorIdAndPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
+
+    /**
+     * 根据用户Id和竞赛Id查询竞赛
+     *
+     * @param user_id    用户Id
+     * @param contest_id 竞赛Id
+     * @return
+     */
+    @Select("select contest_id from contest where user_id = #{user_id} and contest_id = #{contest_id}")
+    int findContestByContestIdAndCreatorId(@Param("user_id") Integer user_id, @Param("contest_id") Integer contest_id);
 }

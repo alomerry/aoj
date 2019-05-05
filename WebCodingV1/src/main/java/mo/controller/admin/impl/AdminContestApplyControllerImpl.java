@@ -43,4 +43,16 @@ public class AdminContestApplyControllerImpl extends AbstractController implemen
             return new Result().setCode(ResultCode.OK).setData(jsonObject);
         }
     }
+
+    @Override
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/contest/{contest_id}/contest_apply_num", method = RequestMethod.GET)
+    public Result applyNumber(@PathVariable Integer contest_id) {
+        if (contestService.isCreator(getJWTUserId(), contest_id)) {
+
+        } else {
+            return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足!");
+        }
+    }
 }
