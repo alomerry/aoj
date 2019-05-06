@@ -25,4 +25,14 @@ public interface SolutionService {
      * @return solutions
      */
     List<SolutionLink> getSolutions(int page, int per_page);
+
+    /**
+     * 查询竞赛中的提交
+     *
+     * @param contestId 竞赛Id
+     * @param page      页码
+     * @param per_page  每页数量
+     * @return
+     */
+    List<SolutionLink> getContestSolutions(Integer contestId, int page, int per_page);
 }

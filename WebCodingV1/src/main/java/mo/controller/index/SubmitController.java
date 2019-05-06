@@ -21,4 +21,14 @@ public interface SubmitController {
      * @return solution集合
      */
     Result getSolutions(String page, String per_page);
+
+    /**
+     * 查询指定竞赛的提交
+     *
+     * @param contestId 竞赛Id
+     * @param page      页码
+     * @param per_page  每页数量
+     * @return
+     */
+    Result getSolutions(Integer contestId, String page, String per_page);
 }

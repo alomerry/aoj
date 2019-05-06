@@ -338,6 +338,7 @@
                     }
                 }
             },
+            
             refresh() {
                 this.buttonLoading = true;
                 this.getSolutions();

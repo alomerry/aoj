@@ -74,8 +74,90 @@
                             </div>
                         </transition>
                     </Card>
-                    <Card v-else-if="show_flag[2]" key="2"></Card>
-                    <Card v-else-if="show_flag[3]" key="3"></Card>
+                    <Card v-else-if="show_flag[2]" key="2">
+                        <p class="card-title">Problem List</p>
+                        <div slot="extra">
+                            <Row>
+                                <Col span="10">
+                                </Col>
+                                <!--<Col span="6">
+                                    <Dropdown style="margin-top: 4px">
+                                        <a href="javascript:void(0)" style="color: #515a6e">
+                                            下拉菜单
+                                            <Icon type="ios-arrow-down"></Icon>
+                                        </a>
+                                        <DropdownMenu slot="list">
+                                            <DropdownItem>驴打滚</DropdownItem>
+                                            <DropdownItem>炸酱面</DropdownItem>
+                                            <DropdownItem disabled>豆汁儿</DropdownItem>
+                                            <DropdownItem>冰糖葫芦</DropdownItem>
+                                            <DropdownItem divided>北京烤鸭</DropdownItem>
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                </Col>-->
+                                <Col span="2">
+                                    <Button style="margin-left: 10px;" :loading="problem_table_loading" @click.native="getProblems" type="primary">
+                                        Refresh
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </div>
+                        <Table :data="problem_data" :columns="problem_col" stripe
+                               :loading="problem_table_loading"></Table>
+                    </Card>
+                    <Card v-else-if="show_flag[3]" key="3">
+                        <p class="card-title">Status</p>
+                        
+                        <div slot="extra">
+                            <Row>
+                                <Col span="3" style="margin-top: 4px;">
+                                    <i-switch v-model="onlyShowMe" size="large" @on-change="">
+                                        <span slot="open">Mine</span>
+                                        <span slot="close">All</span>
+                                    </i-switch>
+                                </Col>
+                                <Col span="6">
+                                    <Dropdown style="margin-top: 4px">
+                                        <a href="javascript:void(0)" style="color: #515a6e">
+                                            Status
+                                            <Icon type="ios-arrow-down"></Icon>
+                                        </a>
+                                        <DropdownMenu slot="list">
+                                            <DropdownItem name="-1">All</DropdownItem>
+                                            <DropdownItem name="0">Waiting</DropdownItem>
+                                            <DropdownItem name="1">Pending</DropdownItem>
+                                            <DropdownItem name="2">Compiling</DropdownItem>
+                                            <DropdownItem name="3">Judging</DropdownItem>
+                                            <DropdownItem name="4">Accepted</DropdownItem>
+                                            <DropdownItem name="5">Presentation Error</DropdownItem>
+                                            <DropdownItem name="5">Wrong Answer</DropdownItem>
+                                            <DropdownItem name="7">Time Limit Exceeded</DropdownItem>
+                                            <DropdownItem name="8">Merrory Limit Exceeded</DropdownItem>
+                                            <DropdownItem name="9">Output Limit Exceeded</DropdownItem>
+                                            <DropdownItem name="10">Runtime Error</DropdownItem>
+                                            <DropdownItem name="11">Compile Error</DropdownItem>
+                                            <DropdownItem name="13">Partial Accepted</DropdownItem>
+                                            <DropdownItem name="14">System Error</DropdownItem>
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                </Col>
+                                <Col span="8">
+                                </Col>
+                                <Col span="2">
+                                    <Button :loading="status_page_table_loading" @click.native="getSolutions" type="primary" style="margin-right: 60px;margin-left: 7px">
+                                        Refresh
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </div>
+                        <div style="margin-bottom: 2px;margin-top: 10px">
+                            <Table :columns="status_col" :data="status_page_data" stripe :loading="status_page_table_loading"></Table>
+                        </div>
+                        <div style="float: right;margin: 5px;">
+                            <Page :total="10" :page-size="status_per_page" :current="status_page" show-sizer/>
+                        </div>
+                        <p style="margin-top: 30px"></p>
+                    </Card>
                     <Card v-else-if="show_flag[4]" key="4"></Card>
                 </transition>
             </Col>
@@ -174,6 +256,162 @@
                 anno_table_loading: false,
                 anno_list_flag: true,//T:列表 F:详细信息
                 anno_item: null,//当前查看的公告
+
+                onlyShowMe: false,
+                status_page: 1,
+                status_page_per_page: 10,
+                status_page_data: [],
+                status_page_table_loading: false,
+                status_col: [
+                    {
+                        title: 'When',
+                        key: 'when',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('Time', {
+                                props: {
+                                    time: params.row.solution.create_at,
+                                    type: 'datetime'
+                                },
+                            });
+                        }
+                    },
+                    {
+                        title: 'Id',
+                        key: 'id',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('a', {}, params.row.solution.solution_id);
+                        }
+                    },
+                    {
+                        title: 'Status',
+                        key: 'status',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('Tag', {
+                                props: this.getStatusRenderProps(params.row.solution.result),
+                            }, this.statusRenderText[params.row.solution.result]);
+                        }
+                    },
+                    {
+                        title: 'Problem',
+                        key: 'problem',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('a', {}, params.row.problem.title);
+                        }
+                    },
+                    {
+                        title: 'Time',
+                        key: 'time',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('span', {}, params.row.solution.time === null ? "-" : params.row.solution.time);
+                        }
+                    },
+                    {
+                        title: 'Memory',
+                        key: 'memory',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('span', {}, params.row.solution.memory === null ? "-" : params.row.solution.memory);
+                        }
+                    },
+                    {
+                        title: 'Language',
+                        key: 'language',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('span', {}, this.codeLanguage(params.row.solution.language));
+                        }
+                    },
+                    {
+                        title: 'Author',
+                        key: 'author',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('a', {}, params.row.user.nickname);
+                        }
+                    },
+                    {
+                        title: 'Option',
+                        key: 'option',
+                        fixed: 'right',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('Button', {
+                                props: {
+                                    ghost: true,
+                                    shape: "circle",
+                                    type: "info",
+                                    size: "small"
+                                }
+                            }, "Rejudge");
+                        }
+                    },
+                ],
+                statusRenderText: ["Pending", "Waiting", "Compiling", "Judging", "Accepted", "Presentation Error",
+                    "Wrong Answer", "Time Limit Exceeded", "Merrory Limit Exceeded", "Output Limit Exceeded", "Runtime Error",
+                    "Compile Error", "Partial Accepted", "System Error"],
+
+                problem_page: 1,
+                problem_per_page: 10,
+                problem_data: [],
+                problem_col: [
+                    {
+                        title: 'title',
+                        key: 'title',
+                        width: 600,
+                        render: (h, params) => {
+                            return h('router-link', {
+                                style: {
+                                    fontSize: '15px'
+                                },
+                                attrs: {
+                                    to: "/problem/" + params.row.problem_id,
+                                },
+                                on: {
+                                    click: () => {
+
+                                    }
+                                },
+                            }, params.row.title);
+                        }
+                    },
+                    {
+                        title: 'Total',
+                        key: 'submit',
+                    },
+                    {
+                        title: 'AC Rate',
+                        key: 'ac_rate',
+                        render: (h, params) => {
+                            return h('Poptip', {
+                                props: {
+                                    trigger: 'hover',
+                                    title: 'AC Rate',
+                                    placement: 'bottom'
+                                }
+                            }, [
+                                h('Tag', (params.row.accepted / (params.row.submit === 0 ? 1 : params.row.submit)) * 100 + "%"),
+                                h('div', {slot: 'content'}, [
+                                    h('p', {
+                                        style: {
+                                            fontSize: '15px'
+                                        }
+                                    }, "AC:" + params.row.accepted),
+                                    h('p', {
+                                        style: {
+                                            fontSize: '15px'
+                                        }
+                                    }, "Total:" + params.row.submit),
+                                ]),
+                            ]);
+                        }
+                    }
+                ],
+                problem_table_loading: false,
             }
         },
         methods: {
@@ -247,6 +485,130 @@
                     this.anno_table_loading = false;
                 });
             },
+            //获取题目
+            getProblems() {
+                this.problem_table_loading = true;
+                Api.findProblemsByContestId(this.contest_id).then(res => {
+                    let result = res.data;
+                    if (result.code === 200) {
+                        this.problem_data = result.data.results;
+                        this.problem_table_loading = false;
+                    } else {
+                        console.log('Failed! ' + result.message);
+                        this.problem_table_loading = false;
+                    }
+                }).catch(err => {
+                    console.log('An error has occurred! ' + err);
+                    this.problem_table_loading = false;
+                });
+            },
+            //获取提交
+            getSolutions() {
+                this.status_page_table_loading = true;
+                Api.getSolutions(this.current, this.per_page, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    if (result.code === 401) {
+                        this.$Message.error("身份信息失效，请重新登录");
+                    } else if (result.code === 200) {
+                        this.statusData = result.data.solutions;
+                        this.statusSearchData = this.statusData;
+                    }
+                    this.status_page_table_loading = false;
+                }).catch(res => {
+                    this.$Message.error(res.message);
+                    this.status_page_table_loading = false;
+                });
+            },
+            codeLanguage(code) {
+                switch (code) {
+                    case 0: {
+                        return 'Java';
+                    }
+                    case 1: {
+                        return 'C';
+                    }
+                    case 2: {
+                        return 'C++';
+                    }
+                    case 3: {
+                        return 'Python';
+                    }
+                }
+            },
+            getStatusRenderProps(code) {
+                switch (code) {
+                    case 0: {
+                        return {
+                            color: "blue",
+                        };
+                    }
+                    case 1: {
+                        return {
+                            color: "cyan",
+                        };
+                    }
+                    case 2: {
+                        return {
+                            color: "geekblue",
+                        };
+                    }
+                    case 3: {
+                        return {
+                            color: "lime",
+                        };
+                    }
+                    case 4: {
+                        return {
+                            color: "success",
+                        };
+                    }
+                    case 5: {
+                        return {
+                            color: "yellow",
+                        };
+                    }
+                    case 6: {
+                        return {
+                            color: "#FFA2D3",
+                        };
+                    }
+                    case 7: {
+                        return {
+                            color: "gold",
+                        };
+                    }
+                    case 8: {
+                        return {
+                            color: "orange",
+                        };
+                    }
+                    case 9: {
+                        return {
+                            color: "volcano",
+                        };
+                    }
+                    case 10: {
+                        return {
+                            color: "error",
+                        };
+                    }
+                    case 11: {
+                        return {
+                            color: "warning",
+                        };
+                    }
+                    case 13: {
+                        return {
+                            color: "green",
+                        };
+                    }
+                    case 14: {
+                        return {
+                            color: "purple",
+                        };
+                    }
+                }
+            },
             //修改当前显示信息
             showContestCard(name) {
                 if (this.infoCellDisabled) {
@@ -264,6 +626,7 @@
                     }
                     case "problems": {
                         this.changeShowCard(2);
+                        this.getProblems();
                         break;
                     }
                     case "submit": {

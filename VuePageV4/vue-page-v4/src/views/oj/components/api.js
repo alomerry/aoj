@@ -19,6 +19,12 @@ export default {
             method: 'get',
         })
     },
+    findProblemsByContestId(contestId) {
+        return axios({
+            url: "/api/api-oj/contest/" + contestId + "/problems",
+            method: 'get',
+        })
+    },
 
     /**
      * 查询制定Id题目
@@ -55,11 +61,10 @@ export default {
      * @param page 页码
      * @param per_page 每页数量
      * @param jwt 令牌
-     * @returns {AxiosPromise}
      */
-    getSolutions(page, per_page, jwt) {
+    getSolutions(contestId, page, per_page, jwt) {
         return axios({
-            url: "/api/api-oj/solutions?page=" + page + "&per_page=" + per_page,
+            url: "/api/api-oj/contest/" + contestId + "/solutions?page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,

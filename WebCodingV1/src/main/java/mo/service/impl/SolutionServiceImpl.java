@@ -60,7 +60,15 @@ public class SolutionServiceImpl implements SolutionService {
 
     @Override
     public List<SolutionLink> getSolutions(int page, int per_page) {
-        List<Solution> solution = solutionMapper.findSolutionOrderByJudgeTimeAndPage((page - 1) * per_page, per_page);
+        return makeLink(solutionMapper.findSolutionOrderByJudgeTimeAndPage((page - 1) * per_page, per_page));
+    }
+
+    @Override
+    public List<SolutionLink> getContestSolutions(Integer contestId, int page, int per_page) {
+        return makeLink(solutionMapper.findContestSolutionByContestIdOrderByJudgeTimeAndPage(contestId, (page - 1) * per_page, per_page));
+    }
+
+    private List<SolutionLink> makeLink(List<Solution> solution) {
         List<SolutionLink> solutionLinks = new ArrayList<>(solution.size() + 3);
         for (Solution s : solution) {
             solutionLinks.add(new SolutionLink(userMapper.findUserIdUserNameUserNickNameByUserId(s.getUser_id()),

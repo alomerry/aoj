@@ -302,6 +302,11 @@ public class ProblemServiceImpl implements ProblemService {
         return problemMapper.updateDefunctByProblemId(problem_id, defunct) > 0;
     }
 
+    @Override
+    public List<Problem> findProblemsFromContest(Integer contestId) {
+        return contestProblemMapper.findProblemsFromContestProblemByContestId(contestId);
+    }
+
     /**
      * 查询题目公开级别是否满足asklLevel级别
      *

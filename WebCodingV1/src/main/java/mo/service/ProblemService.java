@@ -170,4 +170,12 @@ public interface ProblemService {
      * @return
      */
     boolean updateProblemDefunct(Integer problem_id, String defunct);
+
+    /**
+     * 查询指定竞赛中的题目
+     *
+     * @param contestId 竞赛Id
+     * @return
+     */
+    List<Problem> findProblemsFromContest(Integer contestId);
 }

@@ -1,6 +1,7 @@
 package mo.dao;
 
 import mo.entity.po.ContestProblem;
+import mo.entity.po.Problem;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -42,6 +43,15 @@ public interface ContestProblemMapper {
     @Delete("delete from contest_problem where contest_id = #{contest_id} and problem_id = #{problem_id}")
     Integer deletProblemFromContest(@Param("contest_id") Integer contest_id,
                                     @Param("problem_id") Integer problem_id);
+
+    /**
+     * 查询竞赛中的题目集合
+     *
+     * @param contest_id
+     * @return
+     */
+    @Select("select * from problems where problem_id in(select problem_id from contest_problem where contest_id = #{contest_id})")
+    List<Problem> findProblemsFromContestProblemByContestId(@Param("contest_id") Integer contest_id);
 
     /**
      * 查询某个题目是否已在竞赛中

@@ -24,6 +24,7 @@ import java.util.Map;
 
 @RestController
 public class SubmitControllerImpl extends AbstractController implements SubmitController {
+
     private static final Logger logger = LoggerFactory.getLogger(SubmitControllerImpl.class);
 
     @Resource
@@ -63,10 +64,23 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
 
     @Override
     @AuthCheck({RequiredType.JWT})
+    @ResponseBody
     @RequestMapping(value = "/solutions", method = RequestMethod.GET)
-    public Result getSolutions(@RequestParam(value = "page", defaultValue = "1") String page, @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
+    public Result getSolutions(@RequestParam(value = "page", defaultValue = "1") String page,
+                               @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
         JSONObject solutions = new JSONObject();
         solutions.put("solutions", solutionService.getSolutions(Integer.valueOf(page), Integer.valueOf(per_page)));
+        return new Result().setCode(ResultCode.OK).setData(solutions);
+    }
+
+    @Override
+    @ResponseBody
+    @RequestMapping(value = "/contest/{contestId}/solutions", method = RequestMethod.GET)
+    public Result getSolutions(@PathVariable Integer contestId,
+                               @RequestParam(value = "page", defaultValue = "1") String page,
+                               @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
+        JSONObject solutions = new JSONObject();
+        solutions.put("solutions", solutionService.getContestSolutions(contestId, Integer.valueOf(page), Integer.valueOf(per_page)));
         return new Result().setCode(ResultCode.OK).setData(solutions);
     }
 

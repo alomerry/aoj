@@ -43,4 +43,6 @@ public interface ProblemController {
      * @return 题目集合
      */
     Result problemsByTag(String tagId, String page, String per_page, String resType);
+
+    Result contestProblems(Integer contestId);
 }

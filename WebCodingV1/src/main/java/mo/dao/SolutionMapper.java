@@ -58,6 +58,16 @@ public interface SolutionMapper {
     List<Solution> findSolutionOrderByJudgeTimeAndPage(@Param("start") int start, @Param("per_page") int per_page);
 
     /**
+     * 按页码以判题时间降序获取结果集
+     *
+     * @param start    起始
+     * @param per_page 每页数量
+     * @return 结果集
+     */
+    @Select("select * from solution where contest_id = #{contest_id} order by judgetime desc limit #{start},#{per_page}")
+    List<Solution> findContestSolutionByContestIdOrderByJudgeTimeAndPage(@Param("contest_id") Integer contest_id, @Param("start") int start, @Param("per_page") int per_page);
+
+    /**
      * 获取12位不重复随机字符串
      *
      * @return

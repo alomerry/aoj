@@ -65,6 +65,17 @@ public class ProblemControllerImpl implements ProblemController {
     }
 
     @Override
+    @ResponseBody
+    @RequestMapping(value = "/contest/{contestId}/problems", method = RequestMethod.GET)
+    public Result contestProblems(@PathVariable Integer contestId) {
+        JSONObject res = new JSONObject();
+        List<Problem> problems = problemService.findProblemsFromContest(contestId);
+        res.put("total", problems.size());
+        res.put("results", problems);
+        return new Result().setCode(ResultCode.OK).setData(res);
+    }
+
+    @Override
     @RequestMapping(value = "/problems/defunct/{defunct}")
     @ResponseBody
     public Result problems(@RequestParam(value = "page", defaultValue = "1") String page,
