@@ -133,4 +133,9 @@ public class UserServiceImpl implements UserService {
         return 1;
     }
 
+    @Override
+    public User findUserByUsername(String username) {
+        return userMapper.findUserByUsername(username);
+    }
+
 }

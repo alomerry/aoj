@@ -123,5 +123,13 @@ public interface UserMapper {
     @Update("update users set nickname = #{user.nickname},email = #{user.email},passwd=#{user.passwd},disabled=#{user.disabled} where user_id =#{user.user_id}")
     int updateUserNickNameEmailPasswdDisAbled(@Param("user") User user);
 
+    /**
+     * 根据用户名查找用户
+     *
+     * @param username 用户名
+     * @return
+     */
+    @Select("select *from users where username =#{username}")
+    User findUserByUsername(@Param("username") String username);
 }
 

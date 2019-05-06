@@ -1,5 +1,6 @@
 package mo.controller.index.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import mo.controller.index.UserController;
 import mo.core.Result;
 import mo.core.ResultCode;
@@ -44,5 +45,14 @@ public class UserControllerImpl implements UserController {
         logger.info("user[{}]", user.toString());
         sessionStatus.setComplete();
         return new Result().setCode(ResultCode.OK);
+    }
+
+    @Override
+    @ResponseBody
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public Result user(@RequestParam("username") String username) {
+        JSONObject user = new JSONObject();
+        user.put("user", userService.findUserByUsername(username));
+        return new Result().setCode(ResultCode.OK).setData(user);
     }
 }

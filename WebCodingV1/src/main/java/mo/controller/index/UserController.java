@@ -16,6 +16,21 @@ public interface UserController {
      */
     Result login(User user, HttpServletRequest request);
 
+    /**
+     * 用户注销
+     *
+     * @param user
+     * @param sessionStatus
+     * @return
+     */
     Result logout(User user, SessionStatus sessionStatus);
+
+    /**
+     * 查询用户给
+     *
+     * @param username 用户名
+     * @return
+     */
+    Result user(String username);
 
 }

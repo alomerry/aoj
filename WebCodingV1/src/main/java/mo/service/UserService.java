@@ -82,4 +82,12 @@ public interface UserService {
      * @return
      */
     Integer updateUser(Map<String, String> user, UserLink oldUser);
+
+    /**
+     * 根据用户名查找用户给
+     *
+     * @param username 用户名
+     * @return
+     */
+    User findUserByUsername(String username);
 }

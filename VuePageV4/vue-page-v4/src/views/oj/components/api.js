@@ -19,9 +19,25 @@ export default {
             method: 'get',
         })
     },
+
+    /**
+     * 查询指定竞赛的题目
+     * @param contestId 竞赛Id
+     */
     findProblemsByContestId(contestId) {
         return axios({
             url: "/api/api-oj/contest/" + contestId + "/problems",
+            method: 'get',
+        })
+    },
+
+    /**
+     * 根据用户名查找用户
+     * @param username 用户名
+     */
+    findUserInfoByUserName(username) {
+        return axios({
+            url: "/api/api-oj/user?username=" + username,
             method: 'get',
         })
     },
