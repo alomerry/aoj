@@ -383,7 +383,7 @@
                 }).catch(res => {
                     this.tableLoadingFlag = false;
                 });
-            }
+            },
         },
         watch: {
             searchKeyWord: function (newVal, oldVal) {

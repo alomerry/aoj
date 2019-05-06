@@ -22,7 +22,7 @@
                     <div slot="extra">
                         <Row>
                             <Col span="2">
-                                <Button style="margin-left: 10px;" @click.native="" type="primary">
+                                <Button style="margin-left: 10px;" @click.native="" type="primary" :loading="anno_table_loading">
                                     Refresh
                                 </Button>
                             </Col>
@@ -119,6 +119,11 @@
                 infoCellDisabled: true,
                 restTime: 0,
                 timer: null,
+
+                anno_page: 1,
+                anno_per_page: 10,
+                anno_data: [],
+                anno_table_loading: false,
             }
         },
         methods: {
@@ -160,7 +165,19 @@
             },
             //获取新闻
             getAnnos() {
-            
+                this.anno_table_loading = true;
+                Api.findAnnosByContestId(this.contest_id, this.anno_page, this.anno_per_page).then(res => {
+                    let result = res.data;
+                    if (result.code == 200) {
+                        this.anno_data = result.data.newsLink;
+                    } else {
+                        this.$Message.error(result.message);
+                    }
+                    this.anno_table_loading = false;
+                }).catch(res => {
+                    console.log(res);
+                    this.anno_table_loading = false;
+                });
             },
             //修改当前显示信息
             showContestCard(name) {
@@ -197,7 +214,7 @@
                     false,
                 ];
                 this.show_flag[inx] = true;
-            }
+            },
         },
         computed: {
             //时钟

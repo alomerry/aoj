@@ -135,9 +135,9 @@ export default {
      * 查询指定竞赛的新闻
      * @param contestId
      */
-    findAnnosByContestId(contestId) {
+    findAnnosByContestId(contestId, page, per_page) {
         return axios({
-            url: "/api/api-oj/contest/" + contestId + "/news",
+            url: "/api/api-oj/contest/" + contestId + "/news?page=" + page + "&per_page=" + per_page,
             method: "get",
         })
     }
