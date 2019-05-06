@@ -1,44 +1,46 @@
 <template>
     <div class="card-content">
-        <transition name="fade" mode="out-in">
-            <div v-if="!show_detail_flag" key="first">
-                <Card style="margin: 15px">
-                    <div slot="title" style="height: 30px;padding-top: 5px;text-align: left;padding-left: 30px">
-                        <span style="font-size: 25px;font-weight: 400;">Contests</span>
-                    </div>
-                    <div slot="extra">
-                        <Button icon="md-refresh" style="float: right;margin-right: 20px" @click.native="getContests"></Button>
-                        <br><br>
-                    </div>
-                    <Row v-for="(item,index) in contests">
-                        <div style="padding-bottom: 40px;">
-                            <Col span="12" style="float: left;text-align: left;padding-left: 90px;">
-                                <a v-text="item.title" style="font-size: 21px;color: black"></a><br>
+        <!--<transition name="fade" mode="out-in">-->
+        <div v-if="!show_detail_flag" key="first">
+            <Card style="margin: 15px">
+                <div slot="title" style="height: 30px;padding-top: 5px;text-align: left;padding-left: 30px">
+                    <span style="font-size: 25px;font-weight: 400;">Contests</span>
+                </div>
+                <div slot="extra">
+                    <Button icon="md-refresh" style="float: right;margin-right: 20px" @click.native="getContests"></Button>
+                    <br><br>
+                </div>
+                <Row v-for="(item,index) in contests">
+                    <div style="padding-bottom: 60px;margin-bottom: 20px">
+                        <Col span="12" style="float: left;text-align: left;padding-left: 90px;">
+                            <router-link tag="a" :to="'/contest/'+item.contest_id" v-text="item.title" style="font-size: 21px;"></router-link>
+                            <div style="margin-top: 10px">
                                 <Icon size="18" color="blue" type="ios-calendar-outline"/>
                                 <Time :time="item.start_at" type="datetime" style="margin-right: 10px"/>
                                 <Icon size="18" color="blue" type="ios-timer-outline"/>
                                 <Time :time="item.end_at"/>
-                            </Col>
-                            <Col span="12" style="float: right">
-                                <Tag type="dot" :color="isStarted(item.start_at,item.end_at) == 0?'primary':
-                                    isStarted(item.start_at,item.end_at)==1?'success':'warning'">
-                                    {{isStarted(item.start_at,item.end_at) == 0?"Unstart":
-                                    isStarted(item.start_at,item.end_at)==1?"UnderWay":"Ended"}}
-                                </Tag>
-                            </Col>
-                        </div>
-                        <Divider/>
-                    </Row>
-                    <Page :current="page" style="float: right" :total="total" show-sizer
-                          @on-change=""
-                          @on-page-size-change=""/>
-                    <br><br>
-                </Card>
-            </div>
-            <div v-else key="second">
-            
-            </div>
-        </transition>
+                            </div>
+                        </Col>
+                        <Col span="12" style="float: right;margin-top: 10px">
+                            <Tag type="dot" :color="isStarted(item.start_at,item.end_at) == 0?'primary':
+                                    isStarted(item.start_at,item.end_at)==1?'success':'error'">
+                                {{isStarted(item.start_at,item.end_at) == 0?"Unstarted":
+                                isStarted(item.start_at,item.end_at)==1?"Underway":"Finished"}}
+                            </Tag>
+                        </Col>
+                    </div>
+                    <Divider/>
+                </Row>
+                <Page :current="page" style="float: right" :total="total" show-sizer
+                      @on-change=""
+                      @on-page-size-change=""/>
+                <br><br>
+            </Card>
+        </div>
+        <!--<div v-else key="second">
+        
+        </div>
+    </transition>-->
     </div>
 </template>
 

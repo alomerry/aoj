@@ -138,6 +138,13 @@ public class ContestServiceImpl implements ContestService {
         return contestMapper.findContestByContestIdAndCreatorId(user_id, contestId) > 0;
     }
 
+    @Override
+    public ContestLinkUser findContestUserByContestId(Integer contestId) {
+        Contest contest = findContestByContestId(contestId);
+        ContestLinkUser res = new ContestLinkUser(contest, userMapper.findUserByUserId(contest.getUser_id()));
+        return res;
+    }
+
     private List<ContestNumber> makeContestNumber(List<Contest> contests) {
         List<ContestNumber> contestNumbers = new ArrayList<>(contests.size() + 3);
         for (Contest c : contests) {

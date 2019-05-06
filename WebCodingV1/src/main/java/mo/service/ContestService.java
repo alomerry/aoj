@@ -130,4 +130,12 @@ public interface ContestService {
      * @return
      */
     boolean isCreator(Integer user_id, Integer contestId);
+
+    /**
+     * 查询指定竞赛
+     *
+     * @param contestId 竞赛Id
+     * @return
+     */
+    ContestLinkUser findContestUserByContestId(Integer contestId);
 }

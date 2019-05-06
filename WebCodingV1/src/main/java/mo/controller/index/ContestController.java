@@ -11,4 +11,12 @@ public interface ContestController {
      * @return
      */
     Result contests(String page, String per_page);
+
+    /**
+     * 查询指定竞赛
+     *
+     * @param contestId 竞赛Id
+     * @return
+     */
+    Result contest(Integer contestId);
 }
