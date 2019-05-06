@@ -7,7 +7,7 @@
                     <span style="font-size: 25px;font-weight: 400;">Contests</span>
                 </div>
                 <div slot="extra">
-                    <Button icon="md-refresh" style="float: right;margin-right: 20px" @click.native="getContests"></Button>
+                    <Button icon="md-refresh" style="float: right;margin-right: 20px" @click.native="getContests" :loading="loading_flag">Refresh</Button>
                     <br><br>
                 </div>
                 <Row v-for="(item,index) in contests">
@@ -57,10 +57,12 @@
                 page: 1,
                 per_page: 10,
                 total: 1,
+                loading_flag: false,
             }
         },
         methods: {
             getContests() {
+                this.loading_flag = true;
                 Api.findContestByPage(this.page, this.per_page).then(res => {
                     let result = res.data;
                     if (result.code == 200) {
@@ -68,8 +70,10 @@
                     } else {
                         this.$Message.error(result.message);
                     }
+                    this.loading_flag = false;
                 }).catch(res => {
                     console.log(res);
+                    this.loading_flag = false;
                 })
             },
 

@@ -12,7 +12,8 @@
                     <Icon type="ios-search" slot="prefix"/>
                 </i-input>
                 <Button icon="md-refresh" style="float: right;margin-right: 20px"
-                        @click.native="getContests"></Button>
+                        @click.native="getContests" :loading="tableLoadingFlag">Refresh
+                </Button>
                 <br><br>
             </div>
             <Table ref="selection"

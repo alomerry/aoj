@@ -736,14 +736,14 @@
             }
         }
         ,
-        /*beforeRouteEnter(to, from, next) {
+        beforeRouteEnter(to, from, next) {
             if (to.path.startsWith("/admin/contest")) {
             }
             next(vm => {
                 vm.contest_Add = to.params.contest_id == null ? false : true;
                 vm.getProblems();
             });
-        }*/
+        }
     }
 </script>
 

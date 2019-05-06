@@ -2,36 +2,82 @@
     <div>
         <Row>
             <Col span="20" style="margin-right: 10px;margin-left: 30px">
-                <Card v-show="show_flag[0]">
-                    <p class="card-title" v-text="infoData.length ==0?'':infoData[0].contest.title"></p>
-                    <div slot="extra">
-                        <Tag type="dot" :color="status_color">
-                            {{clock}}
-                        </Tag>
-                        <br>
-                    </div>
-                    <div style="width: 1200px;font-size: 15px;text-align: left;margin: 10px;padding: 7px">
-                        <span v-html="infoData.length ==0?'':infoData[0].contest.describes"></span>
-                    </div>
-                    <Table :data="infoData" :columns="infoCol" stripe
-                           :loading="infoTableLoading"></Table>
-                </Card>
-                <Card v-show="show_flag[1]">
-                    
-                    <p class="card-title">Contest Announcements</p>
-                    <div slot="extra">
-                        <Row>
-                            <Col span="2">
-                                <Button style="margin-left: 10px;" @click.native="" type="primary" :loading="anno_table_loading">
-                                    Refresh
-                                </Button>
-                            </Col>
-                        </Row>
-                    </div>
-                </Card>
-                <Card v-show="show_flag[2]"></Card>
-                <Card v-show="show_flag[3]"></Card>
-                <Card v-show="show_flag[4]"></Card>
+                <transition mode="out-in" name="fade">
+                    <Card v-if="show_flag[0]" key="0">
+                        <p class="card-title" v-text="infoData.length ==0?'':infoData[0].contest.title"></p>
+                        <div slot="extra">
+                            <Tag type="dot" :color="status_color">
+                                {{clock}}
+                            </Tag>
+                            <br>
+                        </div>
+                        <div style="width: 1200px;font-size: 15px;text-align: left;margin: 10px;padding: 7px">
+                            <span v-html="infoData.length ==0?'':infoData[0].contest.describes"></span>
+                        </div>
+                        <Table :data="infoData" :columns="infoCol" stripe
+                               :loading="infoTableLoading"></Table>
+                    </Card>
+                    <Card v-else-if="show_flag[1]" key="1">
+                        <transition name="fade" mode="out-in">
+                            <div v-if="anno_list_flag" key="first">
+                                <div slot="title" style="height: 35px">
+                                    <span class="card-title" style="float: left">Contest Announcements</span>
+                                    <Button slot="extra" style="margin-left: 10px;float: right" @click.native="getAnnos" type="primary" :loading="anno_table_loading">
+                                        Refresh
+                                    </Button>
+                                </div>
+                                <div style="margin-top: 10px">
+                                    <Row v-for="(value,index) in anno_data">
+                                        <Col span="12">
+                                            <div class="news-item item-name">
+                                                <a @click="getNewsInfo(value.news.news_id)">{{value.news.title}}</a>
+                                            </div>
+                                        </Col>
+                                        <Col span="5">
+                                            <div class="news-item item-time">
+                                                <Time :time="value.news.update_time" type="datetime"/>
+                                            </div>
+                                        </Col>
+                                        <Col span="3">
+                                            <div class="news-item item-creator">By {{value.user.username}}</div>
+                                        </Col>
+                                        <Divider/>
+                                    </Row>
+                                </div>
+                                <Page :total="10" :current="anno_page" show-sizer style="float: right;"/>
+                                <br><br>
+                            </div>
+                            <div v-else key="second">
+                                <div style="height: 35px;padding-top: 5px;text-align: left;font-size: 20px;margin: 0 0 25px 20px;">
+                                    <Button icon="md-arrow-round-back" style="margin-right: 10px;float: right" :loading="loading"
+                                            @click.native="back">Back
+                                    </Button>
+                                </div>
+                                <div style="font-size: 20px;font-weight: 700;margin-bottom: 10px" v-text="anno_item.news.title"></div>
+                                <div style="margin-bottom: 10px;">
+                                    发布日期:
+                                    <Time :time="anno_item.news.update_time" type="datetime"/>
+                                    &nbsp;&nbsp;发布者:<span v-text="anno_item.user.username"></span>
+                                </div>
+                                <div class="simditor">
+                                    <div class="simditor-markdown">
+                                        <div class="simditor-body new-content">
+                                            <div id="news-item-content" v-html="anno_item.news.content"></div>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    最后编辑于
+                                    <Time :time="anno_item.news.update_time" type="datetime"/>
+                                </div>
+                            </div>
+                        </transition>
+                    </Card>
+                    <Card v-else-if="show_flag[2]" key="2"></Card>
+                    <Card v-else-if="show_flag[3]" key="3"></Card>
+                    <Card v-else-if="show_flag[4]" key="4"></Card>
+                </transition>
             </Col>
             <Col span="3" style="margin-left: 10px">
                 <Card>
@@ -42,7 +88,7 @@
                         <Cell title="Announments" name="anno" :disabled="infoCellDisabled">
                             <Icon slot="icon" type="ios-chatboxes" size="20"/>
                         </Cell>
-                        <Cell title="Problems" name="problem" :disabled="infoCellDisabled">
+                        <Cell title="Problems" name="problems" :disabled="infoCellDisabled">
                             <Icon slot="icon" type="ios-browsers" size="20"/>
                         </Cell>
                         <Cell title="Submissions" name="submit" :disabled="infoCellDisabled">
@@ -60,6 +106,8 @@
 
 <script>
     import Api from '../../components/api';
+    import 'tar-simditor/styles/simditor.css'
+    import 'tar-simditor-markdown/styles/simditor-markdown.css'
 
     export default {
         name: "Contest",
@@ -124,6 +172,8 @@
                 anno_per_page: 10,
                 anno_data: [],
                 anno_table_loading: false,
+                anno_list_flag: true,//T:列表 F:详细信息
+                anno_item: null,//当前查看的公告
             }
         },
         methods: {
@@ -163,24 +213,45 @@
                     }, 1000);
                 }
             },
+            //获取新闻信息
+            getNewsInfo(id) {
+                var that = this;
+                for (var item of this.anno_data) {
+                    if (item.news.news_id === id) {
+                        that.anno_item = item;
+                        break;
+                    }
+                }
+                this.anno_list_flag = false;
+            },
+            back() {
+                this.anno_list_flag = true;
+            },
             //获取新闻
             getAnnos() {
                 this.anno_table_loading = true;
+                this.$Loading.start();
                 Api.findAnnosByContestId(this.contest_id, this.anno_page, this.anno_per_page).then(res => {
                     let result = res.data;
                     if (result.code == 200) {
                         this.anno_data = result.data.newsLink;
+                        this.$Loading.finish();
                     } else {
                         this.$Message.error(result.message);
+                        this.$Loading.error();
                     }
                     this.anno_table_loading = false;
                 }).catch(res => {
                     console.log(res);
+                    this.$Loading.error();
                     this.anno_table_loading = false;
                 });
             },
             //修改当前显示信息
             showContestCard(name) {
+                if (this.infoCellDisabled) {
+                    return;
+                }
                 switch (name) {
                     case "home": {
                         this.changeShowCard(0);
@@ -188,6 +259,7 @@
                     }
                     case "anno": {
                         this.changeShowCard(1);
+                        this.getAnnos();
                         break;
                     }
                     case "problems": {
@@ -270,6 +342,16 @@
 </script>
 
 <style scoped>
+    
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+    {
+        opacity: 0;
+    }
+    
     .card-content {
         margin: 10px 0 0 50px;
     }
@@ -279,5 +361,18 @@
         font-size: 20px;
         margin: 0 0 10px 20px;
         height: 35px;
+    }
+    
+    span.card-title {
+        text-align: left;
+        font-size: 20px;
+        margin: 0 0 10px 20px;
+        height: 35px;
+    }
+    
+    div.new-content {
+        text-align: left;
+        /*padding: 15px 50px 0 50px;*/
+        background: #f3f3f3;
     }
 </style>
