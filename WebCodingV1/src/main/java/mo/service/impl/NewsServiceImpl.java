@@ -53,6 +53,11 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    public List<NewsUserLink> findNewsByContestIdAndDefunct(Integer contest_id, int page, int per_page, String defunct) {
+        return makeLinkUser(newsMapper.findNewsByContestIdAndDefunct(contest_id, (page - 1) * per_page, per_page, defunct));
+    }
+
+    @Override
     public boolean deleteNews(Integer news_id) {
         return newsMapper.deleteNewsByNewsId(news_id) > 0;
     }

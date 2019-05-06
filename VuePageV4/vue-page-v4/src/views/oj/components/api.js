@@ -129,5 +129,16 @@ export default {
             url: "/api/api-oj/contest/" + contestId,
             method: "get",
         })
+    },
+
+    /**
+     * 查询指定竞赛的新闻
+     * @param contestId
+     */
+    findAnnosByContestId(contestId) {
+        return axios({
+            url: "/api/api-oj/contest/" + contestId + "/news",
+            method: "get",
+        })
     }
 }

@@ -110,4 +110,16 @@ public interface NewsMapper {
      */
     @Update("update news set defunct =#{state} where news_id = #{news_id}")
     int updateNewsDefunct(@Param("news_id") int news_id, @Param("state") String state);
+
+    /**
+     * 根据公开级别和竞赛Id查询新闻
+     *
+     * @param contest_id 竞赛Id
+     * @param start      起始
+     * @param per_page   每页数量
+     * @param defunct    公开级别
+     * @return
+     */
+    @Select("select * from news where contest_id = #{contest_id} and defunct = #{defunct}  limit #{start} ,#{per_page}")
+    List<News> findNewsByContestIdAndDefunct(@Param("contest_id") int contest_id, @Param("start") int start, @Param("per_page") int per_page, @Param("defunct") String defunct);
 }

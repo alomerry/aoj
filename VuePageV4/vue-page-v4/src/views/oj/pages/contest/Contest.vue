@@ -2,39 +2,58 @@
     <div>
         <Row>
             <Col span="20" style="margin-right: 10px;margin-left: 30px">
-                <Card>
+                <Card v-show="show_flag[0]">
                     <p class="card-title" v-text="infoData.length ==0?'':infoData[0].contest.title"></p>
                     <div slot="extra">
-                        <Row>
-                            <Col span="2">
-                                <Tag type="dot" style="margin-left: 10px;" color="warning">
-                                    <Time interval="1" type="relative" :time="restTime"></Time>
-                                </Tag>
-                            </Col>
-                        </Row>
+                        <Tag type="dot" :color="status_color">
+                            {{clock}}
+                        </Tag>
+                        <br>
                     </div>
                     <div style="width: 1200px;font-size: 15px;text-align: left;margin: 10px;padding: 7px">
-                        <span v-html="infoData .length ==0?'':infoData[0].contest.describes"></span>
+                        <span v-html="infoData.length ==0?'':infoData[0].contest.describes"></span>
                     </div>
                     <Table :data="infoData" :columns="infoCol" stripe
                            :loading="infoTableLoading"></Table>
                 </Card>
-                <!--<div style="margin:25px 10px 10px 10px;overflow: hidden">
-                    <div style="float: right;">
-                        <Page :total="totalPage" :current="page" :page-size="per_page" show-sizer show-elevator
-                              @on-change=""></Page>
+                <Card v-show="show_flag[1]">
+                    
+                    <p class="card-title">Contest Announcements</p>
+                    <div slot="extra">
+                        <Row>
+                            <Col span="2">
+                                <Button style="margin-left: 10px;" @click.native="" type="primary">
+                                    Refresh
+                                </Button>
+                            </Col>
+                        </Row>
                     </div>
-                </div>-->
-            </Col>
-            <!--<Col span="3">
-                <Card>
-                    <p slot="title" style="font-size: 18px;">Tag</p>
-                    <div>
-                        <Tag :color="tag_color[(item.tag_id%tag_color.length)]" v-for="(item) in tag_list" @click.native="getProblemsByTag(item.tag_id)">{{item.tagname}}</Tag>
-                    </div>
-                    <Button long ghost type="info" @click.native="" style="margin-top: 15px">Pick One</Button>
                 </Card>
-            </Col>-->
+                <Card v-show="show_flag[2]"></Card>
+                <Card v-show="show_flag[3]"></Card>
+                <Card v-show="show_flag[4]"></Card>
+            </Col>
+            <Col span="3" style="margin-left: 10px">
+                <Card>
+                    <CellGroup style="text-align: left" @on-click="showContestCard">
+                        <Cell title="OverView" name="home">
+                            <Icon slot="icon" type="md-home" size="20"/>
+                        </Cell>
+                        <Cell title="Announments" name="anno" :disabled="infoCellDisabled">
+                            <Icon slot="icon" type="ios-chatboxes" size="20"/>
+                        </Cell>
+                        <Cell title="Problems" name="problem" :disabled="infoCellDisabled">
+                            <Icon slot="icon" type="ios-browsers" size="20"/>
+                        </Cell>
+                        <Cell title="Submissions" name="submit" :disabled="infoCellDisabled">
+                            <Icon slot="icon" type="ios-create" size="20"/>
+                        </Cell>
+                        <Cell title="Rankings" name="rank" :disabled="infoCellDisabled">
+                            <Icon slot="icon" type="ios-podium" size="20"/>
+                        </Cell>
+                    </CellGroup>
+                </Card>
+            </Col>
         </Row>
     </div>
 </template>
@@ -46,6 +65,14 @@
         name: "Contest",
         data() {
             return {
+                show_flag: [
+                    true,//home_show_flag
+                    false,//anno_show_flag
+                    false,//problems_show_flag
+                    false,//submit_show_flag
+                    false,//rank_show_flag
+                ],
+
                 contest_id: this.$route.params.contest_id,
                 infoTableLoading: false,
                 infoCol: [
@@ -89,10 +116,13 @@
                     },
                 ],
                 infoData: [],
+                infoCellDisabled: true,
                 restTime: 0,
+                timer: null,
             }
         },
         methods: {
+            //获取竞赛信息
             getContest() {
                 this.infoTableLoading = true;
                 Api.findContestByContestId(this.contest_id).then(res => {
@@ -102,6 +132,8 @@
                             result.data.contest,
                         ];
                         this.restTime = this.infoData[0].contest.end_at - (new Date()).getTime();
+                        this.infoCellDisabled = this.infoData[0].contest.end_at < (new Date()).getTime();
+                        this.setTimer();
                         // this.infoData = result.data.contest;
 
                     } else {
@@ -114,11 +146,109 @@
                     this.infoTableLoading = false;
                 });
             },
+            //设置倒计时
+            setTimer() {
+                if (this.timer != null) {
+                    clearInterval(thit.timer);
+                    this.timer = null;
+                } else {
+                    let that = this;
+                    this.timer = setInterval(() => {
+                        that.restTime = that.restTime - 1000;
+                    }, 1000);
+                }
+            },
+            //获取新闻
+            getAnnos() {
+            
+            },
+            //修改当前显示信息
+            showContestCard(name) {
+                switch (name) {
+                    case "home": {
+                        this.changeShowCard(0);
+                        break;
+                    }
+                    case "anno": {
+                        this.changeShowCard(1);
+                        break;
+                    }
+                    case "problems": {
+                        this.changeShowCard(2);
+                        break;
+                    }
+                    case "submit": {
+                        this.changeShowCard(3);
+                        break;
+                    }
+                    case "rank": {
+                        this.changeShowCard(4);
+                        break;
+                    }
+                }
+            },
+            //显示卡片
+            changeShowCard(inx) {
+                this.show_flag = [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                ];
+                this.show_flag[inx] = true;
+            }
         },
-        computed: {},
+        computed: {
+            //时钟
+            clock: function () {
+                if (this.infoData.length == 0) {
+                    return "Finished";
+                } else {
+                    let item = this.infoData[0].contest;
+                    let date = new Date().getTime();
+                    if (item.start_at > date) {
+                        return "Unstarted";
+                    } else if (item.end_at > date) {
+                        let now = this.restTime;
+                        let h = Math.floor(now / 3600000);
+                        now = now - h * 3600000;
+                        let m = Math.floor(now / 60000);
+                        now = now - m * 60000;
+                        let s = Math.floor(now / 1000);
+                        return h + ":" + m + ":" + s;
+                    } else {
+                        return "Finished";
+                    }
+                }
+
+            },
+            //状态颜色
+            status_color: function () {
+                if (this.infoData.length == 0) {
+                    return "error";
+                } else {
+                    let item = this.infoData[0].contest;
+                    let date = new Date().getTime();
+                    if (item.start_at > date) {
+                        return "info";
+                    } else if (item.end_at > date) {
+                        return "success";
+                    } else {
+                        return "error";
+                    }
+                }
+            }
+        },
         mounted() {
             this.getContest();
-        }
+        },
+        beforeDestroy() {
+            if (this.timer) {
+                clearInterval(this.timer);// 在Vue实例销毁前，清除我们的定时器
+            }
+        },
+
     }
 </script>
 
