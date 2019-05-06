@@ -110,7 +110,7 @@
                         
                         <div slot="extra">
                             <Row>
-                                <Col span="3" style="margin-top: 4px;">
+                                <Col span="3" style="margin-top: 4px;margin-right: 30px">
                                     <i-switch v-model="onlyShowMe" size="large" @on-change="">
                                         <span slot="open">Mine</span>
                                         <span slot="close">All</span>
@@ -259,7 +259,7 @@
 
                 onlyShowMe: false,
                 status_page: 1,
-                status_page_per_page: 10,
+                status_per_page: 10,
                 status_page_data: [],
                 status_page_table_loading: false,
                 status_col: [
@@ -505,7 +505,7 @@
             //获取提交
             getSolutions() {
                 this.status_page_table_loading = true;
-                Api.getSolutions(this.current, this.per_page, this.$store.state.token).then(res => {
+                Api.getContestSolutions(this.contest_id, this.status_page, this.status_per_page).then(res => {
                     let result = res.data;
                     if (result.code === 401) {
                         this.$Message.error("身份信息失效，请重新登录");

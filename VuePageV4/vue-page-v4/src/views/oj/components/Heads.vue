@@ -84,12 +84,14 @@
                                 <Icon type="ios-arrow-down"></Icon>
                             </a>
                             <DropdownMenu slot="list">
-                                <DropdownItem>Setting</DropdownItem>
+                                <DropdownItem>
+                                    <router-link to="/user-home">Home</router-link>
+                                </DropdownItem>
                                 <DropdownItem>Messages</DropdownItem>
                                 <template v-if="admin">
                                     <DropdownItem v-on:click.native="GoToAdmin">Control</DropdownItem>
                                 </template>
-                                <DropdownItem @click.native="logout">Logout</DropdownItem>
+                                <DropdownItem :divided="true" @click.native="logout">Logout</DropdownItem>
                             </DropdownMenu>
                         </template>
                     </Dropdown>

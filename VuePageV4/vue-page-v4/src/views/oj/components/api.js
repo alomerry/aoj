@@ -60,15 +60,11 @@ export default {
      * 获取solutions集合
      * @param page 页码
      * @param per_page 每页数量
-     * @param jwt 令牌
      */
-    getSolutions(contestId, page, per_page, jwt) {
+    getContestSolutions(contestId, page, per_page) {
         return axios({
             url: "/api/api-oj/contest/" + contestId + "/solutions?page=" + page + "&per_page=" + per_page,
             method: "get",
-            headers: {
-                "jwt": jwt,
-            }
         })
     },
 
