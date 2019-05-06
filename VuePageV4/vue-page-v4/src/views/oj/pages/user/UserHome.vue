@@ -4,13 +4,13 @@
             <Avatar class="avatar" icon="ios-person" size="large" shape="circle" src="https://qduoj.com/public/avatar/default.png"/>
         </div>
         <Card style="margin:130px 250px 0 250px;padding-top: 110px">
-            <p class="info-uname">morizunzhu</p>
+            <p class="info-uname" v-text="user == null?'':user.username"></p>
             <div style="padding: 0 150px 0 150px">
                 <hr/>
                 <Row style="margin-top: 20px">
                     <Col span="7">
                         <span class="info-detail-title">Solved</span><br><br>
-                        <span class="info-detail-val">666</span>
+                        <span class="info-detail-val" v-text="user == null?'':user.solved"></span>
                     </Col>
                     <Col span="1">
                         <Divider type="vertical"/>
@@ -21,7 +21,7 @@
                     </Col>
                     <Col span="7">
                         <span class="info-detail-title">Submissions</span><br><br>
-                        <span class="info-detail-val">666</span>
+                        <span class="info-detail-val" v-text="user == null?'':user.submit"></span>
                     </Col>
                     <Col span="1">
                         <Divider type="vertical"/>
@@ -32,7 +32,7 @@
                     </Col>
                     <Col span="7">
                         <span class="info-detail-title">school</span><br><br>
-                        <span class="info-detail-val">666</span>
+                        <span class="info-detail-val" v-text="user == null?'':user.school"></span>
                     </Col>
                 </Row>
             </div>
@@ -48,13 +48,31 @@
         name: "UserHome",
         data() {
             return {
-                username: null,
+                username: this.$route.query.username,
+                user: null,
             }
         },
         methods: {
-            getUser(username) {
-
+            getUser() {
+                if (this.username == null) {
+                    this.user = this.$store.state.user;
+                } else {
+                    Api.findUserInfoByUserName(this.username).then(res => {
+                        let result = res.data;
+                        if (result.code == 200) {
+                            this.user = result.data.user;
+                        } else {
+                            this.$Message.error(result.message);
+                        }
+                    }).catch(res => {
+                        console.log(res);
+                    });
+                }
             }
+        },
+        mounted() {
+            // console.log(this.$route);
+            this.getUser();
         }
     }
 </script>

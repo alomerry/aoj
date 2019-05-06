@@ -331,7 +331,11 @@
                         key: 'author',
                         align: 'center',
                         render: (h, params) => {
-                            return h('a', {}, params.row.user.nickname);
+                            return h('router-link', {
+                                attrs: {
+                                    // to: "/user-home" + params.row.user.username == null ? "" : "?username=" + params.row.user.username,
+                                },
+                            }, params.row.user.nickname);
                         }
                     },
                     {
