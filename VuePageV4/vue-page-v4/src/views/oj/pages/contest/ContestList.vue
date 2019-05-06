@@ -1,0 +1,106 @@
+<template>
+    <div class="card-content">
+        <transition name="fade" mode="out-in">
+            <div v-if="!show_detail_flag" key="first">
+                <Card style="margin: 15px">
+                    <div slot="title" style="height: 30px;padding-top: 5px;text-align: left;padding-left: 30px">
+                        <span style="font-size: 25px;font-weight: 400;">Contests</span>
+                    </div>
+                    <div slot="extra">
+                        <Button icon="md-refresh" style="float: right;margin-right: 20px" @click.native="getContests"></Button>
+                        <br><br>
+                    </div>
+                    <Row v-for="(item,index) in contests">
+                        <div style="padding-bottom: 40px;">
+                            <Col span="12" style="float: left;text-align: left;padding-left: 90px;">
+                                <a v-text="item.title" style="font-size: 21px;color: black"></a><br>
+                                <Icon size="18" color="blue" type="ios-calendar-outline"/>
+                                <Time :time="item.start_at" type="datetime" style="margin-right: 10px"/>
+                                <Icon size="18" color="blue" type="ios-timer-outline"/>
+                                <Time :time="item.end_at"/>
+                            </Col>
+                            <Col span="12" style="float: right">
+                                <Tag type="dot" :color="isStarted(item.start_at,item.end_at) == 0?'primary':
+                                    isStarted(item.start_at,item.end_at)==1?'success':'warning'">
+                                    {{isStarted(item.start_at,item.end_at) == 0?"Unstart":
+                                    isStarted(item.start_at,item.end_at)==1?"UnderWay":"Ended"}}
+                                </Tag>
+                            </Col>
+                        </div>
+                        <Divider/>
+                    </Row>
+                    <Page :current="page" style="float: right" :total="total" show-sizer
+                          @on-change=""
+                          @on-page-size-change=""/>
+                    <br><br>
+                </Card>
+            </div>
+            <div v-else key="second">
+            
+            </div>
+        </transition>
+    </div>
+</template>
+
+<script>
+    import Api from '../../components/api';
+
+    export default {
+        name: "ContestList",
+        data() {
+            return {
+                show_detail_flag: false,
+
+                contests: null,
+                page: 1,
+                per_page: 10,
+                total: 1,
+            }
+        },
+        methods: {
+            getContests() {
+                Api.findContestByPage(this.page, this.per_page).then(res => {
+                    let result = res.data;
+                    if (result.code == 200) {
+                        this.contests = result.data.contests;
+                    } else {
+                        this.$Message.error(result.message);
+                    }
+                }).catch(res => {
+                    console.log(res);
+                })
+            },
+
+            isStarted(start, end) {
+                let now = new Date().getTime();
+                if (now >= start && now <= end) {
+                    return 1;
+                } else if (now < start) {
+                    return 0;
+                } else {
+                    return 2;
+                }
+            }
+        },
+        mounted() {
+            this.getContests();
+        }
+    }
+</script>
+
+<style scoped>
+    .card-content {
+        margin: 10px 20px 0 20px;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+    {
+        opacity: 0;
+    }
+</style>

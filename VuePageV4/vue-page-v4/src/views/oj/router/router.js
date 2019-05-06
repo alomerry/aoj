@@ -14,6 +14,12 @@ const routes = [
         component: resolve => require(['../pages/status/Status'], resolve)
     },
     {
+        path: '/contests',
+        name: 'contests',
+        meta: {title: 'Contests'},
+        component: resolve => require(['../pages/contest/ContestList'], resolve)
+    },
+    {
         path: '/problems',
         meta: {title: 'Problems'},
         name: 'problems',

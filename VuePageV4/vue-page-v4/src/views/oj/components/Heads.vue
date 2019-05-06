@@ -38,7 +38,7 @@
                         <Icon type="ios-people"/>
                         Problems
                     </MenuItem>
-                    <MenuItem name="contents" to="/contents">
+                    <MenuItem name="contests" to="/contests">
                         <Icon type="ios-stats"/>
                         Contents
                     </MenuItem>

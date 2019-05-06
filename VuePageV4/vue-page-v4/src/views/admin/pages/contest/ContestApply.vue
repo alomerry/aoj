@@ -15,6 +15,11 @@
                         <br><br>
                     </div>
                     <Table :columns="contest_col" :data="contest_data" :loading="contest_table_loading"></Table>
+                    <br>
+                    <Page :current="contest_page" style="float: right" :total="contest_total" show-sizer
+                          @on-change="pageChange"
+                          @on-page-size-change="pageSizeChange"/>
+                    <br><br>
                 </Card>
             </div>
             <div v-else key="second">
@@ -29,6 +34,11 @@
                         <br><br>
                     </div>
                     <Table :columns="apply_col" :data="apply_data"></Table>
+                    <br>
+                    <Page :current="apply_page" size="small" style="float: right" :total="apply_total" show-sizer
+                          @on-change=""
+                          @on-page-size-change=""/>
+                    <br>
                 </Card>
             </div>
         </transition>
@@ -44,6 +54,12 @@
         name: "ContestApply",
         data() {
             return {
+                contest_page: 1,
+                contest_per_page: 10,
+                contest_total: 10,//TODO 计算total
+                apply_page: 1,
+                apply_per_page: 10,
+                apply_total: 10,
                 location_flag: true,//true:contest  false:apply
                 contest_table_loading: false,//竞赛表加载标记
                 contest_data: [],
@@ -148,6 +164,7 @@
                         title: "apply time",
                         align: "center",
                         key: "contestApply.apply_time",
+                        sortable: true,
                         render: (h, params) => {
                             return h("Time", {
                                 props: {
@@ -337,13 +354,16 @@
                     });
                 });
             },
-            //同意申请
-            AgreeApplication() {
-
-            },
-            //拒绝申请
-            RefushApplication() {
-
+            //每页数量修改回调函数
+            pageSizeChange(pageSize) {
+                this.per_page = pageSize;
+                this.getContests();
+            }
+            ,
+            //页码修改时的回调函数
+            pageChange(page) {
+                this.page = page;
+                this.getContests();
             }
         },
         mounted() {
