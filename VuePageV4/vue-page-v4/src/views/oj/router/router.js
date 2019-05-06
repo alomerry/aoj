@@ -21,7 +21,7 @@ const routes = [
     },
     {
         path: '/contest/:contest_id',
-        name: 'contest',
+        name: 'Contest',
         meta: {title: 'Contest'},
         component: resolve => require(['../pages/contest/Contest'], resolve)
     },

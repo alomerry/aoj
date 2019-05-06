@@ -117,6 +117,17 @@ export default {
         return axios({
             url: "/api/api-oj/contests?page=" + page + "&per_page=" + per_page,
             method: "get",
+        });
+    },
+
+    /**
+     * 查询指定竞赛
+     * @param contestId 竞赛Id
+     */
+    findContestByContestId(contestId) {
+        return axios({
+            url: "/api/api-oj/contest/" + contestId,
+            method: "get",
         })
     }
 }

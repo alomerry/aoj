@@ -18,7 +18,7 @@
                                 <Icon size="18" color="blue" type="ios-calendar-outline"/>
                                 <Time :time="item.start_at" type="datetime" style="margin-right: 10px"/>
                                 <Icon size="18" color="blue" type="ios-timer-outline"/>
-                                <Time :time="item.end_at"/>
+                                <Time :time="item.end_at" type="relative"/>
                             </div>
                         </Col>
                         <Col span="12" style="float: right;margin-top: 10px">

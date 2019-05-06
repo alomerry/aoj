@@ -22,6 +22,7 @@ public class ContestControllerImpl implements ContestController {
     @RequestMapping(value = "/contests", method = RequestMethod.GET)
     public Result contests(@RequestParam(value = "page", defaultValue = "1") String page,
                            @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
+        //todo 查询到公开竞赛和自己参加的隐私竞赛
         JSONObject contests = new JSONObject();
         contests.put("contests", contestService.findContestsByPageAndDefunct(Integer.valueOf(page), Integer.valueOf(per_page), new Integer[]{1}));
         return new Result().setCode(ResultCode.OK).setData(contests);

@@ -28,6 +28,8 @@ public class Contest {
     private boolean access;
     //竞赛描述
     private String describes;
+    //竞赛Tip
+    private String info;
     //创建者Id
     private Integer user_id;
     //状态

@@ -183,11 +183,14 @@
                 }).then(res => {
                     console.info('后台返回的数据', res.data);
                     if (res.data.code === 200) {
+                        this.$store.dispatch('logout');
+                        this.user = null;
                     } else {
+                        this.$store.dispatch('logout');
+                        this.user = null;
+                        console.log(res.data.message);
                     }
                 });
-                this.$store.dispatch('logout');
-                this.user = null;
             },
             GoToAdmin() {
                 window.location.href = "/admin.html";
