@@ -41,4 +41,13 @@ public interface ContestApplyService {
      * @return
      */
     boolean updateContestApply(Integer id, Integer status);
+
+    /**
+     * 申请竞赛
+     *
+     * @param user_id    用户Id
+     * @param contest_id 竞赛Id
+     * @return
+     */
+    boolean applyContest(Integer user_id, Integer contest_id);
 }

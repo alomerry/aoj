@@ -244,6 +244,31 @@
                             return h("span", {}, params.row.created_by.nickname)
                         }
                     },
+                    {
+                        title: "Operate",
+                        align: "center",
+                        render: (h, params) => {
+                            return h("Button", {
+                                props: {
+                                    type: "info",
+                                },
+                                on: {
+                                    click: () => {
+                                        Api.applyContestByContestId(this.contest_id, this.$store.state.token).then(res => {
+                                            let result = res.data;
+                                            if (result.code == 200) {
+                                                this.$Message.success("Apply Success!");
+                                            } else {
+                                                this.$Message.error("Apply Failed!");
+                                            }
+                                        }).catch(res => {
+                                            console.log(res);
+                                        });
+                                    },
+                                }
+                            }, "Apply");
+                        }
+                    },
                 ],
                 infoData: [],
                 infoCellDisabled: true,

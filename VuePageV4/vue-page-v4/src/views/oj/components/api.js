@@ -43,6 +43,21 @@ export default {
     },
 
     /**
+     * 申请竞赛
+     * @param contestId 竞赛Id
+     * @param jwt 令牌
+     */
+    applyContestByContestId(contestId, jwt) {
+        return axios({
+            url: "/api/api-oj/contest_apply",
+            method: 'post',
+            headers: {
+                "jwt": jwt,
+            }
+        })
+    },
+
+    /**
      * 查询制定Id题目
      * @param problem_id
      * @returns {AxiosPromise}

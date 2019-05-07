@@ -48,4 +48,14 @@ public interface ContestApplyMapper {
      */
     @Update("update contest_apply set status = #{status} where id = #{id}")
     int updateContestApplyStatusById(@Param("id") Integer id, @Param("status") int status);
+
+    /**
+     * 新建申请
+     *
+     * @param contest_id 竞赛Id
+     * @param user_id    用户Id
+     * @return
+     */
+    @Insert("insert into contest_apply (contest_id,user_id) values (#{contest_id},#{user_id})")
+    int insertNewContestApply(@Param("contest_id") Integer contest_id, @Param("user_id") Integer user_id);
 }

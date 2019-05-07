@@ -88,6 +88,11 @@ public class ContestApplyServiceImpl implements ContestApplyService {
         return false;
     }
 
+    @Override
+    public boolean applyContest(Integer user_id, Integer contest_id) {
+        return false;
+    }
+
     private List<ContestApplyLink> makeLink(List<ContestApply> contestApplies) {
         List<ContestApplyLink> contestApplyLinks = new ArrayList<>(contestApplies.size() + 3);
         for (ContestApply item : contestApplies) {
