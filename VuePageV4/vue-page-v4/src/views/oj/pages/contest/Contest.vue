@@ -205,6 +205,7 @@
 
                 contest_id: this.$route.params.contest_id,
                 infoTableLoading: false,
+                apply_btn_loading: false,
                 infoCol: [
                     {
                         title: "start_at",
@@ -251,11 +252,11 @@
                             return h("Button", {
                                 props: {
                                     type: "info",
-                                    loading: false,
+                                    loading: this.apply_btn_loading,
                                 },
                                 on: {
                                     click: () => {
-                                        this.loading = true;
+                                        this.apply_btn_loading = true;
                                         Api.applyContestByContestId(this.contest_id, this.$store.state.token).then(res => {
                                             let result = res.data;
                                             if (result.code == 200) {
@@ -263,10 +264,10 @@
                                             } else {
                                                 this.$Message.error(result.message);
                                             }
-                                            this.loading = false;
+                                            this.apply_btn_loading = false;
                                         }).catch(res => {
                                             console.log(res);
-                                            this.loading = false;
+                                            this.apply_btn_loading = false;
                                         });
                                     },
                                 }
