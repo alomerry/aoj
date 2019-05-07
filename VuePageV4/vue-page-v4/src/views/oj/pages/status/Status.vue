@@ -221,7 +221,7 @@
             },
             getSolutions() {
                 this.tableLoadingFlag = true;
-                Api.getSolutions(this.current, this.per_page, this.$store.state.token).then(res => {
+                Api.getSolutions(this.page, this.per_page, this.$store.state.token).then(res => {
                     let result = res.data;
                     if (result.code === 401) {
                         this.$Message.error("身份信息失效，请重新登录");

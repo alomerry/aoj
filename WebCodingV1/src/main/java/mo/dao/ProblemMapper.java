@@ -168,4 +168,13 @@ public interface ProblemMapper {
      */
     @Update("update problems set defunct =#{defunct} where problem_id = #{problem_id}")
     int updateDefunctByProblemId(@Param("problem_id") Integer problem_id, @Param("defunct") String defunct);
+
+    /**
+     * 添加一次题目提交数
+     *
+     * @param problem_id
+     * @return
+     */
+    @Update("update problems set submit = submit+1 where problem_id = #{problem_id}")
+    int addProblemOneSubmit(@Param("problem_id") Integer problem_id);
 }

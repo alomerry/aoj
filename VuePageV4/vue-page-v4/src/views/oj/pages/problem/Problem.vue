@@ -303,6 +303,7 @@
             },
             submitCode() {
                 if (this.contest_id == null) {
+                    console.log("提交题目");
                     this.submitSingleCode();
                 } else {
                     this.submitContestCode();
@@ -347,7 +348,7 @@
                 });
             },
             submitContestCode() {
-
+                //判断该用户是否在竞赛中
             },
         }
     }

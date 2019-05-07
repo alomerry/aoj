@@ -45,8 +45,7 @@ public class SolutionServiceImpl implements SolutionService {
                 solution.getIp(),
                 solution.getCode_lenght());
         if (res > 0) {
-            int lines = solutionMapper.insertCodeIntoSource(solution_id, sourceCode.getSource());
-            if (lines > 0) {
+            if (problemMapper.addProblemOneSubmit(solution.getProblem_id()) > 0 && solutionMapper.insertCodeIntoSource(solution_id, sourceCode.getSource()) > 0) {
                 return true;
             } else {
                 logger.error("source code 插入失败");
