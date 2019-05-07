@@ -46,18 +46,20 @@
                         <Icon type="ios-construct"/>
                         Status
                     </MenuItem>
-                    <MenuItem name="rank" to="/rank">
-                        <Icon type="ios-construct"/>
-                        Rank
-                    </MenuItem>
+                    <Submenu name="rank">
+                        <template slot="title">
+                            <Icon type="ios-construct"/>
+                            Rank
+                        </template>
+                        <MenuItem name="2-1" to="/acm-rank">ACM Rank</MenuItem>
+                    </Submenu>
                     <Submenu name="about">
                         <template slot="title">
                             <Icon type="ios-help-circle"/>
                             About
                         </template>
-                        <MenuItem name="3-1" @click.native="" to="/about">A</MenuItem>
-                        <MenuItem name="3-2">B</MenuItem>
-                        <MenuItem name="3-3">C</MenuItem>
+                        <MenuItem name="3-1" to="/about">Judger</MenuItem>
+                        <MenuItem name="3-3" to="/FAQ">FAQ</MenuItem>
                     </Submenu>
                     <!--<Submenu name="7">
                       <template slot="title">
@@ -86,6 +88,9 @@
                             <DropdownMenu slot="list">
                                 <DropdownItem>
                                     <router-link to="/user-home">Home</router-link>
+                                </DropdownItem>
+                                <DropdownItem>
+                                    <router-link to="/setting">Settings</router-link>
                                 </DropdownItem>
                                 <DropdownItem>Messages</DropdownItem>
                                 <template v-if="admin">

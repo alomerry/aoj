@@ -335,12 +335,12 @@ public class ProblemServiceImpl implements ProblemService {
         sbf.append("(");
         boolean index = true;
         for (ProblemTag pId : problemTags) {
-            sbf.append("'").append(pId.getProblem_id()).append("'");
             if (index) {
                 index = false;
             } else {
                 sbf.append(",");
             }
+            sbf.append("'").append(pId.getProblem_id()).append("'");
         }
         sbf.append(")");
         logger.info("查询题目Ids[{}]", sbf.toString());

@@ -208,6 +208,7 @@
                     description: ''
                 },
                 reset_modal: false,
+                contest_id: this.$route.params.contest_id,
             }
         },
         computed: {
@@ -301,6 +302,13 @@
                 this.reset_modal = false;
             },
             submitCode() {
+                if (this.contest_id == null) {
+                    this.submitSingleCode();
+                } else {
+                    this.submitContestCode();
+                }
+            },
+            submitSingleCode() {
                 this.submitLoadingFlag = true;
                 let code = editor_i.getValue();
                 let submit = {
@@ -337,7 +345,10 @@
                     console.log(res);
                     this.$Message.error(res.message);
                 });
-            }
+            },
+            submitContestCode() {
+
+            },
         }
     }
 </script>

@@ -39,6 +39,6 @@ public class Solution {
     private Timestamp create_at;
     //判题时间
     private Timestamp judgetime;
-
-
+    //AC则为0,错误一题即减一
+    private Integer point;
 }

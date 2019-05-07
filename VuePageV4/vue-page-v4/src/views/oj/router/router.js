@@ -8,6 +8,18 @@ Vue.use(iView);
 const routes = [
     /*       index      */
     {
+        path: '/about',
+        name: 'judger',
+        meta: {title: 'Judger'},
+        component: resolve => require(['../pages/about/Judger'], resolve)
+    },
+    {
+        path: '/FAQ',
+        name: 'FAQ',
+        meta: {title: 'FAQ'},
+        component: resolve => require(['../pages/about/FAQ'], resolve)
+    },
+    {
         path: '/status',
         name: 'status',
         meta: {title: 'Status'},
@@ -44,10 +56,22 @@ const routes = [
         component: resolve => require(['../pages/Home'], resolve)
     },
     {
+        path: '/contest/:contest_id/problem/:problem_id',
+        meta: {title: 'Problem'},
+        name: 'problem',
+        component: resolve => require(['../pages/problem/Problem'], resolve)
+    },
+    {
         path: '/problem/:problem_id',
         meta: {title: 'Problem'},
         name: 'problem',
         component: resolve => require(['../pages/problem/Problem'], resolve)
+    },
+    {
+        path: '/acm-rank',
+        meta: {title: 'Acm-rank'},
+        name: 'acm-rank',
+        component: resolve => require(['../pages/rank/ACMRank'], resolve)
     },
     {
         path: '/',

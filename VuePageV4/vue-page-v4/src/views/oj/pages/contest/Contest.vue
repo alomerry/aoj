@@ -373,7 +373,8 @@
                                     fontSize: '15px'
                                 },
                                 attrs: {
-                                    to: "/problem/" + params.row.problem_id,
+                                    // to: "/problem/" + params.row.problem_id,
+                                    to: "/contest/" + contest_id + "/problem/" + params.row.problem_id,
                                 },
                                 on: {
                                     click: () => {
@@ -629,9 +630,14 @@
                         break;
                     }
                     case "problems": {
-                        this.changeShowCard(2);
-                        this.getProblems();
-                        break;
+                        if (this.infoData[0].contest.start_at > (new Date()).getTime()) {
+                            this.$Message.warning("Contest haven't started!");
+                            return;
+                        } else {
+                            this.changeShowCard(2);
+                            this.getProblems();
+                            break;
+                        }
                     }
                     case "submit": {
                         this.changeShowCard(3);
