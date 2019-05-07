@@ -251,18 +251,22 @@
                             return h("Button", {
                                 props: {
                                     type: "info",
+                                    loading: false,
                                 },
                                 on: {
                                     click: () => {
+                                        this.loading = true;
                                         Api.applyContestByContestId(this.contest_id, this.$store.state.token).then(res => {
                                             let result = res.data;
                                             if (result.code == 200) {
                                                 this.$Message.success("Apply Success!");
                                             } else {
-                                                this.$Message.error("Apply Failed!");
+                                                this.$Message.error(result.message);
                                             }
+                                            this.loading = false;
                                         }).catch(res => {
                                             console.log(res);
+                                            this.loading = false;
                                         });
                                     },
                                 }

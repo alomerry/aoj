@@ -58,4 +58,14 @@ public interface ContestApplyMapper {
      */
     @Insert("insert into contest_apply (contest_id,user_id) values (#{contest_id},#{user_id})")
     int insertNewContestApply(@Param("contest_id") Integer contest_id, @Param("user_id") Integer user_id);
+
+    /**
+     * 根据竞赛Id和用户Id查询申请
+     *
+     * @param contest_id 竞赛Id
+     * @param user_id    用户Id
+     * @return
+     */
+    @Select("select count(id) from contest_apply where contest_id = #{contest_id} and user_id = #{user_id}")
+    int getNumbersByContestIdAndUserId(@Param("contest_id") Integer contest_id, @Param("user_id") Integer user_id);
 }

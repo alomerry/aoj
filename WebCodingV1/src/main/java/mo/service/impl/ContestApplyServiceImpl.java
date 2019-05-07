@@ -90,7 +90,12 @@ public class ContestApplyServiceImpl implements ContestApplyService {
 
     @Override
     public boolean applyContest(Integer user_id, Integer contest_id) {
-        return false;
+        return contestApplyMapper.insertNewContestApply(contest_id, user_id) > 0;
+    }
+
+    @Override
+    public boolean checkExistByContestIdAndUserId(Integer user_id, Integer contest_id) {
+        return contestApplyMapper.getNumbersByContestIdAndUserId(contest_id, user_id) > 0;
     }
 
     private List<ContestApplyLink> makeLink(List<ContestApply> contestApplies) {

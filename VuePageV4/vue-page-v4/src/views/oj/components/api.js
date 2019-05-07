@@ -49,7 +49,7 @@ export default {
      */
     applyContestByContestId(contestId, jwt) {
         return axios({
-            url: "/api/api-oj/contest_apply",
+            url: "/api/api-oj/contest/" + contestId + "/contest_apply",
             method: 'post',
             headers: {
                 "jwt": jwt,

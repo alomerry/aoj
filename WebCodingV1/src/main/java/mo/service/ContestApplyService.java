@@ -50,4 +50,13 @@ public interface ContestApplyService {
      * @return
      */
     boolean applyContest(Integer user_id, Integer contest_id);
+
+    /**
+     * 根据用户Id和竞赛Id查询申请
+     *
+     * @param user_id    用户Id
+     * @param contest_id 竞赛Id
+     * @return
+     */
+    boolean checkExistByContestIdAndUserId(Integer user_id, Integer contest_id);
 }
