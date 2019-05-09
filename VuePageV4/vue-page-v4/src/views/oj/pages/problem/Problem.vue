@@ -1,5 +1,13 @@
 <template>
     <div class="card-content">
+        <Modal v-model="echart_detail_flag" width="560">
+            <div style="width: 520px;height: 580px" id="detail">
+            </div>
+            <br><br><br><br>
+            <div slot="footer">
+                <Button @click="echart_detail_flag = false">Close</Button>
+            </div>
+        </Modal>
         <div>
             <Modal v-model="reset_modal" width="360">
                 <p slot="header" style="color:#ffb700;text-align:center;height:45px;overflow: unset">
@@ -127,7 +135,7 @@
                     <div style="float: left">
                         <Icon type="ios-stats" size="24"/>&nbsp;&nbsp;
                         <span style="font-size: 15px;">Statistic</span>
-                        <Button size="small" style="margin-left: 50px">Detail</Button>
+                        <Button size="small" style="margin-left: 50px" @click.native="draw_detail">Detail</Button>
                     </div>
                     <br>
                     <br>
@@ -171,6 +179,7 @@
         },
         data() {
             return {
+                echart_detail_flag: false,
                 themeList: [
                     {
                         value: 'darcula',
@@ -232,7 +241,7 @@
                 direction: "ltr",
             });
             editor_i.setSize('1450px', '400px');
-
+            // this.draw();
         },
         methods: {
             loadingProblemDetail() {
@@ -278,6 +287,53 @@
                             },
                             data: [
                                 {value: ac, name: 'AC', itemStyle: {color: '#19be6b'}},
+                                {value: wa, name: 'WA', itemStyle: {color: 'LightPink'}}
+                            ],
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                });
+            },
+            draw_detail() {
+                this.echart_detail_flag = true;
+                let ac = 10, wa = 31, tle = 12, mle = 4, re = 3, ce = 9;
+                let myChart = echarts.init(document.getElementById('detail'), 'macarons');// 绘制图表
+                myChart.setOption({
+                    title: {},
+                    //图例组件
+                    legend: {
+                        orient: 'horizontal',//图例列表布局 水平
+                        data: ['AC', 'WA', 'TLE', 'MLE', 'CE', 'RE'],//数据数组
+                    },
+                    tooltip: {
+                        show: false,
+                        formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    },
+                    toolbox: {},
+                    animationType: 'scale',
+                    animationEasing: 'elasticOut',
+                    series: [
+                        {
+                            name: '访问来源',
+                            type: 'pie',
+                            radius: '85%',
+                            center: ['50%', '60%'],
+                            label: {
+                                position: 'inner',
+                                formatter: "{b}:{c}\n({d}%)"
+                            },
+                            data: [
+                                {value: ac, name: 'AC', itemStyle: {color: '#19be6b'}},
+                                {value: tle, name: 'TLE', itemStyle: {color: '#ffaf00'}},
+                                {value: mle, name: 'MLE', itemStyle: {color: '#ff0900'}},
+                                {value: ce, name: 'CE', itemStyle: {color: '#b9c400'}},
+                                {value: re, name: 'RE', itemStyle: {color: '#ff1888'}},
                                 {value: wa, name: 'WA', itemStyle: {color: 'LightPink'}}
                             ],
                             itemStyle: {
