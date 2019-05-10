@@ -311,7 +311,7 @@
                         orient: 'horizontal',//图例列表布局 水平
                         data: ['AC', 'WA', 'TLE', 'MLE', 'CE', 'RE'],//数据数组
                     },
-                    tooltip: {
+                    tooltip: {//提示
                         show: false,
                         formatter: "{a} <br/>{b}: {c} ({d}%)"
                     },
