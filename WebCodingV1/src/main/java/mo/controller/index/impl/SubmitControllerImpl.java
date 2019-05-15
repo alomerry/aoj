@@ -63,7 +63,6 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
     }
 
     @Override
-    @AuthCheck({RequiredType.JWT})
     @ResponseBody
     @RequestMapping(value = "/solutions", method = RequestMethod.GET)
     public Result getSolutions(@RequestParam(value = "page", defaultValue = "1") String page,

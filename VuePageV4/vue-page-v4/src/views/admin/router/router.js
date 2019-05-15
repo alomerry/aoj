@@ -69,6 +69,14 @@ const routes = [
      * Contest
      */
     {
+        path: "/admin/contest/contest_status",
+        name: 'ContestStatus',
+        meta: {
+            title: 'Online Judge'
+        },
+        component: resolve => require(['../pages/contest/ContestStatus'], resolve),
+    },
+    {
         path: "/admin/contest/:contest_id/announcement",
         name: 'AnnouncementAdd',
         meta: {

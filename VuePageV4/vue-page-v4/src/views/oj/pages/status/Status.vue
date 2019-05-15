@@ -145,7 +145,7 @@
                         render: (h, params) => {
                             return h('router-link', {
                                 attrs: {
-                                    to: "/user-home" + params.row.user == null ? "" : "?username=" + params.row.user.username,
+                                    to: "/user-home" + (params.row.user == null ? "" : "?username=" + params.row.user.username),
                                 },
                             }, params.row.user.nickname);
                         }
@@ -223,6 +223,7 @@
                 this.tableLoadingFlag = true;
                 Api.getSolutions(this.page, this.per_page, this.$store.state.token).then(res => {
                     let result = res.data;
+                    // console.log(result);
                     if (result.code === 401) {
                         this.$Message.error("身份信息失效，请重新登录");
                     } else if (result.code === 200) {
@@ -350,8 +351,10 @@
         },
         created() {
             this.updateActiveClass(this.$route.path);
-            this.getSolutions();
             this.debouncedsearchData = debounce(this.DelaySearchTable, 500, null);//延时加载
+        },
+        mounted() {
+            this.getSolutions();
         },
         watch: {
             searchKeyWord: function (newVal, oldVal) {

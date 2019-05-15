@@ -253,6 +253,7 @@
                                 props: {
                                     type: "info",
                                     loading: this.apply_btn_loading,
+                                    disabled: this.infoCellDisabled,
                                 },
                                 on: {
                                     click: () => {

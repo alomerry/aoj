@@ -55,10 +55,22 @@
         methods: {
             getUser() {
                 if (this.username == null) {
-                    this.user = this.$store.state.user;
+                    Api.findUserInfoByUserName(this.$store.state.user.username).then(res => {
+                        let result = res.data;
+                        // console.log(result);
+                        if (result.code == 200) {
+                            this.user = result.data.user;
+                        } else {
+                            this.$Message.error(result.message);
+                        }
+                    }).catch(res => {
+                        console.log(res);
+                    });
+
                 } else {
                     Api.findUserInfoByUserName(this.username).then(res => {
                         let result = res.data;
+                        // console.log(result);
                         if (result.code == 200) {
                             this.user = result.data.user;
                         } else {
@@ -71,7 +83,7 @@
             }
         },
         mounted() {
-            // console.log(this.$route);
+            console.log(this.$route);
             this.getUser();
         }
     }
