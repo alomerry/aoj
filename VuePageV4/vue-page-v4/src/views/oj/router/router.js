@@ -32,6 +32,12 @@ const routes = [
         component: resolve => require(['../pages/user/UserHome'], resolve)
     },
     {
+        path: '/setting',
+        name: 'user-setting',
+        meta: {title: 'User-Setting'},
+        component: resolve => require(['../pages/user/UserSetting'], resolve)
+    },
+    {
         path: '/contests',
         name: 'contests',
         meta: {title: 'Contests'},

@@ -69,7 +69,7 @@ const routes = [
      * Contest
      */
     {
-        path: "/admin/contest/contest_status",
+        path: "/admin/contest/status",
         name: 'ContestStatus',
         meta: {
             title: 'Online Judge'

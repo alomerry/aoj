@@ -20,3 +20,13 @@
 ````
 1.添加竞赛中 添加对info属性的操作
 ````
+#### 5.3 linux run sh
+````
+docker build -t mo/judge:v1.8 .
+docker run -it  -v /mnt/hgfs/webapp/problem_cases:/oj-home/problem_cases:ro -d mo/judge:v1.8
+docker ps
+docker rm ...
+docker images 
+docker rmi ...
+docker exec -it ... /bin/bash 
+````

@@ -93,7 +93,14 @@
                         key: 'id',
                         align: 'center',
                         render: (h, params) => {
-                            return h('a', {}, params.row.solution.solution_id);
+                            return this.$store.state.user.user_id == params.row.user.user_id ?
+                                h('a', {
+                                    on: {
+                                        click: () => {
+                                            alert(666);
+                                        },
+                                    }
+                                }, params.row.solution.solution_id) : h('span', {}, params.row.solution.solution_id);
                         }
                     },
                     {
@@ -111,7 +118,11 @@
                         key: 'problem',
                         align: 'center',
                         render: (h, params) => {
-                            return h('a', {}, params.row.problem.title);
+                            return h('router-link', {
+                                attrs: {
+                                    to: "/problem/" + params.row.problem.problem_id,
+                                },
+                            }, params.row.problem.title);
                         }
                     },
                     {

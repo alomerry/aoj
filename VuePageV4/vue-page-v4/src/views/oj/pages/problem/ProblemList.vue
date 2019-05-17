@@ -131,7 +131,7 @@
                                     placement: 'bottom'
                                 }
                             }, [
-                                h('Tag', (params.row.accepted / (params.row.submit === 0 ? 1 : params.row.submit)) * 100 + "%"),
+                                h('Tag', ((params.row.accepted / (params.row.submit === 0 ? 1 : params.row.submit)) * 100).toFixed(2) + "%"),
                                 h('div', {slot: 'content'}, [
                                     h('p', {
                                         style: {
@@ -273,6 +273,11 @@
                     console.log(res);
                     this.tableLoading = false;
                 });
+            },
+            //保留两位小数
+            toFix(val) {
+                var num = val;
+                return num.toFixed(2);
             }
         },
         created() {

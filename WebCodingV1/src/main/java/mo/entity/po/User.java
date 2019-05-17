@@ -30,6 +30,10 @@ public class User implements Serializable {
     private Timestamp last_login;//用户上次登录时间
     private String session_id;//sessionId
     private boolean disabled;//是否禁用
+    private String head_img;//头像路径
+    private String github_url;//github地址
+    private String blog_url;//博客地址
+    private String own_words;//用户签名
 
     public User(String username, String nickname, String passwd, String school, String email) {
         this.username = username;
