@@ -58,6 +58,35 @@ public interface SolutionMapper {
     List<Solution> findSolutionOrderByJudgeTimeAndPage(@Param("start") int start, @Param("per_page") int per_page);
 
     /**
+     * 根据提交装填按页码以判题时间降序获取结果集
+     *
+     * @param state    状态
+     * @param start    起始
+     * @param per_page 每页数量
+     * @return
+     */
+    @Select("select * from solution where result = #{result} order by judgetime desc limit #{start},#{per_page}")
+    List<Solution> findSolutionByResultOrderByJudgeTimeAndPage(@Param("result") int state, @Param("start") int start, @Param("per_page") int per_page);
+
+    /**
+     * @param user_id  提交的用户
+     * @param start    开始
+     * @param per_page 每页数量
+     * @return
+     */
+    @Select("select * from solution where solution_id = #{user_id} order by judgetime desc limit #{start},#{per_page}")
+    List<Solution> findSolutionByUserIdOrderByJudgeTimeAndPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
+
+    /**
+     * @param user_id  提交的用户
+     * @param start    开始
+     * @param per_page 每页数量
+     * @return
+     */
+    @Select("select * from solution where solution_id = #{user_id} and result = #{result} order by judgetime desc limit #{start},#{per_page}")
+    List<Solution> findSolutionByUserIdAndResultOrderByJudgeTimeAndPage(@Param("result") int state, @Param("user_id") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
+
+    /**
      * 按页码以判题时间降序获取结果集
      *
      * @param start    起始

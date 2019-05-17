@@ -6,26 +6,26 @@
             <div slot="extra">
                 <Row>
                     <Col span="3" style="margin-top: 4px;">
-                        <i-switch v-model="onlyShowMe" size="large" @on-change="">
+                        <i-switch v-model="onlyShowMe" size="large" @on-change="changeOwner">
                             <span slot="open">Mine</span>
                             <span slot="close">All</span>
                         </i-switch>
                     </Col>
-                    <Col span="6">
-                        <Dropdown style="margin-top: 4px">
+                    <Col span="8">
+                        <Dropdown style="margin-top: 4px" @on-click="changeStatusState">
                             <a href="javascript:void(0)" style="color: #515a6e">
-                                Status
+                                {{statusItem[statusSelectedIndex]}}
                                 <Icon type="ios-arrow-down"></Icon>
                             </a>
                             <DropdownMenu slot="list">
-                                <DropdownItem name="-1">All</DropdownItem>
+                                <DropdownItem name="15">All</DropdownItem>
                                 <DropdownItem name="0">Waiting</DropdownItem>
                                 <DropdownItem name="1">Pending</DropdownItem>
                                 <DropdownItem name="2">Compiling</DropdownItem>
                                 <DropdownItem name="3">Judging</DropdownItem>
                                 <DropdownItem name="4">Accepted</DropdownItem>
                                 <DropdownItem name="5">Presentation Error</DropdownItem>
-                                <DropdownItem name="5">Wrong Answer</DropdownItem>
+                                <DropdownItem name="6">Wrong Answer</DropdownItem>
                                 <DropdownItem name="7">Time Limit Exceeded</DropdownItem>
                                 <DropdownItem name="8">Merrory Limit Exceeded</DropdownItem>
                                 <DropdownItem name="9">Output Limit Exceeded</DropdownItem>
@@ -211,6 +211,26 @@
                 statusRenderText: ["Pending", "Waiting", "Compiling", "Judging", "Accepted", "Presentation Error",
                     "Wrong Answer", "Time Limit Exceeded", "Merrory Limit Exceeded", "Output Limit Exceeded", "Runtime Error",
                     "Compile Error", "Partial Accepted", "System Error"],
+
+                statusSelectedIndex: 15,
+                statusItem: [
+                    "Waiting",
+                    "Pending",
+                    "Compiling",
+                    "Judging",
+                    "Accepted",
+                    "Presentation",
+                    "Wrong Answer",
+                    "Time Limit Exceeded",
+                    "Merrory Limit Exceeded",
+                    "Output Limit Exceeded",
+                    "Runtime Error",
+                    "Compile Error",
+                    "",
+                    "Partial Accepted",
+                    "System Error",
+                    "All",
+                ],
             }
         },
         methods: {
@@ -230,9 +250,30 @@
                     }
                 }
             },
+            //查询提交
             getSolutions() {
                 this.tableLoadingFlag = true;
                 Api.getSolutions(this.page, this.per_page, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    // console.log(result);
+                    if (result.code === 401) {
+                        this.$Message.error("身份信息失效，请重新登录");
+                    } else if (result.code === 200) {
+                        this.statusData = result.data.solutions;
+                        this.statusSearchData = this.statusData;
+                    }
+                    this.tableLoadingFlag = false;
+                    this.buttonLoading = false;
+                }).catch(res => {
+                    this.$Message.error(res.message);
+                    this.tableLoadingFlag = false;
+                    this.buttonLoading = false;
+                });
+            },
+            //查询自己的提交
+            getOwnSolutions() {
+                this.tableLoadingFlag = true;
+                Api.getSolutionsByOwn(this.page, this.per_page, this.$store.state.token).then(res => {
                     let result = res.data;
                     // console.log(result);
                     if (result.code === 401) {
@@ -354,7 +395,37 @@
                     }
                 }
             },
-
+            //查看所有提交/仅自己的提交
+            changeOwner(val) {
+                if (val) {//Mine
+                    this.getOwnSolutions();
+                } else {//All
+                    this.getSolutions();
+                }
+            },
+            //根据状态查询提交
+            changeStatusState(state) {
+                this.statusSelectedIndex = state;
+            },
+            getSolutionsByState(state) {
+                this.tableLoadingFlag = true;
+                Api.getSolutionsByState(state, this.page, this.per_page, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    // console.log(result);
+                    if (result.code === 401) {
+                        this.$Message.error("身份信息失效，请重新登录");
+                    } else if (result.code === 200) {
+                        this.statusData = result.data.solutions;
+                        this.statusSearchData = this.statusData;
+                    }
+                    this.tableLoadingFlag = false;
+                    this.buttonLoading = false;
+                }).catch(res => {
+                    this.$Message.error(res.message);
+                    this.tableLoadingFlag = false;
+                    this.buttonLoading = false;
+                });
+            },
             refresh() {
                 this.buttonLoading = true;
                 this.getSolutions();

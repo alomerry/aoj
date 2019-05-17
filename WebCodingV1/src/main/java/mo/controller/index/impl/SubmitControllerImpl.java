@@ -66,9 +66,50 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
     @ResponseBody
     @RequestMapping(value = "/solutions", method = RequestMethod.GET)
     public Result getSolutions(@RequestParam(value = "page", defaultValue = "1") String page,
-                               @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
+                               @RequestParam(value = "per_page", defaultValue = "10") String per_page,
+                               @RequestParam(value = "myself", defaultValue = "0") String myself) {
         JSONObject solutions = new JSONObject();
-        solutions.put("solutions", solutionService.getSolutions(Integer.valueOf(page), Integer.valueOf(per_page)));
+        if ("0".equals(myself)) {
+            solutions.put("solutions", solutionService.getSolutions(Integer.valueOf(page), Integer.valueOf(per_page)));
+        } else {
+            try {
+                Integer operatorId = getJWTUserId();
+                if (operatorId == null) {
+                    return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("请登录！");
+                } else {
+                    solutions.put("solutions", solutionService.getSolutionsByUserId(operatorId, Integer.valueOf(page), Integer.valueOf(per_page)));
+                    return new Result().setCode(ResultCode.OK).setData(solutions);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return new Result().setCode(ResultCode.OK).setData(solutions);
+    }
+
+    @Override
+    @ResponseBody
+    @RequestMapping(value = "/state/{state}/solutions", method = RequestMethod.GET)
+    public Result getSolutions(@PathVariable Integer state,
+                               @RequestParam(value = "page", defaultValue = "1") String page,
+                               @RequestParam(value = "per_page", defaultValue = "10") String per_page,
+                               @RequestParam(value = "myself", defaultValue = "0") String myself) {
+        JSONObject solutions = new JSONObject();
+        if ("0".equals(myself)) {
+            solutions.put("solutions", solutionService.getSolutions(Integer.valueOf(page), Integer.valueOf(per_page)));
+        } else {
+            try {
+                Integer operatorId = getJWTUserId();
+                if (operatorId == null) {
+                    return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("请登录！");
+                } else {
+                    solutions.put("solutions", solutionService.getSolutionsByUserId(operatorId, Integer.valueOf(page), Integer.valueOf(per_page)));
+                    return new Result().setCode(ResultCode.OK).setData(solutions);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return new Result().setCode(ResultCode.OK).setData(solutions);
     }
 

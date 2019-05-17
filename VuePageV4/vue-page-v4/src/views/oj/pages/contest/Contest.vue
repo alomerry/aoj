@@ -405,7 +405,7 @@
                                 },
                                 attrs: {
                                     // to: "/problem/" + params.row.problem_id,
-                                    to: "/contest/" + contest_id + "/problem/" + params.row.problem_id,
+                                    to: "/contest/" + this.contest_id + "/problem/" + params.row.problem_id,
                                 },
                                 on: {
                                     click: () => {
@@ -430,7 +430,7 @@
                                     placement: 'bottom'
                                 }
                             }, [
-                                h('Tag', (params.row.accepted / (params.row.submit === 0 ? 1 : params.row.submit)) * 100 + "%"),
+                                h('Tag', (params.row.accepted / (params.row.submit === 0 ? 1 : params.row.submit)).toFixed(2) * 100 + "%"),
                                 h('div', {slot: 'content'}, [
                                     h('p', {
                                         style: {
@@ -526,6 +526,7 @@
                 this.problem_table_loading = true;
                 Api.findProblemsByContestId(this.contest_id).then(res => {
                     let result = res.data;
+                    console.log(result);
                     if (result.code === 200) {
                         this.problem_data = result.data.results;
                         this.problem_table_loading = false;

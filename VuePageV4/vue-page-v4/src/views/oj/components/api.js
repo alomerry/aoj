@@ -106,7 +106,31 @@ export default {
      */
     getSolutions(page, per_page, jwt) {
         return axios({
-            url: "/api/api-oj/solutions?page=" + page + "&per_page=" + per_page,
+            url: "/api/api-oj/solutions?myself=0&page=" + page + "&per_page=" + per_page,
+            method: "get",
+            headers: {
+                "jwt": jwt,
+            }
+        })
+    },
+    getSolutionsByState(state, page, per_page, jwt) {
+        return axios({
+            url: "/api/api-oj/state/" + state + "/solutions?myself=0&page=" + page + "&per_page=" + per_page,
+            method: "get",
+            headers: {
+                "jwt": jwt,
+            }
+        })
+    },
+
+    /**
+     * 获取solutions集合
+     * @param page 页码
+     * @param per_page 每页数量
+     */
+    getSolutionsByOwn(page, per_page, jwt) {
+        return axios({
+            url: "/api/api-oj/solutions?myself=1&page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,
