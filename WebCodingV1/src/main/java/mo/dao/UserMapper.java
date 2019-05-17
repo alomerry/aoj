@@ -129,7 +129,18 @@ public interface UserMapper {
      * @param username 用户名
      * @return
      */
-    @Select("select *from users where username =#{username}")
+    @Select("select * from users where username =#{username}")
     User findUserByUsername(@Param("username") String username);
+
+    /**
+     * 查询指定竞赛中的用户（已加入）
+     *
+     * @param contest_id 竞赛Id
+     * @param start      起始
+     * @param per_page   每页数量
+     * @return
+     */
+    @Select("select user_id from contest_apply where contest_id = #{contest_id} and status = '1' limit #{start} ,#{per_page}")
+    int[] findContestsUsers(@Param("contest_id") int contest_id, @Param("start") int start, @Param("per_page") int per_page);
 }
 

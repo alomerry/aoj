@@ -38,4 +38,14 @@ public interface AdminUserController {
      * @return 结果
      */
     Result updateUser(Map<String, String> user);
+
+    /**
+     * 查询指定竞赛中的用户
+     *
+     * @param contest_id 竞赛Id
+     * @param page       页码
+     * @param per_page   每页数量
+     * @return
+     */
+    Result users(int contest_id, String page, String per_page);
 }

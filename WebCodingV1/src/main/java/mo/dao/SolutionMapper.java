@@ -105,6 +105,27 @@ public interface SolutionMapper {
     String getUniqueSolutionId();
 
     /**
+     * 查询指定用户在指定竞赛中的正确题目数
+     *
+     * @param user_id
+     * @param contest_id
+     * @return
+     */
+    @Select("select count(distinct problem_id) from (select problem_id from solution where contest_id = #{contest_id} and user_id= #{user_id} and result ='4') as problem_id")
+    int getUserCorrectSolutionNum(@Param("user_id") int user_id, @Param("contest_id") int contest_id);
+
+    /**
+     * 查询指定用户在指定竞赛中的提交
+     *
+     * @param user_id
+     * @param contest_id
+     * @return
+     */
+    @Select("select count(solution_id) from solution where contest_id = #{contest_id} and user_id= #{user_id}")
+    int getUserTotalSolutionNum(@Param("user_id") int user_id, @Param("contest_id") int contest_id);
+
+
+    /**
      * 按判题时间降序获取结果集
      *
      * @param user_id 用户Id

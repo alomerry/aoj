@@ -11,6 +11,7 @@ import mo.entity.po.Privilege;
 import mo.entity.vo.link.UserLink;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
+import mo.service.ContestService;
 import mo.service.PrivilegeService;
 import mo.service.UserService;
 import org.slf4j.Logger;
@@ -30,6 +31,9 @@ public class AdminUserControllerImpl extends AbstractController implements Admin
 
     @Resource
     private PrivilegeService privilegeService;
+
+    @Resource
+    private ContestService contestService;
 
     @Override
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
@@ -126,6 +130,22 @@ public class AdminUserControllerImpl extends AbstractController implements Admin
             }
         } else {
             return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("内部错误！");
+        }
+    }
+
+    @Override
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/contest/{contest_id}/users", method = RequestMethod.GET)
+    public Result users(@PathVariable int contest_id,
+                        @RequestParam(value = "page", defaultValue = "1") String page,
+                        @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
+        Integer operatorId = getJWTUserId();
+        if(contestService.hasAccess(operatorId,contest_id)){
+            JSONObject jsonObject = new JSONObject();
+
+        }else{
+        return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足!");
+
         }
     }
 }

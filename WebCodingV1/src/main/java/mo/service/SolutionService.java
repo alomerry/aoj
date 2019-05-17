@@ -47,6 +47,17 @@ public interface SolutionService {
     List<SolutionLink> getSolutionsByUserId(Integer userId, int page, int per_page);
 
     /**
+     * 查询指定用户的指定状态的提交
+     *
+     * @param state    状态
+     * @param userId   用户Id
+     * @param page     页码
+     * @param per_page 每页数量
+     * @return
+     */
+    List<SolutionLink> getSolutionsByUserId(int state, Integer userId, int page, int per_page);
+
+    /**
      * 查询竞赛中的提交
      *
      * @param contestId 竞赛Id

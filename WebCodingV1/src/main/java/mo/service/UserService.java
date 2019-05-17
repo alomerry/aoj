@@ -2,6 +2,7 @@ package mo.service;
 
 import mo.core.Result;
 import mo.entity.po.User;
+import mo.entity.vo.UserContestResult;
 import mo.entity.vo.link.UserLink;
 
 import javax.servlet.http.HttpSession;
@@ -90,4 +91,14 @@ public interface UserService {
      * @return
      */
     User findUserByUsername(String username);
+
+    /**
+     * 查询指定竞赛的用户信息
+     *
+     * @param contest_id 竞赛Id
+     * @param page       页码
+     * @param per_page   每页数量
+     * @return
+     */
+    List<UserContestResult> users(Integer contest_id, int page, int per_page);
 }

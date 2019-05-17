@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import mo.core.Result;
 import mo.core.ResultCode;
 import mo.dao.PrivilegeMapper;
+import mo.dao.SolutionMapper;
 import mo.dao.UserMapper;
 import mo.entity.po.Privilege;
 import mo.entity.po.User;
+import mo.entity.vo.UserContestResult;
 import mo.entity.vo.link.UserLink;
 import mo.service.UserService;
 import mo.utils.JWTUtils;
@@ -39,6 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private PrivilegeMapper privilegeMapper;
+
+    @Resource
+    private SolutionMapper solutionMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -136,6 +141,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUsername(String username) {
         return userMapper.findUserByUsername(username);
+    }
+
+    @Override
+    public List<UserContestResult> users(Integer contest_id, int page, int per_page) {
+        int[] ids = userMapper.findContestsUsers(contest_id, (page - 1) * per_page, per_page);
+        List<UserContestResult> results = new ArrayList<>(ids.length + 3);
+        for (int user_id : ids) {
+            results.add(new UserContestResult(userMapper.findUserByUserId(user_id),
+                    solutionMapper.getUserCorrectSolutionNum(user_id, contest_id),
+                    solutionMapper.getUserTotalSolutionNum(user_id, contest_id)));
+        }
+        return results;
     }
 
 }

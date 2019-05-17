@@ -64,12 +64,17 @@ public class SolutionServiceImpl implements SolutionService {
 
     @Override
     public List<SolutionLink> getSolutions(int state, int page, int per_page) {
-        return makeLink(solutionMapper.findSolutionOrderByJudgeTimeAndPage((page - 1) * per_page, per_page));
+        return makeLink(solutionMapper.findSolutionByResultOrderByJudgeTimeAndPage(state, (page - 1) * per_page, per_page));
     }
 
     @Override
     public List<SolutionLink> getSolutionsByUserId(Integer userId, int page, int per_page) {
         return makeLink(solutionMapper.findSolutionByUserIdOrderByJudgeTimeAndPage(userId, (page - 1) * per_page, per_page));
+    }
+
+    @Override
+    public List<SolutionLink> getSolutionsByUserId(int state, Integer userId, int page, int per_page) {
+        return makeLink(solutionMapper.findSolutionByUserIdAndResultOrderByJudgeTimeAndPage(state, userId, (page - 1) * per_page, per_page));
     }
 
     @Override

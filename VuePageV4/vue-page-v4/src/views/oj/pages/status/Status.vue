@@ -406,6 +406,7 @@
             //根据状态查询提交
             changeStatusState(state) {
                 this.statusSelectedIndex = state;
+                this.getSolutionsByState(state);
             },
             getSolutionsByState(state) {
                 this.tableLoadingFlag = true;
