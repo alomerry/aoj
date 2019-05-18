@@ -77,6 +77,11 @@ public class NewsServiceImpl implements NewsService {
         return newsMapper.updateNewsDefunct(newsId, state) > 0;
     }
 
+    @Override
+    public Integer getPublicNewsTotalNum() {
+        return newsMapper.findNewsTotalNumberByDefunct("1");
+    }
+
     private List<NewsUserLink> makeLinkUser(List<News> newsList) {
         List<NewsUserLink> newsUserLinks = new ArrayList<>(newsList.size() + 3);
         for (News news : newsList) {

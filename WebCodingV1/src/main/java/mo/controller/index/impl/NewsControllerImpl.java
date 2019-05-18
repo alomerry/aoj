@@ -24,6 +24,7 @@ public class NewsControllerImpl extends AbstractController implements NewsContro
 
         JSONObject news = new JSONObject();
         news.put("newsLink", newsService.findNewsByPageAndDefunct(Integer.valueOf(page), Integer.valueOf(per_page), "1"));
+        news.put("total", newsService.getPublicNewsTotalNum());
         return new Result().setCode(ResultCode.OK).setData(news);
     }
 

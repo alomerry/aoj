@@ -251,6 +251,22 @@ export default {
         })
     },
 
+    /**
+     * 查询指定竞赛的题目集
+     * @param contest_id 竞赛Id
+     * @param page 页码
+     * @param per_page 每页数量
+     * @param jwt 令牌
+     */
+    findContestUser(contest_id, page, per_page, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/contest/" + contest_id + "/users?page=" + page + "&per_page=" + per_page,
+            method: "get",
+            headers: {
+                "jwt": jwt,
+            }
+        })
+    },
 
     /**
      * 查询指定竞赛的公告
@@ -473,6 +489,23 @@ export default {
         return axios({
             url: "/api/api-oj/admin/contest_apply/" + id + "?status=" + status,
             method: "put",
+            headers: {
+                "jwt": jwt,
+            }
+        })
+    },
+
+    /**
+     * 查询指定竞赛中的提交
+     * @param contestId 竞赛Id
+     * @param jwt 令牌
+     * @param page 页码
+     * @param per_page 每页数量
+     */
+    getSolutionsByContestId(contestId, jwt, page, per_page) {
+        return axios({
+            url: "/api/api-oj/admin/contest/" + contestId + "/solutions?page=" + page + "&per_page=" + per_page,
+            method: "get",
             headers: {
                 "jwt": jwt,
             }

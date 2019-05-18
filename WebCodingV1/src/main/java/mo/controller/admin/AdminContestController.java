@@ -65,4 +65,5 @@ public interface AdminContestController {
      * @return
      */
     Result contests(String page, String per_page);
+
 }

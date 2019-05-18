@@ -97,4 +97,10 @@ public interface NewsService {
      * @return
      */
     boolean updateNewsDefunct(int newsId, String state);
+
+    /**
+     * 查询新闻数量
+     * @return
+     */
+    Integer getPublicNewsTotalNum();
 }

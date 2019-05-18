@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Modal v-model="modal_falg" width="900" @on-visible-change="modal_show_change">
+        <Modal v-model="modal_falg" width="900" @on-visible-change="modal_show_change" :mask-closable="false">
             <div slot="header">
                 <span style="font-size: 20px;font-weight: 400;">Create Announcement</span>
             </div>
@@ -59,6 +59,12 @@
                 modal_falg: false,
                 anno_loading_flag: false,
                 anno_column: [
+                    {
+                        title: "",
+                        align: 'center',
+                        width: 50,
+                        type: 'index',
+                    },
                     {
                         title: "Title",
                         key: 'news.title',

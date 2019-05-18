@@ -122,4 +122,13 @@ public interface NewsMapper {
      */
     @Select("select * from news where contest_id = #{contest_id} and defunct = #{defunct}  limit #{start} ,#{per_page}")
     List<News> findNewsByContestIdAndDefunct(@Param("contest_id") int contest_id, @Param("start") int start, @Param("per_page") int per_page, @Param("defunct") String defunct);
+
+    /**
+     * 根据公开级别查询指定新闻数量
+     *
+     * @param defunct 公开级别
+     * @return 公告数量
+     */
+    @Select("select count(news_id) from news where defunct = #{defunct}")
+    Integer findNewsTotalNumberByDefunct(@Param("defunct") String defunct);
 }

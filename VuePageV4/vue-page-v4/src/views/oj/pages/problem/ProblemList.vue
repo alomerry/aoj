@@ -95,7 +95,8 @@
                     {
                         title: 'title',
                         key: 'title',
-                        width: 600,
+                        align:"center",
+                        // width: 600,
                         render: (h, params) => {
                             return h('router-link', {
                                 style: {
@@ -118,11 +119,13 @@
                     },*/
                     {
                         title: 'Total',
+                        align:"center",
                         key: 'submit',
                     },
                     {
                         title: 'AC Rate',
                         key: 'ac_rate',
+                        align:"center",
                         render: (h, params) => {
                             return h('Poptip', {
                                 props: {
