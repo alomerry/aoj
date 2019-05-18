@@ -149,6 +149,7 @@ public class UserServiceImpl implements UserService {
         List<UserContestResult> results = new ArrayList<>(ids.length + 3);
         for (int user_id : ids) {
             results.add(new UserContestResult(userMapper.findUserByUserId(user_id),
+                    solutionMapper.getUserCorrectSlovedNum(user_id, contest_id),
                     solutionMapper.getUserCorrectSolutionNum(user_id, contest_id),
                     solutionMapper.getUserTotalSolutionNum(user_id, contest_id)));
         }

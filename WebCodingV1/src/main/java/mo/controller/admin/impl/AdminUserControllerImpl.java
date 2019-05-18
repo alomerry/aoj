@@ -140,11 +140,12 @@ public class AdminUserControllerImpl extends AbstractController implements Admin
                         @RequestParam(value = "page", defaultValue = "1") String page,
                         @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
         Integer operatorId = getJWTUserId();
-        if(contestService.hasAccess(operatorId,contest_id)){
-            JSONObject jsonObject = new JSONObject();
-
-        }else{
-        return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足!");
+        if (contestService.hasAccess(operatorId, contest_id)) {
+            JSONObject user = new JSONObject();
+            user.put("user", userService.users(contest_id, Integer.valueOf(page), Integer.valueOf(per_page)));
+            return new Result().setCode(ResultCode.OK).setData(user);
+        } else {
+            return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足!");
 
         }
     }

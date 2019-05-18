@@ -4,7 +4,7 @@
             <Collapse accordion @on-change="showContestInfo">
                 <Panel v-for="(item) in contests" :name="item.contest.contest_id+''">
                     {{item.contest.title}}
-                    <Tabs value="user" slot="content">
+                    <Tabs value="user" slot="content" @on-click="changeTabs">
                         <TabPane label="User" name="user">
                             <Table :data="userDate" :columns="userCol"></Table>
                         </TabPane>
@@ -83,7 +83,20 @@
             },
             showContestInfo(contest_ids) {
                 console.log(contest_ids[0]);
-            }
+            },
+            changeTabs(index) {
+                switch (index) {
+                    case "user": {
+                        break;
+                    }
+                    case "submit": {
+                        break;
+                    }
+                }
+            },
+            getUserData() {
+
+            },
         },
         mounted() {
             this.getContests();

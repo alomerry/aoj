@@ -160,6 +160,7 @@ export default {
         });
     },
 
+
     /**
      * 创建题目
      * @param problem 题目实体
@@ -181,6 +182,25 @@ export default {
                 "jwt": jwt,
             }
         })
+    },
+
+    /**
+     * 更新公告
+     * @param news 公告实体
+     * @param jwt 令牌
+     * @returns {AxiosPromise}
+     */
+    updateNews(news, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/news",
+            method: "put",
+            dataType: "json",
+            data: JSON.stringify(news),
+            headers: {
+                "jwt": jwt,
+                "Content-Type": "application/json;charset-UTF-8",
+            }
+        });
     },
 
     /**
@@ -231,21 +251,6 @@ export default {
         })
     },
 
-    /**
-     * 查询公告
-     * @param page 页码
-     * @param per_page 每页数量
-     * @param jwt 令牌
-     */
-    findNews(page, per_page, jwt) {
-        return axios({
-            url: "/api/api-oj/admin/news?page=" + page + "&per_page=" + per_page,
-            method: "get",
-            headers: {
-                "jwt": jwt,
-            }
-        })
-    },
 
     /**
      * 查询指定竞赛的公告
@@ -284,24 +289,6 @@ export default {
         });
     },
 
-    /**
-     * 更新公告
-     * @param news 公告实体
-     * @param jwt 令牌
-     * @returns {AxiosPromise}
-     */
-    updateNews(news, jwt) {
-        return axios({
-            url: "/api/api-oj/admin/news",
-            method: "put",
-            dataType: "json",
-            data: JSON.stringify(news),
-            headers: {
-                "jwt": jwt,
-                "Content-Type": "application/json;charset-UTF-8",
-            }
-        });
-    },
 
     /**
      * 删除公告
@@ -341,6 +328,22 @@ export default {
             headers: {
                 "jwt": jwt,
                 "Content-Type": "application/json;charset-UTF-8",
+            }
+        })
+    },
+
+    /**
+     * 查询公告
+     * @param page 页码
+     * @param per_page 每页数量
+     * @param jwt 令牌
+     */
+    findNews(page, per_page, jwt) {
+        return axios({
+            url: "/api/api-oj/admin/news?page=" + page + "&per_page=" + per_page,
+            method: "get",
+            headers: {
+                "jwt": jwt,
             }
         })
     },
