@@ -66,4 +66,36 @@ public interface SolutionService {
      * @return
      */
     List<SolutionLink> getContestSolutions(Integer contestId, int page, int per_page);
+
+    /**
+     * 查询指定用户的提交数
+     *
+     * @param userId 用户Id
+     * @return
+     */
+    Integer getUserSolutionTotalNumber(Integer userId);
+
+    /**
+     * 查询指定用户的指定状态的提交数
+     *
+     * @param userId 用户Id
+     * @param state  状态
+     * @return
+     */
+    Integer getUserSolutionTotalNumber(Integer userId, int state);
+
+    /**
+     * 查询全部提交数
+     *
+     * @return
+     */
+    Integer getSolutionTotalNumber();
+
+    /**
+     * 查询指定状态的提交数
+     *
+     * @param state 状态
+     * @return
+     */
+    Integer getSolutionTotalNumber(int state);
 }

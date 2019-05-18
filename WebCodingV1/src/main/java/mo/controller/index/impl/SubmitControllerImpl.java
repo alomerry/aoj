@@ -71,6 +71,7 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
         JSONObject solutions = new JSONObject();
         if ("0".equals(myself)) {
             solutions.put("solutions", solutionService.getSolutions(Integer.valueOf(page), Integer.valueOf(per_page)));
+            solutions.put("total", solutionService.getSolutionTotalNumber());
         } else {
             try {
                 Integer operatorId = getJWTUserId();
@@ -78,6 +79,7 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
                     return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("请登录！");
                 } else {
                     solutions.put("solutions", solutionService.getSolutionsByUserId(operatorId, Integer.valueOf(page), Integer.valueOf(per_page)));
+                    solutions.put("total", solutionService.getUserSolutionTotalNumber(operatorId));
                     return new Result().setCode(ResultCode.OK).setData(solutions);
                 }
             } catch (Exception e) {
@@ -96,7 +98,13 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
                                @RequestParam(value = "myself", defaultValue = "0") String myself) {
         JSONObject solutions = new JSONObject();
         if ("0".equals(myself)) {
-            solutions.put("solutions", solutionService.getSolutions(state, Integer.valueOf(page), Integer.valueOf(per_page)));
+            if (state == 15) {
+                solutions.put("solutions", solutionService.getSolutions(Integer.valueOf(page), Integer.valueOf(per_page)));
+                solutions.put("total", solutionService.getSolutionTotalNumber());
+            } else {
+                solutions.put("solutions", solutionService.getSolutions(state, Integer.valueOf(page), Integer.valueOf(per_page)));
+                solutions.put("total", solutionService.getSolutionTotalNumber(state));
+            }
         } else {
             try {
                 Integer operatorId = getJWTUserId();
@@ -105,8 +113,10 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
                 } else {
                     if (state == 15) {
                         solutions.put("solutions", solutionService.getSolutionsByUserId(operatorId, Integer.valueOf(page), Integer.valueOf(per_page)));
+                        solutions.put("total", solutionService.getUserSolutionTotalNumber(operatorId));
                     } else {
                         solutions.put("solutions", solutionService.getSolutionsByUserId(state, operatorId, Integer.valueOf(page), Integer.valueOf(per_page)));
+                        solutions.put("total", solutionService.getUserSolutionTotalNumber(operatorId, state));
                     }
                     return new Result().setCode(ResultCode.OK).setData(solutions);
                 }

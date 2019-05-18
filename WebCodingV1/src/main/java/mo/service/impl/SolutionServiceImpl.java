@@ -82,6 +82,26 @@ public class SolutionServiceImpl implements SolutionService {
         return makeLink(solutionMapper.findContestSolutionByContestIdOrderByJudgeTimeAndPage(contestId, (page - 1) * per_page, per_page));
     }
 
+    @Override
+    public Integer getUserSolutionTotalNumber(Integer userId) {
+        return solutionMapper.getUserSolutionTotalNumber(userId);
+    }
+
+    @Override
+    public Integer getUserSolutionTotalNumber(Integer userId, int state) {
+        return solutionMapper.getUserSolutionTotalNumber(userId, state);
+    }
+
+    @Override
+    public Integer getSolutionTotalNumber() {
+        return solutionMapper.getSolutionTotalNumber();
+    }
+
+    @Override
+    public Integer getSolutionTotalNumber(int state) {
+        return solutionMapper.getSolutionTotalNumber(state);
+    }
+
     private List<SolutionLink> makeLink(List<Solution> solution) {
         List<SolutionLink> solutionLinks = new ArrayList<>(solution.size() + 3);
         for (Solution s : solution) {

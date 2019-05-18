@@ -134,6 +134,42 @@ public interface SolutionMapper {
     @Select("select count(solution_id) from solution where contest_id = #{contest_id} and user_id= #{user_id}")
     int getUserTotalSolutionNum(@Param("user_id") int user_id, @Param("contest_id") int contest_id);
 
+    /**
+     * 查询指定用户指定状态的提交数
+     *
+     * @param userId 用户Id
+     * @param state  状态
+     * @return
+     */
+    @Select("select count(solution_id) from solution where user_id = #{user_id} and result = #{result}")
+    Integer getUserSolutionTotalNumber(@Param("user_id") Integer userId, @Param("result") int state);
+
+    /**
+     * 查询指定用户的提交数
+     *
+     * @param userId 用户Id
+     * @return
+     */
+    @Select("select count(solution_id) from solution where user_id = #{user_id}")
+    Integer getUserSolutionTotalNumber(@Param("user_id") Integer userId);
+
+    /**
+     * 查询指定状态的提交数
+     *
+     * @param state 装填
+     * @return
+     */
+    @Select("select count(solution_id) from solution where result = #{result}")
+    Integer getSolutionTotalNumber(@Param("result") int state);
+
+    /**
+     * 查询提交数
+     *
+     * @return
+     */
+    @Select("select count(solution_id) from solution")
+    Integer getSolutionTotalNumber();
+
 
     /**
      * 按判题时间降序获取结果集
