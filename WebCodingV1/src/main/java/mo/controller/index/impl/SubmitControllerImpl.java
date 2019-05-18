@@ -103,7 +103,11 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
                 if (operatorId == null) {
                     return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("请登录！");
                 } else {
-                    solutions.put("solutions", solutionService.getSolutionsByUserId(state, operatorId, Integer.valueOf(page), Integer.valueOf(per_page)));
+                    if (state == 15) {
+                        solutions.put("solutions", solutionService.getSolutionsByUserId(operatorId, Integer.valueOf(page), Integer.valueOf(per_page)));
+                    } else {
+                        solutions.put("solutions", solutionService.getSolutionsByUserId(state, operatorId, Integer.valueOf(page), Integer.valueOf(per_page)));
+                    }
                     return new Result().setCode(ResultCode.OK).setData(solutions);
                 }
             } catch (Exception e) {

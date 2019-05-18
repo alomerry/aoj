@@ -44,7 +44,7 @@
                                         <Divider/>
                                     </Row>
                                 </div>
-                                <Page :total="10" :page-size="anno_per_page" show-sizer style="float: right;" @on-change="changeAnnoPage" @on-page-size-change="changeAnnoPageSize"/>
+                                <Page :total="anno_total" :page-size="anno_per_page" show-sizer style="float: right;" @on-change="changeAnnoPage" @on-page-size-change="changeAnnoPageSize"/>
                                 <br><br>
                             </div>
                             <div v-else key="second">
@@ -110,27 +110,27 @@
                         
                         <div slot="extra">
                             <Row>
-                                <Col span="3" style="margin-top: 4px;margin-right: 30px">
+                                <!--<Col span="3" style="margin-top: 4px;margin-right: 30px">
                                     <i-switch v-model="onlyShowMe" size="large" @on-change="">
                                         <span slot="open">Mine</span>
                                         <span slot="close">All</span>
                                     </i-switch>
-                                </Col>
-                                <Col span="6">
-                                    <Dropdown style="margin-top: 4px">
+                                </Col>-->
+                                <Col span="8">
+                                    <Dropdown style="margin-top: 4px" @on-click="changeStatusState">
                                         <a href="javascript:void(0)" style="color: #515a6e">
-                                            Status
+                                            {{statusItem[statusSelectedIndex]}}
                                             <Icon type="ios-arrow-down"></Icon>
                                         </a>
                                         <DropdownMenu slot="list">
-                                            <DropdownItem name="-1">All</DropdownItem>
+                                            <DropdownItem name="15">All</DropdownItem>
                                             <DropdownItem name="0">Waiting</DropdownItem>
                                             <DropdownItem name="1">Pending</DropdownItem>
                                             <DropdownItem name="2">Compiling</DropdownItem>
                                             <DropdownItem name="3">Judging</DropdownItem>
                                             <DropdownItem name="4">Accepted</DropdownItem>
                                             <DropdownItem name="5">Presentation Error</DropdownItem>
-                                            <DropdownItem name="5">Wrong Answer</DropdownItem>
+                                            <DropdownItem name="6">Wrong Answer</DropdownItem>
                                             <DropdownItem name="7">Time Limit Exceeded</DropdownItem>
                                             <DropdownItem name="8">Merrory Limit Exceeded</DropdownItem>
                                             <DropdownItem name="9">Output Limit Exceeded</DropdownItem>
@@ -151,10 +151,10 @@
                             </Row>
                         </div>
                         <div style="margin-bottom: 2px;margin-top: 10px">
-                            <Table :columns="status_col" :data="status_page_data" stripe :loading="status_page_table_loading"></Table>
+                            <Table :columns="status_col" :data="status_data" stripe :loading="status_page_table_loading"></Table>
                         </div>
                         <div style="float: right;margin: 5px;">
-                            <Page :total="10" :page-size="status_per_page" show-sizer @on-change="changeStatusPage" @on-page-size-change="changeStatusPageSize"/>
+                            <Page :total="status_total" :page-size="status_per_page" show-sizer @on-change="changeStatusPage" @on-page-size-change="changeStatusPageSize"/>
                         </div>
                         <p style="margin-top: 30px"></p>
                     </Card>
@@ -283,16 +283,42 @@
 
                 anno_page: 1,
                 anno_per_page: 10,
+                anno_total: 1,
                 anno_data: [],
                 anno_table_loading: false,
                 anno_list_flag: true,//T:列表 F:详细信息
                 anno_item: null,//当前查看的公告
 
                 onlyShowMe: false,
+                status_txt: "all",
                 status_page: 1,
+                status_total: 1,
                 status_per_page: 10,
-                status_page_data: [],
                 status_page_table_loading: false,
+                //Dropdown
+                statusRenderText: ["Pending", "Waiting", "Compiling", "Judging", "Accepted", "Presentation Error",
+                    "Wrong Answer", "Time Limit Exceeded", "Merrory Limit Exceeded", "Output Limit Exceeded", "Runtime Error",
+                    "Compile Error", "Partial Accepted", "System Error"],
+                statusSelectedIndex: 15,
+                statusItem: [
+                    "Waiting",
+                    "Pending",
+                    "Compiling",
+                    "Judging",
+                    "Accepted",
+                    "Presentation",
+                    "Wrong Answer",
+                    "Time Limit Exceeded",
+                    "Merrory Limit Exceeded",
+                    "Output Limit Exceeded",
+                    "Runtime Error",
+                    "Compile Error",
+                    "",
+                    "Partial Accepted",
+                    "System Error",
+                    "All",
+                ],
+
                 status_col: [
                     {
                         title: 'When',
@@ -364,6 +390,7 @@
                         render: (h, params) => {
                             return h('router-link', {
                                 attrs: {
+                                    to: "",
                                     // to: "/user-home" + params.row.user.username == null ? "" : "?username=" + params.row.user.username,
                                 },
                             }, params.row.user.nickname);
@@ -386,6 +413,7 @@
                         }
                     },
                 ],
+                status_data: [],
                 statusRenderText: ["Pending", "Waiting", "Compiling", "Judging", "Accepted", "Presentation Error",
                     "Wrong Answer", "Time Limit Exceeded", "Merrory Limit Exceeded", "Output Limit Exceeded", "Runtime Error",
                     "Compile Error", "Partial Accepted", "System Error"],
@@ -451,6 +479,26 @@
             }
         },
         methods: {
+            //根据状态查询提交
+            changeStatusState(state) {
+                this.statusSelectedIndex = state;
+                this.getSolutionsByState(state);
+            },
+            getSolutionsByState(state) {
+                this.status_page_table_loading = true;
+                Api.getSolutionsByState(state, this.status_page, this.status_per_page, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    if (result.code === 401) {
+                        this.$Message.error("身份信息失效，请重新登录");
+                    } else if (result.code === 200) {
+                        this.status_data = result.data.solutions;
+                    }
+                    this.status_page_table_loading = false;
+                }).catch(res => {
+                    this.$Message.error(res.message);
+                    this.status_page_table_loading = false;
+                });
+            },
             //获取竞赛信息
             getContest() {
                 this.infoTableLoading = true;
@@ -509,6 +557,7 @@
                     let result = res.data;
                     if (result.code == 200) {
                         this.anno_data = result.data.newsLink;
+                        this.anno_total = result.data.total;
                         this.$Loading.finish();
                     } else {
                         this.$Message.error(result.message);
@@ -544,11 +593,12 @@
                 this.status_page_table_loading = true;
                 Api.getContestSolutions(this.contest_id, this.status_page, this.status_per_page).then(res => {
                     let result = res.data;
+                    console.log(result);
                     if (result.code === 401) {
                         this.$Message.error("身份信息失效，请重新登录");
-                    } else if (result.code === 200) {
-                        this.statusData = result.data.solutions;
-                        this.statusSearchData = this.statusData;
+                    } else if (result.code == 200) {
+                        this.status_data = result.data.solutions;
+                        // this.status_total = result.data.total;
                     }
                     this.status_page_table_loading = false;
                 }).catch(res => {
@@ -672,8 +722,14 @@
                         }
                     }
                     case "submit": {
-                        this.changeShowCard(3);
-                        break;
+                        if (this.infoData[0].contest.start_at > (new Date()).getTime()) {
+                            this.$Message.warning("Contest haven't started!");
+                            return;
+                        } else {
+                            this.changeShowCard(3);
+                            this.getSolutions();
+                            break;
+                        }
                     }
                     case "rank": {
                         this.changeShowCard(4);
