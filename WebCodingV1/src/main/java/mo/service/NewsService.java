@@ -100,7 +100,16 @@ public interface NewsService {
 
     /**
      * 查询新闻数量
+     *
      * @return
      */
     Integer getPublicNewsTotalNum();
+
+    /**
+     * 查询指定竞赛的公告数量
+     *
+     * @param contest_id 竞赛Id
+     * @return
+     */
+    Integer getContestNewsTotalNum(int contest_id);
 }

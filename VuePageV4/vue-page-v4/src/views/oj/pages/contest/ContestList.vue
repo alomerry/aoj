@@ -31,7 +31,7 @@
                     </div>
                     <Divider/>
                 </Row>
-                <Page style="float: right" :total="total" show-sizer
+                <Page style="float: right" :total="total" show-sizer :page-size="per_page"
                       @on-change="changePage"
                       @on-page-size-change="changePageSize"/>
                 <br><br>
@@ -55,7 +55,7 @@
 
                 contests: null,
                 page: 1,
-                per_page: 1,
+                per_page: 10,
                 total: 1,
                 loading_flag: false,
             }

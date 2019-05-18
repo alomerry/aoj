@@ -44,7 +44,7 @@
                                         <Divider/>
                                     </Row>
                                 </div>
-                                <Page :total="10" :current="anno_page" show-sizer style="float: right;"/>
+                                <Page :total="10" :page-size="anno_per_page" show-sizer style="float: right;" @on-change="changeAnnoPage" @on-page-size-change="changeAnnoPageSize"/>
                                 <br><br>
                             </div>
                             <div v-else key="second">
@@ -154,7 +154,7 @@
                             <Table :columns="status_col" :data="status_page_data" stripe :loading="status_page_table_loading"></Table>
                         </div>
                         <div style="float: right;margin: 5px;">
-                            <Page :total="10" :page-size="status_per_page" :current="status_page" show-sizer/>
+                            <Page :total="10" :page-size="status_per_page" show-sizer @on-change="changeStatusPage" @on-page-size-change="changeStatusPageSize"/>
                         </div>
                         <p style="margin-top: 30px"></p>
                     </Card>
@@ -692,6 +692,26 @@
                 ];
                 this.show_flag[inx] = true;
             },
+            //修改公告页码
+            changeAnnoPage(page) {
+                this.anno_page = page;
+                this.getAnnos();
+            },
+            //修改公告每页数量
+            changeAnnoPageSize(pageSize) {
+                this.anno_per_page = pageSize;
+                this.getAnnos();
+            },
+            //修改提交页码
+            changeStatusPage(page) {
+                this.status_page = page;
+                this.getSolutions();
+            },
+            //修改提交每页数量
+            changeStatusPageSize(pageSize) {
+                this.status_per_page = pageSize;
+                this.getSolutions();
+            }
         },
         computed: {
             //时钟

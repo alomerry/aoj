@@ -131,4 +131,13 @@ public interface NewsMapper {
      */
     @Select("select count(news_id) from news where defunct = #{defunct}")
     Integer findNewsTotalNumberByDefunct(@Param("defunct") String defunct);
+
+    /**
+     * 根据公开级别查询指定新闻数量
+     *
+     * @param contest_id 公开级别
+     * @return 公告数量
+     */
+    @Select("select count(news_id) from news where contest_id = #{contest_id}")
+    Integer findContestNewsTotalNumberByContestId(@Param("contest_id") Integer contest_id);
 }

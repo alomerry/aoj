@@ -36,6 +36,7 @@ public class NewsControllerImpl extends AbstractController implements NewsContro
                           @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
         JSONObject news = new JSONObject();
         news.put("newsLink", newsService.findNewsByContestIdAndDefunct(contestId, Integer.valueOf(page), Integer.valueOf(per_page), "1"));
+        news.put("total", newsService.getContestNewsTotalNum(contestId));
         return new Result().setCode(ResultCode.OK).setData(news);
     }
 }
