@@ -89,7 +89,7 @@ public class SolutionServiceImpl implements SolutionService {
 
     @Override
     public Integer getUserSolutionTotalNumber(Integer userId, int state) {
-        return solutionMapper.getUserSolutionTotalNumber(userId, state);
+        return solutionMapper.getUserStateSolutionTotalNumber(userId, state);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class SolutionServiceImpl implements SolutionService {
 
     @Override
     public Integer getSolutionTotalNumber(int state) {
-        return solutionMapper.getSolutionTotalNumber(state);
+        return solutionMapper.getStateSolutionTotalNumber(state);
     }
 
     private List<SolutionLink> makeLink(List<Solution> solution) {

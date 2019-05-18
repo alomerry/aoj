@@ -113,9 +113,9 @@ export default {
             }
         })
     },
-    getSolutionsByState(state, page, per_page, jwt) {
+    getSolutionsByState(state, myself, page, per_page, jwt) {
         return axios({
-            url: "/api/api-oj/state/" + state + "/solutions?myself=0&page=" + page + "&per_page=" + per_page,
+            url: "/api/api-oj/state/" + state + "/solutions?myself=" + myself + "&page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,
@@ -123,20 +123,6 @@ export default {
         })
     },
 
-    /**
-     * 获取solutions集合
-     * @param page 页码
-     * @param per_page 每页数量
-     */
-    getSolutionsByOwn(page, per_page, jwt) {
-        return axios({
-            url: "/api/api-oj/solutions?myself=1&page=" + page + "&per_page=" + per_page,
-            method: "get",
-            headers: {
-                "jwt": jwt,
-            }
-        })
-    },
 
     /**
      * 查询新闻

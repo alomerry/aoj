@@ -74,7 +74,7 @@ public interface SolutionMapper {
      * @param per_page 每页数量
      * @return
      */
-    @Select("select * from solution where solution_id = #{user_id} order by judgetime desc limit #{start},#{per_page}")
+    @Select("select * from solution where user_id = #{user_id} order by judgetime desc limit #{start},#{per_page}")
     List<Solution> findSolutionByUserIdOrderByJudgeTimeAndPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
 
     /**
@@ -83,7 +83,7 @@ public interface SolutionMapper {
      * @param per_page 每页数量
      * @return
      */
-    @Select("select * from solution where solution_id = #{user_id} and result = #{result} order by judgetime desc limit #{start},#{per_page}")
+    @Select("select * from solution where user_id = #{user_id} and result = #{result} order by judgetime desc limit #{start},#{per_page}")
     List<Solution> findSolutionByUserIdAndResultOrderByJudgeTimeAndPage(@Param("result") int state, @Param("user_id") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
 
     /**
@@ -142,7 +142,7 @@ public interface SolutionMapper {
      * @return
      */
     @Select("select count(solution_id) from solution where user_id = #{user_id} and result = #{result}")
-    Integer getUserSolutionTotalNumber(@Param("user_id") Integer userId, @Param("result") int state);
+    Integer getUserStateSolutionTotalNumber(@Param("user_id") Integer userId, @Param("result") int state);
 
     /**
      * 查询指定用户的提交数
@@ -160,7 +160,7 @@ public interface SolutionMapper {
      * @return
      */
     @Select("select count(solution_id) from solution where result = #{result}")
-    Integer getSolutionTotalNumber(@Param("result") int state);
+    Integer getStateSolutionTotalNumber(@Param("result") int state);
 
     /**
      * 查询提交数

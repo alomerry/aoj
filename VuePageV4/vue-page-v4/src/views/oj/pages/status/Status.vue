@@ -270,26 +270,6 @@
                     this.buttonLoading = false;
                 });
             },
-            //查询自己的提交
-            getOwnSolutions() {
-                this.tableLoadingFlag = true;
-                Api.getSolutionsByOwn(this.page, this.per_page, this.$store.state.token).then(res => {
-                    let result = res.data;
-                    // console.log(result);
-                    if (result.code === 401) {
-                        this.$Message.error("身份信息失效，请重新登录");
-                    } else if (result.code === 200) {
-                        this.statusData = result.data.solutions;
-                        this.statusSearchData = this.statusData;
-                    }
-                    this.tableLoadingFlag = false;
-                    this.buttonLoading = false;
-                }).catch(res => {
-                    this.$Message.error(res.message);
-                    this.tableLoadingFlag = false;
-                    this.buttonLoading = false;
-                });
-            },
             //搜索查询表格
             DelaySearchTable: function () {
                 if (this.searchKeyWord === "") {
@@ -397,11 +377,7 @@
             },
             //查看所有提交/仅自己的提交
             changeOwner(val) {
-                if (val) {//Mine
-                    this.getOwnSolutions();
-                } else {//All
-                    this.getSolutions();
-                }
+                this.getSolutionsByState(this.statusSelectedIndex);
             },
             //根据状态查询提交
             changeStatusState(state) {
@@ -410,7 +386,7 @@
             },
             getSolutionsByState(state) {
                 this.tableLoadingFlag = true;
-                Api.getSolutionsByState(state, this.page, this.per_page, this.$store.state.token).then(res => {
+                Api.getSolutionsByState(state, this.onlyShowMe ? 1 : 0, this.page, this.per_page, this.$store.state.token).then(res => {
                     let result = res.data;
                     // console.log(result);
                     if (result.code === 401) {
