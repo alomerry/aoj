@@ -138,4 +138,11 @@ public interface ContestService {
      * @return
      */
     ContestLinkUser findContestUserByContestId(Integer contestId);
+
+    /**
+     * 查询公开比赛数量
+     *
+     * @return
+     */
+    Integer findPublicContestTotalNumber();
 }

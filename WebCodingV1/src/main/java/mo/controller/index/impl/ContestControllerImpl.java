@@ -25,6 +25,7 @@ public class ContestControllerImpl implements ContestController {
         //todo 查询到公开竞赛和自己参加的隐私竞赛
         JSONObject contests = new JSONObject();
         contests.put("contests", contestService.findContestsByPageAndDefunct(Integer.valueOf(page), Integer.valueOf(per_page), new Integer[]{1}));
+        contests.put("total", contestService.findPublicContestTotalNumber());
         return new Result().setCode(ResultCode.OK).setData(contests);
     }
 

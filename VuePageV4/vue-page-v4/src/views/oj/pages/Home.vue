@@ -60,7 +60,7 @@
         </Card>
         <div style="margin: 10px;overflow: hidden" v-show="news_show === 0">
             <div style="float: right;">
-                <Page :total="totalPage" :current="page" :page-size="per_page" show-sizer show-elevator></Page>
+                <Page :total="total" @on-change="changePage" :page-size="per_page" show-sizer show-elevator @on-page-size-change="changePageSize"></Page>
             </div>
         </div>
     </div>
@@ -74,7 +74,7 @@
         name: 'Home',
         data() {
             return {
-                totalPage: 1,
+                total: 1,
                 page: 1,
                 per_page: 10,
                 loading: false,
@@ -157,6 +157,7 @@
                     // console.log(result);
                     if (result.code === 200) {
                         this.data = result.data.newsLink;
+                        this.total = result.data.total;
                     } else {
                         this.$Message.error(result.message);
                     }
@@ -166,12 +167,20 @@
                     this.loading = false;
                 });
             },
+            changePageSize(pageSize) {
+                this.per_page = pageSize;
+                this.getNews();
+            },
+            changePage(page) {
+                this.page = page;
+                this.getNews();
+            }
         },
         created() {
             this.header_info.button_info = this.news_show === 0 ? 'Refresh' : 'Back';
             this.header_info.title = this.news_show === 0 ? 'Annocement' : '';
             this.updateActiveClass(this.$route.path);
-        }
+        },
     }
 </script>
 <style scoped>

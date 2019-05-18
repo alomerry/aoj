@@ -27,7 +27,7 @@ public interface ContestMapper {
      * @param privates 公开级别
      * @return 比赛集
      */
-    @Select("select * from contest where privates in ${privates}")
+    @Select("select * from contest where privates in ${privates} limit  #{start},#{per_page}")
     List<Contest> findContestsByPageAndDefunct(@Param("start") Integer start, @Param("per_page") Integer per_page, @Param("privates") String privates);
 
     /**
@@ -133,4 +133,13 @@ public interface ContestMapper {
      */
     @Update("update contest set now = now-1 where contest_id = #{contest_id}")
     int delContestNowNumberByContestId(@Param("contest_id") Integer contest_id);
+
+    /**
+     * 查询指定公开级别的竞赛数量
+     *
+     * @param privates 公开级别
+     * @return
+     */
+    @Select("select count(contest_id) from contest where privates = #{privates}")
+    Integer findContestTotalNumberByDefunct(@Param("privates") int privates);
 }

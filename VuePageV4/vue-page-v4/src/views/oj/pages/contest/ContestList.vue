@@ -31,9 +31,9 @@
                     </div>
                     <Divider/>
                 </Row>
-                <Page :current="page" style="float: right" :total="total" show-sizer
-                      @on-change=""
-                      @on-page-size-change=""/>
+                <Page style="float: right" :total="total" show-sizer
+                      @on-change="changePage"
+                      @on-page-size-change="changePageSize"/>
                 <br><br>
             </Card>
         </div>
@@ -55,7 +55,7 @@
 
                 contests: null,
                 page: 1,
-                per_page: 10,
+                per_page: 1,
                 total: 1,
                 loading_flag: false,
             }
@@ -67,6 +67,7 @@
                     let result = res.data;
                     if (result.code == 200) {
                         this.contests = result.data.contests;
+                        this.total = result.data.total;
                     } else {
                         this.$Message.error(result.message);
                     }
@@ -76,7 +77,6 @@
                     this.loading_flag = false;
                 })
             },
-
             isStarted(start, end) {
                 let now = new Date().getTime();
                 if (now >= start && now <= end) {
@@ -86,6 +86,16 @@
                 } else {
                     return 2;
                 }
+            },
+            //修改页码
+            changePage(page) {
+                this.page = page;
+                this.getContests();
+            },
+            //修改每页数量
+            changePageSize(pageSize) {
+                this.per_page = pageSize;
+                this.getContests();
             }
         },
         mounted() {

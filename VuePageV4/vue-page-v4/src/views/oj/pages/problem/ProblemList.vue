@@ -38,8 +38,8 @@
                 </Card>
                 <div style="margin:25px 10px 10px 10px;overflow: hidden">
                     <div style="float: right;">
-                        <Page :total="totalPage" :current="page" :page-size="per_page" show-sizer show-elevator
-                              @on-change=""></Page>
+                        <Page :total="total" :page-size="per_page" show-sizer show-elevator @on-page-size-change="changePageSize"
+                              @on-change="changePage"></Page>
                     </div>
                 </div>
             </Col>
@@ -65,7 +65,7 @@
             return {
                 searchKeyWord: "",//搜索框的内容
                 page: 1,
-                totalPage: 1,
+                total: 1,
                 per_page: 10,
                 buttonLoading: false,//表格重载'按钮'加载中状态
                 tableData1: [],//表格数据
@@ -95,7 +95,7 @@
                     {
                         title: 'title',
                         key: 'title',
-                        align:"center",
+                        align: "center",
                         // width: 600,
                         render: (h, params) => {
                             return h('router-link', {
@@ -119,13 +119,13 @@
                     },*/
                     {
                         title: 'Total',
-                        align:"center",
+                        align: "center",
                         key: 'submit',
                     },
                     {
                         title: 'AC Rate',
                         key: 'ac_rate',
-                        align:"center",
+                        align: "center",
                         render: (h, params) => {
                             return h('Poptip', {
                                 props: {
@@ -181,6 +181,16 @@
             }
         },
         methods: {
+            //每页数量发生变化
+            changePageSize(pageSize) {
+                this.per_page = pageSize;
+                this.getProblems();
+            },
+            //页码发生变化
+            changePage(page) {
+                this.page = page;
+                this.getProblems();
+            },
             //搜索查询表格
             DelaySearchTable: function () {
                 if (this.searchKeyWord === "") {
@@ -205,6 +215,7 @@
                         this.tableData1 = result.data.results;
                         this.tableSearchData = this.tableData1;
                         this.tableLoading = false;
+                        this.total = result.data.total;
                     } else {
                         console.log('Failed! ' + result.message);
                         this.tableLoading = false;
