@@ -57,10 +57,14 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public Result register(@RequestBody User user, HttpServletRequest request) {
+    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
+    public Result register(User user, HttpServletRequest request) {
         logger.info("user[{}]", user.toString());
         Integer userId = userService.register(user, request.getSession());
-        return null;
+        if (userId == -1) {
+            return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("注册用户失败");
+        } else {
+            return new Result().setCode(ResultCode.OK).setData(userService.makeJWT(userId));
+        }
     }
 }

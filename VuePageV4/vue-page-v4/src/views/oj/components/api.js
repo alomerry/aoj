@@ -17,7 +17,11 @@ export default {
     },
 
     registerUser(user) {
-
+        return axios({
+            url: "/api/api-oj/register",
+            method: 'post',
+            data: require('querystring').stringify(user),
+        })
     },
     /**
      *

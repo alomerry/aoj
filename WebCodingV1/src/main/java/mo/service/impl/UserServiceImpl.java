@@ -22,6 +22,7 @@ import org.springframework.util.DigestUtils;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,7 @@ public class UserServiceImpl implements UserService {
                 return new Result().setCode(ResultCode.NOT_FOUND).setMessage("密码错误!请重新输入!");
             } else {
                 JSONObject res = new JSONObject();
-                userMapper.updateSessionIdByUserId(tmp_user.getUser_id(), session.getId(), System.currentTimeMillis());
+                userMapper.updateSessionIdByUserId(tmp_user.getUser_id(), session.getId(), new Timestamp(System.currentTimeMillis()));
                 logger.info("user[{}]", tmp_user);
                 session.setAttribute(ONLINEJUDGE_SESSION_UER, tmp_user);
                 Privilege privilege = privilegeMapper.findPrivilegeByUserId(tmp_user.getUser_id());
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService {
             User tmp_user = userMapper.findUserByUserId(userId);
             session.setAttribute(ONLINEJUDGE_SESSION_UER, tmp_user);
             session.setAttribute(ONLINEJUDGE_SESSION_GROUP, new Privilege("user"));
-            userMapper.updateSessionIdByUserId(userId, session.getId(), System.currentTimeMillis());
+            userMapper.updateSessionIdByUserId(userId, session.getId(), new Timestamp(System.currentTimeMillis()));
             return userId;
         }
         return -1;

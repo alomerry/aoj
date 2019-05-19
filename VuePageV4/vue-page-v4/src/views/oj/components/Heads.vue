@@ -246,9 +246,25 @@
                     if (valid) {
                         Api.checkVerifyCode(this.registerValidate.verifycode).then(res => {
                             if (res) {
-                                if (judgeRegisterInfo) {
+                                if (this.judgeRegisterInfo) {
                                     this.registerValidate.passwd = hex_md5(encodeURIComponent(this.registerValidate.pwd + 'onlinejudge'));
                                     //清除passwd
+                                    Api.registerUser(this.registerValidate).then(res => {
+                                        let result = res.data;
+                                        if (result.code === 200) {
+                                            this.loginModal_flag = false;
+                                            this.$store.dispatch('login', result.data);
+                                            this.user = this.$store.state.user;
+                                            this.admin = this.$store.state.admin;
+                                            this.$Message.success('Success!');
+                                        } else {
+                                            this.loginModal_flag = true;
+                                            this.$Message.error(result.message);
+                                            console.log(result.message);
+                                        }
+                                    }).catch(res => {
+
+                                    });
                                 }
                             } else {
                                 this.$Message.error("Captcha incorrect!");
@@ -256,28 +272,6 @@
                         }).catch(res => {
                             console.log(res);
                         });
-                        /* this.$axios({
-                             url: '/api/api-oj/login',
-                             method: 'post',
-                             data: require('querystring').stringify(this.formValidate),
-                         }).then(res => {
-                             // 成功返回
-                             console.info('后台返回的数据', res.data);
-                             if (res.data.code === 200) {
-                                 this.loginModal_flag = false;
-                                 this.$store.dispatch('login', res.data.data);
-                                 this.user = this.$store.state.user;
-                                 this.admin = this.$store.state.admin;
-                                 this.$Message.success('Success!');
-                             } else {
-                                 this.loginModal_flag = true;
-                                 this.$Message.error(res.data.message);
-                             }
-                         }).catch(error => {
-                             // 失败返回
-                             console.info('报错的信息', error);
-                             this.$Message.error(error);
-                         });*/
 
                     } else {
                         this.loginModal_flag = true;

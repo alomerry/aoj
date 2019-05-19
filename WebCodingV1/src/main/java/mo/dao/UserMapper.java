@@ -74,7 +74,7 @@ public interface UserMapper {
      * @return 返回影响行数
      */
     @Update("update users set session_id = #{session_id},last_login=#{last_login} where user_id = #{user_id}")
-    int updateSessionIdByUserId(@Param("user_id") Integer user_id, @Param("session_id") String session_id, @Param("last_login") long now);
+    int updateSessionIdByUserId(@Param("user_id") Integer user_id, @Param("session_id") String session_id, @Param("last_login") Timestamp now);
 
     /**
      * 查询指定页数用户
