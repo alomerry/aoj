@@ -11,10 +11,9 @@ import 'iview/dist/styles/iview.css' // 使用 CSS
 import axios from 'axios'//使用ajax
 Vue.prototype.$axios = axios;
 axios.defaults.withCredentials = true;
-
+// Vue.http.options.xhr = {withCredentials: true}
 Vue.use(Router);
 Vue.use(iView);
-
 Vue.config.productionTip = false;
 /* eslint-disable no-new */
 new Vue({

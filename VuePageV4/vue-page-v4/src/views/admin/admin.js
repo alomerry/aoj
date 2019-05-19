@@ -12,7 +12,7 @@ import axios from 'axios'//使用ajax
 
 
 Vue.prototype.$axios = axios;
-
+axios.defaults.withCredentials = true;
 Vue.use(iView);
 Vue.use(Router);
 

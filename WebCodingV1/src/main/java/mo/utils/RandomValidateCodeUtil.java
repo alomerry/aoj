@@ -13,7 +13,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-@CrossOrigin(allowCredentials = "true")
 public class RandomValidateCodeUtil {
 
 

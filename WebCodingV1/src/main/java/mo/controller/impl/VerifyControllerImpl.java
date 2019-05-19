@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@CrossOrigin(allowCredentials = "true")
 public class VerifyControllerImpl implements VerifyController {//}, ErrorController {
 
     private static final Logger logger = LoggerFactory.getLogger(VerifyControllerImpl.class);
