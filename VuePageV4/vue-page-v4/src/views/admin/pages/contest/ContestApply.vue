@@ -9,14 +9,12 @@
                         <span style="font-size: 25px;font-weight: 400;">Contests</span>
                     </div>
                     <div slot="extra">
-                        <Button icon="md-refresh" style="float: right;margin-right: 20px"
-                                @click.native="getContests">Refresh
-                        </Button>
+                        <Button icon="md-refresh" style="float: right;margin-right: 20px" @click.native="getContests">Refresh</Button>
                         <br><br>
                     </div>
                     <Table :columns="contest_col" :data="contest_data" :loading="contest_table_loading"></Table>
                     <br>
-                    <Page :current="contest_page" style="float: right" :total="contest_total" show-sizer
+                    <Page :page-size="contest_per_page" style="float: right" :total="contest_total" show-sizer
                           @on-change="pageChange"
                           @on-page-size-change="pageSizeChange"/>
                     <br><br>
@@ -28,21 +26,24 @@
                         <span style="font-size: 25px;font-weight: 400;">Apply</span>
                     </div>
                     <div slot="extra">
-                        <Button icon="md-arrow-round-back" style="float: right;margin-right: 20px"
-                                @click.native="Back">Back
-                        </Button>
+                        <Button icon="md-arrow-round-back" style="float: right;margin-right: 20px" @click.native="Back">Back</Button>
+                        <Button icon="md-refresh" style="float: right;margin-right: 20px" @click.native="getApply">Refresh</Button>
                         <br><br>
                     </div>
-                    <Table :columns="apply_col" :data="apply_data"></Table>
+                    <Table :columns="apply_col" :data="apply_data" @on-selection-change="selectionsChange" :loading="apply_table_loading"></Table>
                     <br>
-                    <Page :current="apply_page" size="small" style="float: right" :total="apply_total" show-sizer
-                          @on-change=""
-                          @on-page-size-change=""/>
+                    <div style="float: left;">
+                        <Button type="success" icon="md-checkmark" style="margin-right: 10px" v-show="selected.length>0" @click="operateMany(1)">Agree</Button>
+                        <Button type="error" icon="md-close" v-show="selected.length>0" @click="operateMany(2)">Refuse</Button>
+                    </div>
+                    <Page style="float: right" :total="apply_total" show-sizer :page-size="apply_per_page"
+                          @on-change="changeApplyPage"
+                          @on-page-size-change="changeApplyPageSize"/>
+                    <div style="margin-bottom: 16px"></div>
                     <br>
                 </Card>
             </div>
         </transition>
-    
     </div>
 </template>
 
@@ -54,13 +55,12 @@
         name: "ContestApply",
         data() {
             return {
-                contest_page: 1,
-                contest_per_page: 10,
-                contest_total: 10,//TODO 计算total
-                apply_page: 1,
-                apply_per_page: 10,
-                apply_total: 10,
                 location_flag: true,//true:contest  false:apply
+
+                contest_page: 1,
+                contest_id: -1,
+                contest_per_page: 10,
+                contest_total: 10,
                 contest_table_loading: false,//竞赛表加载标记
                 contest_data: [],
                 contest_col: [
@@ -112,11 +112,13 @@
                                     },
                                     on: {
                                         click: () => {
-                                            Api.getContestApplyByContestId(params.row.contest.contest_id, this.$store.state.token).then(res => {
+                                            this.contest_id = params.row.contest.contest_id;
+                                            Api.getContestApplyByContestId(this.apply_page, this.apply_per_page, params.row.contest.contest_id, this.$store.state.token).then(res => {
                                                 let result = res.data;
                                                 if (result.code === 200) {
                                                     this.location_flag = false;
                                                     this.apply_data = result.data.contestApplys;
+                                                    this.apply_total = result.data.total;
                                                 } else {
                                                     this.$Message.error(result.message);
                                                 }
@@ -130,6 +132,10 @@
                         }
                     },
                 ],
+
+                apply_page: 1,
+                apply_per_page: 10,
+                apply_total: 1,
                 apply_col: [
                     {
                         type: 'selection',
@@ -312,10 +318,67 @@
                         }
                     }*/
                 ],
-
+                apply_table_loading: false,//竞赛表加载标记
+                selected: [],
             }
         },
         methods: {
+            //批量操作
+            selectionsChange(selection) {
+                this.selected = selection;
+            },
+            //批量同意/拒绝申请
+            operateMany(state) {
+                this.selected.forEach(function (current) {
+                    _this.updateContestApply(current.contestApply.id, state);
+                });
+                this.selected = [];
+                this.getApply();
+            },
+            updateContestApply(contestApply_id, state) {
+                Api.updateContestApplyStatus(contestApply_id, state, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    if (result.code === 200) {
+                        if (state == 1) {
+                            this.$Message.success("Rejected!");
+                        } else {
+                            this.$Message.success("Refused!");
+                        }
+                    } else {
+                        this.$Message.error(result.message);
+                    }
+                }).catch(res => {
+                    console.log(res);
+                });
+            },
+            //获取apply
+            getApply() {
+                this.apply_table_loading = true;
+                Api.getContestApplyByContestId(this.apply_page, this.apply_per_page, this.contest_id, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    if (result.code === 200) {
+                        this.location_flag = false;
+                        this.apply_data = result.data.contestApplys;
+                        this.apply_total = result.data.total;
+                    } else {
+                        this.$Message.error(result.message);
+                    }
+                    this.apply_table_loading = false;
+                }).catch(res => {
+                    console.log(res);
+                    this.apply_table_loading = false;
+                });
+            },
+            //修改页码
+            changeApplyPage(page) {
+                this.apply_page = page;
+                this.getApply();
+            },
+            //修改每页数量
+            changeApplyPageSize(pageSize) {
+                this.apply_per_page = pageSize;
+                this.getApply();
+            },
             //返回
             Back() {
                 this.location_flag = true;
@@ -324,10 +387,11 @@
             //查询竞赛
             getContests() {
                 this.contest_table_loading = true;
-                Api.getContestByCreator(this.$store.state.token).then(res => {
+                Api.getContestByCreator(this.contest_page, this.contest_per_page, this.$store.state.token).then(res => {
                     let result = res.data;
                     if (result.code === 200) {
                         this.contest_data = result.data.contests;
+                        this.contest_total = result.data.total;
                         this.getApplyNums();
                     } else {
                         this.$Message.error(result.message);
@@ -356,19 +420,20 @@
             },
             //每页数量修改回调函数
             pageSizeChange(pageSize) {
-                this.per_page = pageSize;
+                this.contest_per_page = pageSize;
                 this.getContests();
-            }
-            ,
+            },
             //页码修改时的回调函数
             pageChange(page) {
-                this.page = page;
+                this.contest_page = page;
                 this.getContests();
             }
-        },
+        }
+        ,
         mounted() {
             this.getContests();
-        },
+        }
+        ,
         created() {
             _this = this;
         }

@@ -98,6 +98,11 @@ public class ContestApplyServiceImpl implements ContestApplyService {
         return contestApplyMapper.getNumbersByContestIdAndUserId(contest_id, user_id) > 0;
     }
 
+    @Override
+    public int getContestApplyTotalNumber(int contest_id) {
+        return contestApplyMapper.getContestApplyNumberByContestId(contest_id);
+    }
+
     private List<ContestApplyLink> makeLink(List<ContestApply> contestApplies) {
         List<ContestApplyLink> contestApplyLinks = new ArrayList<>(contestApplies.size() + 3);
         for (ContestApply item : contestApplies) {

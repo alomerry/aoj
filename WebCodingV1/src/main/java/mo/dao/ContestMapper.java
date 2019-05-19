@@ -142,4 +142,13 @@ public interface ContestMapper {
      */
     @Select("select count(contest_id) from contest where privates = #{privates}")
     Integer findContestTotalNumberByDefunct(@Param("privates") int privates);
+
+    /**
+     * 查询指定用户创建的竞赛数量
+     *
+     * @param user_id 用户Id
+     * @return
+     */
+    @Select("select count(contest_id) from contest where user_id = #{user_id}")
+    Integer findUserContestTotalNumber(@Param("user_id") Integer user_id);
 }

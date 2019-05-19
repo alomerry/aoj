@@ -438,9 +438,9 @@ export default {
      * 根据管理员Id查询创建的竞赛
      * @param jwt 令牌
      */
-    getContestByCreator(jwt) {
+    getContestByCreator(page, per_page, jwt) {
         return axios({
-            url: "/api/api-oj/admin/creator/contest",
+            url: "/api/api-oj/admin/creator/contest?page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,
@@ -468,9 +468,9 @@ export default {
      * @param contest_id 竞赛Id
      * @param jwt 令牌
      */
-    getContestApplyByContestId(contest_id, jwt) {
+    getContestApplyByContestId(page, per_page, contest_id, jwt) {
         return axios({
-            url: "/api/api-oj/admin/contest/" + contest_id + "/contest_apply",
+            url: "/api/api-oj/admin/contest/" + contest_id + "/contest_apply?page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,

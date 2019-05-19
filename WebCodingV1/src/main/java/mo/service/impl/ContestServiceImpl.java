@@ -150,6 +150,11 @@ public class ContestServiceImpl implements ContestService {
         return contestMapper.findContestTotalNumberByDefunct(1);
     }
 
+    @Override
+    public Integer findCreatorContestTotalNumber(Integer userId) {
+        return contestMapper.findUserContestTotalNumber(userId);
+    }
+
     private List<ContestNumber> makeContestNumber(List<Contest> contests) {
         List<ContestNumber> contestNumbers = new ArrayList<>(contests.size() + 3);
         for (Contest c : contests) {

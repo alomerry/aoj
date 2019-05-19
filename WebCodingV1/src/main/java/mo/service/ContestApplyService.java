@@ -59,4 +59,12 @@ public interface ContestApplyService {
      * @return
      */
     boolean checkExistByContestIdAndUserId(Integer user_id, Integer contest_id);
+
+    /**
+     * 查询指定竞赛申请数量
+     *
+     * @param contest_id 竞赛Id
+     * @return
+     */
+    int getContestApplyTotalNumber(int contest_id);
 }

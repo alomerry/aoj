@@ -44,6 +44,7 @@ public class AdminContestApplyControllerImpl extends AbstractController implemen
             List<ContestApplyLink> contestApplys = contestApplyService.getContestAppliesByContestId(contest_id, Integer.valueOf(page), Integer.valueOf(per_page));
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("contestApplys", contestApplys);
+            jsonObject.put("total", contestApplyService.getContestApplyTotalNumber(contest_id));
             return new Result().setCode(ResultCode.OK).setData(jsonObject);
         }
     }

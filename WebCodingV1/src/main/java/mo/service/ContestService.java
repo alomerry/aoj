@@ -145,4 +145,12 @@ public interface ContestService {
      * @return
      */
     Integer findPublicContestTotalNumber();
+
+    /**
+     * 查询指定用户创建的竞赛数
+     *
+     * @param userId 用户Id
+     * @return
+     */
+    Integer findCreatorContestTotalNumber(Integer userId);
 }

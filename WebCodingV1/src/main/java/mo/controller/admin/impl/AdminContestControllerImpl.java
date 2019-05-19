@@ -172,6 +172,7 @@ public class AdminContestControllerImpl extends AbstractController implements Ad
                            @RequestParam(name = "per_page", defaultValue = "10") String per_page) {
         JSONObject contests = new JSONObject();
         contests.put("contests", contestService.findContestsByCreatorIdAndPage(getJWTUserId(), Integer.valueOf(page), Integer.valueOf(per_page)));
+        contests.put("total", contestService.findCreatorContestTotalNumber(getJWTUserId()));
         return new Result().setCode(ResultCode.OK).setData(contests);
     }
 }

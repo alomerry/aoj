@@ -116,7 +116,12 @@
                                         <span slot="close">All</span>
                                     </i-switch>
                                 </Col>-->
-                                <Col span="8">
+                                <Col span="2" style="float: right;margin-right: 90px">
+                                    <Button :loading="status_page_table_loading" @click.native="getSolutions" type="primary" style="margin-right: 60px;margin-left: 7px">
+                                        Refresh
+                                    </Button>
+                                </Col>
+                                <Col span="8" style="float: right;margin-right: 50px">
                                     <Dropdown style="margin-top: 4px" @on-click="changeStatusState">
                                         <a href="javascript:void(0)" style="color: #515a6e">
                                             {{statusItem[statusSelectedIndex]}}
@@ -140,13 +145,6 @@
                                             <DropdownItem name="14">System Error</DropdownItem>
                                         </DropdownMenu>
                                     </Dropdown>
-                                </Col>
-                                <Col span="8">
-                                </Col>
-                                <Col span="2">
-                                    <Button :loading="status_page_table_loading" @click.native="getSolutions" type="primary" style="margin-right: 60px;margin-left: 7px">
-                                        Refresh
-                                    </Button>
                                 </Col>
                             </Row>
                         </div>
@@ -486,7 +484,7 @@
             },
             getSolutionsByState(state) {
                 this.status_page_table_loading = true;
-                Api.getSolutionsByState(state, this.status_page, this.status_per_page, this.$store.state.token).then(res => {
+                Api.getSolutionsByState(state, 0, this.status_page, this.status_per_page, this.$store.state.token).then(res => {
                     let result = res.data;
                     if (result.code === 401) {
                         this.$Message.error("身份信息失效，请重新登录");

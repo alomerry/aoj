@@ -16,7 +16,7 @@ public interface ContestApplyMapper {
      * @param per_page  每页数量
      * @return
      */
-    @Select("select * from contest_apply where contest_id = #{contest_id} limit #{start},#{per_page}")
+    @Select("select * from contest_apply where contest_id = #{contest_id} order by status limit #{start},#{per_page}")
     List<ContestApply> getContestAppliesByCreatorId(@Param("contest_id") Integer contestId,
                                                     @Param("start") int start,
                                                     @Param("per_page") int per_page);
@@ -29,6 +29,15 @@ public interface ContestApplyMapper {
      */
     @Select("select count(id) from contest_apply where contest_id = #{contest_id} and status = 0")
     Integer getUncheckedContestApplyNumberByContestId(@Param("contest_id") Integer contestId);
+
+    /**
+     * 查询指定竞赛申请数
+     *
+     * @param contestId 竞赛Id
+     * @return
+     */
+    @Select("select count(id) from contest_apply where contest_id = #{contest_id}")
+    Integer getContestApplyNumberByContestId(@Param("contest_id") Integer contestId);
 
     /**
      * 根据Id查询申请
