@@ -9,6 +9,8 @@ import mo.exception.ServiceException;
 import mo.interceptor.AxiosInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +39,7 @@ public class WebMvcConfiger extends WebMvcConfigurationSupport {
     private static final Logger logger = LoggerFactory.getLogger(WebMvcConfiger.class);
 
     private String env = "dev";
+
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -90,7 +94,6 @@ public class WebMvcConfiger extends WebMvcConfigurationSupport {
     //添加拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AxiosInterceptor());
     }
 
     //解决跨域问题
@@ -111,9 +114,4 @@ public class WebMvcConfiger extends WebMvcConfigurationSupport {
         }
     }
 
-    //强制接收put请求
-//    @Bean
-//    public HttpPutFormContentFilter httpPutFormContentFilter() {
-//        return new HttpPutFormContentFilter();
-//    }
 }
