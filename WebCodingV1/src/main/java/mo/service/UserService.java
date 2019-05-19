@@ -1,5 +1,6 @@
 package mo.service;
 
+import com.alibaba.fastjson.JSONObject;
 import mo.core.Result;
 import mo.entity.po.User;
 import mo.entity.vo.UserContestResult;
@@ -24,14 +25,20 @@ public interface UserService {
     Result checkLogin(String username, String passwd, HttpSession session);
 
     /**
-     * 验证注册信息
+     * 查询用户名是否存在
      *
-     * @param user    用户实体，包含各项注册所需信息
-     * @param rpt_pwd 用户密码
-     * @return 返回注册结果
+     * @param username 用户名
+     * @return
      */
-    String checkRegister(User user, String rpt_pwd);
+    boolean checkUserNameExist(String username);
 
+    /**
+     * 用户注册
+     *
+     * @param user 用户实体
+     * @return
+     */
+    Integer register(User user, HttpSession session);
 
     /**
      * 根据指定Id查找用户
@@ -101,4 +108,12 @@ public interface UserService {
      * @return
      */
     List<UserContestResult> users(Integer contest_id, int page, int per_page);
+
+    /**
+     * 生成令牌
+     *
+     * @param userId 用户Id
+     * @return
+     */
+    JSONObject makeJWT(Integer userId);
 }

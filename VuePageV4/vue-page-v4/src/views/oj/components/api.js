@@ -7,6 +7,19 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 export default {
     name: 'Api',
     /**
+     * 获取验证码
+     */
+    checkVerifyCode(code) {
+        return axios({
+            url: "/api/api-oj/checkVerify?code=" + code,
+            method: 'post',
+        })
+    },
+
+    registerUser(user) {
+
+    },
+    /**
      *
      * @param page
      * @param per_page

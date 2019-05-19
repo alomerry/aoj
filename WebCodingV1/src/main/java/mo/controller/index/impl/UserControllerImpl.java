@@ -55,4 +55,12 @@ public class UserControllerImpl implements UserController {
         user.put("user", userService.findUserByUsername(username));
         return new Result().setCode(ResultCode.OK).setData(user);
     }
+
+    @Override
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public Result register(@RequestBody User user, HttpServletRequest request) {
+        logger.info("user[{}]", user.toString());
+        Integer userId = userService.register(user, request.getSession());
+        return null;
+    }
 }

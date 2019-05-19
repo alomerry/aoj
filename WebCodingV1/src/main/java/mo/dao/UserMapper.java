@@ -3,6 +3,7 @@ package mo.dao;
 import mo.entity.po.User;
 import org.apache.ibatis.annotations.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -72,8 +73,8 @@ public interface UserMapper {
      * @param session_id sessionId
      * @return 返回影响行数
      */
-    @Update("update users set session_id = #{session_id} where user_id = #{user_id}")
-    int updateSessionIdByUserId(@Param("user_id") Integer user_id, @Param("session_id") String session_id);
+    @Update("update users set session_id = #{session_id},last_login=#{last_login} where user_id = #{user_id}")
+    int updateSessionIdByUserId(@Param("user_id") Integer user_id, @Param("session_id") String session_id, @Param("last_login") long now);
 
     /**
      * 查询指定页数用户
@@ -142,5 +143,22 @@ public interface UserMapper {
      */
     @Select("select user_id from contest_apply where contest_id = #{contest_id} and status = '1' limit #{start} ,#{per_page}")
     int[] findContestsUsers(@Param("contest_id") int contest_id, @Param("start") int start, @Param("per_page") int per_page);
+
+    /**
+     * 新建用户
+     *
+     * @param user 用户实体
+     * @return
+     */
+    @Insert("insert into users (username,passwd,email) values (#{user.username},#{user.passwd},#{user.email})")
+    int insertNewUser(@Param("user") User user);
+
+    /**
+     * 查询上个插入的主键
+     *
+     * @return
+     */
+    @Select("select LAST_INSERT_ID()")
+    Integer findLastInsertId();
 }
 

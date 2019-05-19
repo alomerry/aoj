@@ -33,4 +33,12 @@ public interface UserController {
      */
     Result user(String username);
 
+    /**
+     * 用户注册
+     *
+     * @param user 用户实体
+     * @return
+     */
+    Result register(User user, HttpServletRequest request);
+
 }

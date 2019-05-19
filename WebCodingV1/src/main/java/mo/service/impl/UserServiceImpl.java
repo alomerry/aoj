@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
                 return new Result().setCode(ResultCode.NOT_FOUND).setMessage("密码错误!请重新输入!");
             } else {
                 JSONObject res = new JSONObject();
-                userMapper.updateSessionIdByUserId(tmp_user.getUser_id(), session.getId());
+                userMapper.updateSessionIdByUserId(tmp_user.getUser_id(), session.getId(), System.currentTimeMillis());
                 logger.info("user[{}]", tmp_user);
                 session.setAttribute(ONLINEJUDGE_SESSION_UER, tmp_user);
                 Privilege privilege = privilegeMapper.findPrivilegeByUserId(tmp_user.getUser_id());
@@ -81,8 +81,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String checkRegister(User user, String rpt_pwd) {
-        return null;
+    public boolean checkUserNameExist(String username) {
+        return userMapper.GetNumByUserName(username) > 0;
+    }
+
+    @Override
+    public Integer register(User user, HttpSession session) {
+        user.setPasswd(DigestUtils.md5DigestAsHex(user.getPasswd().getBytes()));
+        if (userMapper.insertNewUser(user) > 0) {
+            Integer userId = userMapper.findLastInsertId();
+            User tmp_user = userMapper.findUserByUserId(userId);
+            session.setAttribute(ONLINEJUDGE_SESSION_UER, tmp_user);
+            session.setAttribute(ONLINEJUDGE_SESSION_GROUP, new Privilege("user"));
+            userMapper.updateSessionIdByUserId(userId, session.getId(), System.currentTimeMillis());
+            return userId;
+        }
+        return -1;
     }
 
     @Override
@@ -154,6 +168,23 @@ public class UserServiceImpl implements UserService {
                     solutionMapper.getUserTotalSolutionNum(user_id, contest_id)));
         }
         return results;
+    }
+
+    @Override
+    public JSONObject makeJWT(Integer userId) {
+        JSONObject res = new JSONObject();
+        User tmp_user = userMapper.findUserByUserId(userId);
+        Privilege privilege = privilegeMapper.findPrivilegeByUserId(userId);
+        tmp_user.setSession_id("");
+        privilege = privilege == null ? new Privilege("user") : privilege;
+        res.put("admin", privilege.getRightstr().startsWith("admin"));
+        res.put("user", tmp_user);
+        if (privilege.getRightstr().startsWith("admin")) {
+            res.put("level", privilege.getRightstr());
+        }
+        res.put("jwt", JWTUtils.makeToken(new UserLink(tmp_user, privilege), 300));
+        logger.info("user[{}]", res);
+        return res;
     }
 
 }
