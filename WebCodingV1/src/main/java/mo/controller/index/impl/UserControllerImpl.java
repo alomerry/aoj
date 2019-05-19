@@ -60,11 +60,15 @@ public class UserControllerImpl implements UserController {
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public Result register(User user, HttpServletRequest request) {
         logger.info("user[{}]", user.toString());
-        Integer userId = userService.register(user, request.getSession());
-        if (userId == -1) {
-            return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("注册用户失败");
+        if (!userService.checkUserNameExist(user.getUsername())) {
+            Integer userId = userService.register(user, request.getSession());
+            if (userId == -1) {
+                return new Result().setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("注册用户失败");
+            } else {
+                return new Result().setCode(ResultCode.OK).setData(userService.makeJWT(userId));
+            }
         } else {
-            return new Result().setCode(ResultCode.OK).setData(userService.makeJWT(userId));
+            return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("用户名已存在");
         }
     }
 }

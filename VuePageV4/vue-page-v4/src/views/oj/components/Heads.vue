@@ -257,6 +257,7 @@
                                             this.user = this.$store.state.user;
                                             this.admin = this.$store.state.admin;
                                             this.$Message.success('Success!');
+                                            this.register_info_flag = false;
                                         } else {
                                             this.loginModal_flag = true;
                                             this.$Message.error(result.message);

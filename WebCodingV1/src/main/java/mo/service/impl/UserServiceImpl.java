@@ -88,6 +88,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer register(User user, HttpSession session) {
+        user.setPasswd(user.getPasswd() + SALT);
         user.setPasswd(DigestUtils.md5DigestAsHex(user.getPasswd().getBytes()));
         if (userMapper.insertNewUser(user) > 0) {
             Integer userId = userMapper.findLastInsertId();
