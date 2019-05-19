@@ -99,8 +99,9 @@ public class WebMvcConfiger extends WebMvcConfigurationSupport {
             @Override
             public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
                 System.out.println("***************************拦截器触发！***************************");
+                System.out.println("***************************"+request.getSession().getId()+"***************************");
                 response.setHeader("Access-Control-Allow-Credentials", "true");
-                response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:8088");
+                response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
                 response.setHeader("Access-Control-Allow-Methods", "*");
                 response.setHeader("Access-Control-Allow-Headers",
                         "Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers,token");

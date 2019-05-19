@@ -1,6 +1,7 @@
 import axios from 'axios'//使用ajax
 
 
+axios.defaults.withCredentials = true;
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.xsrfCookieName = 'csrftoken';
 
@@ -11,14 +12,14 @@ export default {
      */
     checkVerifyCode(code) {
         return axios({
-            url: "/api/api-oj/checkVerify?code=" + code,
+            url: "/api-oj/api-oj/checkVerify?code=" + code,
             method: 'post',
         })
     },
 
     registerUser(user) {
         return axios({
-            url: "/api/api-oj/register",
+            url: "/api-oj/api-oj/register",
             method: 'post',
             data: require('querystring').stringify(user),
         })
@@ -32,7 +33,7 @@ export default {
      */
     findProblemsByPagePer_PageAndResultType(page, per_page, resType) {
         return axios({
-            url: "/api/api-oj/problems/defunct/1?page=" + page + "&per_page=" + per_page + "&resType=" + resType,
+            url: "/api-oj/api-oj/problems/defunct/1?page=" + page + "&per_page=" + per_page + "&resType=" + resType,
             method: 'get',
         })
     },
@@ -43,7 +44,7 @@ export default {
      */
     findProblemsByContestId(contestId) {
         return axios({
-            url: "/api/api-oj/contest/" + contestId + "/problems",
+            url: "/api-oj/api-oj/contest/" + contestId + "/problems",
             method: 'get',
         })
     },
@@ -54,7 +55,7 @@ export default {
      */
     findUserInfoByUserName(username) {
         return axios({
-            url: "/api/api-oj/user?username=" + username,
+            url: "/api-oj/api-oj/user?username=" + username,
             method: 'get',
         })
     },
@@ -66,7 +67,7 @@ export default {
      */
     applyContestByContestId(contestId, jwt) {
         return axios({
-            url: "/api/api-oj/contest/" + contestId + "/contest_apply",
+            url: "/api-oj/api-oj/contest/" + contestId + "/contest_apply",
             method: 'post',
             headers: {
                 "jwt": jwt,
@@ -81,7 +82,7 @@ export default {
      */
     findProblemByProblemId(problem_id) {
         return axios({
-            url: '/api/api-oj/problem/' + problem_id,
+            url: '/api-oj/api-oj/problem/' + problem_id,
             method: 'get',
         });
     },
@@ -94,7 +95,7 @@ export default {
      */
     insertNewSolution(submit, jwt) {
         return axios({
-            url: '/api/api-oj/submit',
+            url: '/api-oj/api-oj/submit',
             data: JSON.stringify(submit),
             method: 'post',
             headers: {
@@ -111,7 +112,7 @@ export default {
      */
     getContestSolutions(contestId, page, per_page) {
         return axios({
-            url: "/api/api-oj/contest/" + contestId + "/solutions?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/contest/" + contestId + "/solutions?page=" + page + "&per_page=" + per_page,
             method: "get",
         })
     },
@@ -123,7 +124,7 @@ export default {
      */
     getSolutions(page, per_page, jwt) {
         return axios({
-            url: "/api/api-oj/solutions?myself=0&page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/solutions?myself=0&page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,
@@ -132,7 +133,7 @@ export default {
     },
     getSolutionsByState(state, myself, page, per_page, jwt) {
         return axios({
-            url: "/api/api-oj/state/" + state + "/solutions?myself=" + myself + "&page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/state/" + state + "/solutions?myself=" + myself + "&page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,
@@ -148,7 +149,7 @@ export default {
      */
     findNews(page, per_page) {
         return axios({
-            url: "/api/api-oj/news?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/news?page=" + page + "&per_page=" + per_page,
             method: "get",
         })
     },
@@ -160,7 +161,7 @@ export default {
      */
     findTags(page, per_page) {
         return axios({
-            url: "/api/api-oj/tags?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/tags?page=" + page + "&per_page=" + per_page,
             method: "get",
         });
     },
@@ -176,7 +177,7 @@ export default {
         params.append("page", page);
         params.append("per_page", per_page);
         return axios({
-            url: "/api/api-oj/problems/tag/" + tag_id,
+            url: "/api-oj/api-oj/problems/tag/" + tag_id,
             method: "get",
             data: params,
         });
@@ -189,7 +190,7 @@ export default {
      */
     findContestByPage(page, per_page) {
         return axios({
-            url: "/api/api-oj/contests?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/contests?page=" + page + "&per_page=" + per_page,
             method: "get",
         });
     },
@@ -200,7 +201,7 @@ export default {
      */
     findContestByContestId(contestId) {
         return axios({
-            url: "/api/api-oj/contest/" + contestId,
+            url: "/api-oj/api-oj/contest/" + contestId,
             method: "get",
         })
     },
@@ -211,7 +212,7 @@ export default {
      */
     findAnnosByContestId(contestId, page, per_page) {
         return axios({
-            url: "/api/api-oj/contest/" + contestId + "/news?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/contest/" + contestId + "/news?page=" + page + "&per_page=" + per_page,
             method: "get",
         })
     }

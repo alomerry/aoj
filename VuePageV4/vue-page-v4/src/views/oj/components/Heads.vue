@@ -200,7 +200,7 @@
 
         methods: {
             changeVerifyCode() {
-                this.verify_path = '/api/api-oj/getVerify?' + Math.random();
+                this.verify_path = '/api-oj/api-oj/getVerify?' + Math.random();
             },
             //登录请求
             loginModalOk() {
@@ -211,7 +211,7 @@
                         //清除passwd
 
                         this.$axios({
-                            url: '/api/api-oj/login',
+                            url: '/api-oj/api-oj/login',
                             method: 'post',
                             data: require('querystring').stringify(this.formValidate),
                         }).then(res => {

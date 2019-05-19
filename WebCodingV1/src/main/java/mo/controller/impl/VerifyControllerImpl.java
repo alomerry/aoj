@@ -17,6 +17,7 @@ public class VerifyControllerImpl implements VerifyController {//}, ErrorControl
     private static final Logger logger = LoggerFactory.getLogger(VerifyControllerImpl.class);
 
     @Override
+    @CrossOrigin(origins = "http://localhost:8088", maxAge = 3600,allowCredentials = "true")
     @RequestMapping(value = "/getVerify", method = RequestMethod.GET)
     public void getVerify(HttpServletRequest request, HttpServletResponse response) {
         try {

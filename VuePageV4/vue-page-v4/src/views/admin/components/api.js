@@ -15,7 +15,7 @@ export default {
      */
     getUsersByPagePer_Page(page, per_page, jwt) {
         return axios({
-            url: "/api/api-oj/admin/users?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/admin/users?page=" + page + "&per_page=" + per_page,
             method: 'get',
             headers: {
                 "jwt": jwt,
@@ -31,7 +31,7 @@ export default {
      */
     getContestsByPagePer_PageAndCreator(page, per_page, jwt) {
         return axios({
-            url: "/api/api-oj/admin/contests?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/admin/contests?page=" + page + "&per_page=" + per_page,
             method: 'get',
             headers: {
                 "jwt": jwt,
@@ -46,7 +46,7 @@ export default {
      */
     getContestByContestId(contest_id, jwt) {
         return axios({
-            url: "/api/api-oj/admin/contest/" + contest_id,
+            url: "/api-oj/api-oj/admin/contest/" + contest_id,
             method: "get",
             headers: {
                 "jwt": jwt,
@@ -62,7 +62,7 @@ export default {
      */
     getProblemsByPagePer_Page(page, per_page, jwt) {
         return axios({
-            url: "/api/api-oj/admin/problems?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/admin/problems?page=" + page + "&per_page=" + per_page,
             method: 'get',
             headers: {
                 "jwt": jwt,
@@ -79,7 +79,7 @@ export default {
      */
     getContestProblemsByPageAndContestId(page, per_page, contest_id, jwt) {
         return axios({
-            url: "/api/api-oj/admin/contest/" + contest_id + "/problems?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/admin/contest/" + contest_id + "/problems?page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,
@@ -95,7 +95,7 @@ export default {
      */
     findProblemByProblemId(problem_id, jwt) {
         return axios({
-            url: '/api/api-oj/admin/problem/' + problem_id,
+            url: '/api-oj/api-oj/admin/problem/' + problem_id,
             method: 'get',
             headers: {
                 "jwt": jwt,
@@ -109,7 +109,7 @@ export default {
     findPublicProblemsByPage(page, per_page) {
         let params = new URLSearchParams();
         return axios({
-            url: "/api/api-oj/problems/defunct/1?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/problems/defunct/1?page=" + page + "&per_page=" + per_page,
             method: "get",
         })
     },
@@ -121,7 +121,7 @@ export default {
      */
     findTagsByProblemId(problem_id) {
         return axios({
-            url: "/api/api-oj/tags/problem/" + problem_id,
+            url: "/api-oj/api-oj/tags/problem/" + problem_id,
             method: "get",
         });
     },
@@ -135,7 +135,7 @@ export default {
      */
     addPublicProblemToContest(contest_id, problem_id, jwt) {
         return axios({
-            url: "/api/api-oj/admin/contest/" + contest_id + "/problem/" + problem_id,
+            url: "/api-oj/api-oj/admin/contest/" + contest_id + "/problem/" + problem_id,
             method: "post",
             headers: {
                 "jwt": jwt,
@@ -152,7 +152,7 @@ export default {
      */
     deleteProblemFromContest(contest_id, problem_id, jwt) {
         return axios({
-            url: "/api/api-oj/admin/contest/" + contest_id + "/problem/" + problem_id,
+            url: "/api-oj/api-oj/admin/contest/" + contest_id + "/problem/" + problem_id,
             method: "delete",
             headers: {
                 "jwt": jwt,
@@ -175,7 +175,7 @@ export default {
         params.append("tags", tags == null ? null : JSON.stringify(tags));
         params.append("testCaseId", testcase_id);
         return axios({
-            url: "/api/api-oj/admin/problem",
+            url: "/api-oj/api-oj/admin/problem",
             method: "post",
             data: params,
             headers: {
@@ -192,7 +192,7 @@ export default {
      */
     updateNews(news, jwt) {
         return axios({
-            url: "/api/api-oj/admin/news",
+            url: "/api-oj/api-oj/admin/news",
             method: "put",
             dataType: "json",
             data: JSON.stringify(news),
@@ -211,7 +211,7 @@ export default {
      */
     deleteProblemByProblemId(problem_id, jwt) {
         return axios({
-            url: "/api/api-oj/admin/problem/" + problem_id,
+            url: "/api-oj/api-oj/admin/problem/" + problem_id,
             method: "delete",
             headers: {
                 "jwt": jwt,
@@ -226,7 +226,7 @@ export default {
      */
     deleteUserByUserId(user_id, jwt) {
         return axios({
-            url: '/api/api-oj/admin/user/' + user_id,
+            url: '/api-oj/api-oj/admin/user/' + user_id,
             method: "delete",
             headers: {
                 "jwt": jwt,
@@ -241,7 +241,7 @@ export default {
      */
     updateUser(user, jwt) {
         return axios({
-            url: '/api/api-oj/admin/user',
+            url: '/api-oj/api-oj/admin/user',
             data: JSON.stringify(user),
             method: "put",
             headers: {
@@ -260,7 +260,7 @@ export default {
      */
     findContestUser(contest_id, page, per_page, jwt) {
         return axios({
-            url: "/api/api-oj/admin/contest/" + contest_id + "/users?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/admin/contest/" + contest_id + "/users?page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,
@@ -278,7 +278,7 @@ export default {
      */
     findContestNews(contest_id, page, per_page, jwt) {
         return axios({
-            url: "/api/api-oj/admin/contest/" + contest_id + "/news?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/admin/contest/" + contest_id + "/news?page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,
@@ -296,7 +296,7 @@ export default {
         let params = new URLSearchParams();
         params.append("news", JSON.stringify(news));
         return axios({
-            url: "/api/api-oj/admin/news",
+            url: "/api-oj/api-oj/admin/news",
             method: "post",
             data: params,
             headers: {
@@ -314,7 +314,7 @@ export default {
      */
     deleteNews(news_id, jwt) {
         return axios({
-            url: "/api/api-oj/admin/news/" + news_id,
+            url: "/api-oj/api-oj/admin/news/" + news_id,
             method: "delete",
             headers: {
                 "jwt": jwt,
@@ -337,7 +337,7 @@ export default {
             "testCaseId": testcase_id,
         };
         return axios({
-            url: "/api/api-oj/admin/problem",
+            url: "/api-oj/api-oj/admin/problem",
             method: "put",
             data: JSON.stringify(problemTagTestCase),
             dataType: "json",
@@ -356,7 +356,7 @@ export default {
      */
     findNews(page, per_page, jwt) {
         return axios({
-            url: "/api/api-oj/admin/news?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/admin/news?page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,
@@ -371,7 +371,7 @@ export default {
      */
     createNewContest(contest, jwt) {
         return axios({
-            url: "/api/api-oj/admin/contest",
+            url: "/api-oj/api-oj/admin/contest",
             method: "post",
             data: JSON.stringify(contest),
             headers: {
@@ -389,7 +389,7 @@ export default {
      */
     updateContest(contest, contest_id, jwt) {
         return axios({
-            url: "/api/api-oj/admin/contest/" + contest_id,
+            url: "/api-oj/api-oj/admin/contest/" + contest_id,
             data: JSON.stringify(contest),
             method: "put",
             dataType: "json",
@@ -409,7 +409,7 @@ export default {
      */
     disableProblem(problem_id, state, jwt) {
         return axios({
-            url: "/api/api-oj/admin/problem/" + problem_id + "/state?state=" + state,
+            url: "/api-oj/api-oj/admin/problem/" + problem_id + "/state?state=" + state,
             method: "put",
             headers: {
                 "jwt": jwt,
@@ -426,7 +426,7 @@ export default {
      */
     disableNews(news_id, state, jwt) {
         return axios({
-            url: "/api/api-oj/admin/news/" + news_id + "/state?state=" + state,
+            url: "/api-oj/api-oj/admin/news/" + news_id + "/state?state=" + state,
             method: "put",
             headers: {
                 "jwt": jwt,
@@ -440,7 +440,7 @@ export default {
      */
     getContestByCreator(page, per_page, jwt) {
         return axios({
-            url: "/api/api-oj/admin/creator/contest?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/admin/creator/contest?page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,
@@ -455,7 +455,7 @@ export default {
      */
     getApplyNumsByContestId(contest_id, jwt) {
         return axios({
-            url: "/api/api-oj/admin/contest/" + contest_id + "/contest_apply_num",
+            url: "/api-oj/api-oj/admin/contest/" + contest_id + "/contest_apply_num",
             method: "get",
             headers: {
                 "jwt": jwt,
@@ -470,7 +470,7 @@ export default {
      */
     getContestApplyByContestId(page, per_page, contest_id, jwt) {
         return axios({
-            url: "/api/api-oj/admin/contest/" + contest_id + "/contest_apply?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/admin/contest/" + contest_id + "/contest_apply?page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,
@@ -487,7 +487,7 @@ export default {
      */
     updateContestApplyStatus(id, status, jwt) {
         return axios({
-            url: "/api/api-oj/admin/contest_apply/" + id + "?status=" + status,
+            url: "/api-oj/api-oj/admin/contest_apply/" + id + "?status=" + status,
             method: "put",
             headers: {
                 "jwt": jwt,
@@ -504,7 +504,7 @@ export default {
      */
     getSolutionsByContestId(contestId, jwt, page, per_page) {
         return axios({
-            url: "/api/api-oj/admin/contest/" + contestId + "/solutions?page=" + page + "&per_page=" + per_page,
+            url: "/api-oj/api-oj/admin/contest/" + contestId + "/solutions?page=" + page + "&per_page=" + per_page,
             method: "get",
             headers: {
                 "jwt": jwt,

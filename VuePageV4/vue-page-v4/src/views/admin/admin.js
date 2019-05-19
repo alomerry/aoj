@@ -11,8 +11,8 @@ import 'iview/dist/styles/iview.css' // 使用 CSS
 import axios from 'axios'//使用ajax
 
 
-Vue.prototype.$axios = axios;
 axios.defaults.withCredentials = true;
+Vue.prototype.$axios = axios;
 Vue.use(iView);
 Vue.use(Router);
 
