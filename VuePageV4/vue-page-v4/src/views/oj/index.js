@@ -9,8 +9,7 @@ import iView from 'iview'//使用 iview UI库
 import 'iview/dist/styles/iview.css' // 使用 CSS
 
 import axios from 'axios'//使用ajax
-
-
+axios.defaults.withCredentials = true;
 Vue.prototype.$axios = axios;
 
 Vue.use(Router);

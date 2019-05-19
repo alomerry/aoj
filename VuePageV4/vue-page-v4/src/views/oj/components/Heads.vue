@@ -245,7 +245,7 @@
                 this.$refs['registerValidate'].validate((valid) => {
                     if (valid) {
                         Api.checkVerifyCode(this.registerValidate.verifycode).then(res => {
-                            if (res) {
+                            if (res.data) {
                                 if (this.judgeRegisterInfo) {
                                     this.registerValidate.passwd = hex_md5(encodeURIComponent(this.registerValidate.pwd + 'onlinejudge'));
                                     //清除passwd

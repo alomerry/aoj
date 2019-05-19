@@ -25,7 +25,7 @@ public class VerifyControllerImpl implements VerifyController {//}, ErrorControl
             response.setHeader("Pragma", "No-cashe");
             response.setHeader("Cashe-Control", "no-cashe");
             response.setDateHeader("Expire", 0);
-            logger.info("更新验证码.");
+            logger.info("更新验证码。");
             RandomValidateCodeUtil randomValidateCodeUtil = new RandomValidateCodeUtil();
             randomValidateCodeUtil.getRandcode(request, response);
         } catch (Exception e) {
@@ -38,6 +38,7 @@ public class VerifyControllerImpl implements VerifyController {//}, ErrorControl
     @RequestMapping(value = "/checkVerify", method = RequestMethod.POST)
     public boolean checkVerify(@RequestParam("code") String code, HttpSession session) {
         String randomCode = (String) session.getAttribute(RandomValidateCodeUtil.RANDOMCODEKEY);
+        logger.info("验证码为[{}],正确的验证码为[{}]", code, randomCode);
         if (randomCode == null) {
             session.removeAttribute(RandomValidateCodeUtil.RANDOMCODEKEY);
             return false;

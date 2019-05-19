@@ -77,11 +77,11 @@ public class RandomValidateCodeUtil {
         for (int i = 1; i <= stringNum; i++) {
             randomString = drowString(g, randomString, i);
         }
-        //logger.info(randomString);
         //将生成的随机字符串保存到session中
+        logger.info("删除旧验证码,sessionId[{}]", session.getId());
         session.removeAttribute(RANDOMCODEKEY);
         session.setAttribute(RANDOMCODEKEY, randomString);
-//        System.out.println("此次验证码为:" + randomString);
+        logger.info("此次验证码为[{}]", randomString);
         g.dispose();
         try {
             // 将内存中的图片通过流动形式输出到客户端
@@ -129,7 +129,7 @@ public class RandomValidateCodeUtil {
         int i = 0, j = imgCode.length();
         imgCode = imgCode.toLowerCase();
         code = code.toLowerCase();
-        logger.info("imgCode:[{}],code:[{}]",imgCode,code);
+        logger.info("imgCode:[{}],code:[{}]", imgCode, code);
         if (j != code.length()) {
             return false;
         } else {

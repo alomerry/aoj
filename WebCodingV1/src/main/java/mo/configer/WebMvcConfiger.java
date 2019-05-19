@@ -6,6 +6,7 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import mo.core.Result;
 import mo.core.ResultCode;
 import mo.exception.ServiceException;
+import mo.interceptor.AxiosInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -89,6 +90,7 @@ public class WebMvcConfiger extends WebMvcConfigurationSupport {
     //添加拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AxiosInterceptor());
     }
 
     //解决跨域问题
