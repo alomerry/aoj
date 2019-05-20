@@ -78,8 +78,8 @@ public class RandomValidateCodeUtil {
         for (int i = 1; i <= stringNum; i++) {
             randomString = drowString(g, randomString, i);
         }
-        //将生成的随机字符串保存到session中
         logger.info("删除旧验证码,sessionId[{}]", session.getId());
+        //将生成的随机字符串保存到session中
         session.removeAttribute(RANDOMCODEKEY);
         session.setAttribute(RANDOMCODEKEY, randomString);
         logger.info("此次验证码为[{}]", randomString);

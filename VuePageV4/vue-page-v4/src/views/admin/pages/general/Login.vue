@@ -74,7 +74,7 @@
                         console.log("合法输入");
                         //清除passwd
                         this.$axios({
-                            url: '/api/api-oj/login',
+                            url: '/api-oj/api-oj/login',
                             method: 'post',
                             data: require('querystring').stringify(this.formData),
                         }).then(res => {

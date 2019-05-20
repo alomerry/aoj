@@ -292,7 +292,7 @@
             logout() {
                 //TODO 请求注销
                 this.$axios({
-                    url: '/api/api-oj/logout',
+                    url: '/api-oj/api-oj/logout',
                     method: 'post',
                     data: 'user_id = ' + this.user.user_id,
                 }).then(res => {
