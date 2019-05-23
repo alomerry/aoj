@@ -98,7 +98,7 @@
                                 <FormItem>
                                     <Col style="margin-bottom: 15px;" span="3">
                                         <span class="problem-info-item" style="margin-right: 10px"><span class="item-require-red">*</span> Visible</span>
-                                        <i-switch size="default" v-model="formProblem.defunct">
+                                        <i-switch size="default" v-model="formProblem.defunct" true-value="1" false-value="0">
                                             <span slot="open">️</span>
                                             <span slot="close"></span>
                                         </i-switch>
@@ -319,7 +319,7 @@
                         description: "",
                         input: "",
                         output: "",
-                        visible: false,
+                        visible: "0",
                         hint: "",
                         source: "",
                         memory_limit: 64,
@@ -332,7 +332,7 @@
                     this.formProblem.description = problem.description;
                     this.formProblem.input = problem.input;
                     this.formProblem.output = problem.output;
-                    this.formProblem.visible = problem.defunct === "1";
+                    this.formProblem.visible = problem.defunct + "";
                     this.formProblem.hint = problem.hint;
                     this.formProblem.source = problem.source;
                     this.formProblem.memory_limit = problem.memory_limit;
@@ -379,7 +379,8 @@
                     }
                 }
                 if (this.contest_id != null) {
-
+                    console.log("add to contest!");
+                    this.createProblemToContest();
                 }
 
             },
@@ -559,12 +560,12 @@
                 let problem = this.formProblem;
                 delete problem.tags;
                 this.$Loading.start();
-                Api.createNewProblemToContest(this.contest_id, params.row.problem_id, this.$store.state.token).then(res => {
+                Api.createNewProblemToContest(this.contest_id, problem, tags, this.testCase_dir_id, this.$store.state.token).then(res => {
                     let result = res.data;
                     switch (result.code) {
                         case 200: {
                             this.$Message.success("添加成功!");
-                            this.getProblems();
+                            this.$Loading.finish();
                             break;
                         }
                         case 401: {
@@ -574,15 +575,20 @@
                         }
                         case 403: {
                             this.$Message.error(result.message);//权限不足
+                            this.$Loading.error();
                             break;
                         }
                         case 400: {
                             this.$Message.error(result.message);//添加题目失败
+                            this.$Loading.error();
                             break;
                         }
                     }
+                    this.saveLoadingFlag = false;
                 }).catch(res => {
                     console.log("错误原因:" + res);
+                    this.$Loading.error();
+                    this.saveLoadingFlag = false;
                 })
             },
 

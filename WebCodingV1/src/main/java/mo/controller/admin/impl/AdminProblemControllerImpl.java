@@ -281,6 +281,7 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
             logger.info("插入成功！新插入的题目主键为[{}]", pro.getProblem_id());
             testcase.renameTo(new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + pro.getProblem_id()));
             if (contestService.addProblemToContest(pro.getProblem_id(), Integer.valueOf(contest_id)) > 0) {
+                logger.info("题目新建成功!添加到竞赛成功！");
                 return new Result().setCode(ResultCode.OK);
             } else {
                 return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("题目新建成功!添加到竞赛失败,可能原因：1.题目已存在；2.内部错误");//0/-1
