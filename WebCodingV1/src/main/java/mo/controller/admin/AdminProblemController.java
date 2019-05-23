@@ -69,6 +69,17 @@ public interface AdminProblemController {
     Result createNewProblem(String problem, String tags, String testCaseId);
 
     /**
+     * 新建题目至竞赛
+     *
+     * @param contest_id 竞赛Id
+     * @param problem    题目实体
+     * @param tags       标签数组
+     * @param testCaseId 测试用例文件夹名称
+     * @return
+     */
+    Result createNewProblemToContest(Integer contest_id, String problem, String tags, String testCaseId);
+
+    /**
      * 更新题目
      *
      * @param problemTagTestCase 题目Vo

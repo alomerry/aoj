@@ -19,6 +19,7 @@ import mo.entity.vo.link.UserLink;
 import mo.exception.ServiceException;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
+import mo.service.ContestService;
 import mo.service.PrivilegeService;
 import mo.service.ProblemService;
 import mo.service.UserService;
@@ -51,6 +52,9 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
 
     @Resource
     private PrivilegeService privilegeService;
+
+    @Resource
+    private ContestService contestService;
 
     @Override
     @ResponseBody
@@ -232,6 +236,56 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
             pro.setProblem_id(problemService.insertNewProblemAndTags(pro, tagList, getJWTUserId()));
             testcase.renameTo(new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + pro.getProblem_id()));
             return new Result().setCode(ResultCode.OK).setMessage("题目新建成功!");
+        } catch (ServiceException e) {
+            e.printStackTrace();
+            return new Result().setCode(ResultCode.FORBIDDEN).setMessage(e.getMessage());
+        }
+    }
+
+    @Override
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/contest/{contest_id}/problem", method = RequestMethod.POST)
+    public Result createNewProblemToContest(@PathVariable Integer contest_id,
+                                            @RequestParam("problem") String problem,
+                                            @RequestParam("tags") String tags,
+                                            @RequestParam("testCaseId") String testCaseId) {
+
+        Integer user_id = getJWTUserId();
+        //判断user是否有权限编辑contest_id;
+        if (!contestService.hasAccess(user_id, Integer.valueOf(contest_id))) {
+            return new Result().setCode(ResultCode.FORBIDDEN).setMessage("无操作权限");
+        }
+
+        /**
+         * 1.判断测试文件是否存在
+         * 2.插入题目
+         *  2.1判断标签是否存在，不存在则新建
+         *  2.2绑定标签和题目
+         * 3.更改文件夹名称
+         */
+        //json转JavaBean
+        Problem pro = JSON.parseObject(problem, new TypeReference<Problem>() {
+        });
+        List<Tag> tagList = JSON.parseObject(tags, new TypeReference<ArrayList<Tag>>() {
+        });
+        logger.info("Problem[{}]\nTags[{}]\nTestCaseId[{}]", pro, tagList, testCaseId);
+
+        File testcase = new File(getHttpServletRequest().getServletContext().getRealPath("/problem_cases") + File.separator + testCaseId);
+        if (!testcase.exists()) {
+            //文件不存在
+            return new Result().setCode(ResultCode.FORBIDDEN).setMessage("Please upload test case!");
+        }
+        try {
+            pro.setProblem_id(problemService.insertNewProblemAndTags(pro, tagList, getJWTUserId()));
+            logger.info("插入成功！新插入的题目主键为[{}]", pro.getProblem_id());
+            testcase.renameTo(new File(getHttpServletRequest().getServletContext().getRealPath("problem_cases") + File.separator + pro.getProblem_id()));
+            if (contestService.addProblemToContest(pro.getProblem_id(), Integer.valueOf(contest_id)) > 0) {
+                return new Result().setCode(ResultCode.OK);
+            } else {
+                return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("题目新建成功!添加到竞赛失败,可能原因：1.题目已存在；2.内部错误");//0/-1
+            }
+
         } catch (ServiceException e) {
             e.printStackTrace();
             return new Result().setCode(ResultCode.FORBIDDEN).setMessage(e.getMessage());

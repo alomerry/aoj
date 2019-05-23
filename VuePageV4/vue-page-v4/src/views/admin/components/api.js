@@ -202,6 +202,29 @@ export default {
     },
 
     /**
+     * 创建题目
+     * @param problem 题目实体
+     * @param tags 标签
+     * @param testcase_id 测试用例文件夹名称
+     * @param jwt 令牌
+     * @returns {AxiosPromise}
+     */
+    createNewProblemToContest(contest_id,problem, tags, testcase_id, jwt) {
+        let params = new URLSearchParams();
+        params.append("problem", JSON.stringify(problem));
+        params.append("tags", tags == null ? null : JSON.stringify(tags));
+        params.append("testCaseId", testcase_id);
+        return axios({
+            url: "/api-oj/api-oj/admin/contest/"+contest_id+"/problem",
+            method: "post",
+            data: params,
+            headers: {
+                "jwt": jwt,
+            }
+        })
+    },
+
+    /**
      * 更新公告
      * @param news 公告实体
      * @param jwt 令牌

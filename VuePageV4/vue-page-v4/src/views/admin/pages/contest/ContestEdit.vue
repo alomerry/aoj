@@ -72,7 +72,7 @@
                                         <Input placeholder="参赛人数" v-model="formContest.max"></Input>
                                     </Col>
                                     <Col span="3" offset="1" v-if="contest_id!=null">
-                                        <i-switch size="default" v-model="formContest.privates == 1">
+                                        <i-switch size="default" true-value='1' false-value='0' v-model="formContest.privates">
                                             <span slot="open">️</span>
                                             <span slot="close"></span>
                                         </i-switch>
@@ -151,6 +151,7 @@
                     // console.log(result);
                     if (result.code == 200) {
                         this.formContest = result.data.contest;
+                        this.formContest.privates += "";
                         this.formContest.start_at = this.formatLongToDate(this.formContest.start_at);
                         this.formContest.end_at = this.formatLongToDate(this.formContest.end_at);
                     } else {

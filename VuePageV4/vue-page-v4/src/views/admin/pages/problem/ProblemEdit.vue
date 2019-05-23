@@ -559,10 +559,8 @@
                 let problem = this.formProblem;
                 delete problem.tags;
                 this.$Loading.start();
-                Api.addPublicProblemToContest(this.contest_id, params.row.problem_id, this.$store.state.token).then(res => {
+                Api.createNewProblemToContest(this.contest_id, params.row.problem_id, this.$store.state.token).then(res => {
                     let result = res.data;
-                    // console.log("正在从竞赛[" + this.contest_id + "]中添加题目[" + params.row.problem_id + "]...")
-                    // console.log(result);
                     switch (result.code) {
                         case 200: {
                             this.$Message.success("添加成功!");
