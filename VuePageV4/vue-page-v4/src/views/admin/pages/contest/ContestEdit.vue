@@ -45,8 +45,9 @@
                             <Row>
                                 <Col span="5">Start Time</Col>
                                 <Col span="5" offset="1">End Time</Col>
-                                <Col span="3" offset="1">Visible</Col>
-                                <Col span="5" offset="1">Max</Col>
+                                <Col span="3" offset="1">Accessable</Col>
+                                <Col span="3" offset="1">Max</Col>
+                                <Col span="3" offset="1" v-if="contest_id!=null">Visible</Col>
                                 <!--<Col span="5" offset="1">Status</Col>-->
                             </Row>
                         </div>
@@ -69,6 +70,12 @@
                                     </Col>
                                     <Col span="3" offset="1">
                                         <Input placeholder="参赛人数" v-model="formContest.max"></Input>
+                                    </Col>
+                                    <Col span="3" offset="1" v-if="contest_id!=null">
+                                        <i-switch size="default" v-model="formContest.privates == 1">
+                                            <span slot="open">️</span>
+                                            <span slot="close"></span>
+                                        </i-switch>
                                     </Col>
                                     <!--<Col span="5" offset="1">-->
                                     <!--<Badge type="success" text="Accessable"></Badge>-->
@@ -107,7 +114,7 @@
                 file_testCase: null,
                 loadingStatus: false,//上传状态
                 content: '',
-                contest_id: this.$route.params.contest_id,
+                contest_id: null,
                 formContest: {
                     "access": false,
                     "contest_id": null,
@@ -116,7 +123,7 @@
                     "max": 0,
                     "now": 0,
                     "organizer": null,
-                    "privates": 1,//默认公开，新建后才能修改
+                    "privates": 0,//默认隐私，新建后才能修改
                     "start_at": null,
                     "title": null,
                     "user_id": null,
@@ -142,7 +149,7 @@
                 Api.getContestByContestId(this.$route.params.contest_id, this.$store.state.token).then(res => {
                     let result = res.data;
                     // console.log(result);
-                    if (result.code === 200) {
+                    if (result.code == 200) {
                         this.formContest = result.data.contest;
                         this.formContest.start_at = this.formatLongToDate(this.formContest.start_at);
                         this.formContest.end_at = this.formatLongToDate(this.formContest.end_at);
@@ -271,6 +278,7 @@
         beforeRouteEnter(to, from, next) {
             if (to.params.contest_id == null) {
                 next(vm => {
+                    vm.contest_id = null;
                     vm.formContest = {
                         "access": false,
                         "contest_id": null,
@@ -285,8 +293,12 @@
                         "user_id": null,
                     }
                 });
+            } else {
+                next(vm => {
+                    vm.contest_id = to.params.contest_id;
+                });
+
             }
-            next();
         },
     }
 </script>

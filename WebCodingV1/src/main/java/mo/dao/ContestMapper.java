@@ -91,7 +91,7 @@ public interface ContestMapper {
      * @param contest_id 竞赛Id
      * @return
      */
-    @Update("update contest set title=#{contest.title}, describes=#{contest.describes},start_at=#{contest.start_at},end_at=#{contest.end_at}," +
+    @Update("update contest set title=#{contest.title},access=#{contest.access}, describes=#{contest.describes},start_at=#{contest.start_at},end_at=#{contest.end_at}," +
             "privates=#{contest.privates},organizer=#{contest.organizer},max=#{contest.max} where contest_id = #{contest_id}")
     int updateContestByContestId(@Param("contest") Contest contest, @Param("contest_id") Integer contest_id);
 

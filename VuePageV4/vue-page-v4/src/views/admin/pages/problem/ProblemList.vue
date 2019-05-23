@@ -13,7 +13,8 @@
                 <Table width="855" :columns="publicProblemColumns" :data="modal_selectData" stripe :loading="modal_loading"></Table>
             </div>
             <div slot="footer" style="height: 25px">
-                <Page :current="1" :page-size="10" size="small" style="float: right"/>
+                <Page :page-size="per_page" :total="modal_total" size="small" @on-page-size-change="changePageSize"
+                      @on-change="changePage" style="float: right"/>
             </div>
         </Modal>
         <Card style="margin: 15px">
@@ -457,8 +458,14 @@
                         },
                     },
                     {
+                        title: 'State',
+                        key: 'defunct',
+                        render: (h, params) => {
+                            return h('span', {}, params.row.defunct == 1 ? 'Public' : 'Private')
+                        },
+                    },
+                    {
                         title: 'Author',
-                        width: 200,
                         key: 'create_by',
                         render: (h, params) => {
                             return h('span', {}, params.row.create_by)
@@ -533,6 +540,7 @@
                 modal_loading: false,
                 modal_page: 1,
                 modal_per_page: 10,
+                modal_total: 10,
                 modal_datas: [],
                 modal_selectData: [
                     {
@@ -580,6 +588,17 @@
             this.selectData = this.datas;//表格数据
         },
         methods: {
+            //模态框每页数量发生变化
+            changePageSize(pageSize) {
+                this.modal_per_page = pageSize;
+                this.getPublicProblems();
+            },
+            //模态框页码发生变化
+            changePage(page) {
+                this.modal_page = page;
+                this.getPublicProblems();
+            },
+
             isLevel(judgeLevel) {
                 return this.$store.getters.isLevel(judgeLevel);
             },
@@ -683,7 +702,8 @@
                 Api.getProblemsByPagePer_PageAndDefunt(this.modal_page, this.modal_per_page, "simple", 1, this.$store.state.token).then(res => {
                     let result = res.data;
                     if (result.code === 200) {
-                        this.modal_datas = result.data.results;
+                        this.modal_datas = result.data.problems;
+                        this.modal_total = result.data.total;
                         this.modal_selectData = this.modal_datas;
                     } else if (result.code === 401) {
                         this.$Message.error("签名过期,请重新登录!");

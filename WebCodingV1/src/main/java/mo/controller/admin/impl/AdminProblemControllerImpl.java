@@ -94,7 +94,7 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
         JSONObject problems = new JSONObject();
         switch (resType) {
             case "simple": {
-                problems.put("problems", problemService.findSimpleProblemLinksByDefunct("(" + defunct + ")", getJWTUserId(), Integer.valueOf(page), Integer.valueOf(per_page)));
+                problems.put("problems", problemService.findSimpleProblemsByDefunct("(" + defunct + ")", getJWTUserId(), Integer.valueOf(page), Integer.valueOf(per_page)));
                 //查询页码信息
                 problems.put("total", problemService.findProblemTotalNumByDefunctAndOwn("(" + defunct + ")", getJWTUserId()));
                 break;
