@@ -491,7 +491,7 @@
                     this.$Message.error("Out Description is required!");
                     return;
                 }
-                this.formProblem.defunct = this.formProblem.defunct ? '1' : '3';
+                this.formProblem.defunct = this.formProblem.defunct=='1' ? '1' : '3';
                 let tags = this.formProblem.tags;
                 let problem = this.formProblem;
                 problem.problem_id = this.$route.params.problem_id;

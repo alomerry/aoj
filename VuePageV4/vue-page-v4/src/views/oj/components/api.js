@@ -80,10 +80,13 @@ export default {
      * @param problem_id
      * @returns {AxiosPromise}
      */
-    findProblemByProblemId(problem_id) {
+    findProblemByProblemId(problem_id,jwt) {
         return axios({
             url: '/api-oj/api-oj/problem/' + problem_id,
             method: 'get',
+            headers: {
+                "jwt": jwt,
+            }
         });
     },
 

@@ -1,6 +1,7 @@
 package mo.controller.index.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import mo.controller.AbstractController;
 import mo.controller.index.ProblemController;
 import mo.core.Result;
 import mo.core.ResultCode;
@@ -16,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-public class ProblemControllerImpl implements ProblemController {
+public class ProblemControllerImpl extends AbstractController implements ProblemController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProblemControllerImpl.class);
 
@@ -104,6 +105,7 @@ public class ProblemControllerImpl implements ProblemController {
     @RequestMapping(value = "/problem/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Result problem(@PathVariable Integer id) {
+        Integer operatorId = getJWTUserId();
         ProblemLink problem = new ProblemLink();
         problem.setProblem(problemService.findProblemByProblemId(id));
         if (problem.getProblem() == null) {

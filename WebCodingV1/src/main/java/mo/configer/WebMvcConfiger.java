@@ -98,8 +98,7 @@ public class WebMvcConfiger extends WebMvcConfigurationSupport {
         registry.addInterceptor(new HandlerInterceptor() {
             @Override
             public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-                System.out.println("***************************拦截器触发！***************************");
-                System.out.println("***************************"+request.getSession().getId()+"***************************");
+                logger.info("拦截器触发！sessionId[{}]", request.getSession().getId());
                 response.setHeader("Access-Control-Allow-Credentials", "true");
                 response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
                 response.setHeader("Access-Control-Allow-Methods", "*");

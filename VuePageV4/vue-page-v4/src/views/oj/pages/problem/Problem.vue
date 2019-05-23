@@ -245,7 +245,7 @@
         },
         methods: {
             loadingProblemDetail() {
-                API.findProblemByProblemId(this.$route.params.problem_id).then(res => {
+                API.findProblemByProblemId(this.$route.params.problem_id, this.$store.state.token).then(res => {
                     this.problem = res.data.data.result.problem;
                     this.author = res.data.data.result.created_by;
                     let that = this;
