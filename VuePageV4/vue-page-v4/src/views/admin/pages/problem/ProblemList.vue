@@ -680,7 +680,7 @@
             //获取公开题目集
             getPublicProblems: function () {
                 this.modal_loading = true;
-                Api.findPublicProblemsByPage(this.modal_page, this.modal_per_page).then(res => {
+                Api.getProblemsByPagePer_PageAndDefunt(this.modal_page, this.modal_per_page, "simple", 1, this.$store.state.token).then(res => {
                     let result = res.data;
                     if (result.code === 200) {
                         this.modal_datas = result.data.results;

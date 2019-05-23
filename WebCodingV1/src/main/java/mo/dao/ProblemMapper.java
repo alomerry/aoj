@@ -166,8 +166,8 @@ public interface ProblemMapper {
      * @param userId  创建者Id
      * @return
      */
-    @Select("select count(problem_id) from problems where defunct in ${defunct} or user_id = #{user_id}")
-    Integer findProblemTotalNumByDefunctAndOwn(@Param("defunct") String defunct, @Param("user_id") Integer userId);
+    @Select("select count(problem_id) from problems where defunct in ${defunct} or create_by = #{create_by}")
+    Integer findProblemTotalNumByDefunctAndOwn(@Param("defunct") String defunct, @Param("create_by") Integer userId);
 
     /**
      * 更新指定题目公开级别

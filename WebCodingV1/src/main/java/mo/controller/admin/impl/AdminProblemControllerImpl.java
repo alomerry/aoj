@@ -84,18 +84,24 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
     }
 
     @Override
-    public Result problems(String resType, String page, String per_page, String defunct) {
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/defunct/{defunct}/problems", method = RequestMethod.GET)
+    public Result problems(@RequestParam(value = "resType", defaultValue = "simple") String resType,
+                           @RequestParam(value = "page", defaultValue = "1") String page,
+                           @RequestParam(value = "per_page", defaultValue = "10") String per_page,
+                           @PathVariable String defunct) {
         JSONObject problems = new JSONObject();
         switch (resType) {
             case "simple": {
-                problems.put("problems", problemService.findSimpleProblemLinksByDefunct(defunct, getJWTUserId(), Integer.valueOf(page), Integer.valueOf(per_page)));
+                problems.put("problems", problemService.findSimpleProblemLinksByDefunct("(" + defunct + ")", getJWTUserId(), Integer.valueOf(page), Integer.valueOf(per_page)));
                 //查询页码信息
-                problems.put("total", problemService.findProblemTotalNumByDefunctAndOwn(defunct, getJWTUserId()));
+                problems.put("total", problemService.findProblemTotalNumByDefunctAndOwn("(" + defunct + ")", getJWTUserId()));
                 break;
             }
             case "detail": {
-                problems.put("problems", problemService.findProblemsByPageAndPerPage(defunct, getJWTUserId(), Integer.valueOf(page), Integer.valueOf(per_page)));
-                problems.put("total", problemService.findProblemTotalNumByDefunctAndOwn(defunct, getJWTUserId()));
+                problems.put("problems", problemService.findProblemsByPageAndPerPage("(" + defunct + ")", getJWTUserId(), Integer.valueOf(page), Integer.valueOf(per_page)));
+                problems.put("total", problemService.findProblemTotalNumByDefunctAndOwn("(" + defunct + ")", getJWTUserId()));
                 break;
             }
         }

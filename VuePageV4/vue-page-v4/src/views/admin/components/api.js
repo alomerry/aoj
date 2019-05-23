@@ -71,6 +71,24 @@ export default {
     },
 
     /**
+     * 查询指定公开级别和自己创建的题目
+     * @param page 页码
+     * @param per_page 每页数量
+     * @param resType 结果类型
+     * @param defunct 公开级别
+     * @param jwt 令牌
+     */
+    getProblemsByPagePer_PageAndDefunt(page, per_page, resType, defunct, jwt) {
+        return axios({
+            url: "/api-oj/api-oj/admin/defunct/" + defunct + "/problems?page=" + page + "&per_page=" + per_page + "&resType=" + resType,
+            method: 'get',
+            headers: {
+                "jwt": jwt,
+            }
+        });
+    },
+
+    /**
      * 根据竞赛Id查询题目集
      * @param page 页码
      * @param per_page 每页数量
