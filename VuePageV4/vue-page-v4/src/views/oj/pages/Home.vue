@@ -3,6 +3,7 @@
         <Card>
             <transition name="fade" mode="out-in">
                 <div v-if="news_show === 0" key="first">
+                    <Spin size="large" fix v-if="loading"></Spin>
                     <div style="height: 35px;padding-top: 5px;text-align: left;font-size: 20px;margin: 0 0 25px 20px;">
                         <span slot="title" style="font-size: 25px;font-weight: 400;" v-text="header_info.title"></span>
                         <Button icon="md-refresh" style="margin-right: 10px;float: right" :loading="loading"

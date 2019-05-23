@@ -23,7 +23,7 @@
             logout() {
                 //TODO 请求注销
                 this.$axios({
-                    url: '/api-ojy' +
+                    url: '/api-oj' +
                         '/api-oj/logout',
                     method: 'post',
                     data: 'user_id = ' + this.user.user_id,

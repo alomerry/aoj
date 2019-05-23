@@ -77,15 +77,17 @@
                 statusColumns: [
                     {
                         title: 'When',
-                        key: 'when',
                         align: 'center',
+                        sortable: true,
+                        sortType: 'desc',
+                        key: 'solution_when',
                         render: (h, params) => {
                             return h('Time', {
                                 props: {
                                     time: params.row.solution.create_at,
                                     type: 'datetime'
                                 },
-                            });
+                            }, params.row.solution.create_at);
                         }
                     },
                     {
@@ -127,7 +129,7 @@
                     },
                     {
                         title: 'Time',
-                        key: 'time',
+                        key: 'solution',
                         align: 'center',
                         render: (h, params) => {
                             return h('span', {}, params.row.solution.time === null ? "-" : params.row.solution.time);
@@ -204,7 +206,8 @@
                             nickname: "就当一次路过丶",
                             user_id: 10,
                             username: "morizunzhu"
-                        }
+                        },
+                        solution_when: 0,
                     }
                 ],
                 statusSearchData: [],
@@ -260,6 +263,9 @@
                         this.$Message.error("身份信息失效，请重新登录");
                     } else if (result.code === 200) {
                         this.statusData = result.data.solutions;
+                        this.statusData.forEach(function (current) {
+                            current.solution_when = current.solution.create_at;
+                        });
                         this.statusSearchData = this.statusData;
                     }
                     this.tableLoadingFlag = false;

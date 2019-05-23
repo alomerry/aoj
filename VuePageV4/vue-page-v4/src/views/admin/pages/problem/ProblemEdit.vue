@@ -173,7 +173,7 @@
                         </div>
                         <FormItem>
                             <Upload
-                                    action="/api/api-oj/problem/test_case"
+                                    action="/api-oj/api-oj/problem/test_case"
                                     name="testCase"
                                     :show-file-list="true"
                                     :show-upload-list="false"
@@ -383,34 +383,42 @@
             createProblem() {
                 if (this.testCase_dir_id == null) {
                     this.$Message.error("Please upload test case first!");
+                    this.saveLoadingFlag = false;
                     return;
                 }
                 if (this.formProblem.display_id == null || this.formProblem.display_id === "") {
                     this.$Message.error("Display Id is required!");
+                    this.saveLoadingFlag = false;
                     return;
                 }
                 if (this.formProblem.title == null || this.formProblem.title === "") {
                     this.$Message.error("Title is required!");
+                    this.saveLoadingFlag = false;
                     return;
                 }
                 if (this.formProblem.description == null || this.formProblem.description === "") {
                     this.$Message.error("Description is required!");
+                    this.saveLoadingFlag = false;
                     return;
                 }
                 if (this.formProblem.input == null || this.formProblem.input === "") {
                     this.$Message.error("Input Description is required!");
+                    this.saveLoadingFlag = false;
                     return;
                 }
                 if (this.formProblem.output == null || this.formProblem.output === "") {
                     this.$Message.error("Out Description is required!");
+                    this.saveLoadingFlag = false;
                     return;
                 }
                 if (this.formProblem.sample_input == null || this.formProblem.sample_input === "") {
                     this.$Message.error("Out Description is required!");
+                    this.saveLoadingFlag = false;
                     return;
                 }
                 if (this.formProblem.sample_output == null || this.formProblem.sample_output === "") {
                     this.$Message.error("Out Description is required!");
+                    this.saveLoadingFlag = false;
                     return;
                 }
                 this.formProblem.defunct = this.formProblem.defunct ? '1' : '3';

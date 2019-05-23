@@ -571,36 +571,46 @@
             //获取题目
             getProblems() {
                 this.problem_table_loading = true;
+                this.$Loading.start();
                 Api.findProblemsByContestId(this.contest_id).then(res => {
                     let result = res.data;
                     console.log(result);
                     if (result.code === 200) {
                         this.problem_data = result.data.results;
                         this.problem_table_loading = false;
+                        this.$Loading.finish();
                     } else {
                         console.log('Failed! ' + result.message);
                         this.problem_table_loading = false;
+                        this.$Loading.error();
                     }
                 }).catch(err => {
                     console.log('An error has occurred! ' + err);
                     this.problem_table_loading = false;
+                    this.$Loading.error();
                 });
             },
             //获取提交
             getSolutions() {
                 this.status_page_table_loading = true;
+                this.$Loading.start();
                 Api.getContestSolutions(this.contest_id, this.status_page, this.status_per_page).then(res => {
                     let result = res.data;
                     console.log(result);
                     if (result.code === 401) {
                         this.$Message.error("身份信息失效，请重新登录");
+                        this.$Loading.error();
                     } else if (result.code == 200) {
                         this.status_data = result.data.solutions;
+                        this.$Loading.finish();
                         // this.status_total = result.data.total;
+                    }else{
+                        this.$Loading.error();
                     }
                     this.status_page_table_loading = false;
                 }).catch(res => {
                     this.$Message.error(res.message);
+                    this.$Loading.error();
                     this.status_page_table_loading = false;
                 });
             },
@@ -730,8 +740,13 @@
                         }
                     }
                     case "rank": {
-                        this.changeShowCard(4);
-                        break;
+                        if (this.infoData[0].contest.start_at > (new Date()).getTime()) {
+                            this.$Message.warning("Contest haven't started!");
+                            return;
+                        } else {
+                            this.changeShowCard(4);
+                            break;
+                        }
                     }
                 }
             },

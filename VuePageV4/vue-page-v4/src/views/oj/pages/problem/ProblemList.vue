@@ -33,7 +33,7 @@
                             </Col>
                         </Row>
                     </div>
-                    <Table :data="tableSearchData" :columns="tableColumns1" stripe
+                    <Table :data="tableSearchData" :columns="tableColumns1" stripe @on-sort-change="orderTable"
                            :loading="tableLoading"></Table>
                 </Card>
                 <div style="margin:25px 10px 10px 10px;overflow: hidden">
@@ -120,6 +120,7 @@
                     {
                         title: 'Total',
                         align: "center",
+                        sortable: true,
                         key: 'submit',
                     },
                     {
