@@ -160,6 +160,16 @@ public interface ProblemMapper {
     Integer findProblemTotalNumsByDefunct(@Param("defunct") String defunct);
 
     /**
+     * 查询指定公开级别和自己创建的题目数量
+     *
+     * @param defunct 公开级别
+     * @param userId  创建者Id
+     * @return
+     */
+    @Select("select count(problem_id) from problems where defunct in ${defunct} or user_id = #{user_id}")
+    Integer findProblemTotalNumByDefunctAndOwn(@Param("defunct") String defunct, @Param("user_id") Integer userId);
+
+    /**
      * 更新指定题目公开级别
      *
      * @param problem_id 题目Id

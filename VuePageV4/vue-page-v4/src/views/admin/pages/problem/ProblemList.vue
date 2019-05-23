@@ -37,7 +37,7 @@
                    @on-selection-change="selectionChange" stripe>
             </Table>
             <br>
-            <Button type="info" style="font-size: 10px;margin-right: 10px" to="/admin/problem/create">
+            <Button type="info" style="font-size: 10px;margin-right: 10px" :to="contest_id == null?'/admin/problem/create':'/admin/contest/'+contest_id+'/create/problem'">
                 <Icon type="ios-add" size="17"/>
                 create
             </Button>
@@ -712,14 +712,12 @@
             //修改modal表格
             updateModalDatas() {
 
-            }
-            ,
+            },
             //每页数量修改回调函数
             pageSizeChange(pageSize) {
                 this.per_page = pageSize;
                 this.getProblems();
-            }
-            ,
+            },
             //页码修改时的回调函数
             pageChange(page) {
                 this.page = page;
@@ -729,8 +727,7 @@
         watch: {
             searchKeyWord: function (newVal, oldVal) {
                 this.debouncedsearchData();
-            }
-            ,
+            },
             modal_searchKeyWord: function (newVal, oldVal) {
                 this.debouncedModalsearchData();
             }

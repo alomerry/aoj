@@ -33,7 +33,7 @@
                             </Col>
                         </Row>
                     </div>
-                    <Table :data="tableSearchData" :columns="tableColumns1" stripe @on-sort-change="orderTable"
+                    <Table :data="tableSearchData" :columns="tableColumns1" stripe
                            :loading="tableLoading"></Table>
                 </Card>
                 <div style="margin:25px 10px 10px 10px;overflow: hidden">
@@ -210,8 +210,9 @@
             //获取题目
             getProblems() {
                 this.tableLoading = true;
-                Api.findProblemsByPagePer_PageAndResultType(this.current, this.per_page, "simple").then(res => {
+                Api.findProblemsByPagePer_PageAndResultType(this.page, this.per_page, "simple").then(res => {
                     let result = res.data;
+                    console.log(result);
                     if (result.code === 200) {
                         this.tableData1 = result.data.results;
                         this.tableSearchData = this.tableData1;

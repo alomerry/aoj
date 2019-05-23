@@ -95,8 +95,7 @@ public class ProblemControllerImpl implements ProblemController {
             }
         }
         JSONObject res = new JSONObject();
-        assert problems != null;
-        res.put("total", problems.size());
+        res.put("total", problemService.findProblemTotalNumByDefunct("(" + defunct + ")"));
         res.put("results", problems);
         return new Result().setCode(ResultCode.OK).setData(res);
     }

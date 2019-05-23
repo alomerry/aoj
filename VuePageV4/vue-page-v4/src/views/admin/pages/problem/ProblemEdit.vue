@@ -6,7 +6,6 @@
                 <br><br>
             </div>
             <Form :model="formProblem">
-                
                 <div class="index">
                     <!-- Title -->
                     <div class="problem-eidt problem-eidt-titles">
@@ -237,6 +236,7 @@
                 },
                 tmp_index: 0,//标签key
                 saveLoadingFlag: false,//保存按钮加载标签
+                contest_id: null,
                 color: [
                     "#FFA2D3",
                     "purple",
@@ -262,6 +262,7 @@
             Simditor,
         },
         mounted() {
+            this.contest_id = this.$route.params.contest_id;
             // console.log("mounted:$route.params:" + this.$route.params.method);
             switch (this.$route.params.method) {
                 case "edit": {
@@ -376,6 +377,9 @@
                         this.createProblem();
                         break;
                     }
+                }
+                if (this.contest_id != null) {
+
                 }
 
             },
@@ -508,6 +512,82 @@
                     this.saveLoadingFlag = false;
                 });
             },
+            //添加题目到竞赛
+            createProblemToContest() {
+                if (this.testCase_dir_id == null) {
+                    this.$Message.error("Please upload test case first!");
+                    this.saveLoadingFlag = false;
+                    return;
+                }
+                if (this.formProblem.display_id == null || this.formProblem.display_id === "") {
+                    this.$Message.error("Display Id is required!");
+                    this.saveLoadingFlag = false;
+                    return;
+                }
+                if (this.formProblem.title == null || this.formProblem.title === "") {
+                    this.$Message.error("Title is required!");
+                    this.saveLoadingFlag = false;
+                    return;
+                }
+                if (this.formProblem.description == null || this.formProblem.description === "") {
+                    this.$Message.error("Description is required!");
+                    this.saveLoadingFlag = false;
+                    return;
+                }
+                if (this.formProblem.input == null || this.formProblem.input === "") {
+                    this.$Message.error("Input Description is required!");
+                    this.saveLoadingFlag = false;
+                    return;
+                }
+                if (this.formProblem.output == null || this.formProblem.output === "") {
+                    this.$Message.error("Out Description is required!");
+                    this.saveLoadingFlag = false;
+                    return;
+                }
+                if (this.formProblem.sample_input == null || this.formProblem.sample_input === "") {
+                    this.$Message.error("Out Description is required!");
+                    this.saveLoadingFlag = false;
+                    return;
+                }
+                if (this.formProblem.sample_output == null || this.formProblem.sample_output === "") {
+                    this.$Message.error("Out Description is required!");
+                    this.saveLoadingFlag = false;
+                    return;
+                }
+                this.formProblem.defunct = this.formProblem.defunct ? '1' : '3';
+                let tags = this.formProblem.tags;
+                let problem = this.formProblem;
+                delete problem.tags;
+                this.$Loading.start();
+                Api.addPublicProblemToContest(this.contest_id, params.row.problem_id, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    // console.log("正在从竞赛[" + this.contest_id + "]中添加题目[" + params.row.problem_id + "]...")
+                    // console.log(result);
+                    switch (result.code) {
+                        case 200: {
+                            this.$Message.success("添加成功!");
+                            this.getProblems();
+                            break;
+                        }
+                        case 401: {
+                            this.$Message.error("签名过期,请重新登录!");
+                            window.location.replace("/admin/login");
+                            break;
+                        }
+                        case 403: {
+                            this.$Message.error(result.message);//权限不足
+                            break;
+                        }
+                        case 400: {
+                            this.$Message.error(result.message);//添加题目失败
+                            break;
+                        }
+                    }
+                }).catch(res => {
+                    console.log("错误原因:" + res);
+                })
+            },
+
         },
         created() {
         },

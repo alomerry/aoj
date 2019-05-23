@@ -84,6 +84,26 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
     }
 
     @Override
+    public Result problems(String resType, String page, String per_page, String defunct) {
+        JSONObject problems = new JSONObject();
+        switch (resType) {
+            case "simple": {
+                problems.put("problems", problemService.findSimpleProblemLinksByDefunct(defunct, getJWTUserId(), Integer.valueOf(page), Integer.valueOf(per_page)));
+                //查询页码信息
+                problems.put("total", problemService.findProblemTotalNumByDefunctAndOwn(defunct, getJWTUserId()));
+                break;
+            }
+            case "detail": {
+                problems.put("problems", problemService.findProblemsByPageAndPerPage(defunct, getJWTUserId(), Integer.valueOf(page), Integer.valueOf(per_page)));
+                problems.put("total", problemService.findProblemTotalNumByDefunctAndOwn(defunct, getJWTUserId()));
+                break;
+            }
+        }
+        return new Result().setCode(ResultCode.OK).setData(problems);
+    }
+
+
+    @Override
     @ResponseBody
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
     @RequestMapping(value = "/admin/contest/{contest_id}/problems", method = RequestMethod.GET)

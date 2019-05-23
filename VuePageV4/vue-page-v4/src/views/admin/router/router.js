@@ -85,6 +85,14 @@ const routes = [
         component: resolve => require(['../pages/announcement/announcement'], resolve),
     },
     {
+        path: "/admin/contest/:contest_id/create/problem",
+        name: 'Problem Create',
+        meta: {
+            title: 'Online Judge'
+        },
+        component: resolve => require(['../pages/problem/ProblemEdit'], resolve),
+    },
+    {
         path: "/admin/contest/:method",
         name: 'ContestEdit',
         meta: {

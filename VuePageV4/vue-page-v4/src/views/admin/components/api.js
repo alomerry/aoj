@@ -107,7 +107,6 @@ export default {
      * 查询公开题目集
      */
     findPublicProblemsByPage(page, per_page) {
-        let params = new URLSearchParams();
         return axios({
             url: "/api-oj/api-oj/problems/defunct/1?page=" + page + "&per_page=" + per_page,
             method: "get",

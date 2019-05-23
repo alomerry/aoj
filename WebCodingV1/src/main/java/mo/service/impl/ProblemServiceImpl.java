@@ -298,6 +298,11 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
+    public int findProblemTotalNumByDefunctAndOwn(String defunct, Integer userId) {
+        return problemMapper.findProblemTotalNumByDefunctAndOwn(defunct, userId);
+    }
+
+    @Override
     public boolean updateProblemDefunct(Integer problem_id, String defunct) {
         return problemMapper.updateDefunctByProblemId(problem_id, defunct) > 0;
     }

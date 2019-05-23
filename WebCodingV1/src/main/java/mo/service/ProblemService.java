@@ -163,6 +163,15 @@ public interface ProblemService {
     int findProblemTotalNumByDefunct(String defunct);
 
     /**
+     * 根据公开级别和用户Id查询题目数量
+     *
+     * @param defunct 公开级别
+     * @param userId  用户Id
+     * @return
+     */
+    int findProblemTotalNumByDefunctAndOwn(String defunct, Integer userId);
+
+    /**
      * 更新题目公开级别
      *
      * @param problem_id 题目Id

@@ -20,6 +20,17 @@ public interface AdminProblemController {
     Result problems(String resType, String page, String per_page);
 
     /**
+     * 根据公开级别查询题目集（包括自己创建的）
+     *
+     * @param resType  结果类型
+     * @param page     页码
+     * @param per_page 每页数量
+     * @param defunct  公开级别
+     * @return
+     */
+    Result problems(String resType, String page, String per_page, String defunct);
+
+    /**
      * 查询指定比赛题目集
      *
      * @param resType    结果类型
