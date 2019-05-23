@@ -1,6 +1,7 @@
 package mo.controller.index.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import io.jsonwebtoken.JwtException;
 import mo.controller.AbstractController;
 import mo.controller.index.ProblemController;
 import mo.core.Result;
@@ -105,20 +106,31 @@ public class ProblemControllerImpl extends AbstractController implements Problem
     @RequestMapping(value = "/problem/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Result problem(@PathVariable Integer id) {
-        Integer operatorId = getJWTUserId();
+        Integer operatorId = null;
+        try {
+            operatorId = getJWTUserId();
+        } catch (JwtException e) {
+            e.printStackTrace();
+            logger.error("operatorId获取失败");
+        }
         ProblemLink problem = new ProblemLink();
         problem.setProblem(problemService.findProblemByProblemId(id));
         if (problem.getProblem() == null) {
             return new Result().setCode(ResultCode.NOT_FOUND).setMessage("问题不存在!");
         } else {
             //Todo 判断题目的公开级别 限制非公开题目
-            if (!"1".equals(problem.getProblem().getDefunct())) {
+            if (!"1".equals(problem.getProblem().getDefunct()) && operatorId == null) {
                 return new Result().setCode(ResultCode.NOT_FOUND).setMessage("问题不存在!");
             } else {
-                problem.setCreated_by(userService.findUserByUserId(problem.getProblem().getCreate_by()));
-                JSONObject jsons = new JSONObject();
-                jsons.put("result", problem);
-                return new Result().setCode(ResultCode.OK).setData(jsons);
+                //用户所在竞赛中包含此非公开题目，则返回
+                if (problemService.isUserContestContainProblem(operatorId, id)) {
+                    JSONObject jsons = new JSONObject();
+                    problem.setCreated_by(userService.findUserByUserId(problem.getProblem().getCreate_by()));
+                    jsons.put("result", problem);
+                    return new Result().setCode(ResultCode.OK).setData(jsons);
+                } else {
+                    return new Result().setCode(ResultCode.NOT_FOUND).setMessage("问题不存在!");
+                }
             }
         }
     }

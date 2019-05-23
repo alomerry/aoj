@@ -53,6 +53,7 @@ public interface ContestProblemMapper {
     @Select("select * from problems where problem_id in(select problem_id from contest_problem where contest_id = #{contest_id})")
     List<Problem> findProblemsFromContestProblemByContestId(@Param("contest_id") Integer contest_id);
 
+
     /**
      * 查询某个题目是否已在竞赛中
      *

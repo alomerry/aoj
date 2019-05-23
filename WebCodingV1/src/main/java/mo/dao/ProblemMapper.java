@@ -187,4 +187,14 @@ public interface ProblemMapper {
      */
     @Update("update problems set submit = submit+1 where problem_id = #{problem_id}")
     int addProblemOneSubmit(@Param("problem_id") Integer problem_id);
+
+    /**
+     * 查询用户参加的竞赛中是否包含指定题目
+     *
+     * @param user_id    用户Id
+     * @param problem_id 题目Id
+     * @return
+     */
+    @Select("select count(problem_id) from contest_problem where contest_id in (select contest_id from contest_apply where user_id = #{user_id} and status = '1') and problem_id = #{problem_id}")
+    int isUserContestContainProblem(@Param("user_id") Integer user_id, @Param("problem_id") Integer problem_id);
 }

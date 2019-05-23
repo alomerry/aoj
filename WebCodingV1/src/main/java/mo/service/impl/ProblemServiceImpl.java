@@ -312,6 +312,11 @@ public class ProblemServiceImpl implements ProblemService {
         return contestProblemMapper.findProblemsFromContestProblemByContestId(contestId);
     }
 
+    @Override
+    public boolean isUserContestContainProblem(Integer userId, Integer problemId) {
+        return problemMapper.isUserContestContainProblem(userId, problemId) > 0;
+    }
+
     /**
      * 查询题目公开级别是否满足asklLevel级别
      *

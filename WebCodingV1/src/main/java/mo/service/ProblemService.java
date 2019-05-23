@@ -187,4 +187,13 @@ public interface ProblemService {
      * @return
      */
     List<Problem> findProblemsFromContest(Integer contestId);
+
+    /**
+     * 用户参加的竞赛中是否包含指定题目
+     *
+     * @param userId    用户Id
+     * @param problemId 题目Id
+     * @return
+     */
+    boolean isUserContestContainProblem(Integer userId, Integer problemId);
 }
