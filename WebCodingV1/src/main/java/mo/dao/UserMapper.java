@@ -159,7 +159,7 @@ public interface UserMapper {
      * @param user 用户实体
      * @return
      */
-    @Insert("insert into users (username,passwd,email) values (#{user.username},#{user.passwd},#{user.email})")
+    @Insert("insert into users (username,nickname,passwd,email) values (#{user.username},#{user.username},#{user.passwd},#{user.email})")
     int insertNewUser(@Param("user") User user);
 
     /**

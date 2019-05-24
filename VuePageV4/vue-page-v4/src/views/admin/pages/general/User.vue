@@ -747,17 +747,29 @@
                             that.selectData.push(item);
                         }
                     });
-                    if (this.searchData.length == 0) {
-                        console.log("本页未查询到，查询数据库");
-                        Api.findSimilarUserByKeycode(this.searchKeyWord, this.$store.state.token).then(res => {
-                            let result = res.data;
-                            if (result.code == 200) {
-                                console.log(result.data);
-                            }
-                        }).catch(res => {
-                            console.log(res);
-                        })
-                    }
+                    Api.findSimilarUserByKeycode(this.searchKeyWord, this.$store.state.token).then(res => {
+                        let result = res.data;
+                        if (result.code == 200) {
+                            let sql_data = result.data.users;
+                            let flag = true;
+                            sql_data.forEach(function (current, i) {
+                                flag = true;
+                                that.selectData.findIndex(function (cur) {
+                                    if (current.user.user_id == cur.user.user_id) {
+                                        flag = false;
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                });
+                                if (flag) {
+                                    that.selectData.push(sql_data[i]);
+                                }
+                            });
+                        }
+                    }).catch(res => {
+                        console.log(res);
+                    })
                 }
             },
             //字符串转date

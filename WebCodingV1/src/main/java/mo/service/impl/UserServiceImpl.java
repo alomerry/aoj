@@ -62,6 +62,9 @@ public class UserServiceImpl implements UserService {
             if (tmp_user == null) {
                 return new Result().setCode(ResultCode.NOT_FOUND).setMessage("密码错误!请重新输入!");
             } else {
+                if (tmp_user.isDisabled()) {
+                    return new Result().setCode(ResultCode.FORBIDDEN).setMessage("您的帐号被屏蔽!");
+                }
                 JSONObject res = new JSONObject();
                 userMapper.updateSessionIdByUserId(tmp_user.getUser_id(), session.getId(), new Timestamp(System.currentTimeMillis()));
                 logger.info("user[{}]", tmp_user);
