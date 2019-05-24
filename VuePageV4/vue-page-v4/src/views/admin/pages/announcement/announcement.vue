@@ -337,6 +337,7 @@
                         console.log(result);
                         if (result.code === 200) {
                             this.anno_data = result.data.newsLink;
+                            this.total = result.data.total;
                             this.addStartAndEndTimeToAnnoData();
                         } else {
                             this.$Message.error(result.message);
@@ -369,6 +370,7 @@
                         console.log(result);
                         if (result.code === 200) {
                             this.anno_data = result.data.newsLink;
+                            this.total = result.data.total;
                             this.addStartAndEndTimeToAnnoData();
                         } else {
                             this.$Message.error(result.message);

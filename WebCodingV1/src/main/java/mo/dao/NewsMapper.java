@@ -156,5 +156,5 @@ public interface NewsMapper {
      * @return 公告数量
      */
     @Select("select count(news_id) from news where user_id = #{user_id}")
-    int findNewsTotalNumber(@Param("user_id") Integer userId);
+    int findNewsTotalNumberByUserId(@Param("user_id") Integer userId);
 }

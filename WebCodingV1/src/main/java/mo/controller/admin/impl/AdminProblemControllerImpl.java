@@ -374,6 +374,11 @@ public class AdminProblemControllerImpl extends AbstractController implements Ad
     }
 
     @Override
+    public Result problems(String keycode) {
+        return null;
+    }
+
+    @Override
     @ResponseBody
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
     @RequestMapping(value = "/admin/problem/{problem_id}/state", method = RequestMethod.PUT)

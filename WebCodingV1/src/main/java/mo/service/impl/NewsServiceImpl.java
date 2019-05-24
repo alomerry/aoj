@@ -53,7 +53,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public int findNewsTotalNumberByUserId(Integer userId) {
-        return newsMapper.findNewsTotalNumber(userId);
+        return newsMapper.findNewsTotalNumberByUserId(userId);
     }
 
     @Override

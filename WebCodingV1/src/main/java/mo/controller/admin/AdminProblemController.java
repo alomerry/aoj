@@ -97,6 +97,14 @@ public interface AdminProblemController {
     Result problem(Integer id);
 
     /**
+     * 根据关键词查询题目集
+     *
+     * @param keycode 关键字
+     * @return
+     */
+    Result problems(String keycode);
+
+    /**
      * 修改指定题目的禁用状态
      *
      * @param problem_id 题目
