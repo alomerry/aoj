@@ -85,9 +85,9 @@
                         v-show="deleteShowFlag">Delete
                 </Button>-->
                 <Button icon="md-refresh" style="float: right;margin-right: 20px"
-                        @click.native="getUsers"></Button>
-                <Button icon="ios-trash" type="warning" style="width: auto;float: right;margin-right: 15px" @click=""
-                        v-show="deleteShowFlag">Delete
+                        @click.native="status_flag == 0?getUsers:getUsersByDisabled(status_value)"></Button>
+                <Button icon="ios-trash" type="warning" style="width: auto;float: right;margin-right: 15px" @click="deleteMultiUser"
+                        v-show="deleteShowFlag" :loading="deleteLoadingFlag">Delete
                 </Button>
                 <br><br>
             </div>
@@ -116,7 +116,7 @@
                 <p>This action cannot be undone!</p>
             </div>
             <div slot="footer">
-                <Button type="error" size="large" :loading="deleteUserModal.ButtonLoadingFlag" @click="deleteUser">Delete</Button>
+                <Button type="error" size="large" :loading="deleteUserModal.ButtonLoadingFlag" @click="deleteModalUser">Delete</Button>
             </div>
         </Modal>
     </div>
@@ -221,7 +221,11 @@
                         {type: 'email', message: 'Incorrect email format', trigger: 'blur'}
                     ],
                 },
+
                 deleteShowFlag: false,
+                deleteLoadingFlag: false,
+                deleteSelection: [],
+
                 searchKeyWord: "",//搜索框的内容
                 changeUserModalShowFlag: false,//修改用户信息模态框
                 updateUserInfoLoadingFlag: false,//模态框确定按钮loading标记
@@ -288,7 +292,7 @@
                         },*/
                         filterMultiple: false,
                         filterRemote: function (status, row) {
-                            console.log(status.length);
+                            // console.log(status.length);
                             _this.status_flag = status.length;
                             _this.status_value = status[0];
                             _this.page = 1;
@@ -775,7 +779,15 @@
             },
             //显示删除按钮
             selectionChange(selection) {
+                this.deleteSelection = selection;
                 this.deleteShowFlag = selection.length > 0;
+            },
+            deleteMultiUser() {
+                let that = this;
+                this.deleteSelection.forEach(function (current) {
+                    that.deleteUser(current.user.user_id);
+                });
+                this.deleteShowFlag = false;
             },
             //搜索查询表格
             searchData: function () {
@@ -874,19 +886,19 @@
             //update user list
             updateDatas(user_id, user) {
                 if (user != null) {
-                    console.log("添加成功");
+                    // console.log("添加成功");
                     this.datas.splice(0, 1, user);
                 } else {
                     let unUpdatedItemIndex = this.datas.findIndex(function (currentItem) {
                         return currentItem.user.user_id === user_id;
                     });
-                    console.log("更新序号：" + unUpdatedItemIndex);
+                    // console.log("更新序号：" + unUpdatedItemIndex);
                     this.datas.splice(unUpdatedItemIndex, 1);
                 }
                 this.selectData = this.datas;
             },
             //
-            deleteUser() {
+            deleteModalUser() {
                 this.deleteUserModal.ButtonLoadingFlag = true;
                 Api.deleteUserByUserId(this.deleteUserModal.user_id, this.$store.state.token).then(res => {
                     let result = res.data;
@@ -904,7 +916,25 @@
                     console.log(res);
                     this.deleteUserModal.ButtonLoadingFlag = false;
                 });
-                this.deleteUserModal.ModalFlag = false;
+            },
+            deleteUser(userId) {
+                this.deleteLoadingFlag = true;
+                Api.deleteUserByUserId(userId, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    if (result.code === 200) {
+                        this.$Message.success("删除成功!");
+                        this.updateDatas(userId, null);
+                    } else if (result.code === 401) {
+                        window.location.replace("/admin/login");
+                    } else {
+                        console.log("错误代码:" + result.code);
+                        this.$Message.error(result.message);
+                    }
+                    this.deleteLoadingFlag = false;
+                }).catch(res => {
+                    console.log(res);
+                    this.deleteLoadingFlag = false;
+                });
             }
         },
         watch: {

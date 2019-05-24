@@ -54,12 +54,13 @@ public class AdminNewsControllerImpl extends AbstractController implements Admin
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
     public Result getNews(@RequestParam(value = "page", defaultValue = "1") String page,
                           @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
-        //TODO 如果是公告管理者,可以查找所有人的公告
         JSONObject news = new JSONObject();
         if (PermissionManager.isLegalAdmin(Permission.Announcement_manager, privilegeService.findPrivilegeByUserId(getJWTUserId()).getRightstr())) {
             news.put("newsLink", newsService.findNews(Integer.valueOf(page), Integer.valueOf(per_page)));
+            news.put("total", newsService.findNewsTotalNumber());
         } else {
             news.put("newsLink", newsService.findNews(getJWTUserId(), Integer.valueOf(page), Integer.valueOf(per_page)));
+            news.put("total", newsService.findNewsTotalNumberByUserId(getJWTUserId()));
         }
         return new Result().setCode(ResultCode.OK).setData(news);
     }

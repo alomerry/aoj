@@ -47,6 +47,16 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    public int findNewsTotalNumber() {
+        return newsMapper.findNewsTotalNumber();
+    }
+
+    @Override
+    public int findNewsTotalNumberByUserId(Integer userId) {
+        return newsMapper.findNewsTotalNumber(userId);
+    }
+
+    @Override
     public List<NewsUserLink> findNewsByContestId(Integer contest_id, int page, int per_page) {
         List<News> newsList = newsMapper.findNewsByContestIdAndPage(contest_id, (page - 1) * per_page, per_page);
         return makeLinkUser(newsList);

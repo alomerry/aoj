@@ -33,14 +33,14 @@
         </Modal>
         <Card style="margin: 15px">
             <div slot="title" style="height: 30px;padding-top: 10px">
-                <span style="font-size: 25px;font-weight: 400;">Problems</span>
+                <span style="font-size: 25px;font-weight: 400;">Announcement</span>
             </div>
             <div slot="extra">
                 <Button @click="getNews">Refresh</Button>
             </div>
             <Table :columns="anno_column" :data="anno_data" :loading="anno_loading_flag"></Table>
             <Button @click="modal_falg = true" style="margin-top: 15px" type="info">Create</Button>
-            <Page :current="page" :page-size="per_page" size="small" style="float: right;margin-top: 20px"/>
+            <Page :total="total" :page-size="per_page" show-sizer show-elevator @on-change="changePage" @on-page-size-change="changePageSize" style="float: right;margin-top: 20px"/>
         </Card>
     </div>
 </template>
@@ -54,8 +54,11 @@
         data() {
             return {
                 method: this.$route.params.contest_id === null ? null : "contest",
+
                 page: 1,
                 per_page: 10,
+                total: 10,
+
                 modal_falg: false,
                 anno_loading_flag: false,
                 anno_column: [
@@ -75,7 +78,8 @@
                     },
                     {
                         title: "Create Time",
-                        key: "news.create_at",
+                        sortable: true,
+                        key: "create_at",
                         render: (h, params) => {
                             return h('Time', {
                                 props: {
@@ -87,7 +91,8 @@
                     },
                     {
                         title: "Last Update Time",
-                        key: "news.update_time",
+                        key: "update_time",
+                        sortable: true,
                         render: (h, params) => {
                             return h('Time', {
                                 props: {
@@ -253,6 +258,16 @@
             this.getNews();
         },
         methods: {
+
+            changePageSize(pageSize) {
+                this.per_page = pageSize;
+                this.getNews();
+            },
+            changePage(page) {
+                this.page = page;
+                this.getNews();
+            },
+
             createAnno() {
                 if (this.formAnno.news_id == null) {//create
                     let news = {
@@ -319,9 +334,10 @@
                     //查询指定竞赛的公告
                     Api.findContestNews(this.contest_id, this.page, this.per_page, this.$store.state.token).then(res => {
                         let result = res.data;
-                        // console.log(result);
+                        console.log(result);
                         if (result.code === 200) {
                             this.anno_data = result.data.newsLink;
+                            this.addStartAndEndTimeToAnnoData();
                         } else {
                             this.$Message.error(result.message);
                         }
@@ -350,9 +366,10 @@
                             }
                         ];*/
                         let result = res.data;
-                        // console.log(result);
+                        console.log(result);
                         if (result.code === 200) {
                             this.anno_data = result.data.newsLink;
+                            this.addStartAndEndTimeToAnnoData();
                         } else {
                             this.$Message.error(result.message);
                         }
@@ -376,6 +393,13 @@
                     this.anno_data.splice(unUpdatedItemIndex, 1);
                 }
             },
+            addStartAndEndTimeToAnnoData() {
+                let that = this;
+                this.anno_data.forEach(function (current, index) {
+                    that.anno_data[index].create_at = that.anno_data[index].news.create_at
+                    that.anno_data[index].update_time = that.anno_data[index].news.update_time
+                })
+            }
         },
     }
 </script>

@@ -61,7 +61,7 @@
         </Card>
         <div style="margin: 10px;overflow: hidden" v-show="news_show === 0">
             <div style="float: right;">
-                <Page :total="total" @on-change="changePage" :page-size="per_page" show-sizer show-elevator @on-page-size-change="changePageSize"></Page>
+                <Page :total="total" :page-size="per_page" show-sizer show-elevator @on-change="changePage" @on-page-size-change="changePageSize"></Page>
             </div>
         </div>
     </div>

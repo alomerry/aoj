@@ -34,13 +34,28 @@ public interface NewsService {
     List<NewsUserLink> findNews(Integer user_id, int page, int per_page);
 
     /**
-     * 查询题目
+     * 查询公告
      *
      * @param page     页码
      * @param per_page 每页数量
      * @return
      */
     List<NewsUserLink> findNews(int page, int per_page);
+
+    /**
+     * 查询公告数量
+     *
+     * @return
+     */
+    int findNewsTotalNumber();
+
+    /**
+     * 查询创建者的公告数量
+     *
+     * @param userId 创建者Id
+     * @return
+     */
+    int findNewsTotalNumberByUserId(Integer userId);
 
     /**
      * 根据竞赛Id查询公告
