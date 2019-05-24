@@ -94,7 +94,11 @@
             <Table border ref="selection" :columns="columns" :data="selectData" :loading="loading"
                    @on-selection-change="selectionChange"></Table>
             <br>
-            <Page :current="page" :page-size="per_page" size="small" style="float: right"/>
+            <Page :total="total" show-sizer
+                  @on-change="changePage"
+                  @on-page-size-change="changePageSize"
+                  :page-size="per_page"
+                  style="float: right"/>
             <br>
         </Card>
         
@@ -233,18 +237,23 @@
                         align: 'center',
                     },
                     {
-                        title: 'UserId',
-                        width: 120,
-                        key: 'user.user_id',
-                        render: (h, params) => {
-                            return h('span', {}, params.row.user.user_id)
-                        },
+                        type: 'index',
+                        width: 60,
+                        align: 'center',
                     },
                     {
                         title: 'UserName',
                         key: 'user.username',
                         render: (h, params) => {
                             return h('span', {}, params.row.user.username)
+                        },
+                    },
+                    {
+                        title: 'UserId',
+                        width: 120,
+                        key: 'user.user_id',
+                        render: (h, params) => {
+                            return h('span', {}, params.row.user.user_id)
                         },
                     },
                     {
@@ -521,6 +530,7 @@
                 nowTime: "2016-10-03 07:08:16",
                 page: 1,
                 per_page: 10,
+                total: 10,
             }
         },
         created: function () {
@@ -533,6 +543,14 @@
             this.nowTime = (new Date()).getTime();//当前时间
         },
         methods: {
+            changePageSize(pageSize) {
+                this.per_page = pageSize;
+                this.getUsers();
+            },
+            changePage(page) {
+                this.page = page;
+                this.getUsers();
+            },
             //update user
             updateUser() {
                 this.$refs['form'].validate(valid => {
@@ -736,6 +754,7 @@
                     if (result.code === 200) {
                         this.datas = result.data.users;
                         this.selectData = result.data.users;
+                        this.total = result.data.total;
                     } else {
                         console.log('Failed! ' + result.message);
                         this.$Message.error(result.message);

@@ -77,4 +77,14 @@ public interface ContestApplyMapper {
      */
     @Select("select count(id) from contest_apply where contest_id = #{contest_id} and user_id = #{user_id}")
     int getNumbersByContestIdAndUserId(@Param("contest_id") Integer contest_id, @Param("user_id") Integer user_id);
+
+    /**
+     * 查询指定用户是否申请指定竞赛成功
+     *
+     * @param contest_id 竞赛Id
+     * @param user_id    用户Id
+     * @return
+     */
+    @Select("select count(id) from contest_apply where contest_id = #{contest_id} and user_id = #{user_id} and status = '1'")
+    int checkIsApplySuccessed(@Param("contest_id") Integer contest_id, @Param("user_id") Integer user_id);
 }

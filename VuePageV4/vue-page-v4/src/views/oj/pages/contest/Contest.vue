@@ -604,7 +604,7 @@
                         this.status_data = result.data.solutions;
                         this.$Loading.finish();
                         // this.status_total = result.data.total;
-                    }else{
+                    } else {
                         this.$Loading.error();
                     }
                     this.status_page_table_loading = false;
@@ -704,6 +704,30 @@
                     }
                 }
             },
+            accessToCard: function () {
+                if (this.infoData[0].contest.start_at > (new Date()).getTime()) {
+                    this.$Message.warning("Contest haven't started!");
+                    return false;
+                }
+                if (this.$store.state.user == null) {
+                    this.$Message.warning("Please login first!");
+                    return false;
+                }
+                Api.checkIsSucceedApplyContest(this.contest_id, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    if (result.code == 200) {
+                        if (!result.data.result) {
+                            this.$Message.warning("Please apply contest first!");
+                        }
+                        return result.data.result;
+                    } else {
+                        return false;
+                    }
+                }).catch(res => {
+                    console.log(res);
+                    return false;
+                });
+            },
             //修改当前显示信息
             showContestCard(name) {
                 if (this.infoCellDisabled) {
@@ -720,32 +744,29 @@
                         break;
                     }
                     case "problems": {
-                        if (this.infoData[0].contest.start_at > (new Date()).getTime()) {
-                            this.$Message.warning("Contest haven't started!");
-                            return;
-                        } else {
+                        if (this.accessToCard()) {
                             this.changeShowCard(2);
                             this.getProblems();
                             break;
+                        } else {
+                            return;
                         }
                     }
                     case "submit": {
-                        if (this.infoData[0].contest.start_at > (new Date()).getTime()) {
-                            this.$Message.warning("Contest haven't started!");
-                            return;
-                        } else {
+                        if (this.accessToCard()) {
                             this.changeShowCard(3);
                             this.getSolutions();
                             break;
+                        } else {
+                            return;
                         }
                     }
                     case "rank": {
-                        if (this.infoData[0].contest.start_at > (new Date()).getTime()) {
-                            this.$Message.warning("Contest haven't started!");
-                            return;
-                        } else {
+                        if (this.accessToCard()) {
                             this.changeShowCard(4);
                             break;
+                        } else {
+                            return;
                         }
                     }
                 }

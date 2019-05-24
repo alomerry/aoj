@@ -256,6 +256,14 @@
                                             this.$store.dispatch('login', result.data);
                                             this.user = this.$store.state.user;
                                             this.admin = this.$store.state.admin;
+                                            this.registerValidate = {
+                                                username: '',
+                                                passwd: '',
+                                                pwd: '',
+                                                email: '',
+                                                repwd: '',
+                                                verifycode: '',
+                                            };
                                             this.$Message.success('Success!');
                                             this.register_info_flag = false;
                                         } else {

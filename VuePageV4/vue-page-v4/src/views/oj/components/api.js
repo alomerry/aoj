@@ -80,7 +80,7 @@ export default {
      * @param problem_id
      * @returns {AxiosPromise}
      */
-    findProblemByProblemId(problem_id,jwt) {
+    findProblemByProblemId(problem_id, jwt) {
         return axios({
             url: '/api-oj/api-oj/problem/' + problem_id,
             method: 'get',
@@ -88,6 +88,21 @@ export default {
                 "jwt": jwt,
             }
         });
+    },
+
+    /**
+     * 查询指定用户是否成功参加竞赛
+     * @param contest_id 竞赛Id
+     * @param jwt 令牌
+     */
+    checkIsSucceedApplyContest(contest_id, jwt) {
+        return axios({
+            url: '/api-oj/api-oj/contest/' + contest_id + "/access",
+            method: 'get',
+            headers: {
+                "jwt": jwt,
+            }
+        })
     },
 
     /**

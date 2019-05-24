@@ -189,4 +189,9 @@ public class UserServiceImpl implements UserService {
         return res;
     }
 
+    @Override
+    public int getUserTotalNumer() {
+        return userMapper.getUserTotalNumber();
+    }
+
 }

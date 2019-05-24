@@ -1,21 +1,28 @@
 package mo.controller.index.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import mo.controller.AbstractController;
 import mo.controller.index.ContestController;
 import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.Contest;
 import mo.entity.vo.link.ContestLinkUser;
+import mo.interceptor.annotation.AuthCheck;
+import mo.interceptor.annotation.RequiredType;
+import mo.service.ContestApplyService;
 import mo.service.ContestService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
 @RestController
-public class ContestControllerImpl implements ContestController {
+public class ContestControllerImpl extends AbstractController implements ContestController {
 
     @Resource
     private ContestService contestService;
+
+    @Resource
+    private ContestApplyService contestApplyService;
 
     @Override
     @ResponseBody
@@ -40,5 +47,17 @@ public class ContestControllerImpl implements ContestController {
         }
         contests.put("contest", res);
         return new Result().setCode(ResultCode.OK).setData(contests);
+    }
+
+    @Override
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT})
+    @RequestMapping(value = "/contest/{contestId}/access", method = RequestMethod.GET)
+    public Result hasAccess(@PathVariable Integer contestId) {
+        Integer operatorId = getJWTUserId();
+
+        JSONObject res = new JSONObject();
+        res.put("result", contestApplyService.checkIsApplySuccessed(contestId, operatorId));
+        return new Result().setCode(ResultCode.OK).setData(res);
     }
 }

@@ -246,12 +246,18 @@
         methods: {
             loadingProblemDetail() {
                 API.findProblemByProblemId(this.$route.params.problem_id, this.$store.state.token).then(res => {
-                    this.problem = res.data.data.result.problem;
-                    this.author = res.data.data.result.created_by;
-                    let that = this;
-                    setTimeout(function () {
-                        that.draw();
-                    }, 1000);
+                    let result = res.data;
+                    if (result.code == 200) {
+                        this.problem = result.data.result.problem;
+                        this.author = result.data.result.created_by;
+                        let that = this;
+                        setTimeout(function () {
+                            that.draw();
+                        }, 500);
+                    } else {
+                        this.$Message.error(result.message);
+                    }
+
                 }).catch(error => {
                     console.log(error);
                 });

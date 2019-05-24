@@ -42,6 +42,7 @@ public class AdminUserControllerImpl extends AbstractController implements Admin
                         @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
         JSONObject users = new JSONObject();
         users.put("users", userService.findUsersByPageAndPerPage(Integer.valueOf(page), Integer.valueOf(per_page)));
+        users.put("total", userService.getUserTotalNumer());
         return new Result().setCode(ResultCode.OK).setData(users);
     }
 

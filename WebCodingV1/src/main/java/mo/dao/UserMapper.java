@@ -160,5 +160,13 @@ public interface UserMapper {
      */
     @Select("select LAST_INSERT_ID()")
     Integer findLastInsertId();
+
+    /**
+     * 查询用户数量
+     *
+     * @return
+     */
+    @Select("select count(user_id) from users")
+    int getUserTotalNumber();
 }
 

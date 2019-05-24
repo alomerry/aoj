@@ -52,7 +52,7 @@ public interface ContestApplyService {
     boolean applyContest(Integer user_id, Integer contest_id);
 
     /**
-     * 根据用户Id和竞赛Id查询申请
+     * 根据用户Id和竞赛Id查询是否存在申请
      *
      * @param user_id    用户Id
      * @param contest_id 竞赛Id
@@ -67,4 +67,12 @@ public interface ContestApplyService {
      * @return
      */
     int getContestApplyTotalNumber(int contest_id);
+
+    /**
+     * 查询指定用户是否申请指定竞赛成功
+     * @param contest_id 竞赛Id
+     * @param userId 用户Id
+     * @return
+     */
+    boolean checkIsApplySuccessed(int contest_id, Integer userId);
 }

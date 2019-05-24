@@ -19,4 +19,12 @@ public interface ContestController {
      * @return
      */
     Result contest(Integer contestId);
+
+    /**
+     * 用户是否参与竞赛
+     *
+     * @param contestId 竞赛Id
+     * @return
+     */
+    Result hasAccess(Integer contestId);
 }

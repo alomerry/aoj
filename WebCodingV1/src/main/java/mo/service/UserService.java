@@ -116,4 +116,11 @@ public interface UserService {
      * @return
      */
     JSONObject makeJWT(Integer userId);
+
+    /**
+     * 查询用户数量
+     *
+     * @return
+     */
+    int getUserTotalNumer();
 }

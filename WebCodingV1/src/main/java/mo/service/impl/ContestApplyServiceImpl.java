@@ -103,6 +103,11 @@ public class ContestApplyServiceImpl implements ContestApplyService {
         return contestApplyMapper.getContestApplyNumberByContestId(contest_id);
     }
 
+    @Override
+    public boolean checkIsApplySuccessed(int contest_id, Integer userId) {
+        return contestApplyMapper.checkIsApplySuccessed(contest_id, userId) > 0;
+    }
+
     private List<ContestApplyLink> makeLink(List<ContestApply> contestApplies) {
         List<ContestApplyLink> contestApplyLinks = new ArrayList<>(contestApplies.size() + 3);
         for (ContestApply item : contestApplies) {

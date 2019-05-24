@@ -118,8 +118,13 @@ public class ProblemControllerImpl extends AbstractController implements Problem
         if (problem.getProblem() == null) {
             return new Result().setCode(ResultCode.NOT_FOUND).setMessage("问题不存在!");
         } else {
-            //Todo 判断题目的公开级别 限制非公开题目
-            if (!"1".equals(problem.getProblem().getDefunct()) && operatorId == null) {
+            if ("1".equals(problem.getProblem().getDefunct())) {
+                JSONObject jsons = new JSONObject();
+                problem.setCreated_by(userService.findUserByUserId(problem.getProblem().getCreate_by()));
+                jsons.put("result", problem);
+                return new Result().setCode(ResultCode.OK).setData(jsons);
+            } else if (operatorId == null) {
+                //用户所在竞赛中包含此非公开题目，则返回
                 return new Result().setCode(ResultCode.NOT_FOUND).setMessage("问题不存在!");
             } else {
                 //用户所在竞赛中包含此非公开题目，则返回
