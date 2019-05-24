@@ -13,6 +13,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 public class Privilege implements Serializable {
+    private Integer id;
     //用户帐号
     private Integer user_id;
     //分组

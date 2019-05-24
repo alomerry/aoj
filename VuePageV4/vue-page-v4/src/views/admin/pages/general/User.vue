@@ -76,7 +76,7 @@
                 <span style="font-size: 25px;font-weight: 400">User</span>
             </div>
             <div slot="extra">
-                <i-input v-model="searchKeyWord" placeholder="Keywords"
+                <i-input v-model="searchKeyWord" placeholder="username nickname"
                          style="width: auto;float: right;margin-right: 50px;"
                          clearable>
                     <Icon type="ios-search" slot="prefix"/>
@@ -250,7 +250,7 @@
                     },
                     {
                         title: 'UserId',
-                        width: 120,
+                        width: 80,
                         key: 'user.user_id',
                         render: (h, params) => {
                             return h('span', {}, params.row.user.user_id)
@@ -259,13 +259,26 @@
                     {
                         title: 'NickName',
                         key: 'user.nickname',
+                        width: 130,
                         render: (h, params) => {
                             return h('span', {}, params.row.user.nickname)
                         },
                     },
                     {
+                        title: 'Status',
+                        width: 130,
+                        render: (h, params) => {
+                            return h('Tag', {
+                                props: {
+                                    color: params.row.user.disabled ? 'error' : 'success',
+                                }
+                            }, params.row.user.disabled ? 'Disabled' : 'Access');
+                        },
+                    },
+                    {
                         title: 'Create Time',
                         key: 'user.access_time',
+                        width: 150,
                         render: (h, params) => {
                             return h('Time', {
                                 props: {
@@ -309,6 +322,7 @@
                     {
                         title: 'Last Login',
                         key: 'user.last_login',
+                        width: 150,
                         render: (h, params) => {
                             return h('Time', {
                                 props: {
@@ -733,6 +747,17 @@
                             that.selectData.push(item);
                         }
                     });
+                    if (this.searchData.length == 0) {
+                        console.log("本页未查询到，查询数据库");
+                        Api.findSimilarUserByKeycode(this.searchKeyWord, this.$store.state.token).then(res => {
+                            let result = res.data;
+                            if (result.code == 200) {
+                                console.log(result.data);
+                            }
+                        }).catch(res => {
+                            console.log(res);
+                        })
+                    }
                 }
             },
             //字符串转date

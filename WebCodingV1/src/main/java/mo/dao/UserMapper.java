@@ -58,13 +58,22 @@ public interface UserMapper {
     User findUserByUserId(@Param("user_id") Integer user_id);
 
     /**
-     * 根据用户名相似度查找用户
+     * 根据用户昵称相似度查找用户
      *
-     * @param nickname 用户名
+     * @param nickname 用户昵称
      * @return 返回用户集
      */
-    @Select("select * from users where nickname like #{nickname}")
+    @Select("select * from users where nickname like '%${nickname}%'")
     List<User> findUserBySimplyNickName(@Param("nickname") String nickname);
+
+    /**
+     * 根据关键词查询用户昵称用户名相似度用户
+     *
+     * @param keycode 关键词
+     * @return 返回用户集
+     */
+    @Select("select * from users where nickname like '%${keycode}%' or username like '%${keycode}%'")
+    List<User> findUserBySimilarUserNameAndNickName(@Param("keycode") String keycode);
 
     /**
      * 更新用户的sessionId

@@ -150,4 +150,17 @@ public class AdminUserControllerImpl extends AbstractController implements Admin
 
         }
     }
+
+    @Override
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/user", method = RequestMethod.GET)
+    public Result similarUser(@RequestParam(value = "keycode", defaultValue = "") String keycode) {
+        if ("".equals(keycode)) {
+            return new Result().setCode(ResultCode.OK).setMessage("未查询到");
+        } else {
+            JSONObject result = new JSONObject();
+            result.put("users", userService.findSimilarUserByUserNameAndNickName(keycode));
+            return new Result().setCode(ResultCode.OK).setData(result);
+        }
+    }
 }

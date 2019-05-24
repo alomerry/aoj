@@ -48,4 +48,12 @@ public interface AdminUserController {
      * @return
      */
     Result users(int contest_id, String page, String per_page);
+
+    /**
+     * 根据关键词查询用户
+     *
+     * @param keycode 关键词
+     * @return
+     */
+    Result similarUser(String keycode);
 }

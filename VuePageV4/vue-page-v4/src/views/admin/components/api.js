@@ -122,6 +122,21 @@ export default {
     },
 
     /**
+     * 根据关键字查找相似用户
+     * @param keycode
+     * @param jwt
+     */
+    findSimilarUserByKeycode(keycode, jwt) {
+        return axios({
+            url: '/api-oj/api-oj/admin/user?keycode=' + keycode,
+            method: 'get',
+            headers: {
+                "jwt": jwt,
+            }
+        });
+    },
+
+    /**
      * 查询公开题目集
      */
     findPublicProblemsByPage(page, per_page) {
@@ -209,13 +224,13 @@ export default {
      * @param jwt 令牌
      * @returns {AxiosPromise}
      */
-    createNewProblemToContest(contest_id,problem, tags, testcase_id, jwt) {
+    createNewProblemToContest(contest_id, problem, tags, testcase_id, jwt) {
         let params = new URLSearchParams();
         params.append("problem", JSON.stringify(problem));
         params.append("tags", tags == null ? null : JSON.stringify(tags));
         params.append("testCaseId", testcase_id);
         return axios({
-            url: "/api-oj/api-oj/admin/contest/"+contest_id+"/problem",
+            url: "/api-oj/api-oj/admin/contest/" + contest_id + "/problem",
             method: "post",
             data: params,
             headers: {

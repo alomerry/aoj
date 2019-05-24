@@ -123,4 +123,12 @@ public interface UserService {
      * @return
      */
     int getUserTotalNumer();
+
+    /**
+     * 根据关键词查找用户
+     *
+     * @param keycode 关键词
+     * @return
+     */
+    List<UserLink> findSimilarUserByUserNameAndNickName(String keycode);
 }

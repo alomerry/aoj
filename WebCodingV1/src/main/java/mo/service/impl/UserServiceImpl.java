@@ -194,4 +194,12 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserTotalNumber();
     }
 
+    @Override
+    public List<UserLink> findSimilarUserByUserNameAndNickName(String keycode) {
+        List<UserLink> userLinks = new ArrayList<>();
+        for (User user : userMapper.findUserBySimilarUserNameAndNickName(keycode)) {
+            userLinks.add(new UserLink(user, privilegeMapper.findPrivilegeByUserId(user.getUser_id())));
+        }
+        return userLinks;
+    }
 }
