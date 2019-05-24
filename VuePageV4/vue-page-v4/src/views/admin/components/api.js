@@ -24,6 +24,22 @@ export default {
     },
 
     /**
+     * 查询用户
+     * @param page 页码
+     * @param per_page 每页数量
+     * @param jwt token
+     */
+    getUsersByisDisabledPagePer_Page(isDisabled, page, per_page, jwt) {
+        return axios({
+            url: "/api-oj/api-oj/admin/disabled/" + isDisabled + "/users?page=" + page + "&per_page=" + per_page,
+            method: 'get',
+            headers: {
+                "jwt": jwt,
+            }
+        });
+    },
+
+    /**
      * 根据页码查询竞赛集
      * @param page
      * @param per_page

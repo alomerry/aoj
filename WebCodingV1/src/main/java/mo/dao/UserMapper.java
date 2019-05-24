@@ -95,6 +95,16 @@ public interface UserMapper {
     @Select("select * from users limit #{start},#{per_page}")
     List<User> findUsersByPage(@Param("start") int start, @Param("per_page") int per_page);
 
+    /**
+     * 查询指定页数用户
+     *
+     * @param start    起始
+     * @param per_page 每页数量
+     * @return 用户集
+     */
+    @Select("select * from users where disabled = #{disabled} limit #{start},#{per_page}")
+    List<User> findUsersByDisabledPageAndPerPage(@Param("disabled") int disabled, @Param("start") int start, @Param("per_page") int per_page);
+
 
     /**
      * 根据用户Id查询用户的用户名昵称
@@ -177,5 +187,13 @@ public interface UserMapper {
      */
     @Select("select count(user_id) from users")
     int getUserTotalNumber();
+
+    /**
+     * 查询用户数量
+     *
+     * @return
+     */
+    @Select("select count(user_id) from users where disabled = #{disabled}")
+    int getUserTotalNumerByIsDisabled(@Param("disabled") int disabled);
 }
 

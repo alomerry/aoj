@@ -215,7 +215,7 @@
                 ruleForm: {
                     nickname: [
                         {type: 'string', min: 2, message: 'Name no less than 3 words', trigger: 'blur'},
-                        {type: 'string', max: 10, message: 'Name no less than 10 words', trigger: 'blur'},
+                        {type: 'string', max: 16, message: 'Name no less than 16 words', trigger: 'blur'},
                     ],
                     email: [
                         {type: 'email', message: 'Incorrect email format', trigger: 'blur'}
@@ -267,6 +267,39 @@
                     {
                         title: 'Status',
                         width: 130,
+                        filters: [
+                            {
+                                label: 'disabled',
+                                value: 1
+                            },
+                            {
+                                label: 'access',
+                                value: 0
+                            },
+                        ],
+                        /*filterMethod(value, row) {
+                            let v = row.user.disabled;
+                            //let v = _this.stringFormatToDate(row.user.last_login).getTime();
+                            if (value === 1) {
+                                return v == 1;
+                            } else if (value === 0) {
+                                return v == 0;
+                            }
+                        },*/
+                        filterMultiple: false,
+                        filterRemote: function (status, row) {
+                            console.log(status.length);
+                            _this.status_flag = status.length;
+                            _this.status_value = status[0];
+                            _this.page = 1;
+                            _this.per_page = 10;
+                            _this.total = 10;
+                            if (_this.status_flag == 0) {
+                                _this.getUsers();
+                            } else {
+                                _this.getUsersByDisabled(status);
+                            }
+                        },
                         render: (h, params) => {
                             return h('Tag', {
                                 props: {
@@ -542,6 +575,9 @@
                     },
                 ],
                 nowTime: "2016-10-03 07:08:16",
+
+                status_flag: 0,
+                status_value: 0,
                 page: 1,
                 per_page: 10,
                 total: 10,
@@ -559,11 +595,19 @@
         methods: {
             changePageSize(pageSize) {
                 this.per_page = pageSize;
-                this.getUsers();
+                if (this.status_flag == 0) {
+                    this.getUsers();
+                } else {
+                    this.getUsersByDisabled(this.status_value);
+                }
             },
             changePage(page) {
                 this.page = page;
-                this.getUsers();
+                if (this.status_flag == 0) {
+                    this.getUsers();
+                } else {
+                    this.getUsersByDisabled(this.status_value);
+                }
             },
             //update user
             updateUser() {
@@ -786,6 +830,28 @@
             getUsers: function () {
                 this.loading = true;
                 Api.getUsersByPagePer_Page(this.page, this.per_page, this.$store.state.token).then(res => {
+                    let result = res.data;
+                    // console.log(result);
+                    if (result.code === 200) {
+                        this.datas = result.data.users;
+                        this.selectData = result.data.users;
+                        this.total = result.data.total;
+                    } else {
+                        console.log('Failed! ' + result.message);
+                        this.$Message.error(result.message);
+                        if (result.code === 401) {
+                            window.location.href = "/admin/login";
+                        }
+                    }
+                    this.loading = false;
+                }).catch(err => {
+                    console.log('An error has occurred! ' + err);
+                    this.loading = false;
+                });
+            },
+            getUsersByDisabled(isDisabled) {
+                this.loading = true;
+                Api.getUsersByisDisabledPagePer_Page(isDisabled, this.page, this.per_page, this.$store.state.token).then(res => {
                     let result = res.data;
                     // console.log(result);
                     if (result.code === 200) {

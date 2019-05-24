@@ -119,6 +119,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserLink> findUsersByDisabledPageAndPerPage(int disabled, Integer page, Integer per_page) {
+        List<UserLink> userLinks = new ArrayList<>();
+        for (User user : userMapper.findUsersByDisabledPageAndPerPage(disabled, (page - 1) * per_page, per_page)) {
+            userLinks.add(new UserLink(user, privilegeMapper.findPrivilegeByUserId(user.getUser_id())));
+        }
+        return userLinks;
+    }
+
+    @Override
     public UserLink findUserLinkByUserId(Integer user_id) {
         return new UserLink(userMapper.findUserByUserId(user_id), privilegeMapper.findPrivilegeByUserId(user_id));
     }
@@ -195,6 +204,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public int getUserTotalNumer() {
         return userMapper.getUserTotalNumber();
+    }
+
+    @Override
+    public int getUserTotalNumerByIsDisabled(int disabled) {
+        return userMapper.getUserTotalNumerByIsDisabled(disabled);
     }
 
     @Override

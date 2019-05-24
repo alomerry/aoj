@@ -58,6 +58,16 @@ public interface UserService {
     List<UserLink> findUsersByPageAndPerPage(Integer page, Integer per_page);
 
     /**
+     * 查询用户
+     *
+     * @param page     页码
+     * @param disabled 禁用状态
+     * @param per_page 每页数量
+     * @return 用户集
+     */
+    List<UserLink> findUsersByDisabledPageAndPerPage(int disabled, Integer page, Integer per_page);
+
+    /**
      * 根据用户Id查找用户权限实体
      *
      * @param user_id 用户Id
@@ -123,6 +133,14 @@ public interface UserService {
      * @return
      */
     int getUserTotalNumer();
+
+    /**
+     * 查询指定禁用状态用户数量
+     *
+     * @param disabled 是否禁用
+     * @return
+     */
+    int getUserTotalNumerByIsDisabled(int disabled);
 
     /**
      * 根据关键词查找用户

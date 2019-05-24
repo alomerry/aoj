@@ -48,6 +48,18 @@ public class AdminUserControllerImpl extends AbstractController implements Admin
 
     @Override
     @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/disabled/{isDisabled}/users", method = RequestMethod.GET)
+    public Result users(@RequestParam(value = "page", defaultValue = "1") String page,
+                        @RequestParam(value = "per_page", defaultValue = "10") String per_page,
+                        @PathVariable int isDisabled) {
+        JSONObject users = new JSONObject();
+        users.put("users", userService.findUsersByDisabledPageAndPerPage(isDisabled, Integer.valueOf(page), Integer.valueOf(per_page)));
+        users.put("total", userService.getUserTotalNumerByIsDisabled(isDisabled));
+        return new Result().setCode(ResultCode.OK).setData(users);
+    }
+
+    @Override
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
     @RequestMapping(value = "/admin/user/{user_id}", method = RequestMethod.DELETE)
     public Result deleteUser(@PathVariable String user_id) {
         //判断操作者权限,是否是[用户管理员]

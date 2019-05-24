@@ -178,6 +178,7 @@
                     username: [
                         {required: true, message: 'The name cannot be empty', trigger: 'blur'},
                         {type: 'string', min: 5, message: 'Name no less than 5 words', trigger: 'blur'},
+                        {type: 'string', max: 16, message: 'Name no more than 16 words', trigger: 'blur'},
                     ],
                     pwd: [
                         {required: true, message: 'Password cannot be empty', trigger: 'blur'},
