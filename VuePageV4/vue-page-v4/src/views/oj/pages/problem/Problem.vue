@@ -310,7 +310,7 @@
                 this.echart_detail_flag = true;
                 let ac = 10, wa = 31, tle = 12, mle = 4, re = 3, ce = 9;
                 let myChart = echarts.init(document.getElementById('detail'), 'macarons');// 绘制图表
-                myChart.setOption({
+                /*myChart.setOption({
                     title: {},
                     //图例组件
                     legend: {
@@ -348,6 +348,78 @@
                                     shadowOffsetX: 0,
                                     shadowColor: 'rgba(0, 0, 0, 0.5)'
                                 }
+                            }
+                        }
+                    ]
+                });*/
+                myChart.setOption({
+                    backgroundColor: '#ffffff',
+                    title: {
+                        text: '物联网的应用领域分布',
+                        left: 'center',
+                        top: 20,
+                        textStyle: {
+                            color: '#000000'
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'vertical',//图例列表布局 水平
+                        left: 20,
+                        data: ['AC', 'WA', 'TLE', 'MLE', 'CE', 'RE'],//数据数组
+                    },
+                    series: [
+                        {
+                            name: '物联网的应用领域',
+                            type: 'pie',
+                            radius: '55%',
+                            center: ['50%', '50%'],
+                            data: [
+                                {value: ac, name: 'AC', itemStyle: {color: '#19be6b'}},
+                                {value: tle, name: 'TLE', itemStyle: {color: '#ffaf00'}},
+                                {value: mle, name: 'MLE', itemStyle: {color: '#ff0900'}},
+                                {value: ce, name: 'CE', itemStyle: {color: '#b9c400'}},
+                                {value: re, name: 'RE', itemStyle: {color: '#ff1888'}},
+                                {value: wa, name: 'WA', itemStyle: {color: '#d2f8ff'}},
+                            ].sort(function (a, b) {// {value: 335, name: '直接访问'}
+                                return a.value - b.value;
+                            }),
+                            roseType: 'radius',
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        // color: 'rgba(255, 255, 255, 0.3)'
+                                        color: '#2c343c'
+                                    }
+                                }
+                            },
+                            labelLine: {
+                                normal: {
+                                    lineStyle: {
+                                        // color: 'rgba(255, 255, 255, 0.3)'
+                                        color: '#2c343c'
+                                    },
+                                    smooth: 0.2,
+                                    length: 10,
+                                    length2: 20
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color: '#c23531',
+                                    shadowBlur: 200,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+
+                            },
+
+                            animationType: 'scale',
+                            animationEasing: 'elasticOut',
+                            animationDelay: function (idx) {
+                                return Math.random() * 200;
                             }
                         }
                     ]

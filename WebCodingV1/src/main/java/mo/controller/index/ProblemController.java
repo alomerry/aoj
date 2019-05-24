@@ -44,5 +44,19 @@ public interface ProblemController {
      */
     Result problemsByTag(String tagId, String page, String per_page, String resType);
 
+    /**
+     * 查询竞赛中的题目
+     *
+     * @param contestId 竞赛Id
+     * @return
+     */
     Result contestProblems(Integer contestId);
+
+    /**
+     * 查询指定竞赛的提交信息
+     *
+     * @param problemId 题目Id
+     * @return
+     */
+    Result problemSubmitDetail(Integer problemId);
 }

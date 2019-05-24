@@ -78,6 +78,14 @@ public class ProblemControllerImpl extends AbstractController implements Problem
     }
 
     @Override
+    @ResponseBody
+    @RequestMapping(value = "/problem/{problemId}/submit", method = RequestMethod.GET)
+    public Result problemSubmitDetail(@PathVariable Integer problemId) {
+
+        return null;
+    }
+
+    @Override
     @RequestMapping(value = "/problems/defunct/{defunct}")
     @ResponseBody
     public Result problems(@RequestParam(value = "page", defaultValue = "1") String page,
