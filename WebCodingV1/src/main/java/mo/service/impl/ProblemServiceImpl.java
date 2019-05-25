@@ -2,6 +2,7 @@ package mo.service.impl;
 
 import mo.dao.*;
 import mo.entity.po.*;
+import mo.entity.vo.SolutionStatus;
 import mo.entity.vo.link.ProblemLink;
 import mo.entity.vo.link.ProblemTagLink;
 import mo.exception.ServiceException;
@@ -34,6 +35,9 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Resource
     private TagMapper tagMapper;
+
+    @Resource
+    private SolutionMapper solutionMapper;
 
     @Resource
     private ProblemTagMapper problemTagMapper;
@@ -315,6 +319,11 @@ public class ProblemServiceImpl implements ProblemService {
     @Override
     public boolean isUserContestContainProblem(Integer userId, Integer problemId) {
         return problemMapper.isUserContestContainProblem(userId, problemId) > 0;
+    }
+
+    @Override
+    public List<SolutionStatus> findProblemStatus(Integer problem_id) {
+        return solutionMapper.findProblemStatus(problem_id);
     }
 
     /**

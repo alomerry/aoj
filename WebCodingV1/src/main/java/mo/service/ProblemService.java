@@ -2,6 +2,7 @@ package mo.service;
 
 import mo.entity.po.Problem;
 import mo.entity.po.Tag;
+import mo.entity.vo.SolutionStatus;
 import mo.entity.vo.link.ProblemLink;
 import mo.exception.ServiceException;
 
@@ -196,4 +197,12 @@ public interface ProblemService {
      * @return
      */
     boolean isUserContestContainProblem(Integer userId, Integer problemId);
+
+    /**
+     * 查询指定题目的解答结果状态分布集合
+     *
+     * @param problem_id 题目Id
+     * @return
+     */
+    List<SolutionStatus> findProblemStatus(Integer problem_id);
 }

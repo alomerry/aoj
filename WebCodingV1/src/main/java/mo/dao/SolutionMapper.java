@@ -1,6 +1,7 @@
 package mo.dao;
 
 import mo.entity.po.Solution;
+import mo.entity.vo.SolutionStatus;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -169,6 +170,9 @@ public interface SolutionMapper {
      */
     @Select("select count(solution_id) from solution")
     Integer getSolutionTotalNumber();
+
+    @Select("select count(solution_id) as total ,result  from solution where problem_id = #{problem_id} and result not in ('0','1') group by result order by total desc ")
+    List<SolutionStatus> findProblemStatus(@Param("problem_id") Integer problemId);
 
 
     /**

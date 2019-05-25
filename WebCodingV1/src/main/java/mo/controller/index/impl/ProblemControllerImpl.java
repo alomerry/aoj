@@ -7,6 +7,7 @@ import mo.controller.index.ProblemController;
 import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.Problem;
+import mo.entity.vo.SolutionStatus;
 import mo.entity.vo.link.ProblemLink;
 import mo.service.ProblemService;
 import mo.service.UserService;
@@ -81,8 +82,10 @@ public class ProblemControllerImpl extends AbstractController implements Problem
     @ResponseBody
     @RequestMapping(value = "/problem/{problemId}/submit", method = RequestMethod.GET)
     public Result problemSubmitDetail(@PathVariable Integer problemId) {
-
-        return null;
+        JSONObject res = new JSONObject();
+        List<SolutionStatus> status = problemService.findProblemStatus(problemId);
+        res.put("status", status);
+        return new Result().setCode(ResultCode.OK).setData(res);
     }
 
     @Override
