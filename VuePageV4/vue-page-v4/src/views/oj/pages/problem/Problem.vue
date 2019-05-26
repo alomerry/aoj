@@ -218,6 +218,8 @@
                 },
                 reset_modal: false,
                 contest_id: this.$route.params.contest_id,
+
+                problem_solutions_status: [],
             }
         },
         computed: {
@@ -241,7 +243,7 @@
                 direction: "ltr",
             });
             editor_i.setSize('1450px', '400px');
-            // this.draw();
+            this.getProblemSolutionStuts();
         },
         methods: {
             loadingProblemDetail() {
@@ -265,6 +267,34 @@
             updateActiveName() {
                 this.$store.dispatch('updateActiveName', 'status');
             },
+
+            getProblemSolutionStuts() {
+                API.getProblemSolutionStatus(this.$route.params.problem_id).then(res => {
+                    if (res.data.code == 200) {
+                        this.problem_solutions_status = res.data.data.status;
+                    } else {
+                        this.problem_solutions_status = [];
+                    }
+                }).catch(res => {
+                    console.log(res);
+                })
+            },
+
+            //从problem_solutions_status读取数量
+            getTotalNumberFromSolutionStatus(type) {
+                let number;
+                this.problem_solutions_status.findIndex(function (current, index) {
+                    // console.log(current);
+                    if (current.result == type) {
+                        number = current.total;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                return number;
+            },
+
             draw() {
                 let ac = this.problem.accepted, wa = this.problem.submit - this.problem.accepted;
                 let myChart = echarts.init(document.getElementById('main'), 'macarons');// 绘制图表
@@ -306,56 +336,24 @@
                     ]
                 });
             },
+
             draw_detail() {
                 this.echart_detail_flag = true;
-                let ac = 10, wa = 31, tle = 12, mle = 4, re = 3, ce = 9;
+                let ac = this.getTotalNumberFromSolutionStatus(4),
+                    wa = this.getTotalNumberFromSolutionStatus(6),
+                    tle = this.getTotalNumberFromSolutionStatus(7),
+                    mle = this.getTotalNumberFromSolutionStatus(8),
+                    re = this.getTotalNumberFromSolutionStatus(10),
+                    ce = this.getTotalNumberFromSolutionStatus(11);
+                console.log(ac);
+                console.log(wa);
+                console.log(tle);
+                console.log(mle);
                 let myChart = echarts.init(document.getElementById('detail'), 'macarons');// 绘制图表
-                /*myChart.setOption({
-                    title: {},
-                    //图例组件
-                    legend: {
-                        orient: 'horizontal',//图例列表布局 水平
-                        data: ['AC', 'WA', 'TLE', 'MLE', 'CE', 'RE'],//数据数组
-                    },
-                    tooltip: {//提示
-                        show: false,
-                        formatter: "{a} <br/>{b}: {c} ({d}%)"
-                    },
-                    toolbox: {},
-                    animationType: 'scale',
-                    animationEasing: 'elasticOut',
-                    series: [
-                        {
-                            name: '访问来源',
-                            type: 'pie',
-                            radius: '85%',
-                            center: ['50%', '60%'],
-                            label: {
-                                position: 'inner',
-                                formatter: "{b}:{c}\n({d}%)"
-                            },
-                            data: [
-                                {value: ac, name: 'AC', itemStyle: {color: '#19be6b'}},
-                                {value: tle, name: 'TLE', itemStyle: {color: '#ffaf00'}},
-                                {value: mle, name: 'MLE', itemStyle: {color: '#ff0900'}},
-                                {value: ce, name: 'CE', itemStyle: {color: '#b9c400'}},
-                                {value: re, name: 'RE', itemStyle: {color: '#ff1888'}},
-                                {value: wa, name: 'WA', itemStyle: {color: 'LightPink'}}
-                            ],
-                            itemStyle: {
-                                emphasis: {
-                                    shadowBlur: 10,
-                                    shadowOffsetX: 0,
-                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                }
-                            }
-                        }
-                    ]
-                });*/
                 myChart.setOption({
                     backgroundColor: '#ffffff',
                     title: {
-                        text: '物联网的应用领域分布',
+                        text: 'Error distributionM',
                         left: 'center',
                         top: 20,
                         textStyle: {
@@ -373,7 +371,7 @@
                     },
                     series: [
                         {
-                            name: '物联网的应用领域',
+                            name: 'Error distribution',
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],

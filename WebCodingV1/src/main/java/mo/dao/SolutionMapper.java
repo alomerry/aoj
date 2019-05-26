@@ -171,7 +171,7 @@ public interface SolutionMapper {
     @Select("select count(solution_id) from solution")
     Integer getSolutionTotalNumber();
 
-    @Select("select count(solution_id) as total ,result  from solution where problem_id = #{problem_id} and result not in ('0','1') group by result order by total desc ")
+    @Select("select count(solution_id) as total ,result  from solution where problem_id = #{problem_id} and result in ('4','7','8','10','11','6') group by result order by total desc ")
     List<SolutionStatus> findProblemStatus(@Param("problem_id") Integer problemId);
 
 

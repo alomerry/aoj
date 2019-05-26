@@ -7,6 +7,19 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 
 export default {
     name: 'Api',
+
+    /**
+     * 查询指定题目的解题错误信息
+     * @param problem_id
+     */
+    getProblemSolutionStatus(problem_id) {
+        return axios({
+            url: "/api-oj/api-oj/problem/" + problem_id + "/submit",
+            method: 'get',
+        })
+    },
+
+
     /**
      * 获取验证码
      */
