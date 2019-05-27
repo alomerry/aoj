@@ -69,9 +69,6 @@
           <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.2.3" />
           <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.2.3" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-websocket:2.1.0.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-messaging:5.1.2.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-websocket:5.1.2.RELEASE" />
         </element>
       </element>
       <element id="directory" name="META-INF">
