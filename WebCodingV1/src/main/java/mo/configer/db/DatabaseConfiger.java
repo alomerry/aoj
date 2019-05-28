@@ -10,7 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 import javax.sql.DataSource;
 
 @Configuration
-@PropertySource(value = {"jdbc.properties"})
+@PropertySource(value = {"jdbc.properties"},ignoreResourceNotFound = true)
 public class DatabaseConfiger {
 
     //TODO 配置多数据源

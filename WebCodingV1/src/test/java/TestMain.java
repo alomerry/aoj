@@ -22,25 +22,21 @@ import java.util.Map;
 public class TestMain {
 
 
-    @Test
     public void test01() {
         Timestamp timestamp = new Timestamp(1550048298062L);
         System.out.println(timestamp.toLocalDateTime());
     }
 
-    @Test
     public void test02() {
 //        Jedis jedis = new Jedis("192.168.211.128", 6379);
 //        jedis.auth("120211");
 //        System.out.println(jedis.ping());
     }
 
-    @Test
     public void test03() {
         System.out.println(getJWS());
     }
 
-    @Test
     public void test04() {
         try {
             Map<String, Object> map = parser(getJWS());//eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJvaiIsImxldmVsIjoiYWRtaW4iLCJpc3MiOiJtbyIsImV4cCI6MTU1MDY1NDk1MSwiaWF0IjoxNTUwNjU0OTUxLCJqdGkiOiIzMzAifQ.1Z3VJtlRUXKAZc650412bZ7aqBcOsM827-gPZ-70SVk
@@ -53,8 +49,7 @@ public class TestMain {
         }
     }
 
-    @Test
-    @AuthCheck({RequiredType.JWT, RequiredType.LOGIN})
+//    @AuthCheck({RequiredType.JWT, RequiredType.LOGIN})
     public void test05() {
         String jws = getJWS();
 //        System.out.println(jws);
@@ -102,7 +97,6 @@ public class TestMain {
         return Jwts.parser().setSigningKey("morizunzhu").parseClaimsJws(jws);
     }
 
-    @Test
     public void test06() {
         String test = "666";
         JSONObject json = new JSONObject();
@@ -110,24 +104,11 @@ public class TestMain {
         System.out.println(json);
     }
 
-    @Test
     public void test07() {
         InetAddress address = InetAddress.getLoopbackAddress();
         System.out.println(address.getHostAddress());
     }
 
-    @Test
-    public void testUnzip() {
-        File file = new File("C:\\Users\\wu1ji\\Desktop\\Project\\OnlineJudge\\WebCodingV1\\src\\main\\webapp\\problem_cases\\1\\20977.zip");
-        String path = "C:\\Users\\wu1ji\\Desktop\\Project\\OnlineJudge\\WebCodingV1\\src\\main\\webapp\\problem_cases\\1";
-        try {
-            FileUtils.ZipFileDecompression(file, path);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
     public void test08() {
         List<String> a = null;
         for (String s : a) {

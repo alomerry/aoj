@@ -28,6 +28,8 @@ import mo.utils.JWTUtils;
 import mo.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -40,9 +42,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@PropertySource(value = {"classpath:configer.properties"}, ignoreResourceNotFound = false, encoding = "UTF-8")
 public class AdminProblemControllerImpl extends AbstractController implements AdminProblemController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminProblemControllerImpl.class);
+
+    @Value("${UPLOADFILE.LOACTION}")
+    private String UPLOADFILE_LOACTION;
 
     @Resource
     private ProblemService problemService;

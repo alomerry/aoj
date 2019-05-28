@@ -46,7 +46,6 @@ public class AuthController {
         if (method.isAnnotationPresent(AuthCheck.class)) {
             acer = method.getAnnotation(AuthCheck.class);
             Result res = checkAuth(acer);
-
             logger.info("result[{}]", res == null ? "验证成功" : "验证失败");
 
             if (res != null) {
