@@ -4,8 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import mo.entity.po.Contest;
-import mo.entity.vo.link.ContestApplyLink;
+import mo.entity.po.main.Contest;
 
 @Getter
 @Setter

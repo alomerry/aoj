@@ -1,6 +1,6 @@
 package mo.service;
 
-import mo.entity.po.News;
+import mo.entity.po.main.News;
 import mo.entity.vo.link.NewsUserLink;
 
 import java.util.List;

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import mo.controller.index.TagController;
 import mo.core.Result;
 import mo.core.ResultCode;
-import mo.entity.po.Tag;
 import mo.service.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

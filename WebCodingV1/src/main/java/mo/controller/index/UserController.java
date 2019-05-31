@@ -1,7 +1,7 @@
 package mo.controller.index;
 
 import mo.core.Result;
-import mo.entity.po.User;
+import mo.entity.po.main.User;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;

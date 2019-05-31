@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import mo.entity.po.Problem;
-import mo.entity.po.Solution;
-import mo.entity.po.User;
+import mo.entity.po.main.Problem;
+import mo.entity.po.main.Solution;
+import mo.entity.po.main.User;
 
 @Getter
 @Setter

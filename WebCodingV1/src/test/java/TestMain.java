@@ -1,17 +1,11 @@
 import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.*;
-import mo.entity.po.Privilege;
-import mo.entity.po.User;
+import mo.entity.po.main.Privilege;
+import mo.entity.po.main.User;
 import mo.entity.vo.link.UserLink;
-import mo.interceptor.annotation.AuthCheck;
-import mo.interceptor.annotation.RequiredType;
-import mo.utils.FileUtils;
 import mo.utils.JWTUtils;
-import org.junit.Test;
 //import redis.clients.jedis.Jedis;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.InetAddress;
 import java.sql.Timestamp;
 import java.util.Date;

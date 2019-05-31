@@ -104,7 +104,7 @@
                         </ul>
 
                         <c:choose>
-                            <%--@elvariable id="online_judge_locuser" type="mo.entity.po.User"--%>
+                            <%--@elvariable id="online_judge_locuser" type="mo.entity.po.main.User"--%>
                         <c:when test="${empty online_judge_locuser}">
                         <ul class="nav navbar-nav navbar-right">
                             <li class="dropdown">
@@ -138,7 +138,7 @@
                                         </li>
                                         <li><a href="${pageContext.request.contextPath}/solution_status">我的提交</a></li>
                                         <li><a href="${pageContext.request.contextPath}/own_competition">参加的比赛</a></li>
-                                            <%--@elvariable id="online_judge_locgroup" type="mo.entity.po.Privilege"--%>
+                                            <%--@elvariable id="online_judge_locgroup" type="mo.entity.po.main.Privilege"--%>
                                         <c:if test="${online_judge_locgroup.rightstr.startsWith('admin')}">
                                             <li><a href="${pageContext.request.contextPath}/admin_home">后台管理</a></li>
                                         </c:if>

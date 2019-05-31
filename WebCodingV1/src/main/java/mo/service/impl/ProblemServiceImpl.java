@@ -1,7 +1,7 @@
 package mo.service.impl;
 
-import mo.dao.*;
-import mo.entity.po.*;
+import mo.dao.main.*;
+import mo.entity.po.main.*;
 import mo.entity.vo.SolutionStatus;
 import mo.entity.vo.link.ProblemLink;
 import mo.entity.vo.link.ProblemTagLink;

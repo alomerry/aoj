@@ -2,7 +2,7 @@ package mo.service;
 
 import com.alibaba.fastjson.JSONObject;
 import mo.core.Result;
-import mo.entity.po.User;
+import mo.entity.po.main.User;
 import mo.entity.vo.UserContestResult;
 import mo.entity.vo.link.UserLink;
 

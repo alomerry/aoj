@@ -1,7 +1,7 @@
 package mo.service;
 
 
-import mo.entity.po.ContestApply;
+import mo.entity.po.main.ContestApply;
 import mo.entity.vo.link.ContestApplyLink;
 
 import java.util.List;

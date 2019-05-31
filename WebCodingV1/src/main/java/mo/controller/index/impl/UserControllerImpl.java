@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import mo.controller.index.UserController;
 import mo.core.Result;
 import mo.core.ResultCode;
-import mo.entity.po.User;
+import mo.entity.po.main.User;
 import mo.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

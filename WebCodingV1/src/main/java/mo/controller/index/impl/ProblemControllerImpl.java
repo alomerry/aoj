@@ -6,7 +6,7 @@ import mo.controller.AbstractController;
 import mo.controller.index.ProblemController;
 import mo.core.Result;
 import mo.core.ResultCode;
-import mo.entity.po.Problem;
+import mo.entity.po.main.Problem;
 import mo.entity.vo.SolutionStatus;
 import mo.entity.vo.link.ProblemLink;
 import mo.service.ProblemService;

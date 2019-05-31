@@ -1,12 +1,8 @@
 package mo.controller.admin;
 
 import mo.core.Result;
-import mo.entity.po.Problem;
-import mo.entity.po.Tag;
 import mo.entity.vo.ProblemTagTestCase;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 public interface AdminProblemController {
     /**

@@ -1,9 +1,9 @@
 package mo.service.impl;
 
-import mo.dao.ContestApplyMapper;
-import mo.dao.ContestMapper;
-import mo.entity.po.Contest;
-import mo.entity.po.ContestApply;
+import mo.dao.main.ContestApplyMapper;
+import mo.dao.main.ContestMapper;
+import mo.entity.po.main.Contest;
+import mo.entity.po.main.ContestApply;
 import mo.entity.vo.link.ContestApplyLink;
 import mo.exception.ServiceException;
 import mo.service.ContestApplyService;

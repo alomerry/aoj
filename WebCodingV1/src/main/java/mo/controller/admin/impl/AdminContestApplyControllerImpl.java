@@ -5,7 +5,7 @@ import mo.controller.AbstractController;
 import mo.controller.admin.AdminContestApplyController;
 import mo.core.Result;
 import mo.core.ResultCode;
-import mo.entity.po.Contest;
+import mo.entity.po.main.Contest;
 import mo.entity.vo.link.ContestApplyLink;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;

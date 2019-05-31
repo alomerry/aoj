@@ -1,6 +1,6 @@
 package mo.service;
 
-import mo.entity.po.Privilege;
+import mo.entity.po.main.Privilege;
 
 public interface PrivilegeService {
     /**

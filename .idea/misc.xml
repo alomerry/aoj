@@ -15,6 +15,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/BetaVersion/pom.xml" />
         <option value="$PROJECT_DIR$/PageCoding.V1/pom.xml" />
         <option value="$PROJECT_DIR$/PageCodingV1/pom.xml" />
         <option value="$PROJECT_DIR$/PageCodingV2/pom.xml" />

@@ -1,13 +1,14 @@
 package mo.controller.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import mo.controller.AbstractController;
 import mo.core.Result;
 import mo.core.ResultCode;
-import mo.entity.po.User;
+import mo.dao.mini.JWTMapper;
+import mo.entity.po.main.User;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
 import mo.service.UserService;
-import mo.utils.FileUtils;
 import mo.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,9 @@ public class TestController extends AbstractController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private JWTMapper jwtMapper;
 
     @RequestMapping(value = "/test", method = RequestMethod.POST)
     @ResponseBody
@@ -59,4 +63,13 @@ public class TestController extends AbstractController {
         File file = new File("1556176958407Bv41eR");
         return new Result().setCode(ResultCode.OK);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/test_mutilDB", method = RequestMethod.GET)
+    public Result testMultiDB(int testId) {
+        JSONObject res = new JSONObject();
+        res.put("res",jwtMapper.checkJWTExist(testId));
+        return new Result().setCode(ResultCode.OK).setData(res);
+    }
+
 }

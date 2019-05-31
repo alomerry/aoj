@@ -2,11 +2,11 @@ package mo.service.impl;
 
 import mo.core.Permission;
 import mo.core.PermissionManager;
-import mo.dao.ContestMapper;
-import mo.dao.ContestProblemMapper;
-import mo.dao.PrivilegeMapper;
-import mo.dao.UserMapper;
-import mo.entity.po.Contest;
+import mo.dao.main.ContestMapper;
+import mo.dao.main.ContestProblemMapper;
+import mo.dao.main.PrivilegeMapper;
+import mo.dao.main.UserMapper;
+import mo.entity.po.main.Contest;
 import mo.entity.vo.ContestNumber;
 import mo.entity.vo.link.ContestLinkUser;
 import mo.exception.ServiceException;

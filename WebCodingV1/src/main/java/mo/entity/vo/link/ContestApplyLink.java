@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import mo.entity.po.Contest;
-import mo.entity.po.ContestApply;
-import mo.entity.po.User;
+import mo.entity.po.main.Contest;
+import mo.entity.po.main.ContestApply;
+import mo.entity.po.main.User;
 
 @ToString
 @Getter

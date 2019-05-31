@@ -1,7 +1,6 @@
-package mo.dao;
+package mo.dao.main;
 
-import mo.entity.po.ProblemTag;
-import mo.entity.po.Tag;
+import mo.entity.po.main.Tag;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

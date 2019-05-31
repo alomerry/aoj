@@ -1,7 +1,7 @@
 package mo.service;
 
-import mo.entity.po.Problem;
-import mo.entity.po.Tag;
+import mo.entity.po.main.Problem;
+import mo.entity.po.main.Tag;
 import mo.entity.vo.SolutionStatus;
 import mo.entity.vo.link.ProblemLink;
 import mo.exception.ServiceException;

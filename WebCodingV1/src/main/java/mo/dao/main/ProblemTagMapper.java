@@ -1,7 +1,6 @@
-package mo.dao;
+package mo.dao.main;
 
-import mo.entity.po.ProblemTag;
-import mo.entity.po.Tag;
+import mo.entity.po.main.ProblemTag;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

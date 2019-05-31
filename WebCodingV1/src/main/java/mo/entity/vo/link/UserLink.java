@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import mo.entity.po.Privilege;
-import mo.entity.po.User;
+import mo.entity.po.main.Privilege;
+import mo.entity.po.main.User;
 
 @Getter
 @Setter

@@ -10,13 +10,18 @@ import org.springframework.context.annotation.PropertySource;
 import javax.sql.DataSource;
 
 @Configuration
-@PropertySource(value = {"jdbc.properties"},ignoreResourceNotFound = true)
-public class DatabaseConfiger {
+public class DataBaseConfiger {
 
-    //TODO 配置多数据源
-    @Bean("db_mysql")
+    //配置多数据源
+    @Bean("db_mysql_main")
     @ConfigurationProperties(prefix = "spring.datasource.oj-mysql-v1")
-    public DataSource getMySQL() {
+    public DataSource getMainMySQL() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Bean("db_mysql_secondary")
+    @ConfigurationProperties(prefix = "spring.datasource.oj-mysql-v2")
+    public DataSource getSecondMySQL() {
         return DataSourceBuilder.create().build();
     }
 }

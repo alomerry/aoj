@@ -1,7 +1,7 @@
 package mo.controller.admin;
 
 import mo.core.Result;
-import mo.entity.po.Contest;
+import mo.entity.po.main.Contest;
 
 public interface AdminContestController {
 

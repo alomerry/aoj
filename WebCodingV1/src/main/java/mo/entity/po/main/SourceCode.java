@@ -1,4 +1,4 @@
-package mo.entity.po;
+package mo.entity.po.main;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

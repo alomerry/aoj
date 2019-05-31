@@ -1,7 +1,7 @@
 package mo.service.impl;
 
-import mo.dao.TagMapper;
-import mo.entity.po.Tag;
+import mo.dao.main.TagMapper;
+import mo.entity.po.main.Tag;
 import mo.service.TagService;
 import org.springframework.stereotype.Service;
 

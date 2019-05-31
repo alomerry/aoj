@@ -1,6 +1,6 @@
 package mo.service;
 
-import mo.entity.po.Tag;
+import mo.entity.po.main.Tag;
 
 import java.util.List;
 

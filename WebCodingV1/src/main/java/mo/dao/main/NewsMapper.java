@@ -1,6 +1,6 @@
-package mo.dao;
+package mo.dao.main;
 
-import mo.entity.po.News;
+import mo.entity.po.main.News;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

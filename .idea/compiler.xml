@@ -7,11 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="BetaVersion" />
         <module name="WebCodingV1" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="BetaVersion" target="1.8" />
       <module name="OJWeb" target="1.5" />
       <module name="PageCodingV1" target="1.8" />
       <module name="PageCodingV2" target="1.8" />

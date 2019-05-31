@@ -1,10 +1,10 @@
 package mo.service.impl;
 
-import mo.dao.ProblemMapper;
-import mo.dao.SolutionMapper;
-import mo.dao.UserMapper;
-import mo.entity.po.Solution;
-import mo.entity.po.SourceCode;
+import mo.dao.main.ProblemMapper;
+import mo.dao.main.SolutionMapper;
+import mo.dao.main.UserMapper;
+import mo.entity.po.main.Solution;
+import mo.entity.po.main.SourceCode;
 import mo.entity.vo.link.SolutionLink;
 import mo.exception.ServiceException;
 import mo.service.SolutionService;

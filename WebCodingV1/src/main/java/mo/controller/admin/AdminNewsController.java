@@ -1,7 +1,7 @@
 package mo.controller.admin;
 
 import mo.core.Result;
-import mo.entity.po.News;
+import mo.entity.po.main.News;
 
 public interface AdminNewsController {
     /**

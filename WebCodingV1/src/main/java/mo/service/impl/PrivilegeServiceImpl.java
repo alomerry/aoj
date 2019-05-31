@@ -1,7 +1,7 @@
 package mo.service.impl;
 
-import mo.dao.PrivilegeMapper;
-import mo.entity.po.Privilege;
+import mo.dao.main.PrivilegeMapper;
+import mo.entity.po.main.Privilege;
 import mo.service.PrivilegeService;
 import org.springframework.stereotype.Service;
 

@@ -5,8 +5,8 @@ import mo.controller.AbstractController;
 import mo.controller.index.SubmitController;
 import mo.core.Result;
 import mo.core.ResultCode;
-import mo.entity.po.Solution;
-import mo.entity.po.SourceCode;
+import mo.entity.po.main.Solution;
+import mo.entity.po.main.SourceCode;
 import mo.exception.ServiceException;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Map;
 
 @RestController
