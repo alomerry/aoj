@@ -35,7 +35,7 @@
                 pasteImage: true,
                 markdown: true,
                 upload: {
-                    // url: '/api/admin/upload_image/',
+                    url: 'http://localhost:8089/api-oj/test_simditor',
                     params: null,
                     fileKey: 'image',
                     connectionCount: 3,

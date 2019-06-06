@@ -56,6 +56,12 @@ public class TestController extends AbstractController {
         return new Result().setCode(ResultCode.OK);
     }
 
+    @RequestMapping(value = "/test_simditor", method = RequestMethod.GET)
+    @ResponseBody
+    public Result testSimditorUploadImage(){
+        logger.info("测试Simditor控件上传图片");
+        return new Result().setCode(ResultCode.OK);
+    }
 
     @ResponseBody
     @RequestMapping(value = "/test/unzip", method = RequestMethod.POST)
