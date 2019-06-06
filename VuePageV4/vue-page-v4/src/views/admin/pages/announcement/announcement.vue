@@ -367,7 +367,7 @@
                             }
                         ];*/
                         let result = res.data;
-                        console.log(result);
+                        // console.log(result);
                         if (result.code === 200) {
                             this.anno_data = result.data.newsLink;
                             this.total = result.data.total;

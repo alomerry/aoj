@@ -26,9 +26,6 @@ public class TestController extends AbstractController {
     private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
     @Resource
-    private UserService userService;
-
-    @Resource
     private JWTMapper jwtMapper;
 
     @RequestMapping(value = "/test", method = RequestMethod.POST)
@@ -56,11 +53,11 @@ public class TestController extends AbstractController {
         return new Result().setCode(ResultCode.OK);
     }
 
-    @RequestMapping(value = "/test_simditor", method = RequestMethod.GET)
+    @RequestMapping(value = "/test_simditor", method = RequestMethod.POST)
     @ResponseBody
     public Result testSimditorUploadImage(){
         logger.info("测试Simditor控件上传图片");
-        return new Result().setCode(ResultCode.OK);
+        return new Result().setCode(ResultCode.BAD_REQUEST);
     }
 
     @ResponseBody
