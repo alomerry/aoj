@@ -1,6 +1,7 @@
 # vue-page-v4
 ## Project setup
 ```
+npm config set registry https://registry.npm.taobao.org/
 npm install
 ```
 
