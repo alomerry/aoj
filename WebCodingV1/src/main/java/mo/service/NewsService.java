@@ -127,4 +127,12 @@ public interface NewsService {
      * @return
      */
     Integer getContestNewsTotalNum(int contest_id);
+
+    /**
+     * 根据公告Id查询创建者Id
+     *
+     * @param newsId 公告Id
+     * @return 创建者Id
+     */
+    Integer getNewsCreatorIdByNewsId(int newsId);
 }

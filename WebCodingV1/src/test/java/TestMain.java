@@ -4,6 +4,7 @@ import mo.entity.po.main.Privilege;
 import mo.entity.po.main.User;
 import mo.entity.vo.link.UserLink;
 import mo.utils.JWTUtils;
+import org.junit.Test;
 //import redis.clients.jedis.Jedis;
 
 import java.net.InetAddress;
@@ -108,5 +109,12 @@ public class TestMain {
         for (String s : a) {
             System.out.println(s);
         }
+    }
+
+    @Test
+    public void test09(){
+        String imageName="vue.jpeg";
+        System.out.println(imageName.lastIndexOf("."));
+        System.out.println(imageName.substring(imageName.lastIndexOf(".")+1));
     }
 }

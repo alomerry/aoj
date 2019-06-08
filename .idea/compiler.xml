@@ -10,19 +10,9 @@
         <module name="WebCodingV1" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="BetaVersion" target="1.8" />
-      <module name="OJWeb" target="1.5" />
-      <module name="PageCodingV1" target="1.8" />
-      <module name="PageCodingV2" target="1.8" />
-      <module name="WebCoding_beta_v1" target="1.5" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="BetaVersion" options="-parameters" />
-      <module name="PageCodingV1" options="-parameters" />
-      <module name="PageCodingV2" options="-parameters" />
       <module name="WebCodingV1" options="-parameters" />
     </option>
   </component>

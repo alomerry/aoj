@@ -22,7 +22,7 @@ public interface AdminNewsController {
     Result getNews(String page, String per_page);
 
     /**
-     * 创建新闻
+     * 修改新闻
      *
      * @param news 新闻实体json
      * @return http状态码

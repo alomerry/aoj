@@ -74,9 +74,10 @@ public class AdminNewsControllerImpl extends AbstractController implements Admin
         if (news.getNews_id() == null) {
             return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("此公告不存在!");
         } else {
-            Integer user_id = getJWTUserId();
-            Privilege privilege = privilegeService.findPrivilegeByUserId(user_id);
-            if (!user_id.equals(news.getUser_id()) && !PermissionManager.isLegalAdmin(Permission.Announcement_manager, privilege.getRightstr())) {
+            Integer operatorId = getJWTUserId(),creatorId = newsService.getNewsCreatorIdByNewsId(news.getNews_id());
+            Privilege privilege = privilegeService.findPrivilegeByUserId(operatorId);
+            logger.info("正在更新公告信息，公告创建者Id[{}],操作者Id[{}]", creatorId, operatorId);
+            if (!operatorId.equals(creatorId) && !PermissionManager.isLegalAdmin(Permission.Announcement_manager, privilege.getRightstr())) {
                 return new Result().setCode(ResultCode.FORBIDDEN).setMessage("权限不足!");
             } else {
                 if (newsService.updateNews(news)) {
