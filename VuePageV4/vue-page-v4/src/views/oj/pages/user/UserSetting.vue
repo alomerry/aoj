@@ -114,6 +114,7 @@
 
 <script>
     import Api from "../../components/api"
+    import {hex_md5} from '../../../../assets/md5.js'
 
     export default {
         name: "UserSetting",
@@ -138,7 +139,6 @@
                     newPwd: "",
                     confirmNewPwd: "",
                     currentPwd: "",
-                    oldEmail: null,
                     newEmail: "",
                 },
                 SecurityItem: {},
@@ -165,14 +165,43 @@
                 }
             },
             saveProfile() {
-
+                let user = {
+                    nickname: this.ProfileItem.nickname,
+                    school: this.ProfileItem.school,
+                    github_url: this.ProfileItem.github_url,
+                    blog_url: this.ProfileItem.blog_url,
+                    own_words: this.ProfileItem.own_words,
+                };
+                Api.updateUserProfile(this.$store.state.token, user).then(res => {
+                    console.log(res.data);
+                    if(res.data.code == 200){
+                        this.$Message.success("save success!");
+                    }else{
+                        this.$Message.error("save failed!");
+                    }
+                }).catch(res => {
+                    console.log(res);
+                })
             },
 
             saveAccount() {
-
+                if(this.AccountItem.oldPwd == "" || this.AccountItem.oldPwd == null){
+                    //更新邮箱
+                }else if(!this.checkPwd(this.AccountItem.newPwd) || !this.checkPwd(this.AccountItem.confirmNewPwd) ||
+                this.AccountItem.newPwd != this.AccountItem.confirmNewPwd){
+                    this.$Message.error("信息有误！");
+                    //更新密码和邮箱
+                }
             },
+            checkPwd(val){
+              if(val.length <= 0 || val.length>16){
+                  return false;
+              }else if(val.indexOf(666) != -1){
+                  return false;
+              }
+            },
+            //更新头像成功回调
             updateHeadSuccess(response, file, fileList) {
-                // console.log(response);
                 this.ProfileItem.header_img = response.data.url;
                 this.userInfo.head_img = this.ProfileItem.header_img;
                 Api.updateUserHeaderImage(this.userInfo.head_img, this.$store.state.token).then(res => {

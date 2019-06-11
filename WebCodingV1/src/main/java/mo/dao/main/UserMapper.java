@@ -204,5 +204,25 @@ public interface UserMapper {
      */
     @Update("UPDATE users SET head_img = #{path} WHERE user_id = #{userId}")
     int updateUserHeaderImage(@Param("path") String path,@Param("userId") Integer userId);
+
+    /**
+     * 更新用户配置
+     * @param user 用户
+     * @param user_id 用户标号
+     * @return
+     */
+    @Update("update users set nickname=#{user.nickname},school=#{user.school},github_url=#{user.github_url}," +
+            "blog_url=#{user.blog_url},own_words=#{user.own_words} where user_id = #{user_id}")
+    int updateUserProfile(@Param("user")User user,@Param("user_id")Integer user_id);
+
+    /**
+     * 更新用户密码和邮箱
+     * @param pwd 密码
+     * @param email 邮箱
+     * @param user_id 用户编号
+     * @return
+     */
+    @Update("update users set passwd = #{pwd} ,email = #{email} where user_id = #{user_id}")
+    int updateUserPwdAndEmail(@Param("pwd") String pwd,@Param("email") String email,@Param("user_id") Integer user_id);
 }
 

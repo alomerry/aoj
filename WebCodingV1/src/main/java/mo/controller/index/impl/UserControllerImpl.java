@@ -6,6 +6,7 @@ import mo.controller.index.UserController;
 import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.main.User;
+import mo.entity.vo.UserWithRePwd;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
 import mo.service.UserService;
@@ -17,8 +18,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-
-import java.io.File;
 
 import static mo.utils.StringValue.ONLINEJUDGE_SESSION_UER;
 
@@ -97,4 +96,35 @@ public class UserControllerImpl extends AbstractController implements UserContro
             return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("更新头像失败");
         }
     }
+
+    @Override
+    @AuthCheck({RequiredType.JWT})
+    @RequestMapping(value = "/user/profile", method = RequestMethod.PUT)
+    public Result updateProfile(@RequestBody User user) {
+        if(userService.updateUserProfile(user,getJWTUserId())){
+            return new Result().setCode(ResultCode.OK);
+        }else{
+            return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("更新失败");
+        }
+    }
+
+    @Override
+    @AuthCheck({RequiredType.JWT})
+    @RequestMapping(value = "/user/account", method = RequestMethod.PUT)
+    public Result updateAccount(@RequestBody UserWithRePwd user) {
+        switch (userService.updateUserAccount(user,getJWTUserId())){
+            case -1:{
+                return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("密码错误！");
+            }
+            case 0:{
+                return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("修改失败！");
+            }
+            case 1:{
+                return new Result().setCode(ResultCode.OK);
+            }
+        }
+        return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("修改失败！");
+    }
+
+
 }

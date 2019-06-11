@@ -113,6 +113,24 @@ export default {
     },
 
     /**
+     * 更新用户信息
+     * @param jwt 令牌
+     * @param user 用户实体
+     */
+    updateUserProfile(jwt,user){
+        return axios({
+            url: "/api-oj/api-oj/user/profile",
+            data:JSON.stringify(user),
+            dataType: "json",
+            method: 'put',
+            headers:{
+                "jwt":jwt,
+                "Content-Type": "application/json;charset-UTF-8",
+            }
+        })
+    },
+
+    /**
      * 申请竞赛
      * @param contestId 竞赛Id
      * @param jwt 令牌

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import mo.core.Result;
 import mo.entity.po.main.User;
 import mo.entity.vo.UserContestResult;
+import mo.entity.vo.UserWithRePwd;
 import mo.entity.vo.link.UserLink;
 
 import javax.servlet.http.HttpSession;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 public interface UserService {
 
-//    String SALT = "#&***#$#@";
+    int WRONG_PASSWORD = -1;
 
     /**
      * 验证用户登录
@@ -99,7 +100,7 @@ public interface UserService {
      * @param oldUser 旧用户信息
      * @return
      */
-    Integer updateUser(Map<String, String> user, UserLink oldUser);
+    Integer updateUserProfile(Map<String, String> user, UserLink oldUser);
 
     /**
      * 根据用户名查找用户给
@@ -157,4 +158,20 @@ public interface UserService {
      * @return
      */
     boolean updateUserHeaderImage(String path, Integer userId);
+
+    /**
+     * 更新用户profile
+     * @param user 用户实体
+     * @param userId 用户编号
+     * @return
+     */
+    boolean updateUserProfile(User user, Integer userId);
+
+    /**
+     * 更新用户Account
+     * @param user 用户实体
+     * @param userId 用户编号
+     * @return
+     */
+    int updateUserAccount(UserWithRePwd user, Integer userId);
 }

@@ -9,6 +9,7 @@ import mo.dao.main.UserMapper;
 import mo.entity.po.main.Privilege;
 import mo.entity.po.main.User;
 import mo.entity.vo.UserContestResult;
+import mo.entity.vo.UserWithRePwd;
 import mo.entity.vo.link.UserLink;
 import mo.service.UserService;
 import mo.utils.JWTUtils;
@@ -143,7 +144,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer updateUser(Map<String, String> user, UserLink oldUser) {
+    public Integer updateUserProfile(Map<String, String> user, UserLink oldUser) {
         /*
          * 1.nickname
          * 2.level
@@ -222,6 +223,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateUserHeaderImage(String path, Integer userId) {
-        return userMapper.updateUserHeaderImage(path,userId)>0;
+        return userMapper.updateUserHeaderImage(path, userId) > 0;
+    }
+
+    @Override
+    public boolean updateUserProfile(User user, Integer userId) {
+        return userMapper.updateUserProfile(user, userId) > 0;
+    }
+
+    @Override
+    public int updateUserAccount(UserWithRePwd user, Integer userId) {
+        //检测旧密码
+        User tmp = userMapper.findUserByUserNameAndUserPwd(user.getUser().getUsername(), DigestUtils.md5DigestAsHex((user.getUser().getPasswd() + SALT).getBytes()));
+        if (tmp == null) {
+            return WRONG_PASSWORD;
+        }else {
+            return userMapper.updateUserPwdAndEmail(DigestUtils.md5DigestAsHex((user.getRepwd() + SALT).getBytes()),user.getUser().getEmail(),tmp.getUser_id());
+        }
     }
 }

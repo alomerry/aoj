@@ -129,7 +129,7 @@ public class AdminUserControllerImpl extends AbstractController implements Admin
             } else {
                 if (PermissionManager.isAllLegalAdmins(PermissionManager.changedLevel(userLink.getPrivilege() == null ? "" : userLink.getPrivilege().getRightstr(), level), privilege.getRightstr())) {
                     //可以修改
-                    if (userService.updateUser(user, userLink) > 0) {
+                    if (userService.updateUserProfile(user, userLink) > 0) {
                         logger.info("修改成功");
                         return new Result().setCode(ResultCode.OK);
                     } else {

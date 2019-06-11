@@ -2,6 +2,7 @@ package mo.controller.index;
 
 import mo.core.Result;
 import mo.entity.po.main.User;
+import mo.entity.vo.UserWithRePwd;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,4 +48,18 @@ public interface UserController {
      * @return
      */
     Result updateHeaderImage(String head_url);
+
+    /**
+     * 更新用户
+     * @param user 用户
+     * @return
+     */
+    Result updateProfile(User user);
+
+    /**
+     * 更新用户
+     * @param user 用户
+     * @return
+     */
+    Result updateAccount(UserWithRePwd user);
 }
