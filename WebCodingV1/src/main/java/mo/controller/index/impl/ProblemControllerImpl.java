@@ -88,6 +88,17 @@ public class ProblemControllerImpl extends AbstractController implements Problem
         return new Result().setCode(ResultCode.OK).setData(res);
     }
 
+
+    @Override
+    @ResponseBody
+    @RequestMapping(value = "/problem/title/{title}", method = RequestMethod.GET)
+    public Result searchProblemBySimilarProblemTitle(@PathVariable String title) {
+        JSONObject res = new JSONObject();
+        List<Problem> problems = problemService.findProblemsFromContest(title);
+        res.put("results", problems);
+        return new Result().setCode(ResultCode.OK).setData(res);
+    }
+
     @Override
     @RequestMapping(value = "/problems/defunct/{defunct}")
     @ResponseBody

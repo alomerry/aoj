@@ -33,7 +33,7 @@
                 textarea: this.$refs.editor,
                 toolbar: this.toolbar,
                 pasteImage: true,
-                markdown: true,
+                markdown: false,
                 upload: {
                     url: '/api-oj/api-oj/simditorImage',
                     params: null,

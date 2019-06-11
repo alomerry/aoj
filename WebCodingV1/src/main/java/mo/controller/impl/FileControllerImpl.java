@@ -27,7 +27,7 @@ public class FileControllerImpl extends AbstractController implements FileContro
     @Override
     @ResponseBody
     @RequestMapping("/simditorImage")
-    public Result simditorImage(MultipartFile image) {
+    public Result addImage(MultipartFile image) {
 
         logger.info("image[{}]", image);
 

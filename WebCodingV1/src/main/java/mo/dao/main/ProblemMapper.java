@@ -197,4 +197,12 @@ public interface ProblemMapper {
      */
     @Select("select count(problem_id) from contest_problem where contest_id in (select contest_id from contest_apply where user_id = #{user_id} and status = '1') and problem_id = #{problem_id}")
     int isUserContestContainProblem(@Param("user_id") Integer user_id, @Param("problem_id") Integer problem_id);
+
+    /**
+     * 查询题目中指定相似的标题
+     * @param title
+     * @return
+     */
+    @Select("select * from problems where title like '%${title}%'")
+    List<Problem> findProblemsBySimilarTitle(@Param("title")String title);
 }

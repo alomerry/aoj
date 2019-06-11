@@ -205,6 +205,28 @@
                             that.tableSearchData.push(item);
                         }
                     });
+                    Api.getSimilarProblemByProblemName(this.searchKeyWord).then(res=>{
+
+                        let sql_data = res.data.data.results;
+                        let flag = true;
+                        sql_data.forEach(function (current, i) {
+                            flag = true;
+                            that.tableSearchData.findIndex(function (cur) {
+                                if (current.title == cur.title) {
+                                    flag = false;
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            });
+                            if (flag) {
+                                that.tableSearchData.push(sql_data[i]);
+                            }
+                        });
+
+                    }).catch(res=>{
+                        console.log(res);
+                    });
                 }
             },
             //获取题目

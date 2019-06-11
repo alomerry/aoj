@@ -12,7 +12,7 @@ public interface FileController {
      * @param image 图片
      * @return
      */
-    Result simditorImage(MultipartFile image);
+    Result addImage(MultipartFile image);
 
     /**
      * 获取图片
@@ -20,4 +20,5 @@ public interface FileController {
      * @return
      */
     void getImages(String imageName, HttpServletResponse response) ;
+
 }

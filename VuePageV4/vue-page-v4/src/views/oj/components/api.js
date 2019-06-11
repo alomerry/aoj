@@ -19,6 +19,16 @@ export default {
         })
     },
 
+    /**
+     * 根据题目标题查找相似提u
+     * @param title 题目标题
+     */
+    getSimilarProblemByProblemName(title){
+        return axios({
+            url: "/api-oj/api-oj/problem/title/" + title ,
+            method: 'get',
+        })
+    },
 
     /**
      * 获取验证码
@@ -70,6 +80,35 @@ export default {
         return axios({
             url: "/api-oj/api-oj/user?username=" + username,
             method: 'get',
+        })
+    },
+
+    /**
+     * 根据用户名查找用户
+     * @param username 用户名
+     */
+    findUserInfoByToken(jwt) {
+        return axios({
+            url: "/api-oj/api-oj/user",
+            method: 'get',
+            headers:{
+                "jwt":jwt,
+            }
+        })
+    },
+
+    /**
+     * 更新头像
+     * @param path 路径
+     * @param jwt 令牌
+     */
+    updateUserHeaderImage(path,jwt){
+        return axios({
+            url: "/api-oj/api-oj/user_head_image?head_url="+path,
+            method: 'put',
+            headers:{
+                "jwt":jwt,
+            }
         })
     },
 

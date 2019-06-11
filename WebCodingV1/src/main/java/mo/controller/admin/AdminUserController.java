@@ -65,4 +65,12 @@ public interface AdminUserController {
      * @return
      */
     Result similarUser(String keycode);
+
+    /**
+     * 查询登陆信息
+     * @param userId 管理员Id
+     * @return
+     */
+    Result loginInfo(Integer userId);
+
 }

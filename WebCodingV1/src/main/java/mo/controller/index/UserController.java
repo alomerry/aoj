@@ -41,4 +41,10 @@ public interface UserController {
      */
     Result register(User user, HttpServletRequest request);
 
+    /**
+     * 修改用户头像
+     * @param head_url 头像url
+     * @return
+     */
+    Result updateHeaderImage(String head_url);
 }

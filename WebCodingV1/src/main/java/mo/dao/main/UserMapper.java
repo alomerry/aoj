@@ -195,5 +195,14 @@ public interface UserMapper {
      */
     @Select("select count(user_id) from users where disabled = #{disabled}")
     int getUserTotalNumerByIsDisabled(@Param("disabled") int disabled);
+
+    /**
+     * 更新头像
+     * @param path 头像路径
+     * @param userId 用户Id
+     * @return
+     */
+    @Update("UPDATE users SET head_img = #{path} WHERE user_id = #{userId}")
+    int updateUserHeaderImage(@Param("path") String path,@Param("userId") Integer userId);
 }
 

@@ -59,4 +59,11 @@ public interface ProblemController {
      * @return
      */
     Result problemSubmitDetail(Integer problemId);
+
+    /**
+     * 根据题目标题查找相似提u
+     * @param title 标题
+     * @return
+     */
+    Result searchProblemBySimilarProblemTitle(String title);
 }

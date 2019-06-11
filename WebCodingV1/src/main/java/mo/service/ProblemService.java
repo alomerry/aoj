@@ -190,6 +190,14 @@ public interface ProblemService {
     List<Problem> findProblemsFromContest(Integer contestId);
 
     /**
+     * 查询指定相似标题的题目
+     *
+     * @param title 标题
+     * @return
+     */
+    List<Problem> findProblemsFromContest(String title);
+
+    /**
      * 用户参加的竞赛中是否包含指定题目
      *
      * @param userId    用户Id

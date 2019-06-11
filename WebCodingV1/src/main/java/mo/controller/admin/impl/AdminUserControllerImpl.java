@@ -175,4 +175,13 @@ public class AdminUserControllerImpl extends AbstractController implements Admin
             return new Result().setCode(ResultCode.OK).setData(result);
         }
     }
+
+    @Override
+    @AuthCheck({RequiredType.JWT, RequiredType.ADMIN})
+    @RequestMapping(value = "/admin/user/{userId}/info", method = RequestMethod.GET)
+    public Result loginInfo(@PathVariable Integer userId) {
+        return null;
+    }
+
+
 }

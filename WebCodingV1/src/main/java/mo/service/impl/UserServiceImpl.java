@@ -219,4 +219,9 @@ public class UserServiceImpl implements UserService {
         }
         return userLinks;
     }
+
+    @Override
+    public boolean updateUserHeaderImage(String path, Integer userId) {
+        return userMapper.updateUserHeaderImage(path,userId)>0;
+    }
 }

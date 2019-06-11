@@ -317,6 +317,11 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
+    public List<Problem> findProblemsFromContest(String title) {
+        return problemMapper.findProblemsBySimilarTitle(title);
+    }
+
+    @Override
     public boolean isUserContestContainProblem(Integer userId, Integer problemId) {
         return problemMapper.isUserContestContainProblem(userId, problemId) > 0;
     }

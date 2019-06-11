@@ -149,4 +149,12 @@ public interface UserService {
      * @return
      */
     List<UserLink> findSimilarUserByUserNameAndNickName(String keycode);
+
+    /**
+     * 更新用户头像
+     * @param path 路径
+     * @param userId 用户Id
+     * @return
+     */
+    boolean updateUserHeaderImage(String path, Integer userId);
 }

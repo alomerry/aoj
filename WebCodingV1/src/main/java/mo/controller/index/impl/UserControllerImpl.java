@@ -1,10 +1,13 @@
 package mo.controller.index.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import mo.controller.AbstractController;
 import mo.controller.index.UserController;
 import mo.core.Result;
 import mo.core.ResultCode;
 import mo.entity.po.main.User;
+import mo.interceptor.annotation.AuthCheck;
+import mo.interceptor.annotation.RequiredType;
 import mo.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +18,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 
+import java.io.File;
+
 import static mo.utils.StringValue.ONLINEJUDGE_SESSION_UER;
 
 @RestController
 @SessionAttributes(value = {ONLINEJUDGE_SESSION_UER}, types = {User.class})
-public class UserControllerImpl implements UserController {
+public class UserControllerImpl extends AbstractController implements UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserControllerImpl.class);
 
@@ -50,9 +55,18 @@ public class UserControllerImpl implements UserController {
     @Override
     @ResponseBody
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public Result user(@RequestParam("username") String username) {
+    public Result user(@RequestParam(value = "username", defaultValue = "") String username) {
         JSONObject user = new JSONObject();
-        user.put("user", userService.findUserByUsername(username));
+        User res = null;
+        if ("".equals(username)) {
+            res = userService.findUserByUserId(getJWTUserId());
+            res.setPasswd("");
+            user.put("user",res );
+        } else {
+            res = userService.findUserByUsername(username);
+            res.setPasswd("");
+            user.put("user", res);
+        }
         return new Result().setCode(ResultCode.OK).setData(user);
     }
 
@@ -69,6 +83,18 @@ public class UserControllerImpl implements UserController {
             }
         } else {
             return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("用户名已存在");
+        }
+    }
+
+    @Override
+    @AuthCheck({RequiredType.JWT})
+    @RequestMapping(value = "/user_head_image", method = RequestMethod.PUT)
+    public Result updateHeaderImage(@RequestParam("head_url") String head_url) {
+        //todo 删除原头像
+        if(userService.updateUserHeaderImage(head_url,getJWTUserId())){
+            return new Result().setCode(ResultCode.OK);
+        }else{
+            return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("更新头像失败");
         }
     }
 }
