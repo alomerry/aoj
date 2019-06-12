@@ -2,6 +2,7 @@ package mo.service;
 
 import mo.entity.po.main.Solution;
 import mo.entity.po.main.SourceCode;
+import mo.entity.po.main.User;
 import mo.entity.vo.link.SolutionLink;
 
 import java.util.List;
@@ -98,4 +99,35 @@ public interface SolutionService {
      * @return
      */
     Integer getSolutionTotalNumber(int state);
+
+    /**
+     *
+     * 查询是否是提交创建者
+     * @param solutionId 提交编号
+     * @return
+     */
+    boolean checkIsCreatorOfSolution(String solutionId,Integer user_id);
+
+    /**
+     * 重新评判
+     * @param solutionId 提交编号
+     * @return
+     */
+    int rejudge(String solutionId);
+
+    /**
+     * 查询总解决数最多的用户
+     * @param page
+     * @param per_page
+     * @return
+     */
+    List<User> getTotalSolvedRank(int page,int per_page);
+
+    /**
+     * 查询解决率最高的用户
+     * @param page
+     * @param per_page
+     * @return
+     */
+    List<User> getPercentSolvedRank(int page,int per_page);
 }

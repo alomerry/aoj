@@ -1,11 +1,9 @@
 package mo.dao.main;
 
 import mo.entity.po.main.Solution;
+import mo.entity.po.main.User;
 import mo.entity.vo.SolutionStatus;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -55,7 +53,7 @@ public interface SolutionMapper {
      * @param per_page 每页数量
      * @return 结果集
      */
-    @Select("select * from solution order by judgetime desc limit #{start},#{per_page}")
+    @Select("select * from solution order by create_at desc limit #{start},#{per_page}")
     List<Solution> findSolutionOrderByJudgeTimeAndPage(@Param("start") int start, @Param("per_page") int per_page);
 
     /**
@@ -66,7 +64,7 @@ public interface SolutionMapper {
      * @param per_page 每页数量
      * @return
      */
-    @Select("select * from solution where result = #{result} order by judgetime desc limit #{start},#{per_page}")
+    @Select("select * from solution where result = #{result} order by create_at desc limit #{start},#{per_page}")
     List<Solution> findSolutionByResultOrderByJudgeTimeAndPage(@Param("result") int state, @Param("start") int start, @Param("per_page") int per_page);
 
     /**
@@ -75,7 +73,7 @@ public interface SolutionMapper {
      * @param per_page 每页数量
      * @return
      */
-    @Select("select * from solution where user_id = #{user_id} order by judgetime desc limit #{start},#{per_page}")
+    @Select("select * from solution where user_id = #{user_id} order by create_at desc limit #{start},#{per_page}")
     List<Solution> findSolutionByUserIdOrderByJudgeTimeAndPage(@Param("user_id") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
 
     /**
@@ -84,7 +82,7 @@ public interface SolutionMapper {
      * @param per_page 每页数量
      * @return
      */
-    @Select("select * from solution where user_id = #{user_id} and result = #{result} order by judgetime desc limit #{start},#{per_page}")
+    @Select("select * from solution where user_id = #{user_id} and result = #{result} order by create_at desc limit #{start},#{per_page}")
     List<Solution> findSolutionByUserIdAndResultOrderByJudgeTimeAndPage(@Param("result") int state, @Param("user_id") Integer user_id, @Param("start") int start, @Param("per_page") int per_page);
 
     /**
@@ -94,7 +92,7 @@ public interface SolutionMapper {
      * @param per_page 每页数量
      * @return 结果集
      */
-    @Select("select * from solution where contest_id = #{contest_id} order by judgetime desc limit #{start},#{per_page}")
+    @Select("select * from solution where contest_id = #{contest_id} order by create_at desc limit #{start},#{per_page}")
     List<Solution> findContestSolutionByContestIdOrderByJudgeTimeAndPage(@Param("contest_id") Integer contest_id, @Param("start") int start, @Param("per_page") int per_page);
 
     /**
@@ -171,10 +169,44 @@ public interface SolutionMapper {
     @Select("select count(solution_id) from solution")
     Integer getSolutionTotalNumber();
 
+
     @Select("select count(solution_id) as total ,result  from solution where problem_id = #{problem_id} and result in ('4','7','8','10','11','6') group by result order by total desc ")
     List<SolutionStatus> findProblemStatus(@Param("problem_id") Integer problemId);
 
+    /**
+     * 判断用户是否是提交者
+     * @param solutionId 提交编号
+     * @param userId 用户编号
+     * @return
+     */
+    @Select("select count(solution_id) from solution where solution_id = #{solution_id} and user_id = #{user_id}")
+    int checkIsSolutionCreator(@Param("solution_id")String solutionId,@Param("user_id")Integer userId);
 
+    /**
+     * 重新评论
+     * @param solutionId 提交编号
+     * @return
+     */
+    @Update("update solution set result = '0' where solution_id = #{solution_id}")
+    int rejudge(@Param("solution_id")String solutionId);
+
+    /**
+     * 查询总解决数最多的用户
+     * @param start
+     * @param per_page
+     * @return
+     */
+    @Select("SELECT * FROM users ORDER BY solved desc LIMIT ${start},#{per_page} ")
+    List<User> getTotalSolvedRank(int start,int per_page);
+
+    /**
+     * 查询解决率最高的用户
+     * @param start
+     * @param per_page
+     * @return
+     */
+    @Select("SELECT * FROM users ORDER BY (solved/submit) DESC LIMIT ${start},#{per_page} ")
+    List<User> getPercentSolvedRank(int start,int per_page);
     /**
      * 按判题时间降序获取结果集
      *

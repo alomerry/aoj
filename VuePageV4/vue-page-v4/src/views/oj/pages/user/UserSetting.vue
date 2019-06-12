@@ -79,15 +79,15 @@
                                     <label class="form-title">Change Password</label>
                                     <div class="form-container">
                                         <FormItem label="Old Password">
-                                            <Input v-model="AccountItem.oldPwd"
+                                            <Input v-model="AccountItem.oldPwd" type="password"
                                                    placeholder="Enter something..."></Input>
                                         </FormItem>
                                         <FormItem label="New Password">
-                                            <Input v-model="AccountItem.newPwd"
+                                            <Input v-model="AccountItem.newPwd" type="password"
                                                    placeholder="Enter something..."></Input>
                                         </FormItem>
                                         <FormItem label="Confirm New Password">
-                                            <Input v-model="AccountItem.confirmNewPwd"
+                                            <Input v-model="AccountItem.confirmNewPwd" type="password"
                                                    placeholder="Enter something..."></Input>
                                         </FormItem>
                                     </div>
@@ -135,6 +135,7 @@
                     own_words: "",
                 },
                 AccountItem: {
+                    username:"",
                     oldPwd: "",
                     newPwd: "",
                     confirmNewPwd: "",
@@ -174,9 +175,9 @@
                 };
                 Api.updateUserProfile(this.$store.state.token, user).then(res => {
                     console.log(res.data);
-                    if(res.data.code == 200){
+                    if (res.data.code == 200) {
                         this.$Message.success("save success!");
-                    }else{
+                    } else {
                         this.$Message.error("save failed!");
                     }
                 }).catch(res => {
@@ -185,20 +186,59 @@
             },
 
             saveAccount() {
-                if(this.AccountItem.oldPwd == "" || this.AccountItem.oldPwd == null){
+                if (this.AccountItem.oldPwd == "" || this.AccountItem.oldPwd == null) {
                     //更新邮箱
-                }else if(!this.checkPwd(this.AccountItem.newPwd) || !this.checkPwd(this.AccountItem.confirmNewPwd) ||
-                this.AccountItem.newPwd != this.AccountItem.confirmNewPwd){
+                    let user = {
+                        user: {
+                            email: this.AccountItem.newEmail,
+                            passwd: null,
+                            username:this.userInfo.username,
+                        },
+                        repwd: null,
+                    };
+                    Api.updateUserAccount(this.$store.state.token, user).then(res => {
+                        console.log(res.data);
+                        if(res.data.code == 200){
+                            this.$Message.success("修改成功！")
+                        }else{
+                            this.$Message.error(res.data.message);
+                        }
+                    }).catch(res => {
+                        console.log(res);
+                    })
+                } else if (!this.checkPwd(this.AccountItem.newPwd) || !this.checkPwd(this.AccountItem.confirmNewPwd) ||
+                    this.AccountItem.newPwd != this.AccountItem.confirmNewPwd) {
                     this.$Message.error("信息有误！");
+                }else{
                     //更新密码和邮箱
+                    let user = {
+                        user: {
+                            email: this.AccountItem.newEmail,
+                            passwd: hex_md5(encodeURIComponent(this.AccountItem.oldPwd + 'onlinejudge')),
+                            username:this.userInfo.username,
+                        },
+                        repwd: hex_md5(encodeURIComponent(this.AccountItem.newPwd + 'onlinejudge')),
+                    };
+                    Api.updateUserAccount(this.$store.state.token, user).then(res => {
+                        console.log(res.data);
+                        if(res.data.code == 200){
+                            this.$Message.success("修改成功！")
+                        }else{
+                            this.$Message.error(res.data.message);
+                        }
+                    }).catch(res => {
+                        console.log(res);
+                    })
                 }
             },
-            checkPwd(val){
-              if(val.length <= 0 || val.length>16){
-                  return false;
-              }else if(val.indexOf(666) != -1){
-                  return false;
-              }
+            checkPwd(val) {
+                if (val.length <= 0 || val.length > 16) {
+                    return false;
+                } else if (val.indexOf(666) != -1) {
+                    return false;
+                }else{
+                    return true;
+                }
             },
             //更新头像成功回调
             updateHeadSuccess(response, file, fileList) {
@@ -237,8 +277,7 @@
                     newPwd: "",
                     confirmNewPwd: "",
                     currentPwd: "",
-                    oldEmail: this.userInfo.email,
-                    newEmail: "",
+                    newEmail: this.userInfo.email,
                 };
             }
         }

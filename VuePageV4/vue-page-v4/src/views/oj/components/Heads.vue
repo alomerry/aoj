@@ -77,7 +77,7 @@
                             <Icon type="ios-construct"/>
                             Rank
                         </template>
-                        <MenuItem name="2-1" to="/acm-rank">ACM Rank</MenuItem>
+                        <MenuItem name="2-1" to="/acm-rank">Total Rank</MenuItem>
                     </Submenu>
                     <Submenu name="about">
                         <template slot="title">

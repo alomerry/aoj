@@ -5,6 +5,7 @@ import mo.dao.main.SolutionMapper;
 import mo.dao.main.UserMapper;
 import mo.entity.po.main.Solution;
 import mo.entity.po.main.SourceCode;
+import mo.entity.po.main.User;
 import mo.entity.vo.link.SolutionLink;
 import mo.exception.ServiceException;
 import mo.service.SolutionService;
@@ -45,7 +46,8 @@ public class SolutionServiceImpl implements SolutionService {
                 solution.getIp(),
                 solution.getCode_lenght());
         if (res > 0) {
-            if (problemMapper.addProblemOneSubmit(solution.getProblem_id()) > 0 && solutionMapper.insertCodeIntoSource(solution_id, sourceCode.getSource()) > 0) {
+//            if (problemMapper.addProblemOneSubmit(solution.getProblem_id()) > 0 && solutionMapper.insertCodeIntoSource(solution_id, sourceCode.getSource()) > 0) {
+            if (solutionMapper.insertCodeIntoSource(solution_id, sourceCode.getSource()) > 0) {
                 return true;
             } else {
                 logger.error("source code 插入失败");
@@ -100,6 +102,26 @@ public class SolutionServiceImpl implements SolutionService {
     @Override
     public Integer getSolutionTotalNumber(int state) {
         return solutionMapper.getStateSolutionTotalNumber(state);
+    }
+
+    @Override
+    public boolean checkIsCreatorOfSolution(String solutionId, Integer user_id) {
+        return solutionMapper.checkIsSolutionCreator(solutionId,user_id)>0;
+    }
+
+    @Override
+    public int rejudge(String solutionId) {
+        return solutionMapper.rejudge(solutionId);
+    }
+
+    @Override
+    public List<User> getTotalSolvedRank(int page, int per_page) {
+        return solutionMapper.getTotalSolvedRank((page-1)*per_page,per_page);
+    }
+
+    @Override
+    public List<User> getPercentSolvedRank(int page, int per_page) {
+        return solutionMapper.getPercentSolvedRank((page-1)*per_page,per_page);
     }
 
     private List<SolutionLink> makeLink(List<Solution> solution) {

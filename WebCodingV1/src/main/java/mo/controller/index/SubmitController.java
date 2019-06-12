@@ -35,6 +35,13 @@ public interface SubmitController {
     Result getSolutions(Integer state, String page, String per_page, String myself);
 
     /**
+     * 重新判题
+     * @param solutionId 代码编号
+     * @return
+     */
+    Result rejudge(String solutionId);
+
+    /**
      * 查询指定竞赛的提交
      *
      * @param contestId 竞赛Id
@@ -43,4 +50,17 @@ public interface SubmitController {
      * @return
      */
     Result getSolutions(Integer contestId, String page, String per_page);
+
+    /**
+     * 查询编译错误信息
+     * @param solutionId 提交编号
+     * @return
+     */
+    Result getCompileInfo(String solutionId);
+
+    /**
+     * 查询排名
+     * @return
+     */
+    Result getTotalRank(String page,String per_page);
 }

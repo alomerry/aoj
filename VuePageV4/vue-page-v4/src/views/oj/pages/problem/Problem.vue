@@ -26,7 +26,7 @@
             <Col span="20" style="margin-right: 10px">
                 <Card>
                     <div class="problem-detail">
-                        <p class="card-title">Problem Detail</p>
+                        <p class="card-title">Problem Detail &nbsp;&nbsp;&nbsp;{{problem.title}}</p>
                         <div>
                             <label>Description</label>
                             <p v-html="problem.description"></p>

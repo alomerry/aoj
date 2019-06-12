@@ -224,5 +224,15 @@ public interface UserMapper {
      */
     @Update("update users set passwd = #{pwd} ,email = #{email} where user_id = #{user_id}")
     int updateUserPwdAndEmail(@Param("pwd") String pwd,@Param("email") String email,@Param("user_id") Integer user_id);
+
+    /**
+     * 更新指定属性
+     * @param col 属性
+     * @param val 值
+     * @param user_id 用户编号
+     * @return
+     */
+    @Update("update users set ${col} = #{val} where user_id = #{user_id}")
+    int updateUserCol(@Param("col")String col,@Param("val") String val,@Param("user_id") Integer user_id);
 }
 

@@ -233,12 +233,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updateUserAccount(UserWithRePwd user, Integer userId) {
-        //检测旧密码
-        User tmp = userMapper.findUserByUserNameAndUserPwd(user.getUser().getUsername(), DigestUtils.md5DigestAsHex((user.getUser().getPasswd() + SALT).getBytes()));
-        if (tmp == null) {
-            return WRONG_PASSWORD;
-        }else {
-            return userMapper.updateUserPwdAndEmail(DigestUtils.md5DigestAsHex((user.getRepwd() + SALT).getBytes()),user.getUser().getEmail(),tmp.getUser_id());
+        logger.info("修改密码，输入的原密码[{}]",user.getUser().getPasswd());
+        if (user.getUser().getPasswd() != null) {
+            //检测旧密码
+            User tmp = userMapper.findUserByUserNameAndUserPwd(user.getUser().getUsername(), DigestUtils.md5DigestAsHex((user.getUser().getPasswd() + SALT).getBytes()));
+            if (tmp == null) {
+                return WRONG_PASSWORD;
+            } else {
+                return userMapper.updateUserPwdAndEmail(DigestUtils.md5DigestAsHex((user.getRepwd() + SALT).getBytes()), user.getUser().getEmail(), tmp.getUser_id());
+            }
+        } else {
+            //更新邮箱
+            return userMapper.updateUserCol("email", user.getUser().getEmail(), userId);
         }
+
     }
 }

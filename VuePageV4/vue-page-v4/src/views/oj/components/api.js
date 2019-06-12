@@ -129,6 +129,48 @@ export default {
             }
         })
     },
+    /**
+     * 更新用户信息
+     * @param jwt 令牌
+     * @param user 用户实体
+     */
+    updateUserAccount(jwt,user){
+        return axios({
+            url: "/api-oj/api-oj/user/account",
+            data:JSON.stringify(user),
+            dataType: "json",
+            method: 'put',
+            headers:{
+                "jwt":jwt,
+                "Content-Type": "application/json;charset-UTF-8",
+            }
+        })
+    },
+
+    findCompileErrorInfo(jwt,solution_id){
+        return axios({
+            url: "/api-oj/api-oj/solution/"+solution_id+"/compile_error_info",
+            method: 'get',
+            headers:{
+                "jwt":jwt,
+            }
+        })
+    },
+
+    /**
+     * 重新评判
+     * @param jwt
+     * @param solutionId
+     */
+    rejudge(jwt,solutionId){
+        return axios({
+            url: "/api-oj/api-oj/solution/"+solutionId+"/rejudge",
+            method: 'get',
+            headers:{
+                "jwt":jwt,
+            }
+        })
+    },
 
     /**
      * 申请竞赛
@@ -219,6 +261,14 @@ export default {
             }
         })
     },
+
+    getRank(page,per_page){
+        return axios({
+            url: "/api-oj/api-oj/rank?page=" + page + "&per_page=" + per_page,
+            method: "get",
+        })
+    },
+
     getSolutionsByState(state, myself, page, per_page, jwt) {
         return axios({
             url: "/api-oj/api-oj/state/" + state + "/solutions?myself=" + myself + "&page=" + page + "&per_page=" + per_page,

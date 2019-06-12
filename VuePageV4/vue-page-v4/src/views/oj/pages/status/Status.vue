@@ -54,7 +54,7 @@
             <p style="margin-top: 30px"></p>
         </Card>
         <div style="float: right;margin: 5px;">
-            <Page :total="totalPage" :page-size="per_page" :current="page" show-sizer/>
+            <Page :total="total" :page-size="per_page" :current="page" @on-change="changePage" @on-page-size-change="changePageSize" show-sizer/>
         </div>
     </div>
 </template>
@@ -71,7 +71,7 @@
                 buttonLoading: false,
                 searchKeyWord: "",//搜索框的内容
                 page: 1,
-                totalPage: 1,
+                total: 1,
                 per_page: 10,
                 tableLoadingFlag: false,
                 statusColumns: [
@@ -99,7 +99,23 @@
                                 h('a', {
                                     on: {
                                         click: () => {
-                                            alert(666);
+                                            Api.findCompileErrorInfo(this.$store.state.token,params.row.solution.solution_id).then(res=>{
+                                                let result = res.data.data.error.error;
+                                                console.log(result);
+                                                this.$Modal.confirm({
+                                                    title: 'Compile Error Info',
+                                                    content: result,
+                                                    onOk: () => {
+                                                        // this.$Message.info('Clicked ok');
+                                                    },
+                                                    onCancel: () => {
+                                                        // this.$Message.info('Clicked cancel');
+                                                    }
+                                                });
+                                            }).catch(res=>{
+                                                console.log(res);
+                                            });
+
                                         },
                                     }
                                 }, params.row.solution.solution_id) : h('span', {}, params.row.solution.solution_id);
@@ -174,7 +190,22 @@
                                     ghost: true,
                                     shape: "circle",
                                     type: "info",
-                                    size: "small"
+                                    size: "small",
+                                    disabled:this.$store.state.user.user_id !=  params.row.user.user_id,
+                                },
+                                on: {
+                                    click: () => {
+                                        Api.rejudge(this.$store.state.token, params.row.solution.solution_id).then(res => {
+                                            if (res.data.code == 200) {
+                                                this.$Message.success("重新判题中!");
+                                                params.row.solution.result = 0;
+                                            } else {
+                                                this.$Message.error(res.data.message);
+                                            }
+                                        }).catch(res => {
+                                            console.log(res);
+                                        })
+                                    }
                                 }
                             }, "Rejudge");
                         }
@@ -237,6 +268,15 @@
             }
         },
         methods: {
+            changePageSize(pageSize) {
+                this.per_page = pageSize;
+                this.getSolutions();
+            },
+            changePage(page) {
+                this.page = page;
+                this.getSolutions();
+            },
+
             updateActiveClass(path) {
                 switch (path) {
                     case "/status": {
@@ -263,6 +303,7 @@
                         this.$Message.error("身份信息失效，请重新登录");
                     } else if (result.code === 200) {
                         this.statusData = result.data.solutions;
+                        this.total = result.data.total;
                         this.statusData.forEach(function (current) {
                             current.solution_when = current.solution.create_at;
                         });

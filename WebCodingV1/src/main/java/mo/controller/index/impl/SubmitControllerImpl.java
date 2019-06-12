@@ -10,8 +10,10 @@ import mo.entity.po.main.SourceCode;
 import mo.exception.ServiceException;
 import mo.interceptor.annotation.AuthCheck;
 import mo.interceptor.annotation.RequiredType;
+import mo.service.CompileInfoService;
 import mo.service.ProblemService;
 import mo.service.SolutionService;
+import mo.service.UserService;
 import mo.utils.InetAddressUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +33,12 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
 
     @Resource
     private SolutionService solutionService;
+
+    @Resource
+    private CompileInfoService compileInfoService;
+
+    @Resource
+    private UserService userService;
 
     @Override
     @AuthCheck({RequiredType.JWT})
@@ -128,6 +136,19 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
 
     @Override
     @ResponseBody
+    @AuthCheck({RequiredType.JWT})
+    @RequestMapping(value = "/solution/{solutionId}/rejudge", method = RequestMethod.GET)
+    public Result rejudge(@PathVariable String solutionId) {
+        Integer operatorId = getJWTUserId();
+        if (solutionService.checkIsCreatorOfSolution(solutionId, operatorId) && solutionService.rejudge(solutionId) > 0) {
+            return new Result().setCode(ResultCode.OK);
+        } else {
+            return new Result().setCode(ResultCode.BAD_REQUEST).setMessage("权限不足！");
+        }
+    }
+
+    @Override
+    @ResponseBody
     @RequestMapping(value = "/contest/{contestId}/solutions", method = RequestMethod.GET)
     public Result getSolutions(@PathVariable Integer contestId,
                                @RequestParam(value = "page", defaultValue = "1") String page,
@@ -135,6 +156,28 @@ public class SubmitControllerImpl extends AbstractController implements SubmitCo
         JSONObject solutions = new JSONObject();
         solutions.put("solutions", solutionService.getContestSolutions(contestId, Integer.valueOf(page), Integer.valueOf(per_page)));
         return new Result().setCode(ResultCode.OK).setData(solutions);
+    }
+
+    @Override
+    @ResponseBody
+    @AuthCheck({RequiredType.JWT})
+    @RequestMapping(value = "/solution/{solutionId}/compile_error_info", method = RequestMethod.GET)
+    public Result getCompileInfo(@PathVariable String solutionId) {
+        JSONObject res = new JSONObject();
+        res.put("error", compileInfoService.findCompileInfoBySolutionId(solutionId));
+        return new Result().setCode(ResultCode.OK).setData(res);
+    }
+
+    @Override
+    @ResponseBody
+    @RequestMapping(value = "/rank", method = RequestMethod.GET)
+    public Result getTotalRank(@RequestParam(value = "page", defaultValue = "1") String page,
+                               @RequestParam(value = "per_page", defaultValue = "10") String per_page) {
+        JSONObject res = new JSONObject();
+        res.put("totalRank", solutionService.getTotalSolvedRank(Integer.valueOf(page), Integer.valueOf(per_page)));
+        res.put("percentRank", solutionService.getPercentSolvedRank(Integer.valueOf(page), Integer.valueOf(per_page)));
+        res.put("total", userService.getUserTotalNumer());
+        return new Result().setCode(ResultCode.OK).setData(res);
     }
 
     /**
