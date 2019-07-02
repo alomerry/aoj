@@ -5,6 +5,7 @@ import mo.entity.po.main.User;
 import mo.entity.vo.link.UserLink;
 import mo.utils.JWTUtils;
 import org.junit.Test;
+import org.springframework.util.DigestUtils;
 //import redis.clients.jedis.Jedis;
 
 import java.net.InetAddress;
@@ -44,7 +45,7 @@ public class TestMain {
         }
     }
 
-//    @AuthCheck({RequiredType.JWT, RequiredType.LOGIN})
+    //    @AuthCheck({RequiredType.JWT, RequiredType.LOGIN})
     public void test05() {
         String jws = getJWS();
 //        System.out.println(jws);
@@ -112,9 +113,22 @@ public class TestMain {
     }
 
     @Test
-    public void test09(){
-        String imageName="vue.jpeg";
+    public void test09() {
+        String imageName = "vue.jpeg";
         System.out.println(imageName.lastIndexOf("."));
-        System.out.println(imageName.substring(imageName.lastIndexOf(".")+1));
+        System.out.println(imageName.substring(imageName.lastIndexOf(".") + 1));
+    }
+
+    @Test
+    public void test10() {
+        String pwd = "8473ff4338e3da18e3e4568101e429fc";
+        String salt = "#&***#$#@";
+        System.out.println(DigestUtils.md5DigestAsHex((pwd + salt).getBytes()));
+    }
+
+    @Test
+    public void test11() {
+        Object obj = new Object();
+        System.out.println(obj instanceof String);
     }
 }
