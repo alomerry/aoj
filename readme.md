@@ -1,198 +1,67 @@
-@[toc](目录)
 
-Markdown 语法简介
-============
-> [语法详解](http://commonmark.org/help/)
 
-## **粗体**
-```
-**粗体**
-__粗体__
-```
-## *斜体*
-```
-*斜体*
-_斜体_
-```
-## 标题
-```
-# 一级标题 #
-一级标题
-====
-## 二级标题 ##
-二级标题
-----
-### 三级标题 ###
-#### 四级标题 ####
-##### 五级标题 #####
-###### 六级标题 ######
-```
-## 分割线
-```
-***
----
-```
-****
-## ^上^角~下~标
-```
-上角标 x^2^
-下角标 H~2~0
-```
-## ++下划线++ ~~中划线~~
-```
-++下划线++
-~~中划线~~
-```
-## ==标记==
-```
-==标记==
-```
-## 段落引用
-```
-> 一级
->> 二级
->>> 三级
-...
-```
+# Online Judge Web端
 
-## 列表
+很早就想自己写一个OJ，趁着毕设的机会，手刃了一个垃圾版OJ
++ 判题部分基于Docker 和 linux C++
+- Web端前后端分离，采用Springboot微服务和Vue
++ 图表生成用的eCharts
++ 前端UI用的iview
+
+## 前端
+### 安装的插件
 ```
-有序列表
+axios 代替jquery的轻量级ajax插件
+Simditor 富文本编辑器
+codemirror 代码编辑器
+echarts 生成图表插件
+tar-simditor-markdown
+```
+### 遇到的坑
+- Simditor插件好像是模块化的，npm装好了以后我一直不知道怎么使用，后来找到一个替代品tar-simditor,如果需要支持markdown，再装一个tar
+-simditor就行
+### 流程
+前后端分离的话基本都差不多吧，我也不知道企业里是啥样的，没上过班。。后端提供接口，然后用axios ajax访问。
+
+### 截图
+
+## 后端
+### 使用的库
+### 编码过程中踩的坑
+````
+1.测试题目删除
+2.题目删除时添加判断，是否题目在某场竞赛中
+3.测试公告删除 
+5.fastJson不建立新对象可能会引起的循环引用
+6.前台竞赛列表，用户可以查询到公开竞赛和自己参加的隐私竞赛
+````
+
+## 特点
+
+#### 5.3 linux run sh
+````
+docker build -t mo/judge:v1.8 .
+docker run -it  -v /mnt/hgfs/webapp/problem_cases:/oj-home/problem_cases:ro -d mo/judge:v1.8
+docker ps
+docker rm ...
+docker images 
+docker rmi ...
+docker exec -it ... /bin/bash 
+````
+#### 5.4 
+```
+当前版本只判断题目正误，不判分数，例如一个题目中有是个测试用例，正确一个的一部分分数
+linux部分：
 1.
+    * 判题之前计算.in文件数量
+    * 计算用户正确的题目数计算题目分数
 2.
-3.
-...
-无序列表
--
--
-...
-```
-
-## 任务列表
-
-- [x] 已完成任务
-- [ ] 未完成任务
+    * 为每个题目创建分值文件
 
 ```
-- [x] 已完成任务
-- [ ] 未完成任务
+#### 待实现
 ```
-
-## 链接
+- 分布式文件系统FastDFS
+- 添加更多的语言支持 JAVA等
 ```
-[链接](www.baidu.com)
-![图片描述](http://www.image.com)
-```
-## 代码段落
-\``` type
-
-代码段落
-
-\```
-
-\` 代码块 \`
-
-```c++
-int main()
-{
-    printf("hello world!");
-}
-```
-`code`
-## 表格(table)
-```
-| 标题1 | 标题2 | 标题3 |
-| :--  | :--: | ----: |
-| 左对齐 | 居中 | 右对齐 |
-| ---------------------- | ------------- | ----------------- |
-```
-| 标题1 | 标题2 | 标题3 |
-| :--  | :--: | ----: |
-| 左对齐 | 居中 | 右对齐 |
-| ---------------------- | ------------- | ----------------- |
-## 脚注(footnote)
-```
-hello[^hello]
-```
-
-见底部脚注[^hello]
-
-[^hello]: 一个注脚
-
-## 表情(emoji)
-[参考网站: https://www.webpagefx.com/tools/emoji-cheat-sheet/](https://www.webpagefx.com/tools/emoji-cheat-sheet/)
-```
-:laughing:
-:blush:
-:smiley:
-:)
-...
-```
-:laughing::blush::smiley::)
-
-## $\KaTeX$公式
-
-我们可以渲染公式例如：$x_i + y_i = z_i$和$\sum_{i=1}^n a_i=0$
-我们也可以单行渲染
-$$\sum_{i=1}^n a_i=0$$
-具体可参照[katex文档](http://www.intmath.com/cg5/katex-mathjax-comparison.php)和[katex支持的函数](https://github.com/Khan/KaTeX/wiki/Function-Support-in-KaTeX)以及[latex文档](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)
-
-## 布局
-
-::: hljs-left
-`::: hljs-left`
-`居左`
-`:::`
-:::
-
-::: hljs-center
-`::: hljs-center`
-`居中`
-`:::`
-:::
-
-::: hljs-right
-`::: hljs-right`
-`居右`
-`:::`
-:::
-
-## 定义
-
-术语一
-
-:   定义一
-
-包含有*行内标记*的术语二
-
-:   定义二
-
-        {一些定义二的文字或代码}
-
-    定义二的第三段
-
-```
-术语一
-
-:   定义一
-
-包含有*行内标记*的术语二
-
-:   定义二
-
-        {一些定义二的文字或代码}
-
-    定义二的第三段
-
-```
-
-## abbr
-*[HTML]: Hyper Text Markup Language
-*[W3C]:  World Wide Web Consortium
-HTML 规范由 W3C 维护
-```
-*[HTML]: Hyper Text Markup Language
-*[W3C]:  World Wide Web Consortium
-HTML 规范由 W3C 维护
-```
-
+好像想写的暂时就这么多，想到了再改吧。。
