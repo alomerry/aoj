@@ -25,48 +25,48 @@ tar-simditor-markdown
 ### 截图
 >公告页面
 
-![1](http://localhost:8088/api-blog/image?imageName=1562057214898fEt01.png)
+![1](http://www.morizunzhu.club:8088/api-blog/image?imageName=1562057214898fEt01.png)
 
 >公告详情
 
-![1](http://localhost:8088/api-blog/image?imageName=1562057230123Iyjw2.png)
+![1](http://www.morizunzhu.club:8088/api-blog/image?imageName=1562057230123Iyjw2.png)
 
 >题目列表
 
-![1](http://localhost:8088/api-blog/image?imageName=1562057237497mWYX3.png)
+![1](http://www.morizunzhu.club:8088/api-blog/image?imageName=1562057237497mWYX3.png)
 
 >题目详情
 
-![1](http://localhost:8088/api-blog/image?imageName=1562057244925agDR4.png)
-![1](http://localhost:8088/api-blog/image?imageName=1562057253793yw1S5.png)
+![1](http://www.morizunzhu.club:8088/api-blog/image?imageName=1562057244925agDR4.png)
+![1](http://www.morizunzhu.club:8088/api-blog/image?imageName=1562057253793yw1S5.png)
 
 >竞赛列表
 
-![1](http://localhost:8088/api-blog/image?imageName=1562057265204r0ni6.png)
+![1](http://www.morizunzhu.club:8088/api-blog/image?imageName=1562057265204r0ni6.png)
 
 >错误详细
 
-![1](http://localhost:8088/api-blog/image?imageName=1562057271076nUXQ7.png)
+![1](http://www.morizunzhu.club:8088/api-blog/image?imageName=1562057271076nUXQ7.png)
 
 >竞赛详情
 
-![1](http://localhost:8088/api-blog/image?imageName=1562057276895aLSV8.png)
+![1](http://www.morizunzhu.club:8088/api-blog/image?imageName=1562057276895aLSV8.png)
 
 >判题结果列表
 
-![1](http://localhost:8088/api-blog/image?imageName=1562057282271y3xl9.png)
+![1](http://www.morizunzhu.club:8088/api-blog/image?imageName=1562057282271y3xl9.png)
 
 >排名
 
-![1](http://localhost:8088/api-blog/image?imageName=1562057287822Z7WJ10.png)
+![1](http://www.morizunzhu.club:8088/api-blog/image?imageName=1562057287822Z7WJ10.png)
 
 >login
 
-![1](http://localhost:8088/api-blog/image?imageName=1562057295353qOOy11.png)
+![1](http://www.morizunzhu.club:8088/api-blog/image?imageName=1562057295353qOOy11.png)
 
 >register
 
-![1](http://localhost:8088/api-blog/image?imageName=1562057300474RQ4r12.png)
+![1](http://www.morizunzhu.club:8088/api-blog/image?imageName=1562057300474RQ4r12.png)
 ## 后端
 ### 模块
 #### 前台

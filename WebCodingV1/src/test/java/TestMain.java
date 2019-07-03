@@ -3,17 +3,17 @@ import io.jsonwebtoken.*;
 import mo.entity.po.main.Privilege;
 import mo.entity.po.main.User;
 import mo.entity.vo.link.UserLink;
+import mo.utils.HttpClient;
 import mo.utils.JWTUtils;
 import org.junit.Test;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 //import redis.clients.jedis.Jedis;
 
 import java.net.InetAddress;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TestMain {
 
@@ -130,5 +130,13 @@ public class TestMain {
     public void test11() {
         Object obj = new Object();
         System.out.println(obj instanceof String);
+    }
+
+    @Test
+    public void test12() {
+        MultiValueMap map = new LinkedMultiValueMap<String, String>();
+        String email = "940406032@qq.com";
+        System.out.println(HttpClient.sendPostRequest("http://email.qhyt1688.com/Home/EValidation?emails="+email, map));
+//        JSONObject res =
     }
 }
