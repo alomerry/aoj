@@ -151,4 +151,7 @@ org.projectlombok.lombok
 
 >MySQL读写分离
 
-好像想写的暂时就这么多，想到了再改吧。。
+## 如何运行
+>将web后端和前端跑起来
+>将linux的docker 跑起来
+暂时写这么多，回头再改吧。。
