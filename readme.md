@@ -1,28 +1,37 @@
 
-# Online Judge Web端
+# Online Judge Web 端
 
-很早就想自己写一个OJ，趁着毕设的机会，手刃了一个垃圾版OJ
+很早就想自己写一个 OJ，趁着毕设的机会，手刃了一个垃圾版 OJ,判题部分代码见 [JudgeClient](https://github.com/Morizunzhu/JudgeClient)
+
 ## 简介
-> 判题部分基于Docker 和 linux C++
-Web端前后端分离，采用Springboot微服务和Vue
-图表生成用的eCharts
-前端UI用的iview
+
+> 判题部分基于 Docker 和 linux C++
+Web 端前后端分离，采用 Springboot 微服务和 Vue
+图表生成用的 eCharts
+前端 UI 用的 iview
 
 ## 前端
+
 ### 安装的插件
->axios 代替jquery的轻量级ajax插件
+
+>axios 代替 jquery 的轻量级 ajax 插件
 Simditor 富文本编辑器
 codemirror 代码编辑器
 echarts 生成图表插件
 tar-simditor-markdown
+
 ### 遇到的坑
->`Simditor插件好像是模块化的，npm装好了以后我一直不知道怎么使用，后来找到一个替代品tar-simditor,如果需要支持markdown，再装一个tar-simditor-markdown就行`
+
+>`Simditor` 插件好像是模块化的，npm 装好了以后我一直不知道怎么使用，后来找到一个替代品 `tar-simditor`,如果需要支持 markdown，再装一个 `tar-simditor-markdown` 就行
 
 >`跨域问题`
+
 ### 流程
-`前后端分离的话基本都差不多吧，我也不知道企业里是啥样的，没上过班。。后端提供接口，然后用axios ajax访问。`
+
+前后端分离的话基本都差不多吧，我也不知道企业里是啥样的，没上过班。。后端提供接口，然后用 axios ajax 访问。
 
 ### 截图
+
 >公告页面
 
 ![1](images/1562057214898fEt01.png)
@@ -67,40 +76,54 @@ tar-simditor-markdown
 >register
 
 ![1](images/1562057300474RQ4r12.png)
+
 ## 后端
+
 ### 模块
+
 #### 前台
+
 >公告浏览
 题目浏览
 提交代码
 排名浏览
 竞赛的浏览和参与
 登陆注册和个人信息编辑
+
 #### 后台
+
 >公告管理
 用户管理
 竞赛管理
 题目管理
+
 _系统管理_~(特别想做但是还没做的模块)~
+
 ### 使用的库
+
 >com.alibaba.fastjson
 io.jsonwebtoken.jjwt
 com.alibaba.druid
 ch.qos.logback.logback-classic
 org.projectlombok.lombok
+
 ### 编码过程中踩的坑
+
 >`fastJson不建立新对象可能会引起的循环引用`
 
 >`IDEA 创建多模块的maven项目时的打包问题`
 
 >`IDEA 创建多模块的maven项目子模块根目录问题`
+
 ## 特点
+
 >权限鉴定
 
-采用JWT(Json Web Token)验证,以AOP的方式执行验证
+采用 JWT(Json Web Token) 验证,以 AOP 的方式执行验证
+
 >主从数据库
 
-双MySQL可以减小单个数据库的鸭梨
+双MySQL可以减小单个数据库的压力
 
 >权限分类
 
