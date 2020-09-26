@@ -7,7 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "simditor": "^2.3.23",
     "simple-hotkeys": "^1.0.3",
     "simple-module": "^3.0.3",
