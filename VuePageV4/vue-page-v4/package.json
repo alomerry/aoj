@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "codemirror": "^5.45.0",
+    "codemirror": "^5.58.2",
     "echarts": "^4.2.1",
     "iview": "^3.3.3",
     "jquery": "^3.5.0",
