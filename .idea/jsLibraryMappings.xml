@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="JavaScriptLibraryMappings">
-    <file url="file://$PROJECT_DIR$" libraries="{bootstrap-hover-dropdown, vue}" />
-    <file url="file://$PROJECT_DIR$/BetaVersion" libraries="{bootstrap-hover-dropdown, vue}" />
-    <file url="file://$PROJECT_DIR$/PageCodingV1" libraries="{bootstrap-hover-dropdown, vue}" />
-    <file url="file://$PROJECT_DIR$/WebCodingV1" libraries="{bootstrap-hover-dropdown, vue}" />
-  </component>
-</project>

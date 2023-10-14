@@ -1,0 +1,26 @@
+version: "3"
+services:
+    judge_server:
+        build: .
+        read_only: true
+        cap_drop:
+            - SETPCAP
+            - MKNOD
+            - NET_BIND_SERVICE
+            - SYS_CHROOT
+            - SETFCAP
+            - FSETID
+        # tmpfs:
+          #   - /tmp
+        volumes:
+            # - $PWD/tests/test_case:/test_case:ro
+            - /mnt/hgfs/webapp/problem_cases:/oj-home/problem_cases:ro
+            # - $PWD/log:/log
+        # environment:
+            # - BACKEND_URL=http://backend:80/api/judge_server_heartbeat
+            # - SERVICE_URL=192.168.1.111:12358
+            # - TOKEN=YOUR_TOKEN_HERE
+        ports:
+            - "0.0.0.0:1079:8080"
+        command:
+            - ./judge_serve

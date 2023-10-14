@@ -1,5 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
 .gitignore
-.idea/workspace.xml
-/WebCodingV1/src/main/webapp/images/
-/WebCodingV1/src/test/
+.idea
+.DS_Store
